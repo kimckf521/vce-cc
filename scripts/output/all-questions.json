@@ -1,0 +1,228 @@
+[
+  {
+    "year": 2016,
+    "examType": "EXAM_1",
+    "questions": [
+      {
+        "questionNumber": 1,
+        "part": "a",
+        "marks": 2,
+        "content": "Let $y = \\dfrac{\\cos(x)}{x^2 + 2}$.\n\nFind $\\dfrac{dy}{dx}$.",
+        "topic": "Calculus",
+        "subtopic": "Quotient Rule",
+        "difficulty": "MEDIUM",
+        "imageDescription": null
+      },
+      {
+        "questionNumber": 1,
+        "part": "b",
+        "marks": 2,
+        "content": "Let $f(x) = x^2 e^{5x}$.\n\nEvaluate $f'(1)$.",
+        "topic": "Calculus",
+        "subtopic": "Product Rule",
+        "difficulty": "MEDIUM",
+        "imageDescription": null
+      },
+      {
+        "questionNumber": 2,
+        "part": "a",
+        "marks": 1,
+        "content": "Let $f:\\left(-\\infty, \\dfrac{1}{2}\\right] \\to R$, where $f(x) = \\sqrt{1 - 2x}$.\n\nFind $f'(x)$.",
+        "topic": "Calculus",
+        "subtopic": "Chain Rule",
+        "difficulty": "EASY",
+        "imageDescription": null
+      },
+      {
+        "questionNumber": 2,
+        "part": "b",
+        "marks": 2,
+        "content": "Find the angle $\\theta$ from the positive direction of the $x$-axis to the tangent to the graph of $f$ at $x = -1$, measured in the anticlockwise direction.",
+        "topic": "Calculus",
+        "subtopic": "Differentiation",
+        "difficulty": "MEDIUM",
+        "imageDescription": null
+      },
+      {
+        "questionNumber": 3,
+        "part": "a",
+        "marks": 3,
+        "content": "Let $f: R\\backslash\\{1\\} \\to R$, where $f(x) = 2 + \\dfrac{3}{x - 1}$.\n\nSketch the graph of $f$. Label the axis intercepts with their coordinates and label any asymptotes with the appropriate equation.",
+        "topic": "Functions and Graphs",
+        "subtopic": "Transformations",
+        "difficulty": "MEDIUM",
+        "imageDescription": "A set of axes is provided with x-axis from -3 to 3 and y-axis from -5 to 5, with grid lines at integer values."
+      },
+      {
+        "questionNumber": 3,
+        "part": "b",
+        "marks": 2,
+        "content": "Find the area enclosed by the graph of $f$, the lines $x = 2$ and $x = 4$, and the $x$-axis.",
+        "topic": "Calculus",
+        "subtopic": "Areas Under Curves",
+        "difficulty": "MEDIUM",
+        "imageDescription": null
+      },
+      {
+        "questionNumber": 4,
+        "part": "a",
+        "marks": 1,
+        "content": "A paddock contains 10 tagged sheep and 20 untagged sheep. Four times each day, one sheep is selected at random from the paddock, placed in an observation area and studied, and then returned to the paddock.\n\nWhat is the probability that the number of tagged sheep selected on a given day is zero?",
+        "topic": "Probability",
+        "subtopic": "Binomial Distribution",
+        "difficulty": "EASY",
+        "imageDescription": null
+      },
+      {
+        "questionNumber": 4,
+        "part": "b",
+        "marks": 1,
+        "content": "What is the probability that at least one tagged sheep is selected on a given day?",
+        "topic": "Probability",
+        "subtopic": "Binomial Distribution",
+        "difficulty": "EASY",
+        "imageDescription": null
+      },
+      {
+        "questionNumber": 4,
+        "part": "c",
+        "marks": 1,
+        "content": "What is the probability that no tagged sheep are selected on each of six consecutive days?\nExpress your answer in the form $\\left(\\dfrac{a}{b}\\right)^c$, where $a$, $b$ and $c$ are positive integers.",
+        "topic": "Probability",
+        "subtopic": "Probability Rules",
+        "difficulty": "MEDIUM",
+        "imageDescription": null
+      },
+      {
+        "questionNumber": 5,
+        "part": "a.i",
+        "marks": 1,
+        "content": "Let $f:(0, \\infty) \\to R$, where $f(x) = \\log_e(x)$ and $g: R \\to R$, where $g(x) = x^2 + 1$.\n\nFind the rule for $h$, where $h(x) = f(g(x))$.",
+        "topic": "Functions and Graphs",
+        "subtopic": "Logarithmic Functions",
+        "difficulty": "EASY",
+        "imageDescription": null
+      },
+      {
+        "questionNumber": 5,
+        "part": "a.ii",
+        "marks": 2,
+        "content": "State the domain and range of $h$.",
+        "topic": "Functions and Graphs",
+        "subtopic": "Logarithmic Functions",
+        "difficulty": "MEDIUM",
+        "imageDescription": null
+      },
+      {
+        "questionNumber": 5,
+        "part": "a.iii",
+        "marks": 2,
+        "content": "Show that $h(x) + h(-x) = f\\left((g(x))^2\\right)$.",
+        "topic": "Functions and Graphs",
+        "subtopic": "Logarithmic Functions",
+        "difficulty": "HARD",
+        "imageDescription": null
+      },
+      {
+        "questionNumber": 5,
+        "part": "a.iv",
+        "marks": 2,
+        "content": "Find the coordinates of the stationary point of $h$ and state its nature.",
+        "topic": "Calculus",
+        "subtopic": "Differentiation",
+        "difficulty": "MEDIUM",
+        "imageDescription": null
+      },
+      {
+        "questionNumber": 5,
+        "part": "b.i",
+        "marks": 2,
+        "content": "Let $k:(-\\infty, 0] \\to R$, where $k(x) = \\log_e(x^2 + 1)$.\n\nFind the rule for $k^{-1}$.",
+        "topic": "Functions and Graphs",
+        "subtopic": "Inverse Functions",
+        "difficulty": "MEDIUM",
+        "imageDescription": null
+      },
+      {
+        "questionNumber": 5,
+        "part": "b.ii",
+        "marks": 2,
+        "content": "State the domain and range of $k^{-1}$.",
+        "topic": "Functions and Graphs",
+        "subtopic": "Inverse Functions",
+        "difficulty": "MEDIUM",
+        "imageDescription": null
+      },
+      {
+        "questionNumber": 6,
+        "part": "a",
+        "marks": 2,
+        "content": "Let $f:[-\\pi, \\pi] \\to R$, where $f(x) = 2\\sin(2x) - 1$.\n\nCalculate the average rate of change of $f$ between $x = -\\dfrac{\\pi}{3}$ and $x = \\dfrac{\\pi}{6}$.",
+        "topic": "Calculus",
+        "subtopic": "Differentiation",
+        "difficulty": "MEDIUM",
+        "imageDescription": null
+      },
+      {
+        "questionNumber": 6,
+        "part": "b",
+        "marks": 3,
+        "content": "Calculate the average value of $f$ over the interval $-\\dfrac{\\pi}{3} \\leq x \\leq \\dfrac{\\pi}{6}$.",
+        "topic": "Calculus",
+        "subtopic": "Definite Integrals",
+        "difficulty": "HARD",
+        "imageDescription": null
+      },
+      {
+        "questionNumber": 7,
+        "part": "a",
+        "marks": 2,
+        "content": "A company produces motors for refrigerators. There are two assembly lines, Line A and Line B. 5% of the motors assembled on Line A are faulty and 8% of the motors assembled on Line B are faulty. In one hour, 40 motors are produced from Line A and 50 motors are produced from Line B. At the end of an hour, one motor is selected at random from all the motors that have been produced during that hour.\n\nWhat is the probability that the selected motor is faulty? Express your answer in the form $\\dfrac{1}{b}$, where $b$ is a positive integer.",
+        "topic": "Probability",
+        "subtopic": "Probability Rules",
+        "difficulty": "MEDIUM",
+        "imageDescription": null
+      },
+      {
+        "questionNumber": 7,
+        "part": "b",
+        "marks": 1,
+        "content": "The selected motor is found to be faulty.\n\nWhat is the probability that it was assembled on Line A? Express your answer in the form $\\dfrac{1}{c}$, where $c$ is a positive integer.",
+        "topic": "Probability",
+        "subtopic": "Conditional Probability",
+        "difficulty": "MEDIUM",
+        "imageDescription": null
+      },
+      {
+        "questionNumber": 8,
+        "part": "a",
+        "marks": 2,
+        "content": "Let $X$ be a continuous random variable with probability density function\n$$f(x) = \\begin{cases} -4x\\log_e(x) & 0 < x \\leq 1 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\n\nPart of the graph of $f$ is shown below. The graph has a turning point at $x = \\dfrac{1}{e}$.\n\nShow by differentiation that\n$$\\dfrac{x^k}{k^2}\\left(k\\log_e(x) - 1\\right)$$\nis an antiderivative of $x^{k-1}\\log_e(x)$, where $k$ is a positive real number.",
+        "topic": "Calculus",
+        "subtopic": "Differentiation",
+        "difficulty": "HARD",
+        "imageDescription": "A graph showing the probability density function f(x) = -4x log_e(x) for 0 < x ≤ 1. The curve starts near the origin, rises to a maximum at x = 1/e, then decreases back to 0 at x = 1."
+      },
+      {
+        "questionNumber": 8,
+        "part": "b.i",
+        "marks": 2,
+        "content": "Calculate $\\Pr\\left(X > \\dfrac{1}{e}\\right)$.",
+        "topic": "Probability",
+        "subtopic": "Continuous Random Variables",
+        "difficulty": "HARD",
+        "imageDescription": null
+      },
+      {
+        "questionNumber": 8,
+        "part": "b.ii",
+        "marks": 2,
+        "content": "Hence, explain whether the median of $X$ is greater than or less than $\\dfrac{1}{e}$, given that $e > \\dfrac{5}{2}$.",
+        "topic": "Probability",
+        "subtopic": "Continuous Random Variables",
+        "difficulty": "HARD",
+        "imageDescription": null
+      }
+    ]
+  }
+]
