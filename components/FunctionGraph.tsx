@@ -220,7 +220,7 @@ export default function FunctionGraph({
           const cy = toSvgY(pt.y);
 
           // Use absolute graph coords if provided, else fall back to anchor+offset
-          let lx: number, ly: number, textAnchor: string;
+          let lx: number, ly: number, textAnchor: "start" | "end" | "middle" | "inherit";
           if (pt.labelX !== undefined && pt.labelY !== undefined) {
             lx = toSvgX(pt.labelX);
             ly = toSvgY(pt.labelY);
