@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   if (dbUser?.role !== "ADMIN") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const {
-    examId, topicId, subtopicId,
+    examId, topicId, subtopicIds,
     questionNumber, part, marks,
     content, imageUrl, difficulty,
     solution,
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
   const question = await prisma.question.create({
     data: {
       examId, topicId,
-      subtopicId: subtopicId || null,
+      ...(subtopicIds?.length && { subtopics: { connect: subtopicIds.map((id: string) => ({ id })) } }),
       questionNumber: parseInt(questionNumber),
       part: part || null,
       marks: parseInt(marks),

@@ -148,6 +148,7 @@ async function seedExam(exam: ExtractedExam, dryRun: boolean): Promise<void> {
     const topicId = topicMap[q.topic];
     const subtopicKey = q.subtopic ? `${q.topic}|${q.subtopic}` : null;
     const subtopicId = subtopicKey ? subtopicMap[subtopicKey] : null;
+    const subtopicConnect = subtopicId ? [{ id: subtopicId }] : [];
 
     if (dryRun) {
       console.log(
@@ -175,7 +176,7 @@ async function seedExam(exam: ExtractedExam, dryRun: boolean): Promise<void> {
       data: {
         examId: examRecord!.id,
         topicId,
-        subtopicId,
+        ...(subtopicConnect.length && { subtopics: { connect: subtopicConnect } }),
         questionNumber: q.questionNumber,
         part: q.part,
         marks: q.marks,

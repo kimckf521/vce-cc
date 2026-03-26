@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     include: {
       exam: { select: { year: true, examType: true } },
       topic: { select: { name: true } },
-      subtopic: { select: { name: true } },
+      subtopics: { select: { name: true } },
       solution: { select: { content: true, videoUrl: true } },
     },
   });

@@ -11,7 +11,7 @@ export default function NewQuestionPage() {
   const [topics, setTopics] = useState<Topic[]>([]);
   const [exams, setExams] = useState<Exam[]>([]);
   const [form, setForm] = useState({
-    examId: "", topicId: "", subtopicId: "",
+    examId: "", topicId: "", subtopicIds: [] as string[],
     questionNumber: "", part: "", marks: "",
     content: "", difficulty: "MEDIUM",
     solutionContent: "", solutionVideoUrl: "",
@@ -85,12 +85,25 @@ export default function NewQuestionPage() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Subtopic (optional)</label>
-            <select value={form.subtopicId} onChange={(e) => set("subtopicId", e.target.value)}
-              className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
-              <option value="">None</option>
-              {selectedTopic?.subtopics.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
-            </select>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Subtopics (optional)</label>
+            <div className="flex flex-col gap-1 max-h-36 overflow-y-auto border border-gray-200 rounded-lg p-2">
+              {selectedTopic?.subtopics.map((s) => (
+                <label key={s.id} className="flex items-center gap-2 text-sm cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={form.subtopicIds.includes(s.id)}
+                    onChange={(e) => setForm((f) => ({
+                      ...f,
+                      subtopicIds: e.target.checked
+                        ? [...f.subtopicIds, s.id]
+                        : f.subtopicIds.filter((id) => id !== s.id),
+                    }))}
+                  />
+                  {s.name}
+                </label>
+              ))}
+              {!selectedTopic && <span className="text-gray-400 text-xs">Select a topic first</span>}
+            </div>
           </div>
         </div>
 

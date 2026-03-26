@@ -27,11 +27,11 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
   const topicQuestions = await prisma.question.findMany({
     where: {
       topicId: topic.id,
-      ...(subtopic ? { subtopic: { slug: subtopic } } : {}),
+      ...(subtopic ? { subtopics: { some: { slug: subtopic } } } : {}),
       ...(difficulty ? { difficulty: difficulty as "EASY" | "MEDIUM" | "HARD" } : {}),
       ...(year ? { exam: { year: parseInt(year) } } : {}),
     },
-    include: { exam: true, topic: true, subtopic: true, solution: true, attempts: user ? { where: { userId: user.id } } : false },
+    include: { exam: true, topic: true, subtopics: true, solution: true, attempts: user ? { where: { userId: user.id } } : false },
     orderBy: [{ exam: { year: "desc" } }, { questionNumber: "asc" }],
   });
 
@@ -40,7 +40,7 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
   const allSiblings = siblingKeys.length > 0
     ? await prisma.question.findMany({
         where: { OR: siblingKeys },
-        include: { exam: true, topic: true, subtopic: true, solution: true, attempts: user ? { where: { userId: user.id } } : false },
+        include: { exam: true, topic: true, subtopics: true, solution: true, attempts: user ? { where: { userId: user.id } } : false },
         orderBy: [{ exam: { year: "desc" } }, { questionNumber: "asc" }, { part: "asc" }],
       })
     : [];
@@ -109,7 +109,7 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
             year={group[0].exam.year}
             examType={group[0].exam.examType}
             topic={group[0].topic.name}
-            subtopic={group[0].subtopic?.name}
+            subtopics={group[0].subtopics.map((s) => s.name)}
             parts={group.map((q) => ({
               id: q.id,
               questionNumber: q.questionNumber,

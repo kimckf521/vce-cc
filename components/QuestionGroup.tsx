@@ -40,7 +40,7 @@ interface QuestionGroupProps {
   year: number;
   examType: "EXAM_1" | "EXAM_2";
   topic: string;
-  subtopic?: string | null;
+  subtopics?: string[];
   parts: QuestionPart[];
 }
 
@@ -172,7 +172,7 @@ function PartContent({ content, imageUrl }: { content: string; imageUrl?: string
   );
 }
 
-export default function QuestionGroup({ year, examType, topic, subtopic, parts }: QuestionGroupProps) {
+export default function QuestionGroup({ year, examType, topic, subtopics, parts }: QuestionGroupProps) {
   const [showSolution, setShowSolution] = useState(false);
   const [statuses, setStatuses] = useState<Record<string, AttemptStatus>>(
     Object.fromEntries(parts.map((p) => [p.id, p.initialStatus ?? null]))
@@ -215,9 +215,9 @@ export default function QuestionGroup({ year, examType, topic, subtopic, parts }
           </div>
           <div className="flex flex-wrap gap-2">
             <span className="rounded-full bg-brand-50 text-brand-700 px-3 py-1 text-sm font-medium">{topic}</span>
-            {subtopic && (
-              <span className="rounded-full bg-gray-100 text-gray-600 px-3 py-1 text-sm font-medium">{subtopic}</span>
-            )}
+            {subtopics?.map((s) => (
+              <span key={s} className="rounded-full bg-gray-100 text-gray-600 px-3 py-1 text-sm font-medium">{s}</span>
+            ))}
             <span className="rounded-full bg-gray-100 text-gray-600 px-3 py-1 text-sm font-medium">
               {totalMarks} {totalMarks === 1 ? "mark" : "marks"}
             </span>

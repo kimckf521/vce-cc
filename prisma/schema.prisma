@@ -53,12 +53,11 @@ model Question {
   imageUrl       String?
   part           String?
   questionNumber Int
-  subtopicId     String?
   topicId        String
   updatedAt      DateTime   @updatedAt
   attempts       Attempt[]
   exam           Exam       @relation(fields: [examId], references: [id], onDelete: Cascade)
-  subtopic       Subtopic?  @relation(fields: [subtopicId], references: [id])
+  subtopics      Subtopic[]
   topic          Topic      @relation(fields: [topicId], references: [id])
   solution       Solution?
 }

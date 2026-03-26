@@ -14,7 +14,7 @@ interface Question {
   difficulty: "EASY" | "MEDIUM" | "HARD";
   exam: { year: number; examType: "EXAM_1" | "EXAM_2" };
   topic: { name: string };
-  subtopic: { name: string } | null;
+  subtopics: { name: string }[];
   solution: { content: string; videoUrl: string | null } | null;
 }
 
@@ -79,7 +79,7 @@ export default function PracticeClient({ topics, years }: Props) {
               year={q.exam.year}
               examType={q.exam.examType}
               topic={q.topic.name}
-              subtopic={q.subtopic?.name}
+              subtopic={q.subtopics[0]?.name}
               content={q.content}
               difficulty={q.difficulty}
               solution={q.solution}
