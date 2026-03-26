@@ -1,0 +1,296 @@
+{
+  "year": 2023,
+  "examType": "EXAM_2",
+  "solutions": [
+    {
+      "questionNumber": 1,
+      "part": null,
+      "content": "**Answer: E**\n\nThe amplitude is $A = \\dfrac{1}{2}$ (always positive). The period is $P = \\dfrac{2\\pi}{3}$."
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "content": "**Answer: A**\n\nFor $y = ax^2 + 2bx + c$, the axis of symmetry is $x = -\\dfrac{2b}{2a} = -\\dfrac{b}{a}$."
+    },
+    {
+      "questionNumber": 3,
+      "part": null,
+      "content": "**Answer: E**\n\nThe domain of $p$ is $[-2, 3)$ and the domain of $q$ is $(-1, 5]$. The domain of $p + q$ is the intersection:\n\n$$[-2, 3) \\cap (-1, 5] = (-1, 3)$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": null,
+      "content": "**Answer: B**\n\nFor infinite solutions the two equations must be consistent and dependent. Setting the determinant of the coefficient matrix to zero and checking gives $k = -5$. Testing $k = -5$: equations become $-5x + 5y = 0$ and $4x - 4y = 0$, which are the same line — infinite solutions. Testing $k = 4$: equations become $4x + 5y = 9$ and $4x + 5y = 0$, which are parallel — no solutions. So $k \\in \\{-5\\}$."
+    },
+    {
+      "questionNumber": 5,
+      "part": null,
+      "content": "**Answer: D**\n\nFor a horizontal tangent at $(0, 0)$, the derivative must equal zero at $x = 0$.\n\nFor $y = x^{4/3}$: $\\dfrac{dy}{dx} = \\dfrac{4}{3}x^{1/3}$, which equals $0$ at $x = 0$. Also the function passes through $(0,0)$. So $y = x^{4/3}$ has a horizontal tangent at the origin."
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "content": "**Answer: D**\n\nGiven $\\displaystyle\\int_3^{10} f(x)\\,dx = C$ and $\\displaystyle\\int_7^{10} f(x)\\,dx = D$.\n\nSince $\\displaystyle\\int_3^{10} f(x)\\,dx = \\int_3^7 f(x)\\,dx + \\int_7^{10} f(x)\\,dx$, we get $C = \\displaystyle\\int_3^7 f(x)\\,dx + D$, so $\\displaystyle\\int_3^7 f(x)\\,dx = C - D$.\n\nTherefore $\\displaystyle\\int_7^3 f(x)\\,dx = -\\int_3^7 f(x)\\,dx = D - C$."
+    },
+    {
+      "questionNumber": 7,
+      "part": null,
+      "content": "**Answer: C**\n\n$(f \\circ g)(x) = \\log_e(\\sqrt{1-x})$, defined when $\\sqrt{1-x} > 0$, i.e. $1 - x > 0$, i.e. $x < 1$.\n\nThe derivative of $(f \\circ g)(x) = \\dfrac{1}{2}\\log_e(1-x)$ is $\\dfrac{-1}{2(1-x)}$, which exists for $x < 1$.\n\nDomain is $x \\in (-\\infty, 1)$."
+    },
+    {
+      "questionNumber": 8,
+      "part": null,
+      "content": "**Answer: C**\n\nLet $G$ represent a green ball being selected. The probability of NOT selecting a green ball in one draw is $\\dfrac{m}{n+m}$. So:\n\n$$\\Pr(\\text{at least one green in 8}) = 1 - \\Pr(G = 0) = 1 - \\left(\\dfrac{m}{n+m}\\right)^8$$"
+    },
+    {
+      "questionNumber": 9,
+      "part": null,
+      "content": "**Answer: C**\n\nFor $f$ to be continuous at $x = 2\\pi$: $\\tan\\!\\left(\\dfrac{2\\pi}{2}\\right) = \\sin(2\\pi a)$, so $\\tan(\\pi) = 0 = \\sin(2\\pi a)$.\n\nFor $f$ to be smooth (differentiable) at $x = 2\\pi$: $\\dfrac{d}{dx}\\tan\\!\\left(\\dfrac{x}{2}\\right) = \\dfrac{1}{2}\\sec^2\\!\\left(\\dfrac{x}{2}\\right)$; at $x = 2\\pi$ this gives $\\dfrac{1}{2}\\sec^2(\\pi) = \\dfrac{1}{2}$. The derivative of $\\sin(ax)$ is $a\\cos(ax)$; at $x = 2\\pi$ this gives $a\\cos(2\\pi a)$. Solving both conditions simultaneously gives $a = -\\dfrac{1}{2}$."
+    },
+    {
+      "questionNumber": 10,
+      "part": null,
+      "content": "**Answer: B**\n\nFor $\\Pr(X < k) = 0.35$, integrate $g(x) = \\dfrac{x-1}{20}$ from 1 to $k$ (since 0.35 is less than the probability mass up to $x = 6$):\n\n$$\\int_1^k \\dfrac{x-1}{20}\\,dx = \\dfrac{1}{20}\\left[\\dfrac{(x-1)^2}{2}\\right]_1^k = \\dfrac{(k-1)^2}{40} = 0.35$$\n\n$$(k-1)^2 = 14 \\implies k - 1 = \\sqrt{14} \\implies k = \\sqrt{14} + 1$$"
+    },
+    {
+      "questionNumber": 11,
+      "part": null,
+      "content": "**Answer: E**\n\nUsing the product rule: $\\dfrac{d}{dx}[f(x)g(x)] = f(x)g'(x) + g(x)f'(x)$.\n\nAt $x = -2$:\n\n$$= f(-2)g'(-2) + g(-2)f'(-2) = (-7)(2) + (8)(3) = -14 + 24 = 10$$"
+    },
+    {
+      "questionNumber": 12,
+      "part": null,
+      "content": "**Answer: E**\n\nAll probabilities must sum to 1: $k^2 + 3k + k + (-k^2 - 4k + 1) = 1$, which gives $0 = 0$ (always true). Probabilities must be non-negative: from observation $k \\geq 0$.\n\nThe mean is $E(X) = (-1)k^2 + (0)(3k) + (1)(k) + (2)(-k^2 - 4k + 1) = -k^2 + k - 2k^2 - 8k + 2 = -3k^2 - 7k + 2$.\n\nThis is maximised when $k = 0$, giving $E(X) = 2$."
+    },
+    {
+      "questionNumber": 13,
+      "part": null,
+      "content": "**Answer: C**\n\nApply Newton's method $x_{n+1} = x_n - \\dfrac{f(x_n)}{f'(x_n)}$ with $f(x) = x^3 + 3x - 3$, $f'(x) = 3x^2 + 3$, $x_0 = 1$:\n\n- $x_1 = 1 - \\dfrac{1 + 3 - 3}{3 + 3} = 1 - \\dfrac{1}{6} = \\dfrac{5}{6} \\approx 0.83333$\n- $x_2 = \\dfrac{5}{6} - \\dfrac{f(5/6)}{f'(5/6)} \\approx 0.81785$\n- $x_3 \\approx 0.81773$\n\nThe return value is closest to $0.81773$."
+    },
+    {
+      "questionNumber": 14,
+      "part": null,
+      "content": "**Answer: D**\n\nThe positive $x$-intercept is $x = \\dfrac{1}{3}$. Find the tangent line at a general point $x = a$:\n\n$$y_T = \\bigl(12a^3 + 33a^2 + 10a - 3\\bigr)x - a^2(9a^2 + 22a + 5)$$\n\nSolve $y_T\\!\\left(\\dfrac{1}{3}\\right) = 0$ for $a$:\n\n$$a = \\dfrac{-\\sqrt{7}-4}{3},\\quad a = \\dfrac{\\sqrt{7}-4}{3},\\quad \\text{or}\\quad a = \\dfrac{1}{3}$$\n\nHence there are three tangents passing through the positive $x$-intercept."
+    },
+    {
+      "questionNumber": 15,
+      "part": null,
+      "content": "**Answer: A**\n\n$Y$ has mean 80 and standard deviation 10; $X$ has mean 100 and standard deviation 20. So $Y$ is taller and narrower (smaller spread, centred to the left), while $X$ is shorter and wider (larger spread, centred to the right). The correct diagram shows $Y$ with a higher, narrower peak centred at 80, and $X$ with a lower, wider peak centred at 100."
+    },
+    {
+      "questionNumber": 16,
+      "part": null,
+      "content": "**Answer: B**\n\n$f(x) \\times g(x) = e^{(x-1)^2}$, and $f(x) = e^{x-1}$, so:\n\n$$g(x) = \\dfrac{e^{(x-1)^2}}{e^{x-1}} = e^{(x-1)^2 - (x-1)} = e^{(x-1)(x-1-1)} = e^{(x-1)(x-2)}$$"
+    },
+    {
+      "questionNumber": 17,
+      "part": null,
+      "content": "**Answer: B**\n\nThe circumference of the base equals $y$ (the width of the sheet minus two circle diameters... but from the diagram the cylinder body has width $x$ and the circles have total height $y$). From the diagram: circumference $= 2\\pi r$, height $h = x - \\dfrac{2y}{\\pi}$ (adjusting for the circles), and $r = \\dfrac{y}{2\\pi}$.\n\n$$V = \\pi r^2 h = \\pi \\left(\\dfrac{y}{2\\pi}\\right)^2\\!\\left(x - \\dfrac{2y}{\\pi}\\right) = \\dfrac{\\pi y^2}{4\\pi^2}\\left(x - \\dfrac{2y}{\\pi}\\right) = \\dfrac{\\pi xy^2 - 2y^3}{4\\pi^2}$$"
+    },
+    {
+      "questionNumber": 18,
+      "part": null,
+      "content": "**Answer: E**\n\nFor $f: [-a\\pi, a\\pi] \\to R$, $f(x) = \\sin(ax)$, the number of local minima equals $a^2$.\n\nChecking: for $a=1$, 1 local minimum; for $a=2$, 4 local minima; for $a=3$, 9 local minima. Pattern: $a^2$."
+    },
+    {
+      "questionNumber": 19,
+      "part": null,
+      "content": "**Answer: D**\n\nFor one positive and one negative solution, the product of roots must be negative. By Vieta's formulas, the product of roots is $\\dfrac{4k^2 - 9/4}{1} = 4k^2 - \\dfrac{9}{4} < 0$.\n\nThis requires $k^2 < \\dfrac{9}{16}$, i.e. $-\\dfrac{3}{4} < k < \\dfrac{3}{4}$.\n\nAlso need the discriminant positive (which holds for $k > -\\dfrac{3}{4}$ combined with the product constraint). So the answer is $-\\dfrac{3}{4} < k < \\dfrac{3}{4}$."
+    },
+    {
+      "questionNumber": 20,
+      "part": null,
+      "content": "**Answer: A**\n\n$(f \\circ g)(x) = \\log_e\\!\\left(\\sin(x) + \\dfrac{1}{\\sqrt{2}}\\right)$ requires $\\sin(x) + \\dfrac{1}{\\sqrt{2}} > 0$, i.e. $\\sin(x) > -\\dfrac{1}{\\sqrt{2}}$. Combined with $x < 5$, the domain involves intervals $\\left(-\\dfrac{\\pi}{4} + 2k\\pi,\\, \\dfrac{5\\pi}{4} + 2k\\pi\\right)$ for $k \\in \\mathbb{Z}^- \\cup \\{0\\}$.\n\n$(g \\circ f)(x) = \\sin\\!\\left(\\log_e\\!\\left(x + \\dfrac{1}{\\sqrt{2}}\\right)\\right)$ requires $x > -\\dfrac{1}{\\sqrt{2}}$ and $\\log_e\\!\\left(x + \\dfrac{1}{\\sqrt{2}}\\right) < 5$, giving $x \\in \\left(-\\dfrac{1}{\\sqrt{2}},\\, e^5 - \\dfrac{1}{\\sqrt{2}}\\right)$.\n\nThe intersection for the largest interval is $\\left(-\\dfrac{1}{\\sqrt{2}},\\, \\dfrac{5\\pi}{4}\\right)$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nFrom $f(x) = x(x-2)(x+1)$, the $x$-intercepts occur where $f(x) = 0$:\n\n$$x = 0,\\quad x = 2,\\quad x = -1$$\n\nThe $y$-intercept is $f(0) = 0$.\n\nAxial intercepts: $(-1,\\, 0)$, $(0,\\, 0)$, and $(2,\\, 0)$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nExpand $f(x) = x(x-2)(x+1) = x(x^2 - x - 2) = x^3 - x^2 - 2x$.\n\n$$f'(x) = 3x^2 - 2x - 2$$\n\nSet $f'(x) = 0$: $x = \\dfrac{2 \\pm \\sqrt{4 + 24}}{6} = \\dfrac{2 \\pm \\sqrt{28}}{6} = \\dfrac{1 \\pm \\sqrt{7}}{3}$\n\n**Step 2** *(1 mark)*\n\nStationary points at $x = \\dfrac{-\\sqrt{7}+1}{3}$ and $x = \\dfrac{\\sqrt{7}+1}{3}$:\n\n$$\\left(\\dfrac{-\\sqrt{7}+1}{3},\\; \\dfrac{2(7\\sqrt{7}-10)}{27}\\right) \\quad \\text{and} \\quad \\left(\\dfrac{\\sqrt{7}+1}{3},\\; \\dfrac{-2(7\\sqrt{7}+10)}{27}\\right)$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.i",
+      "content": "**Step 1** *(1 mark)*\n\nSolve $f(x) = g(x)$: $x^3 - x^2 - 2x = x - 2$\n\n$$x^3 - x^2 - 3x + 2 = 0$$\n\nTest $x = 2$: $8 - 4 - 6 + 2 = 0$. So $(x-2)$ is a factor:\n\n$$(x-2)(x^2 + x - 1) = 0 \\implies x = 2 \\text{ or } x = \\dfrac{-1 \\pm \\sqrt{5}}{2}$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.ii",
+      "content": "**Step 1** *(1 mark)*\n\nLet $\\alpha = \\dfrac{-1-\\sqrt{5}}{2}$ and $\\beta = \\dfrac{-1+\\sqrt{5}}{2}$. From the graph, $f(x) \\geq g(x)$ on $[\\alpha, \\beta]$ and $g(x) \\geq f(x)$ on $[\\beta, 2]$.\n\n**Step 2** *(1 mark)*\n\n$$\\text{Area} = \\int_{\\frac{-1-\\sqrt{5}}{2}}^{\\frac{-1+\\sqrt{5}}{2}} \\bigl(f(x) - g(x)\\bigr)\\,dx + \\int_{\\frac{-1+\\sqrt{5}}{2}}^{2} \\bigl(g(x) - f(x)\\bigr)\\,dx$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.iii",
+      "content": "**Step 1** *(1 mark)*\n\nEvaluating the definite integrals from part c.ii numerically:\n\n$$\\text{Total area} = 5.95$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nSince $h(x) = (x-a)(x-b)^2 = f(x) + k = x^3 - x^2 - 2x + k$, expand the left side:\n\n$$(x-a)(x-b)^2 = x^3 - (a+2b)x^2 + (2ab+b^2)x - ab^2$$\n\n**Step 2** *(1 mark)*\n\nEquate coefficients with $x^3 - x^2 - 2x + k$:\n\n$$-(a+2b) = -1 \\implies a + 2b = 1$$\n$$2ab + b^2 = -2$$\n\n**Step 3** *(1 mark)*\n\nFrom $a = 1 - 2b$, substitute: $2(1-2b)b + b^2 = -2 \\implies 2b - 4b^2 + b^2 = -2 \\implies -3b^2 + 2b + 2 = 0 \\implies 3b^2 - 2b - 2 = 0$\n\n$$b = \\dfrac{2 \\pm \\sqrt{4 + 24}}{6} = \\dfrac{1 \\pm \\sqrt{7}}{3}$$\n\n**Step 4** *(1 mark)*\n\nTwo solutions:\n- $b = \\dfrac{1+\\sqrt{7}}{3}$, $a = 1 - 2 \\cdot \\dfrac{1+\\sqrt{7}}{3} = \\dfrac{3 - 2 - 2\\sqrt{7}}{3} = \\dfrac{1-2\\sqrt{7}}{3} = \\dfrac{-2\\sqrt{7}+1}{3}$\n- $b = \\dfrac{1-\\sqrt{7}}{3}$, $a = \\dfrac{1+2\\sqrt{7}}{3} = \\dfrac{2\\sqrt{7}+1}{3}$\n\nSo either $a = \\dfrac{-2\\sqrt{7}+1}{3}$, $b = \\dfrac{\\sqrt{7}+1}{3}$, or $a = \\dfrac{2\\sqrt{7}+1}{3}$, $b = \\dfrac{-\\sqrt{7}+1}{3}$."
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nThe wheel completes one full rotation every 30 minutes, so the period is 30. Using $\\dfrac{2\\pi}{b} = 30$:\n\n$$b = \\dfrac{2\\pi}{30} = \\dfrac{\\pi}{15}$$\n\n**Step 2** *(1 mark)*\n\nAt $t = 0$ the pod is at the lowest point $A$, which is 15 m above the ground. So $h(0) = 15$:\n\n$$h(0) = -60\\cos(0) + c = -60 + c = 15 \\implies c = 75$$\n\nTherefore $b = \\dfrac{\\pi}{15}$ and $c = 75$."
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nPoint $B$ is at the rightmost point of the wheel (same height as the centre), so $h = 75$ m at $t = 7.5$ minutes (quarter period). The average height from $A$ to $B$ over $t \\in [0, 7.5]$ is:\n\n$$\\bar{h} = \\dfrac{1}{7.5}\\int_0^{7.5} h(t)\\,dt = \\dfrac{1}{7.5}\\int_0^{7.5} \\left(-60\\cos\\!\\left(\\dfrac{\\pi t}{15}\\right) + 75\\right)dt$$\n\n**Step 2** *(1 mark)*\n\n$$= \\dfrac{1}{7.5}\\left[-60 \\cdot \\dfrac{15}{\\pi}\\sin\\!\\left(\\dfrac{\\pi t}{15}\\right) + 75t\\right]_0^{7.5}$$\n\n$$= \\dfrac{1}{7.5}\\left(-\\dfrac{900}{\\pi}\\sin\\!\\left(\\dfrac{\\pi}{2}\\right) + 75 \\times 7.5\\right) = \\dfrac{1}{7.5}\\left(-\\dfrac{900}{\\pi} + 562.5\\right)$$\n\n$$= 75 - \\dfrac{120}{\\pi} \\approx 36.80 \\text{ metres}$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nThe average rate of change from $A$ to $B$ is:\n\n$$\\dfrac{h(7.5) - h(0)}{7.5 - 0} = \\dfrac{75 - 15}{7.5} = \\dfrac{60}{7.5} = 8 \\text{ metres per minute}$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "d.i",
+      "content": "**Step 1** *(1 mark)*\n\nAfter 15 minutes the pod is at the top of the wheel: $h(15) = -60\\cos(\\pi) + 75 = 60 + 75 = 135$ m. So $k = 135$.\n\nAfter the stop, the wheel moves at double speed, so the new angular frequency is $2b = \\dfrac{2\\pi}{15}$. This means $m = 2$."
+    },
+    {
+      "questionNumber": 2,
+      "part": "d.ii",
+      "content": "**Step 1** *(1 mark)*\n\nAt $t = 20$ the piecewise function must be continuous: $w(20) = 135$, so:\n\n$$h(mt + n)\\big|_{t=20} = h(2 \\times 20 + n) = h(40 + n) = 135$$\n\n$$-60\\cos\\!\\left(\\dfrac{\\pi(40+n)}{15}\\right) + 75 = 135 \\implies \\cos\\!\\left(\\dfrac{\\pi(40+n)}{15}\\right) = -1$$\n\n$$\\dfrac{\\pi(40+n)}{15} = \\pi + 2p\\pi = (2p+1)\\pi, \\quad p \\in \\mathbb{Z}$$\n\n$$40 + n = 15(2p+1) \\implies n = 15(2p+1) - 40 = 30p - 25$$\n\n**Step 2** *(1 mark)*\n\nSo $n = 5 + 30p$ for $p \\in \\mathbb{Z}$ (rewriting with $p \\to p$: $n = -25 + 30p$, $p \\in \\mathbb{Z}$)."
+    },
+    {
+      "questionNumber": 2,
+      "part": "d.iii",
+      "content": "**Step 1** *(1 mark)*\n\nThe graph of $w$ consists of three segments:\n- For $0 \\leq t < 15$: the cosine curve $h(t) = -60\\cos\\!\\left(\\dfrac{\\pi t}{15}\\right) + 75$, starting at $(0, 15)$ and ending at $(15, 135)$.\n- For $15 \\leq t < 20$: a horizontal segment at $w = 135$, from $(15, 135)$ to $(20, 135)$.\n- For $20 \\leq t \\leq 27.5$: the cosine curve $h(2t + n)$ (at double speed), continuing from $135$ and descending. Using $n = -25$ (taking $p = 1$): $h(2t - 25)$ goes from $(20, 135)$ down to $(27.5, 15)$.\n\n**Step 2** *(1 mark)*\n\nEndpoints:\n- Start: $(0, 15)$ (closed dot)\n- Stationary segment: $(15, 135)$ to $(20, 135)$\n- End: $(27.5, 15)$ (closed dot)\n\n**Step 3** *(1 mark)*\n\nSketch shows the cosine rise from $(0, 15)$ to $(15, 135)$, a flat segment from $(15, 135)$ to $(20, 135)$, then a faster cosine descent from $(20, 135)$ to $(27.5, 15)$, with all endpoint coordinates labelled."
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nAs $x \\to -\\infty$, $2^x \\to 0$, so:\n\n$$\\lim_{x \\to -\\infty} g(x) = \\lim_{x \\to -\\infty} (2^x + 5) = 0 + 5 = 5$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nUsing the chain rule with $g(x) = 2^x = e^{x\\log_e 2}$:\n\n$$g'(x) = \\log_e(2) \\cdot 2^x$$\n\nSo $k = \\log_e(2)$."
+    },
+    {
+      "questionNumber": 3,
+      "part": "c.i",
+      "content": "**Step 1** *(1 mark)*\n\nThe gradient of $g$ at $(a, g(a))$ is $g'(a) = \\log_e(2) \\cdot 2^a$. The tangent line equation is:\n\n$$y - g(a) = g'(a)(x - a)$$\n\n$$y = \\log_e(2) \\cdot 2^a \\cdot x - a\\log_e(2) \\cdot 2^a + 2^a + 5$$\n\n$$y = 2^a \\log_e(2)\\, x - (a\\log_e(2) - 1)\\cdot 2^a + 5$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "c.ii",
+      "content": "**Step 1** *(1 mark)*\n\nFor the tangent to pass through the origin $(0, 0)$, substitute $x = 0$, $y = 0$ into the tangent equation:\n\n$$0 = -a\\log_e(2) \\cdot 2^a + 2^a + 5$$\n\n$$a\\log_e(2) \\cdot 2^a - 2^a = 5$$\n\nSolve numerically: $a \\approx 2.617\\,84$.\n\n**Step 2** *(1 mark)*\n\nThe equation of the tangent is:\n\n$$y = 2^a \\log_e(2)\\, x \\approx 4.255x$$\n\nSo the equation is $y \\approx 4.255x$."
+    },
+    {
+      "questionNumber": 3,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nFor $h(x) = 2^x - x^2$, the point of inflection occurs where $h''(x) = 0$:\n\n$$h'(x) = \\log_e(2) \\cdot 2^x - 2x$$\n$$h''(x) = (\\log_e 2)^2 \\cdot 2^x - 2 = 0$$\n\nSolving numerically gives $x \\approx 2.06$, and $h(2.06) \\approx -0.07$.\n\nPoint of inflection: $(2.06,\\; -0.07)$."
+    },
+    {
+      "questionNumber": 3,
+      "part": "e",
+      "content": "**Step 1** *(1 mark)*\n\n$h$ is strictly decreasing where $h'(x) \\leq 0$. Solve $h'(x) = \\log_e(2) \\cdot 2^x - 2x = 0$ numerically to find the stationary points at approximately $x \\approx 0.49$ and $x \\approx 3.21$.\n\nThe largest interval on which $h$ is strictly decreasing is $[0.49,\\; 3.21]$."
+    },
+    {
+      "questionNumber": 3,
+      "part": "f",
+      "content": "**Step 1** *(1 mark)*\n\nNewton's method: $x_{n+1} = x_n - \\dfrac{h(x_n)}{h'(x_n)}$ with $x_0 = 0$, $h(x) = 2^x - x^2$, $h'(x) = \\log_e(2) \\cdot 2^x - 2x$:\n\n$$x_1 = 0 - \\dfrac{2^0 - 0}{\\log_e(2) \\cdot 2^0 - 0} = -\\dfrac{1}{\\log_e 2} \\approx -1.443$$\n\n**Step 2** *(1 mark)*\n\n$$x_2 \\approx -1.443 - \\dfrac{h(-1.443)}{h'(-1.443)} \\approx -0.897$$\n\n$$x_3 \\approx -0.897 - \\dfrac{h(-0.897)}{h'(-0.897)} \\approx -0.773$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "g",
+      "content": "**Step 1** *(1 mark)*\n\nThe solutions to $\\log_e(2) \\cdot 2^x - 2x = 0$ are the $x$-values of the turning points (stationary points) of $h$. At a turning point, $h'(x) = 0$, so the tangent to $h$ is horizontal. In Newton's method, the next iterate is $x_{n+1} = x_n - \\dfrac{h(x_n)}{h'(x_n)}$, which is undefined when $h'(x_n) = 0$ (division by zero). Using a turning point as the initial estimate would cause Newton's method to fail."
+    },
+    {
+      "questionNumber": 3,
+      "part": "h",
+      "content": "**Step 1** *(1 mark)*\n\nFor $f(x) = n^x - x^n$ to have a local minimum on the $x$-axis, we need $f(x) = 0$ and $f'(x) = 0$ at the same point.\n\n$f'(x) = \\log_e(n) \\cdot n^x - nx^{n-1} = 0$\n\nAt a point where $f(x) = 0$: $n^x = x^n$, so $\\log_e(n) \\cdot x^n - nx^{n-1} = 0 \\implies x^{n-1}(\\log_e(n) \\cdot x - n) = 0$.\n\nFor $x \\neq 0$: $x = \\dfrac{n}{\\log_e n}$. Substituting back into $n^x = x^n$:\n\n**Step 2** *(1 mark)*\n\nThis yields $n = e$, so $n = e$."
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\n$D \\sim N(6.7,\\; 0.1^2)$.\n\n$$\\Pr(D > 6.8) = \\Pr\\!\\left(Z > \\dfrac{6.8 - 6.7}{0.1}\\right) = \\Pr(Z > 1) \\approx 0.1587$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nFind $a$ such that $\\Pr(D < a) = 0.90$:\n\n$$\\Pr\\!\\left(Z < \\dfrac{a - 6.7}{0.1}\\right) = 0.90 \\implies \\dfrac{a - 6.7}{0.1} \\approx 1.2816$$\n\n$$a \\approx 6.7 + 0.1 \\times 1.2816 \\approx 6.83 \\text{ cm}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\n$$\\Pr(D < 6.95) = \\Pr\\!\\left(Z < \\dfrac{6.95 - 6.7}{0.1}\\right) = \\Pr(Z < 2.5) \\approx 0.9938$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nLet $p = \\Pr(D < 6.95) \\approx 0.9938$ and $X \\sim \\text{Bi}(4,\\; p)$.\n\n$$\\Pr(X \\geq 3) = \\Pr(X = 3) + \\Pr(X = 4)$$\n\n**Step 2** *(1 mark)*\n\n$$= \\binom{4}{3}(0.9938)^3(0.0062)^1 + \\binom{4}{4}(0.9938)^4$$\n\n$$\\approx 4 \\times 0.9815 \\times 0.0062 + 0.9754 \\approx 0.0243 + 0.9754 \\approx 0.9998$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "e",
+      "content": "**Step 1** *(1 mark)*\n\n$$\\Pr(6.54 < D < 6.86 \\mid D < 6.95) = \\dfrac{\\Pr(6.54 < D < 6.86)}{\\Pr(D < 6.95)}$$\n\n**Step 2** *(1 mark)*\n\n$$\\Pr(6.54 < D < 6.86) = \\Pr\\!\\left(\\dfrac{6.54-6.7}{0.1} < Z < \\dfrac{6.86-6.7}{0.1}\\right) = \\Pr(-1.6 < Z < 1.6) \\approx 0.8904$$\n\n$$\\Pr(6.54 < D < 6.86 \\mid D < 6.95) = \\dfrac{0.8904}{0.9938} \\approx 0.8960$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "f",
+      "content": "**Step 1** *(1 mark)*\n\nFor more than 99% of balls to be grade A, need $\\Pr(6.54 < D < 6.86) > 0.99$.\n\n$$\\Pr\\!\\left(\\dfrac{6.54 - 6.7}{\\sigma} < Z < \\dfrac{6.86 - 6.7}{\\sigma}\\right) = 0.99$$\n\n**Step 2** *(1 mark)*\n\nBy symmetry: $\\dfrac{0.16}{\\sigma} = z_{0.005}^* \\approx 2.5758$, so $\\sigma \\approx \\dfrac{0.16}{2.5758} \\approx 0.06$ cm.\n\nThe required standard deviation is $\\sigma \\leq 0.06$ cm (any value $0 < \\sigma \\leq 0.06$ is accepted)."
+    },
+    {
+      "questionNumber": 4,
+      "part": "g",
+      "content": "**Step 1** *(1 mark)*\n\nFind $\\hat{p}$: $\\hat{p} = \\dfrac{0.7382 + 0.9493}{2} = 0.84375$.\n\nMargin of error: $\\dfrac{0.9493 - 0.7382}{2} = 0.10555$.\n\n$$0.10555 = z\\sqrt{\\dfrac{0.84375(1 - 0.84375)}{32}} = z\\sqrt{\\dfrac{0.84375 \\times 0.15625}{32}} = z \\times 0.06443$$\n\n**Step 2** *(1 mark)*\n\n$$z = \\dfrac{0.10555}{0.06443} \\approx 1.6444$$\n\n$$\\Pr(-1.6444 < Z < 1.6444) \\approx 0.8999 \\approx 90\\%$$\n\nThe level of confidence is **90%**."
+    },
+    {
+      "questionNumber": 4,
+      "part": "h",
+      "content": "**Step 1** *(1 mark)*\n\n$$\\Pr(V > 50) = \\int_{50}^{3\\pi^2+30} \\dfrac{1}{6\\pi}\\sin\\!\\left(\\sqrt{\\dfrac{v-30}{3}}\\right)dv$$\n\nUsing technology: $\\Pr(V > 50) \\approx 0.1345$."
+    },
+    {
+      "questionNumber": 4,
+      "part": "i",
+      "content": "**Step 1** *(1 mark)*\n\nThe exact mean serving speed for grade A balls is:\n\n$$E(V) = \\int_{30}^{3\\pi^2+30} v \\cdot \\dfrac{1}{6\\pi}\\sin\\!\\left(\\sqrt{\\dfrac{v-30}{3}}\\right)dv = 3(\\pi^2 + 4)$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "j",
+      "content": "**Step 1** *(1 mark)*\n\nSince $g(w) = af\\!\\left(\\dfrac{w}{b}\\right)$ must be a valid pdf, the area must equal 1, requiring $a = \\dfrac{1}{b}$.\n\nThe mean of $W$ is $b \\times E(V) = b \\times 3(\\pi^2 + 4)$. Setting this equal to $2\\pi^2 + 8$:\n\n$$3b(\\pi^2 + 4) = 2(\\pi^2 + 4) \\implies b = \\dfrac{2}{3}$$\n\n**Step 2** *(1 mark)*\n\n$$a = \\dfrac{1}{b} = \\dfrac{3}{2}$$\n\nSo $a = \\dfrac{3}{2}$ and $b = \\dfrac{2}{3}$."
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nStarting from $f(x) = e^x + e^{-x}$, and $g(x) = \\dfrac{1}{2}f(2-x)$:\n\nFirst step (given): Dilation of factor $\\dfrac{1}{2}$ from the $x$-axis: $f(x) \\to \\dfrac{1}{2}f(x) = \\dfrac{1}{2}(e^x + e^{-x})$.\n\n**Step 2** *(1 mark)*\n\nSecond step: Reflection in the $y$-axis: $x \\to -x$ gives $\\dfrac{1}{2}(e^{-x} + e^x)$ (unchanged, since $f$ is even).\n\nThird step: Translation of 2 units to the right: $x \\to x - 2$ gives $\\dfrac{1}{2}(e^{-(x-2)} + e^{x-2}) = \\dfrac{1}{2}f(2-x) = g(x)$.\n\nSo: reflect in the $y$-axis, then translate 2 units to the right (or equivalently, translate 2 units to the left then reflect in the $y$-axis)."
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\n$g(x) = \\dfrac{1}{2}(e^{2-x} + e^{x-2})$ has its minimum at $x = 2$ where $g(2) = 1$. For $g_1$ strictly increasing, take domain $[2, \\infty)$ (or any subset); then range is $[1, \\infty)$.\n\n**Step 2** *(1 mark)*\n\nThe inverse of $g_1$ has domain equal to the range of $g_1$ and range equal to the domain of $g_1$:\n\nDomain of $g_1^{-1}$: $[1, \\infty)$\n\nRange of $g_1^{-1}$: $[2, \\infty)$"
+    },
+    {
+      "questionNumber": 5,
+      "part": "c.i",
+      "content": "**Step 1** *(1 mark)*\n\nPoints $P$ and $Q$ lie on $y = x$ and on $g(x)$. Solve $g(x) = x$:\n\n$$\\dfrac{1}{2}(e^{2-x} + e^{x-2}) = x$$\n\nNumerically: $x \\approx 1.27$ and $x \\approx 4.09$.\n\n$P = (1.27,\\; 1.27)$ and $Q = (4.09,\\; 4.09)$."
+    },
+    {
+      "questionNumber": 5,
+      "part": "c.ii",
+      "content": "**Step 1** *(1 mark)*\n\nBy symmetry about $y = x$, the area bound by $g$, $g_1^{-1}$ and $g_2^{-1}$ equals twice the area between $g(x)$ and $y = x$ from $x \\approx 1.27$ to $x \\approx 4.09$:\n\n**Step 2** *(1 mark)*\n\n$$A = 2\\int_{1.27...}^{4.09...} (x - g(x))\\,dx \\approx 5.56$$"
+    },
+    {
+      "questionNumber": 5,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nFor $h(x) = \\dfrac{1}{k}f(k-x) = \\dfrac{1}{k}(e^{k-x} + e^{x-k})$, the turning point is at $x = k$:\n\n$$h(k) = \\dfrac{1}{k}(e^0 + e^0) = \\dfrac{2}{k}$$\n\nSo the turning point is $\\left(k,\\; \\dfrac{2}{k}\\right)$. This lies on $y = 2x^n$ when $\\dfrac{2}{k} = 2k^n$, i.e. $k^{n+1} = 1$ for all $k > 0$.\n\nThis requires $n + 1 = 0$, so $n = -1$."
+    },
+    {
+      "questionNumber": 5,
+      "part": "e",
+      "content": "**Step 1** *(1 mark)*\n\nFor $h$ to intersect with the inverse of $h_1$, the graphs of $h$ and $h_1^{-1}$ must meet. Since $h_1^{-1}$ is the reflection of $h_1$ in $y = x$, a self-intersection occurs when $h(x)$ intersects the line $y = x$ (for $x \\geq k$).\n\nSolve $h(x) = x$ for the smallest $k$ at which a solution exists on $[k, \\infty)$. Numerically, the smallest $k$ is $k \\approx 1.27$."
+    },
+    {
+      "questionNumber": 5,
+      "part": "f",
+      "content": "**Step 1** *(1 mark)*\n\nWhen $k = 5$, find the two intersection points of $h$ and $h_1^{-1}$ numerically.\n\nThe area is:\n\n$$A = \\int_{1.45091...}^{8.78157...} \\bigl(h_1^{-1}(x) - h(x)\\bigr)\\,dx \\approx 43.91$$\n\n**Step 2** *(1 mark)*\n\nThe area of the region bound by the graphs of $h$ and the inverse of $h_1$ when $k = 5$ is $\\approx 43.91$."
+    }
+  ]
+}

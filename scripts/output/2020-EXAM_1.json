@@ -1,0 +1,226 @@
+{
+  "year": 2020,
+  "examType": "EXAM_1",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "marks": 1,
+      "content": "Let $y = x^{2}\\sin(x)$. Find $\\dfrac{dy}{dx}$.",
+      "topic": "Calculus",
+      "subtopic": "Product Rule",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "marks": 2,
+      "content": "Evaluate $f'(1)$, where $f : R \\to R$, $f(x) = e^{x^{2} - x + 3}$.",
+      "topic": "Calculus",
+      "subtopic": "Chain Rule",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "marks": 1,
+      "content": "A car manufacturer is reviewing the performance of its car model X. It is known that at any given six-month service, the probability of model X requiring an oil change is $\\dfrac{17}{20}$, the probability of model X requiring an air filter change is $\\dfrac{3}{20}$ and the probability of model X requiring both is $\\dfrac{1}{20}$.\n\nState the probability that at any given six-month service model X will require an air filter change without an oil change.",
+      "topic": "Probability",
+      "subtopic": "Probability Rules",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "marks": 2,
+      "content": "The car manufacturer is developing a new model, Y. The production goals are that the probability of model Y requiring an oil change at any given six-month service will be $\\dfrac{m}{m+n}$, the probability of model Y requiring an air filter change will be $\\dfrac{n}{m+n}$ and the probability of model Y requiring both will be $\\dfrac{1}{m+n}$, where $m, n \\in Z^{+}$.\n\nDetermine $m$ in terms of $n$ if the probability of model Y requiring an air filter change without an oil change at any given six-month service is 0.05.",
+      "topic": "Probability",
+      "subtopic": "Probability Rules",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "marks": 3,
+      "content": "Shown below is part of the graph of a period of the function of the form $y = \\tan(ax + b)$. The graph is continuous for $x \\in [-1, 1]$. Find the value of $a$ and the value of $b$, where $a > 0$ and $0 < b < 1$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of y = tan(ax + b) over one period, continuous for x in [-1, 1], passing through the points (-1, -1) and (1, sqrt(3)), with vertical asymptotes shown as dashed lines at the ends of the interval."
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "marks": 3,
+      "content": "Solve the equation $2\\log_{2}(x + 5) - \\log_{2}(x + 9) = 1$.",
+      "topic": "Algebra",
+      "subtopic": "Logarithmic Equations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "marks": 2,
+      "content": "For a certain population the probability of a person being born with the specific gene SPGE1 is $\\dfrac{3}{5}$. The probability of a person having this gene is independent of any other person in the population having this gene.\n\nIn a randomly selected group of four people, what is the probability that three or more people have the SPGE1 gene?",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "marks": 2,
+      "content": "In a randomly selected group of four people, what is the probability that exactly two people have the SPGE1 gene, given that at least one of those people has the SPGE1 gene? Express your answer in the form $\\dfrac{a^{3}}{b^{4} - c^{4}}$, where $a, b, c \\in Z^{+}$.",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "a",
+      "marks": 2,
+      "content": "Let $f : [0, 2] \\to R$, where $f(x) = \\dfrac{1}{\\sqrt{2}}\\sqrt{x}$.\n\nFind the domain and the rule for $f^{-1}$, the inverse function of $f$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "b",
+      "marks": 2,
+      "content": "The graph of $y = f(x)$, where $x \\in [0, 2]$, is shown on the axes. On the axes above, sketch the graph of $f^{-1}$ over its domain. Label the endpoints and point(s) of intersection with the function $f$, giving their coordinates.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of f(x) = (1/sqrt(2)) * sqrt(x) for x in [0, 2], with endpoints (0, 0) and (2, 1) labelled, plotted on a grid with axes marked at 1/2 intervals up to 2."
+    },
+    {
+      "questionNumber": 6,
+      "part": "c",
+      "marks": 4,
+      "content": "Find the total area of the two regions: one region bounded by the functions $f$ and $f^{-1}$, and the other region bounded by $f$, $f^{-1}$ and the line $x = 1$. Give your answer in the form $\\dfrac{a - b\\sqrt{b}}{6}$, where $a, b \\in Z^{+}$.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "a",
+      "marks": 1,
+      "content": "Consider the function $f(x) = x^{2} + 3x + 5$ and the point $P(1, 0)$. Part of the graph of $y = f(x)$ is shown below.\n\nShow that point $P$ is not on the graph of $y = f(x)$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "EASY",
+      "imageDescription": "Graph of f(x) = x^2 + 3x + 5, showing a parabola with minimum in the second/third quadrant area, curving upward to the right."
+    },
+    {
+      "questionNumber": 7,
+      "part": "b.i",
+      "marks": 1,
+      "content": "Consider a point $Q(a, f(a))$ to be a point on the graph of $f$.\n\nFind the slope of the line connecting points $P$ and $Q$ in terms of $a$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "b.ii",
+      "marks": 1,
+      "content": "Find the slope of the tangent to the graph of $f$ at point $Q$ in terms of $a$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "b.iii",
+      "marks": 2,
+      "content": "Let the tangent to the graph of $f$ at $x = a$ pass through point $P$. Find the values of $a$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "b.iv",
+      "marks": 1,
+      "content": "Give the equation of one of the lines passing through point $P$ that is tangent to the graph of $f$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "c",
+      "marks": 2,
+      "content": "Find the value, $k$, that gives the shortest possible distance between the graph of the function $y = f(x - k)$ and point $P$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "a",
+      "marks": 2,
+      "content": "Part of the graph of $y = f(x)$, where $f : (0, \\infty) \\to R$, $f(x) = x\\log_{e}(x)$, is shown below. The graph of $f$ has a minimum at the point $Q(a, f(a))$, as shown above.\n\nFind the coordinates of the point $Q$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of f(x) = x log_e(x) for x > 0, showing a curve with a minimum point Q(a, f(a)) below the x-axis, an x-intercept at (b, 0), and the curve rising steeply for larger x."
+    },
+    {
+      "questionNumber": 8,
+      "part": "b",
+      "marks": 1,
+      "content": "Using $\\dfrac{d\\left(x^{2}\\log_{e}(x)\\right)}{dx} = 2x\\log_{e}(x) + x$, show that $x\\log_{e}(x)$ has an antiderivative $\\dfrac{x^{2}\\log_{e}(x)}{2} - \\dfrac{x^{2}}{4}$.",
+      "topic": "Calculus",
+      "subtopic": "Antidifferentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "c",
+      "marks": 2,
+      "content": "Find the area of the region that is bounded by $f$, the line $x = a$ and the horizontal axis for $x \\in [a, b]$, where $b$ is the $x$-intercept of $f$.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "d.i",
+      "marks": 1,
+      "content": "Let $g : (a, \\infty) \\to R$, $g(x) = f(x) + k$ for $k \\in R$.\n\nFind the value of $k$ for which $y = 2x$ is a tangent to the graph of $g$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "d.ii",
+      "marks": 2,
+      "content": "Find all values of $k$ for which the graphs of $g$ and $g^{-1}$ do not intersect.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    }
+  ]
+}

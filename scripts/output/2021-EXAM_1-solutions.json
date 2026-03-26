@@ -1,0 +1,116 @@
+{
+  "year": 2021,
+  "examType": "EXAM_1",
+  "solutions": [
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nDifferentiate $y = 2e^{-3x}$ using the chain rule:\n\n$$\\dfrac{dy}{dx} = 2 \\cdot (-3)e^{-3x} = -6e^{-3x}$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nApply the product rule to $f(x) = x\\sqrt{2x+1} = x(2x+1)^{1/2}$:\n\n$$f'(x) = 1 \\cdot (2x+1)^{1/2} + x \\cdot \\dfrac{1}{2}(2x+1)^{-1/2} \\cdot 2$$\n\n$$f'(x) = \\sqrt{2x+1} + \\dfrac{x}{\\sqrt{2x+1}}$$\n\n$$f'(x) = \\dfrac{(2x+1) + x}{\\sqrt{2x+1}} = \\dfrac{3x+1}{\\sqrt{2x+1}}$$\n\n**Step 2** *(1 mark)*\n\nEvaluate at $x = 4$:\n\n$$f'(4) = \\dfrac{3(4)+1}{\\sqrt{2(4)+1}} = \\dfrac{13}{\\sqrt{9}} = \\dfrac{13}{3}$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nAntidifferentiate $f'(x) = x^3 + x$:\n\n$$f(x) = \\int (x^3 + x)\\,dx = \\dfrac{x^4}{4} + \\dfrac{x^2}{2} + c$$\n\n**Step 2** *(1 mark)*\n\nApply the condition $f(1) = 2$:\n\n$$\\dfrac{1}{4} + \\dfrac{1}{2} + c = 2$$\n\n$$c = 2 - \\dfrac{3}{4} = \\dfrac{5}{4}$$\n\n$$\\therefore f(x) = \\dfrac{x^4}{4} + \\dfrac{x^2}{2} + \\dfrac{5}{4}$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nFor $g(x) = 2\\sin(2x)$, the amplitude is $2$, so the range is $[-2, 2]$."
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nThe period of $g(x) = 2\\sin(2x)$ is:\n\n$$T = \\dfrac{2\\pi}{2} = \\pi$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nDivide both sides by 2:\n\n$$\\sin(2x) = \\dfrac{\\sqrt{3}}{2}$$\n\n**Step 2** *(1 mark)*\n\nFind the general solutions for $2x$:\n\n$$2x = \\dfrac{\\pi}{3} + 2k\\pi \\quad \\text{or} \\quad 2x = \\pi - \\dfrac{\\pi}{3} + 2k\\pi = \\dfrac{2\\pi}{3} + 2k\\pi, \\quad k \\in \\mathbb{Z}$$\n\n**Step 3** *(1 mark)*\n\nDivide by 2 to get $x$:\n\n$$x = \\dfrac{\\pi}{6} + k\\pi \\quad \\text{or} \\quad x = \\dfrac{\\pi}{3} + k\\pi, \\quad k \\in \\mathbb{Z}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nIdentify asymptotes of $y = 1 - \\dfrac{2}{x-2}$:\n\n- Vertical asymptote: $x = 2$\n- Horizontal asymptote: $y = 1$\n\n**Step 2** *(1 mark)*\n\nFind axis intercepts:\n\n$x$-intercept (set $y = 0$): $0 = 1 - \\dfrac{2}{x-2} \\Rightarrow \\dfrac{2}{x-2} = 1 \\Rightarrow x - 2 = 2 \\Rightarrow x = 4$, so $(4, 0)$.\n\n$y$-intercept (set $x = 0$): $y = 1 - \\dfrac{2}{0-2} = 1 + 1 = 2$, so $(0, 2)$.\n\n**Step 3** *(1 mark)*\n\nSketch the rectangular hyperbola with:\n- Vertical asymptote labelled $x = 2$\n- Horizontal asymptote labelled $y = 1$\n- $x$-intercept labelled $(4, 0)$\n- $y$-intercept labelled $(0, 2)$\n- Two branches: one in the region $x < 2$ (above $y = 1$), one in the region $x > 2$ (below $y = 1$)"
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nFrom the graph (or algebraically), solve $1 - \\dfrac{2}{x-2} \\geq 3$:\n\n$$-\\dfrac{2}{x-2} \\geq 2$$\n\n$$\\dfrac{2}{x-2} \\leq -2$$\n\nFor $x > 2$: $x - 2 > 0$, so $2 \\leq -2(x-2)$, which gives $1 \\leq -(x-2)$, i.e. $x - 2 \\leq -1$, i.e. $x \\leq 1$. No solution for $x > 2$.\n\nFor $x < 2$: $x - 2 < 0$, multiply both sides by $(x-2)$ and flip inequality: $2 \\geq -2(x-2) \\Rightarrow 1 \\geq -(x-2) \\Rightarrow x - 2 \\geq -1 \\Rightarrow x \\geq 1$.\n\nCombining with $x < 2$: $x \\in [1, 2)$."
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nSet $g(x) = 0$:\n\n$$4(x-1)^2 - 4 = 0$$\n\n$$(x-1)^2 = 1$$\n\n$$x - 1 = \\pm 1$$\n\n$$x = 0 \\quad \\text{or} \\quad x = 2$$\n\n**Step 2** *(1 mark)*\n\nThe common intercept is $(2, 0)$, so the other horizontal axis intercept of $g$ is $(0, 0)$."
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nApply the transformations to $f(x) = x^2 - 4$ in order:\n\n1. Dilation by factor $\\dfrac{1}{2}$ from the vertical axis (replace $x$ with $2x$):\n$$f(2x) = (2x)^2 - 4 = 4x^2 - 4$$\n\n2. Translation 2 units to the right (replace $x$ with $x - 2$):\n$$h(x) = 4(x-2)^2 - 4$$\n\nExpanding: $h(x) = 4(x^2 - 4x + 4) - 4 = 4x^2 - 16x + 12$\n\n**Step 2** *(1 mark)*\n\nFind the horizontal axis intercepts of $h$ by setting $h(x) = 0$:\n\n$$4(x-2)^2 - 4 = 0$$\n\n$$(x-2)^2 = 1 \\Rightarrow x - 2 = \\pm 1 \\Rightarrow x = 1 \\text{ or } x = 3$$\n\nThe intercepts are $(1, 0)$ and $(3, 0)$."
+    },
+    {
+      "questionNumber": 6,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nUsing the given information (C = custard, G = glazed):\n\n- $\\Pr(C) = \\dfrac{1}{2}$\n- $\\Pr(C \\cap G) = \\dfrac{1}{10}$\n\nSince $\\Pr(C) = \\Pr(C \\cap G) + \\Pr(C \\cap G')$:\n\n$$\\Pr(C \\cap G') = \\dfrac{1}{2} - \\dfrac{1}{10} = \\dfrac{4}{10} = \\dfrac{2}{5}$$\n\nThe probability that the doughnut is not glazed with custard is $\\dfrac{2}{5}$."
+    },
+    {
+      "questionNumber": 6,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nThere are 6 glazed doughnuts in total (since $\\dfrac{3}{10} \\times 20 = 6$). Box A has $g$ glazed doughnuts, so Box B has $6 - g$ glazed doughnuts.\n\nUsing conditional probability and the law of total probability:\n\n$$\\Pr(G) = \\dfrac{1}{2} \\cdot \\dfrac{g}{10} + \\dfrac{1}{2} \\cdot \\dfrac{6-g}{10} = \\dfrac{g}{20} + \\dfrac{6-g}{20} = \\dfrac{6}{20} = \\dfrac{3}{10}$$\n\n**Step 2** *(1 mark)*\n\n$$\\Pr(B \\mid G) = \\dfrac{\\Pr(B \\cap G)}{\\Pr(G)} = \\dfrac{\\dfrac{1}{2} \\cdot \\dfrac{6-g}{10}}{\\dfrac{6}{20}} = \\dfrac{\\dfrac{6-g}{20}}{\\dfrac{6}{20}} = \\dfrac{6-g}{6} = 1 - \\dfrac{g}{6}$$"
+    },
+    {
+      "questionNumber": 6,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nLet $X$ be the number of visitors less than 25 years old in a sample of 5. Since $p = \\dfrac{1}{2}$ and $n = 5$, we have $X \\sim \\text{Bi}\\!\\left(5, \\dfrac{1}{2}\\right)$.\n\n$\\hat{P} \\geq 0.8$ corresponds to $X \\geq 4$.\n\n**Step 2** *(1 mark)*\n\n$$\\Pr(X \\geq 4) = \\Pr(X = 4) + \\Pr(X = 5)$$\n\n$$= \\binom{5}{4}\\left(\\dfrac{1}{2}\\right)^4\\left(\\dfrac{1}{2}\\right)^1 + \\binom{5}{5}\\left(\\dfrac{1}{2}\\right)^5$$\n\n$$= 5 \\cdot \\dfrac{1}{32} + 1 \\cdot \\dfrac{1}{32}$$\n\n**Step 3** *(1 mark)*\n\n$$= \\dfrac{5}{32} + \\dfrac{1}{32} = \\dfrac{6}{32} = \\dfrac{3}{16}$$"
+    },
+    {
+      "questionNumber": 7,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nSince $f$ is a probability density function, $\\displaystyle\\int_1^2 \\dfrac{k}{x^2}\\,dx = 1$:\n\n$$\\left[-\\dfrac{k}{x}\\right]_1^2 = 1$$\n\n$$-\\dfrac{k}{2} + \\dfrac{k}{1} = 1$$\n\n$$k\\left(1 - \\dfrac{1}{2}\\right) = 1 \\implies \\dfrac{k}{2} = 1 \\implies k = 2 \\quad \\checkmark$$"
+    },
+    {
+      "questionNumber": 7,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nWith $k = 2$:\n\n$$E(X) = \\int_1^2 x \\cdot f(x)\\,dx = \\int_1^2 x \\cdot \\dfrac{2}{x^2}\\,dx = \\int_1^2 \\dfrac{2}{x}\\,dx$$\n\n**Step 2** *(1 mark)*\n\n$$= \\left[2\\log_e(x)\\right]_1^2 = 2\\log_e(2) - 2\\log_e(1) = 2\\log_e(2) - 0 = \\log_e(4)$$"
+    },
+    {
+      "questionNumber": 8,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nAntidifferentiate $\\dfrac{dy}{dx} = \\sqrt{x+6} - \\dfrac{x}{2} - \\dfrac{3}{2} = (x+6)^{1/2} - \\dfrac{x}{2} - \\dfrac{3}{2}$:\n\n$$y = \\dfrac{2(x+6)^{3/2}}{3} - \\dfrac{x^2}{4} - \\dfrac{3x}{2} + c$$\n\n**Step 2** *(1 mark)*\n\nApply the condition that the stationary point is at $\\left(3, \\dfrac{29}{4}\\right)$. Substitute $x = 3$, $y = \\dfrac{29}{4}$:\n\n$$\\dfrac{29}{4} = \\dfrac{2(9)^{3/2}}{3} - \\dfrac{9}{4} - \\dfrac{9}{2} + c$$\n\n$$\\dfrac{29}{4} = \\dfrac{2 \\cdot 27}{3} - \\dfrac{9}{4} - \\dfrac{18}{4} + c$$\n\n$$\\dfrac{29}{4} = 18 - \\dfrac{27}{4} + c$$\n\n**Step 3** *(1 mark)*\n\n$$c = \\dfrac{29}{4} - 18 + \\dfrac{27}{4} = \\dfrac{56}{4} - 18 = 14 - 18 = -4$$\n\n$$y = \\dfrac{2(x+6)^{3/2}}{3} - \\dfrac{x^2}{4} - \\dfrac{3x}{2} - 4$$"
+    },
+    {
+      "questionNumber": 8,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nFind the second derivative:\n\n$$\\dfrac{d^2y}{dx^2} = \\dfrac{1}{2\\sqrt{x+6}} - \\dfrac{1}{2}$$\n\nAt $x = 3$:\n\n$$\\dfrac{d^2y}{dx^2} = \\dfrac{1}{2\\sqrt{9}} - \\dfrac{1}{2} = \\dfrac{1}{6} - \\dfrac{1}{2} = -\\dfrac{1}{3} < 0$$\n\n**Step 2** *(1 mark)*\n\nSince $\\dfrac{d^2y}{dx^2} < 0$ at $x = 3$, the stationary point $\\left(3, \\dfrac{29}{4}\\right)$ is a **local maximum**.\n\n*(Alternatively: checking the sign of $\\dfrac{dy}{dx}$ either side of $x = 3$ shows it changes from positive to negative, confirming a local maximum.)*"
+    },
+    {
+      "questionNumber": 9,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nLet $\\angle AOP = \\theta$. Since $A = (2, 0)$ and $O = (0,0)$, and $OA = 2$ while the radius $OP = 1$, we have $\\cos\\theta = \\dfrac{1}{2}$ (since $OP \\perp PA$ and $OA = 2$), so $\\theta = \\dfrac{\\pi}{3}$.\n\nThe gradient of $OP$ is $m_{OP} = \\tan\\left(\\dfrac{\\pi}{3}\\right) = \\sqrt{3}$.\n\nSince $PA$ is perpendicular to $OP$, the gradient of line $PA$ is $m_{PA} = -\\dfrac{1}{\\sqrt{3}}$.\n\nThe point $P$ on the unit circle at $\\theta = \\dfrac{\\pi}{3}$ is $P\\!\\left(\\dfrac{1}{2}, \\dfrac{\\sqrt{3}}{2}\\right)$.\n\n**Step 2** *(1 mark)*\n\nEquation of line through $P\\!\\left(\\dfrac{1}{2}, \\dfrac{\\sqrt{3}}{2}\\right)$ with gradient $-\\dfrac{1}{\\sqrt{3}}$:\n\n$$y - \\dfrac{\\sqrt{3}}{2} = -\\dfrac{1}{\\sqrt{3}}\\left(x - \\dfrac{1}{2}\\right)$$\n\n$$y = -\\dfrac{x}{\\sqrt{3}} + \\dfrac{1}{2\\sqrt{3}} + \\dfrac{\\sqrt{3}}{2} = -\\dfrac{x}{\\sqrt{3}} + \\dfrac{1}{2\\sqrt{3}} + \\dfrac{3}{2\\sqrt{3}} = -\\dfrac{x}{\\sqrt{3}} + \\dfrac{4}{2\\sqrt{3}}$$\n\n$$y = -\\dfrac{x}{\\sqrt{3}} + \\dfrac{2}{\\sqrt{3}} \\quad \\checkmark$$"
+    },
+    {
+      "questionNumber": 9,
+      "part": "b.i",
+      "content": "**Step 1** *(1 mark)*\n\nThe transformation $T$ maps $(x, y) \\mapsto (x, qy)$. The line through $A$ and $P$ is $y = -\\dfrac{x}{\\sqrt{3}} + \\dfrac{2}{\\sqrt{3}}$.\n\nUnder $T$: $X = x$, $Y = qy$, so $y = \\dfrac{Y}{q}$. The image line $h$ has equation:\n\n$$\\dfrac{Y}{q} = -\\dfrac{X}{\\sqrt{3}} + \\dfrac{2}{\\sqrt{3}} \\implies Y = -\\dfrac{qX}{\\sqrt{3}} + \\dfrac{2q}{\\sqrt{3}}$$\n\nFor $h$ to intersect the unit circle $X^2 + Y^2 = 1$, substitute the line equation into the circle. The line passes through $A(2, 0)$ (since $T$ fixes $x$-coordinates). For tangency or intersection, the condition requires $|q| \\leq 1$ or $q$ negative with $|q| \\leq 1$. More precisely, the line $h$ intersects the unit circle at least once when:\n\n$$q \\in [-1, 0) \\cup (0, 1]$$"
+    },
+    {
+      "questionNumber": 9,
+      "part": "b.ii",
+      "content": "**Step 1** *(1 mark)*\n\nFor two intersections with only positive coordinates, $P'$ must lie in the first quadrant. The image line is $y = -\\dfrac{q}{ \\sqrt{3}}x + \\dfrac{2q}{\\sqrt{3}}$, which passes through $(2, 0)$. For both intersection points to have positive $x$ and $y$ values, the line must cross the arc in the first quadrant twice. This occurs when:\n\n$$q \\in \\left(\\dfrac{\\sqrt{3}}{2}, 1\\right)$$"
+    },
+    {
+      "questionNumber": 9,
+      "part": "c.i",
+      "content": "**Step 1** *(1 mark)*\n\nFor $0 < q \\leq 1$, the point $P'$ on the unit circle closest to $A$ has coordinates $P' = (\\cos\\theta, \\sin\\theta)$ where $\\theta \\in \\left(0, \\dfrac{\\pi}{3}\\right]$.\n\nThe area of triangle $OAP'$ with $O = (0,0)$, $A = (2,0)$, $P' = (\\cos\\theta, \\sin\\theta)$ is:\n\n$$\\text{Area} = \\dfrac{1}{2} |OA| \\cdot \\text{perpendicular height} = \\dfrac{1}{2} \\cdot 2 \\cdot \\sin\\theta = \\sin\\theta$$\n\n**Step 2** *(1 mark)*\n\n$$g : \\left(0, \\dfrac{\\pi}{3}\\right] \\to R, \\quad g(\\theta) = \\sin(\\theta)$$"
+    },
+    {
+      "questionNumber": 9,
+      "part": "c.ii",
+      "content": "**Step 1** *(1 mark)*\n\nOn the domain $\\left(0, \\dfrac{\\pi}{3}\\right]$, the function $g(\\theta) = \\sin(\\theta)$ is increasing (since $\\sin$ is increasing on this interval).\n\nTherefore the maximum occurs at the right endpoint $\\theta = \\dfrac{\\pi}{3}$.\n\n**Step 2** *(1 mark)*\n\n$$g\\!\\left(\\dfrac{\\pi}{3}\\right) = \\sin\\!\\left(\\dfrac{\\pi}{3}\\right) = \\dfrac{\\sqrt{3}}{2}$$\n\nThe maximum possible area of triangle $OAP'$ is $\\dfrac{\\sqrt{3}}{2}$."
+    }
+  ]
+}

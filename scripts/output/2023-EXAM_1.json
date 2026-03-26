@@ -1,0 +1,216 @@
+{
+  "year": 2023,
+  "examType": "EXAM_1",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "marks": 2,
+      "content": "Let $y = \\dfrac{x^{2} - x}{e^{x}}$.\n\nFind and simplify $\\dfrac{dy}{dx}$.",
+      "topic": "Calculus",
+      "subtopic": "Quotient Rule",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "marks": 2,
+      "content": "Let $f(x) = \\sin(x)e^{2x}$.\n\nFind $f'\\!\\left(\\dfrac{\\pi}{4}\\right)$.",
+      "topic": "Calculus",
+      "subtopic": "Product Rule",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "marks": 3,
+      "content": "Solve $e^{2x} - 12 = 4e^{x}$ for $x \\in R$.",
+      "topic": "Algebra",
+      "subtopic": "Exponential Equations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "marks": 3,
+      "content": "Sketch the graph of $f(x) = 2 - \\dfrac{3}{x - 1}$ on the axes below, labelling all asymptotes with their equations and axial intercepts with their coordinates.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Rational Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "marks": 1,
+      "content": "Find the values of $x$ for which $f(x) \\leq 1$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Rational Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "marks": 2,
+      "content": "The graph of $y = x + \\dfrac{1}{x}$ is shown over part of its domain.\n\nUse two trapeziums of equal width to approximate the area between the curve, the $x$-axis and the lines $x = 1$ and $x = 3$.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of y = x + 1/x shown for x > 0, displaying a curve with a minimum near x = 1, increasing for larger x values."
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "marks": 1,
+      "content": "Evaluate $\\displaystyle\\int_{0}^{\\frac{\\pi}{3}} \\sin(x)\\,dx$.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "marks": 3,
+      "content": "Hence, or otherwise, find all values of $k$ such that $\\displaystyle\\int_{0}^{\\frac{\\pi}{3}} \\sin(x)\\,dx = \\int_{k}^{\\frac{\\pi}{2}} \\cos(x)\\,dx$, where $-3\\pi < k < 2\\pi$.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "a",
+      "marks": 1,
+      "content": "Let $\\hat{P}$ be the random variable that represents the sample proportion of households in a given suburb that have solar panels installed.\n\nFrom a sample of randomly selected households in a given suburb, an approximate 95% confidence interval for the proportion $p$ of households having solar panels installed was determined to be $(0.04, 0.16)$.\n\nFind the value of $\\hat{p}$ that was used to obtain this approximate 95% confidence interval.",
+      "topic": "Statistics",
+      "subtopic": "Confidence Intervals",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "b",
+      "marks": 2,
+      "content": "Use $z = 2$ to approximate the 95% confidence interval.\n\nFind the size of the sample from which this 95% confidence interval was obtained.",
+      "topic": "Statistics",
+      "subtopic": "Confidence Intervals",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "c",
+      "marks": 1,
+      "content": "A larger sample of households is selected, with a sample size four times the original sample. The sample proportion of households having solar panels installed is found to be the same.\n\nBy what factor will the increased sample size affect the width of the confidence interval?",
+      "topic": "Statistics",
+      "subtopic": "Confidence Intervals",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "a",
+      "marks": 1,
+      "content": "Consider $f: (-\\infty, 1] \\to R$, $f(x) = x^{2} - 2x$. Part of the graph of $y = f(x)$ is shown below.\n\nState the range of $f$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "EASY",
+      "imageDescription": "Graph of f(x) = x^2 - 2x for x <= 1, showing a parabola with vertex at (1, -1) marked with a closed dot, decreasing from top-left."
+    },
+    {
+      "questionNumber": 7,
+      "part": "b",
+      "marks": 2,
+      "content": "Sketch the graph of the inverse function $y = f^{-1}(x)$ on the axes above. Label any endpoints and axial intercepts with their coordinates.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "c",
+      "marks": 2,
+      "content": "Determine the equation and the domain for the inverse function $f^{-1}$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "d",
+      "marks": 2,
+      "content": "Calculate the area of the regions enclosed by the curves of $f$, $f^{-1}$ and $y = -x$.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "a",
+      "marks": 1,
+      "content": "Suppose that the queuing time, $T$ (in minutes), at a customer service desk has a probability density function given by\n$$f(t) = \\begin{cases} kt(16 - t^{2}) & 0 \\leq t \\leq 4 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\nfor some $k \\in R$.\n\nShow that $k = \\dfrac{1}{64}$.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "b",
+      "marks": 2,
+      "content": "Find $\\text{E}(T)$.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "c",
+      "marks": 3,
+      "content": "What is the probability that a person has to queue for more than two minutes, given that they have already queued for one minute?",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": "a",
+      "marks": 1,
+      "content": "The shapes of two walking tracks are shown below.\n\nTrack 1 is described by the function $f(x) = a - x(x - 2)^{2}$.\nTrack 2 is defined by the function $g(x) = 12x + bx^{2}$.\nThe unit of length is kilometres.\n\nGiven that $f(0) = 12$ and $g(1) = 9$, verify that $a = 12$ and $b = -3$.",
+      "topic": "Algebra",
+      "subtopic": "Polynomials",
+      "difficulty": "EASY",
+      "imageDescription": "Graph showing two walking tracks: Track 1 (solid curve) starting high on the y-axis with a local maximum at point P, and Track 2 (dashed curve) starting at the origin and also reaching point P."
+    },
+    {
+      "questionNumber": 9,
+      "part": "b",
+      "marks": 2,
+      "content": "Verify that $f(x)$ and $g(x)$ both have a turning point at $P$. Give the co-ordinates of $P$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": "c",
+      "marks": 3,
+      "content": "A theme park is planned whose boundaries will form the triangle $\\triangle OAB$ where $O$ is the origin, $A$ is at $(k, 0)$ and $B$ is at $(k, g(k))$, as shown below, where $k \\in (0, 4)$.\n\nFind the maximum possible area of the theme park, in km$^{2}$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": "Graph showing both tracks with the triangle OAB highlighted, where O is the origin, A is on the x-axis, and B is on track 2 at x = k."
+    }
+  ]
+}

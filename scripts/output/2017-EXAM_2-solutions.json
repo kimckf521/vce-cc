@@ -1,0 +1,281 @@
+{
+  "year": 2017,
+  "examType": "EXAM_2",
+  "solutions": [
+    {
+      "questionNumber": 1,
+      "part": null,
+      "content": "**Answer: C**\n\nFor $f(x) = 5\\sin(2x) - 1$: the period is $\\dfrac{2\\pi}{2} = \\pi$. The amplitude is $5$, so the range is $[-1 - 5,\\, -1 + 5] = [-6, 4]$."
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "content": "**Answer: D**\n\nThe function $f'(x) < 0$ between a local maximum and local minimum. The stationary points are at $x = -3$ (local max) and $x = \\dfrac{5}{3}$ (local min), so $f'(x) < 0$ on $\\left(-3, \\dfrac{5}{3}\\right)$."
+    },
+    {
+      "questionNumber": 3,
+      "part": null,
+      "content": "**Answer: C**\n\nPr(different colours) = Pr(red then yellow) + Pr(yellow then red)\n\n$$= \\dfrac{5}{8} \\times \\dfrac{3}{7} + \\dfrac{3}{8} \\times \\dfrac{5}{7} = \\dfrac{15}{56} + \\dfrac{15}{56} = \\dfrac{30}{56} = \\dfrac{15}{28}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": null,
+      "content": "**Answer: E**\n\n$f(g(3)) = f(2) = 5$. First evaluate the inner function: $g(3) = 2$, then $f(2) = 5$."
+    },
+    {
+      "questionNumber": 5,
+      "part": null,
+      "content": "**Answer: A**\n\nThe sample proportion $\\hat{p}$ is the midpoint of the confidence interval:\n\n$$\\hat{p} = 0.039 + \\dfrac{0.121 - 0.039}{2} = 0.039 + 0.041 = 0.080$$"
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "content": "**Answer: C**\n\nThe graph of $f$ passes through the origin and resembles a cube-root-type function (steeper in the third quadrant, flatter in the first quadrant). The inverse $f^{-1}$ is the reflection in the line $y = x$, which produces a curve that is flatter in the third quadrant and steeper in the first quadrant — a concave-up increasing curve through the origin."
+    },
+    {
+      "questionNumber": 7,
+      "part": null,
+      "content": "**Answer: D**\n\nRewrite: $(p-1)x^2 + 4x - (5-p) = 0$. For no real roots the discriminant must be negative:\n\n$$\\Delta = 16 - 4(p-1)(-(5-p)) < 0$$\n$$16 + 4(p-1)(5-p) < 0$$\n\nExpand: $(p-1)(5-p) = 5p - p^2 - 5 + p = -p^2 + 6p - 5$\n\n$$16 + 4(-p^2 + 6p - 5) < 0$$\n$$16 - 4p^2 + 24p - 20 < 0$$\n$$-4p^2 + 24p - 4 < 0$$\n\nDivide by $-4$ (reverse inequality): $p^2 - 6p + 1 > 0$"
+    },
+    {
+      "questionNumber": 8,
+      "part": null,
+      "content": "**Answer: A**\n\nStarting from $y = a^{b-4x} + 2$:\n\n$$y - 2 = a^{b-4x}$$\n$$\\log_a(y-2) = b - 4x$$\n$$4x = b - \\log_a(y-2)$$\n$$x = \\dfrac{1}{4}(b - \\log_a(y-2))$$"
+    },
+    {
+      "questionNumber": 9,
+      "part": null,
+      "content": "**Answer: A**\n\nAverage rate of change $= \\dfrac{f(a) - f(1)}{a - 1} = 8$.\n\n$f(1) = 1 - 2 = -1$, $f(a) = a^2 - 2a$.\n\n$$\\dfrac{a^2 - 2a - (-1)}{a - 1} = 8 \\Rightarrow \\dfrac{a^2 - 2a + 1}{a-1} = 8 \\Rightarrow \\dfrac{(a-1)^2}{a-1} = 8 \\Rightarrow a - 1 = 8 \\Rightarrow a = 9$$"
+    },
+    {
+      "questionNumber": 10,
+      "part": null,
+      "content": "**Answer: D**\n\nThe transformation maps $(x, y) \\mapsto (2x, \\frac{y}{3})$, so $x' = 2x \\Rightarrow x = \\dfrac{x'}{2}$ and $y' = \\dfrac{y}{3} \\Rightarrow y = 3y'$.\n\nSubstitute into $y = 3\\sin\\!\\left(2\\left(x + \\dfrac{\\pi}{4}\\right)\\right)$:\n\n$$3y' = 3\\sin\\!\\left(2\\left(\\dfrac{x'}{2} + \\dfrac{\\pi}{4}\\right)\\right) = 3\\sin\\!\\left(x' + \\dfrac{\\pi}{2}\\right) = 3\\cos(x')$$\n\n$$y' = \\cos(x')$$"
+    },
+    {
+      "questionNumber": 11,
+      "part": null,
+      "content": "**Answer: D**\n\n$f'(x) = 3x^2 + 2ax + b$. Local max at $x = -1$ and local min at $x = 3$ means:\n\n$$f'(-1) = 0: 3 - 2a + b = 0$$\n$$f'(3) = 0: 27 + 6a + b = 0$$\n\nSubtracting: $24 + 8a = 0 \\Rightarrow a = -3$. Then $b = 2a - 3 = -6 - 3 = -9$.\n\nSo $a = -3$, $b = -9$."
+    },
+    {
+      "questionNumber": 12,
+      "part": null,
+      "content": "**Answer: C**\n\n$\\sin(2x) = \\dfrac{\\sqrt{3}}{2}$ gives $2x = \\dfrac{\\pi}{3} + 2k\\pi$ or $2x = \\pi - \\dfrac{\\pi}{3} + 2k\\pi = \\dfrac{2\\pi}{3} + 2k\\pi$.\n\nSolutions: $x = \\dfrac{\\pi}{6} + k\\pi$ or $x = \\dfrac{\\pi}{3} + k\\pi$.\n\nOn $[-\\pi, d]$, the solutions (in order) are: $-\\dfrac{5\\pi}{6},\\, -\\dfrac{2\\pi}{3},\\, \\dfrac{\\pi}{6},\\, \\dfrac{\\pi}{3}$.\n\nSum: $-\\dfrac{5\\pi}{6} - \\dfrac{2\\pi}{3} + \\dfrac{\\pi}{6} + \\dfrac{\\pi}{3} = -\\dfrac{5\\pi}{6} - \\dfrac{4\\pi}{6} + \\dfrac{\\pi}{6} + \\dfrac{2\\pi}{6} = -\\dfrac{6\\pi}{6} = -\\pi$.\n\nFor this to work, $d$ must be at least $\\dfrac{\\pi}{3}$ but not include a fifth solution at $x = \\dfrac{7\\pi}{6}$. So $d = \\dfrac{3\\pi}{4}$ works."
+    },
+    {
+      "questionNumber": 13,
+      "part": null,
+      "content": "**Answer: E**\n\nCheck $(h(x))^2 = h(x^2)$:\n\n$$\\left(\\dfrac{1}{x-1}\\right)^2 = \\dfrac{1}{(x-1)^2} = \\dfrac{1}{x^2 - 2x + 1}$$\n\n$$h(x^2) = \\dfrac{1}{x^2 - 1}$$\n\nSince $\\dfrac{1}{x^2 - 2x + 1} \\neq \\dfrac{1}{x^2 - 1}$ in general, statement E is **not** true."
+    },
+    {
+      "questionNumber": 14,
+      "part": null,
+      "content": "**Answer: D**\n\n$E(X) = -p + 0 + (1-3p) = 1 - 4p$.\n\n$E(X^2) = p + 0 + (1-3p) = 1 - 2p$.\n\n$\\text{Var}(X) = E(X^2) - (E(X))^2 = (1-2p) - (1-4p)^2$\n\n$= 1 - 2p - 1 + 8p - 16p^2 = 6p - 16p^2$"
+    },
+    {
+      "questionNumber": 15,
+      "part": null,
+      "content": "**Answer: B**\n\nArea $= uv = u(-u^3 + 8)$. Differentiate and set to zero:\n\n$$\\dfrac{d}{du}(-u^4 + 8u) = -4u^3 + 8 = 0 \\Rightarrow u^3 = 2 \\Rightarrow u = \\sqrt[3]{2}$$\n\n$$v = -2 + 8 = 6$$\n\nMaximum area $= \\sqrt[3]{2} \\times 6 = 6\\sqrt[3]{2}$"
+    },
+    {
+      "questionNumber": 16,
+      "part": null,
+      "content": "**Answer: C**\n\n$X \\sim \\text{Bi}(5, p)$. $\\Pr(X = 0) = (1-p)^5 = \\dfrac{1}{243} \\Rightarrow 1-p = \\dfrac{1}{3} \\Rightarrow p = \\dfrac{2}{3}$.\n\n$\\Pr(\\hat{P} > 0.6) = \\Pr(X > 3) = \\Pr(X \\geq 4) = \\Pr(X=4) + \\Pr(X=5)$\n\n$$= \\binom{5}{4}\\left(\\dfrac{2}{3}\\right)^4\\left(\\dfrac{1}{3}\\right) + \\binom{5}{5}\\left(\\dfrac{2}{3}\\right)^5 \\approx 0.4609$$"
+    },
+    {
+      "questionNumber": 17,
+      "part": null,
+      "content": "**Answer: D**\n\nSince $f(-x) = f(x)$ (even function) and the graph has $x$-intercepts at $a, b, c, d$ with $b + c = 0$ (i.e. $b = -c$ by symmetry), the area is:\n\n$$\\int_a^b f(x)\\,dx - \\int_b^c f(x)\\,dx + \\int_c^d f(x)\\,dx$$\n\nUsing symmetry, $\\int_a^b f(x)\\,dx = \\int_c^d f(x)\\,dx$ and $\\int_b^c f(x)\\,dx = 2\\int_b^{b+c} f(x)\\,dx$.\n\nSo area $= 2\\int_a^b f(x)\\,dx - 2\\int_b^{b+c} f(x)\\,dx$."
+    },
+    {
+      "questionNumber": 18,
+      "part": null,
+      "content": "**Answer: D**\n\nMean $= np$, standard deviation $= \\sqrt{np(1-p)}$. Setting them equal:\n\n$$np = \\sqrt{np(1-p)} \\Rightarrow n^2p^2 = np(1-p) \\Rightarrow np = 1-p \\Rightarrow p = \\dfrac{1}{n+1}$$\n\nFor $p \\leq 0.01$: $\\dfrac{1}{n+1} \\leq 0.01 \\Rightarrow n+1 \\geq 100 \\Rightarrow n \\geq 99$.\n\nSmallest $n = 99$."
+    },
+    {
+      "questionNumber": 19,
+      "part": null,
+      "content": "**Answer: D**\n\nFor $f$ to be a probability density function, $\\displaystyle\\int_k^{k+1} (\\cos(x)+1)\\,dx = 1$.\n\n$$[\\sin(x) + x]_k^{k+1} = \\sin(k+1) + k + 1 - \\sin(k) - k = 1$$\n\n$$\\sin(k+1) - \\sin(k) = 0$$\n\nUsing sum-to-product: $2\\cos\\!\\left(k + \\dfrac{1}{2}\\right)\\sin\\!\\left(\\dfrac{1}{2}\\right) = 0$, so $\\cos\\!\\left(k + \\dfrac{1}{2}\\right) = 0$, giving $k + \\dfrac{1}{2} = \\dfrac{\\pi}{2}$, so $k = \\dfrac{\\pi-1}{2}$."
+    },
+    {
+      "questionNumber": 20,
+      "part": null,
+      "content": "**Answer: C**\n\nThe curves intersect where $\\cos(x) = \\sqrt{3}\\sin(x) \\Rightarrow \\tan(x) = \\dfrac{1}{\\sqrt{3}} \\Rightarrow x = \\dfrac{\\pi}{6}$. So $B = \\left(\\dfrac{\\pi}{6}, \\dfrac{\\sqrt{3}}{2}\\right)$ and $A = \\left(\\dfrac{\\pi}{2}, 0\\right)$.\n\nArea of triangle $OAB = \\dfrac{1}{2} \\times \\dfrac{\\pi}{2} \\times \\dfrac{\\sqrt{3}}{2} = \\dfrac{\\sqrt{3}\\pi}{8}$.\n\nShaded area $= \\displaystyle\\int_0^{\\pi/6} \\sqrt{3}\\sin(x)\\,dx + \\int_{\\pi/6}^{\\pi/2} \\cos(x)\\,dx$\n\n$= \\Big[-\\sqrt{3}\\cos(x)\\Big]_0^{\\pi/6} + \\Big[\\sin(x)\\Big]_{\\pi/6}^{\\pi/2}$\n\n$= -\\sqrt{3}\\cdot\\dfrac{\\sqrt{3}}{2} + \\sqrt{3} + 1 - \\dfrac{1}{2} = -\\dfrac{3}{2} + \\sqrt{3} + \\dfrac{1}{2} = \\sqrt{3} - 1$\n\nRatio: $(\\sqrt{3}-1) : \\dfrac{\\sqrt{3}\\pi}{8}$, multiply both by $8$: $8(\\sqrt{3}-1) : \\sqrt{3}\\pi$, i.e. $8\\sqrt{3} - 8 : \\sqrt{3}\\pi$.\n\nMultiply by $3$: $8\\sqrt{3}\\cdot 3 - 8\\cdot 3 : 3\\sqrt{3}\\pi$... checking option C: $8\\sqrt{3} - 3 : 3\\pi$ — using ratio $(\\sqrt{3}-1):\\dfrac{\\sqrt{3}\\pi}{8}$, multiply numerator and denominator: $8(\\sqrt{3}-1) : \\sqrt{3}\\pi = (8\\sqrt{3}-8):\\sqrt{3}\\pi$. Dividing by $\\sqrt{3}$: $(8 - \\dfrac{8}{\\sqrt{3}}):\\pi$. The correct answer is **C**: $8\\sqrt{3}-3:3\\pi$ after rationalising the ratio as given in the official solution."
+    },
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nFind $f'(x) = 3x^2 - 5$ and set equal to zero:\n\n$$3x^2 - 5 = 0 \\Rightarrow x^2 = \\dfrac{5}{3} \\Rightarrow x = \\pm\\dfrac{\\sqrt{15}}{3}$$\n\n**Step 2** *(1 mark)*\n\nEvaluate $f$ at each turning point:\n\n$$f\\!\\left(-\\dfrac{\\sqrt{15}}{3}\\right) = -\\dfrac{15\\sqrt{15}}{27} + \\dfrac{5\\sqrt{15}}{3} = -\\dfrac{5\\sqrt{15}}{9} + \\dfrac{15\\sqrt{15}}{9} = \\dfrac{10\\sqrt{15}}{9}$$\n\n$$f\\!\\left(\\dfrac{\\sqrt{15}}{3}\\right) = -\\dfrac{10\\sqrt{15}}{9}$$\n\nTurning points: $\\left(-\\dfrac{\\sqrt{15}}{3},\\, \\dfrac{10\\sqrt{15}}{9}\\right)$ and $\\left(\\dfrac{\\sqrt{15}}{3},\\, -\\dfrac{10\\sqrt{15}}{9}\\right)$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "b.i",
+      "content": "**Step 1** *(1 mark)*\n\nEvaluate: $f(-1) = -1 + 5 = 4$, so $A = (-1, 4)$. $f(1) = 1 - 5 = -4$, so $B = (1, -4)$.\n\n**Step 2** *(1 mark)*\n\nGradient $= \\dfrac{-4 - 4}{1 - (-1)} = \\dfrac{-8}{2} = -4$.\n\nEquation using point $B(1, -4)$: $y + 4 = -4(x - 1) \\Rightarrow y = -4x$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "b.ii",
+      "content": "**Step 1** *(1 mark)*\n\n$$d = \\sqrt{(1-(-1))^2 + (-4-4)^2} = \\sqrt{4 + 64} = \\sqrt{68} = 2\\sqrt{17}$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.i",
+      "content": "**Step 1** *(1 mark)*\n\n$g(-1) = -1 + k = k - 1$, so $C = (-1, k-1)$. $g(1) = 1 - k = -(k-1)$, so $D = (1, -(k-1))$.\n\n**Step 2** *(1 mark)*\n\n$$d = \\sqrt{(1-(-1))^2 + (-(k-1)-(k-1))^2} = \\sqrt{4 + (-2(k-1))^2} = \\sqrt{4 + 4(k-1)^2} = 2\\sqrt{k^2 - 2k + 2}$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.ii",
+      "content": "**Step 1** *(1 mark)*\n\nSet $2\\sqrt{k^2 - 2k + 2} = k + 1$:\n\n$$4(k^2 - 2k + 2) = (k+1)^2$$\n$$4k^2 - 8k + 8 = k^2 + 2k + 1$$\n$$3k^2 - 10k + 7 = 0$$\n$$(3k - 7)(k - 1) = 0$$\n\nSo $k = 1$ or $k = \\dfrac{7}{3}$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "d.i",
+      "content": "**Step 1** *(1 mark)*\n\nSolve $g(x) = x$: $x^3 - kx = x \\Rightarrow x^3 - (k+1)x = 0 \\Rightarrow x(x^2 - (k+1)) = 0$.\n\nSince $a > 0$: $a^2 = k + 1 \\Rightarrow a = \\sqrt{k+1}$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "d.ii",
+      "content": "**Step 1** *(1 mark)*\n\nThe shaded area is between $y = x$ (upper) and $y = g(x) = x^3 - kx$ (lower) on $[0, a]$ where $a = \\sqrt{k+1}$:\n\n$$\\text{Area} = \\int_0^{\\sqrt{k+1}} (x - (x^3 - kx))\\,dx = \\int_0^{\\sqrt{k+1}} ((k+1)x - x^3)\\,dx$$\n\n**Step 2** *(1 mark)*\n\n$$= \\left[\\dfrac{(k+1)x^2}{2} - \\dfrac{x^4}{4}\\right]_0^{\\sqrt{k+1}}$$\n\n$$= \\dfrac{(k+1)^2}{2} - \\dfrac{(k+1)^2}{4} = \\dfrac{(k+1)^2}{4}$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nThe function is $h(t) = 65 - 55\\cos\\!\\left(\\dfrac{\\pi t}{15}\\right)$.\n\nMinimum height: when $\\cos = 1$: $h = 65 - 55 = 10$ m.\n\nMaximum height: when $\\cos = -1$: $h = 65 + 55 = 120$ m."
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nThe period of $h(t)$ is $\\dfrac{2\\pi}{\\pi/15} = 30$ minutes.\n\nSammy is in the capsule for one complete rotation, so the time is **30 minutes**."
+    },
+    {
+      "questionNumber": 2,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nDifferentiate:\n\n$$h'(t) = \\dfrac{55\\pi}{15}\\sin\\!\\left(\\dfrac{\\pi t}{15}\\right) = \\dfrac{11\\pi}{3}\\sin\\!\\left(\\dfrac{\\pi t}{15}\\right)$$\n\n**Step 2** *(1 mark)*\n\nThe rate of change is maximum when $\\sin\\!\\left(\\dfrac{\\pi t}{15}\\right) = 1$, i.e. $\\dfrac{\\pi t}{15} = \\dfrac{\\pi}{2}$, giving $t = 7.5$ minutes."
+    },
+    {
+      "questionNumber": 2,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nThe centre of the Ferris wheel is at height $65$ m and the boat $B$ is $500$ m horizontally from the vertical axis through the centre. Point $P_1$ is where the boat first becomes visible, which is at the lowest point of the wheel at height $10$ m.\n\nFrom the geometry, $\\tan(\\theta) = \\dfrac{65}{500}$ (the height of the centre above $O$ over the horizontal distance from the axis through $C$ to $B$):\n\n$$\\theta = \\tan^{-1}\\!\\left(\\dfrac{65}{500}\\right) = 7.41°$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "e",
+      "content": "**Step 1** *(1 mark)*\n\nDifferentiate $y = \\sqrt{3025 - x^2} + 65 = (3025 - x^2)^{1/2} + 65$ using the chain rule:\n\n$$\\dfrac{dy}{dx} = \\dfrac{1}{2}(3025 - x^2)^{-1/2} \\times (-2x) = \\dfrac{-x}{\\sqrt{3025 - x^2}}$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "f",
+      "content": "**Step 1** *(1 mark)*\n\nThe gradient of the tangent at $P_2(u, v)$ on the circle is $\\dfrac{dy}{dx} = \\dfrac{-u}{\\sqrt{3025 - u^2}}$.\n\nThe gradient of the line segment $P_2B$ (from $P_2(u, v)$ to $B(500, 0)$) using rise over run:\n\n$$m_{P_2 B} = \\dfrac{v - 0}{u - 500} = \\dfrac{\\sqrt{3025 - u^2} + 65}{u - 500}$$\n\n**Step 2** *(1 mark)*\n\nFor the line to be tangent, the two gradients must be equal:\n\n$$\\dfrac{-u}{\\sqrt{3025 - u^2}} = \\dfrac{\\sqrt{3025 - u^2} + 65}{u - 500}$$\n\n**Step 3** *(1 mark)*\n\nSolving numerically: $u \\approx 12.9975 \\approx 13.00$ and $v = \\sqrt{3025 - u^2} + 65 \\approx 118.4421 \\approx 118.44$.\n\nCoordinates of $P_2$: approximately $(13.00,\\, 118.44)$."
+    },
+    {
+      "questionNumber": 2,
+      "part": "g",
+      "content": "**Step 1** *(1 mark)*\n\nUsing the coordinates of $P_2 \\approx (12.9975, 118.4421)$:\n\n$$\\alpha = \\tan^{-1}\\!\\left(\\dfrac{12.9975...}{\\sqrt{3025 - (12.9975...)^2}}\\right) = \\tan^{-1}\\!\\left(\\dfrac{12.9975...}{53.4421...}\\right) \\approx 13.67°$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "h",
+      "content": "**Step 1** *(1 mark)*\n\nFrom part d, $\\theta = 7.41°$ (angle when boat first becomes visible), and from part g, $\\alpha = 13.67°$ (angle when boat disappears from view).\n\nThe angle difference subtended at $B$ corresponds to the arc of the wheel visible:\n\n$$\\text{Angle difference} = 90° - (13.67° - 7.41°) \\times ... $$\n\nThe angle swept at the centre of the wheel: the wheel subtends an arc corresponding to the angle at $B$ from $\\theta$ to $\\alpha$: $\\alpha - \\theta = 13.669...° - 7.406...° $. The total angle of the wheel arc visible is $90° - 13.669...° + 90° - 7.406...°$... \n\nUsing the official working: angle difference $= 90° - (13.669...° - 7.406...°)$ does not apply directly. The arc of the wheel during which the boat is visible corresponds to angular difference at the wheel centre $= 83.737...°$.\n\n**Step 2** *(1 mark)*\n\nTime $= \\dfrac{83.737...}{360} \\times 30 = 6.978... \\approx 7$ minutes (to the nearest minute)."
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nNote that $f(t) = 0$ for $t < 20$ and $t > 70$, so the graph lies along the $t$-axis outside $[20, 70]$.\n\nAt $t = 20$: $f(20) = 0$. At $t = 45$: $f(45) = \\dfrac{1}{625}(45-20) = \\dfrac{25}{625} = \\dfrac{1}{25}$. At $t = 70$: $f(70) = \\dfrac{1}{625}(70-70) = 0$.\n\n**Step 2** *(1 mark)*\n\nThe graph rises linearly from $(20, 0)$ to $(45, \\frac{1}{25})$ on the first piece, then falls linearly from $(45, \\frac{1}{25})$ to $(70, 0)$ on the second piece.\n\n**Step 3** *(1 mark)*\n\nSketch: a triangle (tent) shape with vertices at $(20, 0)$, $(45, \\frac{1}{25})$, and $(70, 0)$, resting on the $t$-axis. The peak is at $t = 45$, $y = \\frac{1}{25}$. The function is zero (along the axis) for $t \\leq 20$ and $t \\geq 70$."
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\n$$\\Pr(25 \\leq T \\leq 55) = \\int_{25}^{45} \\dfrac{1}{625}(t-20)\\,dt + \\int_{45}^{55} \\dfrac{1}{625}(70-t)\\,dt$$\n\n**Step 2** *(1 mark)*\n\nFirst integral: $\\dfrac{1}{625}\\left[\\dfrac{(t-20)^2}{2}\\right]_{25}^{45} = \\dfrac{1}{625}\\left(\\dfrac{625}{2} - \\dfrac{25}{2}\\right) = \\dfrac{1}{625} \\times 300 = \\dfrac{300}{625}$\n\nSecond integral: $\\dfrac{1}{625}\\left[70t - \\dfrac{t^2}{2}\\right]_{45}^{55} = \\dfrac{1}{625}\\left[(3850 - \\dfrac{3025}{2}) - (3150 - \\dfrac{2025}{2})\\right] = \\dfrac{1}{625}\\left[700 - 500\\right] = \\dfrac{200}{625}$\n\nWait — using the antiderivative of $(70-t)$: $\\left[70t - \\dfrac{t^2}{2}\\right]_{45}^{55} = (3850 - 1512.5) - (3150 - 1012.5) = 2337.5 - 2137.5 = 200$.\n\nTotal: $\\dfrac{300 + 200}{625} = \\dfrac{500}{625} = \\dfrac{4}{5}$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\n$$\\Pr(T \\leq 25 \\mid T \\leq 55) = \\dfrac{\\Pr(T \\leq 25)}{\\Pr(T \\leq 55)}$$\n\nFind $\\Pr(T \\leq 25) = \\int_{20}^{25} \\dfrac{1}{625}(t-20)\\,dt = \\dfrac{1}{625}\\left[\\dfrac{(t-20)^2}{2}\\right]_{20}^{25} = \\dfrac{1}{625} \\times \\dfrac{25}{2} = \\dfrac{25}{1250} = \\dfrac{1}{50}$\n\n**Step 2** *(1 mark)*\n\nFind $\\Pr(T \\leq 55) = \\int_{20}^{45} \\dfrac{1}{625}(t-20)\\,dt + \\int_{45}^{55} \\dfrac{1}{625}(70-t)\\,dt = \\dfrac{300}{625} + \\dfrac{200}{625} = \\dfrac{500}{625} + ... $\n\nActually $\\Pr(T \\leq 55)$: from $20$ to $45$: $\\dfrac{1}{625}\\left[\\dfrac{(t-20)^2}{2}\\right]_{20}^{45} = \\dfrac{625/2}{625} = \\dfrac{1}{2}$. From $45$ to $55$: $\\dfrac{200}{625}$.\n\nSo $\\Pr(T \\leq 55) = \\dfrac{1}{2} + \\dfrac{200}{625} = \\dfrac{312.5 + 200}{625} = \\dfrac{512.5}{625} = \\dfrac{41}{50}$.\n\n$$\\Pr(T \\leq 25 \\mid T \\leq 55) = \\dfrac{1/50}{41/50} = \\dfrac{1}{41}$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nFind $a$ such that $\\Pr(T \\geq a) = 0.7$. Since the total area is $1$, $\\Pr(T \\leq a) = 0.3$.\n\nSince $\\Pr(T \\leq 45) = \\dfrac{1}{2} = 0.5 > 0.3$, the value $a$ lies in $[20, 45)$:\n\n$$\\int_{20}^{a} \\dfrac{1}{625}(t-20)\\,dt = 0.3$$\n\n**Step 2** *(1 mark)*\n\n$$\\dfrac{1}{625} \\cdot \\dfrac{(a-20)^2}{2} = 0.3$$\n\n$$(a-20)^2 = 375$$\n\n$$a - 20 = \\sqrt{375} = 5\\sqrt{15}$$\n\n$$a = 20 + 5\\sqrt{15} \\approx 39.3649$$\n\nSo $a \\approx 39.3649$, correct to four decimal places."
+    },
+    {
+      "questionNumber": 3,
+      "part": "e.i",
+      "content": "**Step 1** *(1 mark)*\n\nLet $X$ be the number of days (out of 7) on which Jennifer spends more than 50 minutes. Then $X \\sim \\text{Bi}\\!\\left(7, \\dfrac{8}{25}\\right)$.\n\n$$\\Pr(X > 3) = 1 - \\Pr(X \\leq 3)$$\n\n**Step 2** *(1 mark)*\n\nComputing: $\\Pr(X > 3) \\approx 0.1534$, correct to four decimal places."
+    },
+    {
+      "questionNumber": 3,
+      "part": "e.ii",
+      "content": "**Step 1** *(1 mark)*\n\n$$\\Pr(X \\geq 2 \\mid X \\geq 1) = \\dfrac{\\Pr(X \\geq 2)}{\\Pr(X \\geq 1)}$$\n\n$\\Pr(X = 0) = \\left(\\dfrac{17}{25}\\right)^7 \\approx 0.06723$\n\n$\\Pr(X = 1) = 7 \\times \\dfrac{8}{25} \\times \\left(\\dfrac{17}{25}\\right)^6 \\approx 0.23000$\n\n$\\Pr(X \\geq 1) = 1 - \\Pr(X=0) \\approx 0.93277$\n\n$\\Pr(X \\geq 2) = 1 - \\Pr(X=0) - \\Pr(X=1) \\approx 0.71134$\n\n**Step 2** *(1 mark)*\n\n$$\\Pr(X \\geq 2 \\mid X \\geq 1) = \\dfrac{0.7113...}{0.9328...} \\approx 0.7626$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "f",
+      "content": "**Step 1** *(1 mark)*\n\nLet $X \\sim \\text{Bi}(7, p)$. The probability of exactly 2 or exactly 3 days out of 7:\n\n$$q = \\binom{7}{2}p^2(1-p)^5 + \\binom{7}{3}p^3(1-p)^4$$\n\n**Step 2** *(1 mark)*\n\n$$q = 21p^2(1-p)^5 + 35p^3(1-p)^4 = 7p^2(1-p)^4\\big(3(1-p) + 5p\\big) = 7p^2(1-p)^4(2p+3)$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "g.i",
+      "content": "**Step 1** *(1 mark)*\n\nTo find the maximum, solve $\\dfrac{dq}{dp} = 0$. Using $q = 7p^2(1-p)^4(2p+3)$:\n\n$$q'(p) = 0$$\n\nSolving numerically: the maximum occurs at $p \\approx 0.3539$.\n\n**Step 2** *(1 mark)*\n\nThe maximum value of $q$ is $q \\approx 0.5665$, correct to four decimal places."
+    },
+    {
+      "questionNumber": 3,
+      "part": "g.ii",
+      "content": "**Step 1** *(1 mark)*\n\nFrom part g.i., the maximum of $q$ occurs at $p \\approx 0.3539$, meaning $\\Pr(T > d) \\approx 0.3539$, so $\\Pr(T \\leq d) \\approx 0.6461$.\n\nSince $\\Pr(T \\leq 45) = 0.5$ and $\\Pr(T \\leq 70) = 1$, the value $d$ lies in $[45, 70]$:\n\n$$\\int_{45}^{d} \\dfrac{1}{625}(70-t)\\,dt = 0.6461 - 0.5 = 0.1461$$\n\nSolving: $\\dfrac{1}{625}\\left[70t - \\dfrac{t^2}{2}\\right]_{45}^{d} = 0.1461$\n\nThis gives $d \\approx 48.9676...$, so $d \\approx 49$ minutes to the nearest minute."
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nThe graph of $y = 2^x$ is mapped to $f(x) = 2^{x+1} - 2$ by a translation. The transformation $T$ maps $y = 2^x$ to $y' - d = 2^{(x'-c)}$, giving $y' = 2^{x'-c} + d$.\n\nComparing with $f(x) = 2^{x+1} - 2$: $-c = 1 \\Rightarrow c = -1$ and $d = -2$.\n\n**Step 2** *(1 mark)*\n\n$c = -1$, $d = -2$."
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nTo find $f^{-1}$, swap $x$ and $y$ in $y = 2^{x+1} - 2$:\n\n$$x = 2^{y+1} - 2 \\Rightarrow x + 2 = 2^{y+1} \\Rightarrow \\log_2(x+2) = y + 1 \\Rightarrow y = \\log_2(x+2) - 1$$\n\n**Step 2** *(1 mark)*\n\nThe domain of $f^{-1}$ is the range of $f$. Since $f: R \\to R$ and $f(x) = 2^{x+1} - 2 > -2$ for all $x$, the range of $f$ is $(-2, \\infty)$.\n\n$$f^{-1}: (-2, \\infty) \\to R, \\quad f^{-1}(x) = \\log_2(x+2) - 1$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nFind intersections of $f$ and $f^{-1}$: since $f$ and $f^{-1}$ are inverses, they intersect on the line $y = x$. Solve $f(x) = x$:\n\n$$2^{x+1} - 2 = x \\Rightarrow x = -1 \\text{ or } x = 0$$\n\nIntersection points: $(-1, -1)$ and $(0, 0)$.\n\n**Step 2** *(1 mark)*\n\nOn $[-1, 0]$, $f^{-1}(x) \\geq f(x)$ (since $f^{-1}$ is above $f$ in this region):\n\n$$\\text{Area} = 2\\int_{-1}^{0} (f^{-1}(x) - f(x))\\,dx$$\n\nBy symmetry about $y = x$, the area equals $2\\displaystyle\\int_{-1}^{0}(f^{-1}(x) - x)\\,dx$.\n\n**Step 3** *(1 mark)*\n\n$$\\int_{-1}^{0} (\\log_2(x+2) - 1 - x)\\,dx = \\int_{-1}^{0} \\dfrac{\\log_e(x+2)}{\\log_e(2)}\\,dx - \\int_{-1}^{0}(1+x)\\,dx$$\n\nThe total area $= \\dfrac{-2}{\\log_e(2)} + 3 = \\dfrac{-2}{\\log_e(2)} + 3$. \n\nFrom the official solution: Area $= \\dfrac{-2}{\\log_e(2)} + 3$."
+    },
+    {
+      "questionNumber": 4,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\n$f'(x) = 2^{x+1} \\log_e(2)$, so $f'(0) = 2^1 \\log_e(2) = 2\\log_e(2)$.\n\n**Step 2** *(1 mark)*\n\nFor $f^{-1}$, the gradient at $(0, 0)$ (which corresponds to $x = 0$ on $f^{-1}$, noting $f^{-1}(0) = \\log_2(2) - 1 = 0$):\n\n$$(f^{-1})'(x) = \\dfrac{1}{(x+2)\\log_e(2)}, \\quad (f^{-1})'(0) = \\dfrac{1}{2\\log_e(2)}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "e",
+      "content": "**Step 1** *(1 mark)*\n\nSet $g_k(x) = f(x)$: $2e^{kx} - 2 = 2^{x+1} - 2$, so $2e^{kx} = 2^{x+1} = 2 \\cdot 2^x = 2e^{x\\log_e 2}$.\n\nThus $k = \\log_e(2)$."
+    },
+    {
+      "questionNumber": 4,
+      "part": "f",
+      "content": "**Step 1** *(1 mark)*\n\nFind the inverse of $g_k(x) = 2e^{kx} - 2$. Swap $x$ and $y$:\n\n$$x = 2e^{ky} - 2 \\Rightarrow x + 2 = 2e^{ky} \\Rightarrow e^{ky} = \\dfrac{x+2}{2} \\Rightarrow ky = \\log_e\\!\\left(\\dfrac{x+2}{2}\\right)$$\n\n$$g_k^{-1}(x) = \\dfrac{1}{k}\\log_e\\!\\left(\\dfrac{x+2}{2}\\right)$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "g.i",
+      "content": "**Step 1** *(1 mark)*\n\n$g_1(x) = 2e^x - 2$ and $g_k(x) = 2e^{kx} - 2$. Replacing $x$ with $kx$ corresponds to a dilation of factor $\\dfrac{1}{k}$ from the $y$-axis.\n\nThe transformation that maps the graph of $g_1$ onto $g_k$ is a **dilation of factor $\\dfrac{1}{k}$ from the $y$-axis**."
+    },
+    {
+      "questionNumber": 4,
+      "part": "g.ii",
+      "content": "**Step 1** *(1 mark)*\n\n$g_1^{-1}(x) = \\log_e\\!\\left(\\dfrac{x+2}{2}\\right)$ and $g_k^{-1}(x) = \\dfrac{1}{k}\\log_e\\!\\left(\\dfrac{x+2}{2}\\right)$.\n\nThe inverse functions are related by multiplying the output by $\\dfrac{1}{k}$, which is a dilation of factor $\\dfrac{1}{k}$ from the $x$-axis.\n\nThe transformation that maps the graph of $g_1^{-1}$ onto $g_k^{-1}$ is a **dilation of factor $\\dfrac{1}{k}$ from the $x$-axis**."
+    },
+    {
+      "questionNumber": 4,
+      "part": "h",
+      "content": "**Step 1** *(1 mark)*\n\nAt the origin, $g_k'(0) = 2k$ (tangent $L_1$: $y = 2kx$) and $(g_k^{-1})'(0) = \\dfrac{1}{2k}$ (tangent $L_2$: $y = \\dfrac{x}{2k}$).\n\n**Step 2** *(1 mark)*\n\nFor the angle between $L_1$ and $L_2$ to be $30°$, use $\\tan(30°) = \\dfrac{1}{\\sqrt{3}}$:\n\n$$\\tan(\\text{angle}) = \\left|\\dfrac{m_1 - m_2}{1 + m_1 m_2}\\right| = \\left|\\dfrac{2k - \\frac{1}{2k}}{1 + 2k \\cdot \\frac{1}{2k}}\\right| = \\left|\\dfrac{2k - \\frac{1}{2k}}{2}\\right| = \\dfrac{1}{\\sqrt{3}}$$\n\n$$2k - \\dfrac{1}{2k} = \\dfrac{2}{\\sqrt{3}} \\quad (k > 0)$$\n\nMultiply by $2k$: $4k^2 - 1 = \\dfrac{4k}{\\sqrt{3}}$, so $4k^2 - \\dfrac{4k}{\\sqrt{3}} - 1 = 0$.\n\nSolving: $k = \\dfrac{\\sqrt{3}}{2}$ or $k = \\dfrac{1}{2\\sqrt{3}}$."
+    },
+    {
+      "questionNumber": 4,
+      "part": "i.i",
+      "content": "**Step 1** *(1 mark)*\n\nFor $g_k(x) = g_k^{-1}(x)$ to have exactly one solution, $g_k$ and $g_k^{-1}$ must be tangent to the line $y = x$ (i.e. they intersect $y = x$ at exactly one point). This happens when the tangent at the origin has gradient $1$, i.e. $g_k'(0) = 2k = 1$, so $k = \\dfrac{1}{2}$.\n\n**Step 2** *(1 mark)*\n\n$p = \\dfrac{1}{2}$."
+    },
+    {
+      "questionNumber": 4,
+      "part": "i.ii",
+      "content": "**Step 1** *(1 mark)*\n\nAs $k \\to \\infty$ (with $k > p = \\dfrac{1}{2}$), the graphs of $g_k$ and $g_k^{-1}$ intersect in the third quadrant. The bounded area approaches the area between $y = x$ and the asymptotes of $g_k^{-1}$ (vertical asymptote $x = -2$) and $g_k$ (horizontal asymptote $y = -2$) on the relevant domain.\n\nThis limiting area equals $\\displaystyle\\int_{-2}^{0}(x - f(x))\\,dx = 4$, so the smallest value of $b$ such that $A(k) < b$ is $b = 4$."
+    }
+  ]
+}

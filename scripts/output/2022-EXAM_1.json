@@ -1,0 +1,226 @@
+{
+  "year": 2022,
+  "examType": "EXAM_1",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "marks": 1,
+      "content": "Let $y = 3xe^{2x}$.\n\nFind $\\dfrac{dy}{dx}$.",
+      "topic": "Calculus",
+      "subtopic": "Product Rule",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "marks": 2,
+      "content": "Find and simplify the rule of $f'(x)$, where $f : R \\to R$, $f(x) = \\dfrac{\\cos(x)}{e^{x}}$.",
+      "topic": "Calculus",
+      "subtopic": "Quotient Rule",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "marks": 1,
+      "content": "Let $g : \\left(\\dfrac{3}{2}, \\infty\\right) \\to R$, $g(x) = \\dfrac{3}{2x - 3}$.\n\nFind the rule for an antiderivative of $g(x)$.",
+      "topic": "Calculus",
+      "subtopic": "Antidifferentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "marks": 3,
+      "content": "Evaluate $\\int_0^1 f(x)(2f(x) - 3)\\,dx$, where $\\int_0^1 [f(x)]^2\\,dx = \\dfrac{1}{5}$ and $\\int_0^1 f(x)\\,dx = \\dfrac{1}{3}$.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "marks": 3,
+      "content": "Consider the system of equations\n\n$kx - 5y = 4 + k$\n\n$3x + (k + 8)y = -1$\n\nDetermine the value of $k$ for which the system of equations above has an infinite number of solutions.",
+      "topic": "Algebra",
+      "subtopic": "Simultaneous Equations",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "marks": 2,
+      "content": "A card is drawn from a deck of red and blue cards. After verifying the colour, the card is replaced in the deck. This is performed four times.\n\nEach card has a probability of $\\dfrac{1}{2}$ of being red and a probability of $\\dfrac{1}{2}$ of being blue. The colour of any drawn card is independent of the colour of any other drawn card.\n\nLet $X$ be a random variable describing the number of blue cards drawn from the deck, in any order.\n\nComplete the table below by giving the probability of each outcome.\n\n| $x$ | 0 | 1 | 2 | 3 | 4 |\n|---|---|---|---|---|---|\n| $\\Pr(X = x)$ | $\\dfrac{1}{16}$ | | $\\dfrac{6}{16}$ | | |",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "marks": 1,
+      "content": "Given that the first card drawn is blue, find the probability that exactly two of the next three cards drawn will be red.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "c",
+      "marks": 2,
+      "content": "The deck is changed so that the probability of a card being red is $\\dfrac{2}{3}$ and the probability of a card being blue is $\\dfrac{1}{3}$.\n\nGiven that the first card drawn is blue, find the probability that exactly two of the next three cards drawn will be red.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "marks": 2,
+      "content": "Solve $10^{3x - 13} = 100$ for $x$.",
+      "topic": "Algebra",
+      "subtopic": "Exponential Equations",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "marks": 3,
+      "content": "Find the maximal domain of $f$, where $f(x) = \\log_e\\left(x^{2} - 2x - 3\\right)$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Logarithmic Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "a",
+      "marks": 2,
+      "content": "The graph of $y = f(x)$, where $f : [0, 2\\pi] \\to R$, $f(x) = 2\\sin(2x) - 1$, is shown below.\n\nOn the axes above, draw the graph of $y = g(x)$, where $g(x)$ is the reflection of $f(x)$ in the horizontal axis.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "EASY",
+      "imageDescription": "Graph of f(x) = 2sin(2x) - 1 on [0, 2pi], showing two complete cycles of a sine curve with amplitude 2 shifted down 1 unit, with axes labelled and y-values ranging from -3 to 3."
+    },
+    {
+      "questionNumber": 6,
+      "part": "b",
+      "marks": 3,
+      "content": "Find all values of $k$ such that $f(k) = 0$ and $k \\in [0, 2\\pi]$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "c.i",
+      "marks": 1,
+      "content": "Let $h : D \\to R$, $h(x) = 2\\sin(2x) - 1$, where $h(x)$ has the same rule as $f(x)$ with a different domain.\n\nThe graph of $y = h(x)$ is translated $a$ units in the positive horizontal direction and $b$ units in the positive vertical direction so that it is mapped onto the graph of $y = g(x)$, where $a, b \\in (0, \\infty)$.\n\nFind the value for $b$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "c.ii",
+      "marks": 1,
+      "content": "Find the smallest positive value for $a$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "c.iii",
+      "marks": 1,
+      "content": "Hence, or otherwise, state the domain, $D$, of $h(x)$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "a.i",
+      "marks": 1,
+      "content": "A tilemaker wants to make square tiles of size 20 cm $\\times$ 20 cm. The front surface of the tiles is to be painted with two different colours that meet the following conditions:\n- Condition 1: Each colour covers half the front surface of a tile.\n- Condition 2: The tiles can be lined up in a single horizontal row so that the colours form a continuous pattern.\n\nFor Type A tiles, the colours are divided using the rule $f(x) = 4\\sin\\left(\\dfrac{\\pi x}{10}\\right) + a$, where $a \\in R$. The corners of each tile have the coordinates $(0, 0)$, $(20, 0)$, $(20, 20)$ and $(0, 20)$.\n\nFind the area of the front surface of each tile.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "EASY",
+      "imageDescription": "Diagram of a single Type A square tile with corners at (0,0), (20,0), (20,20), (0,20), showing the sinusoidal curve dividing two coloured regions."
+    },
+    {
+      "questionNumber": 7,
+      "part": "a.ii",
+      "marks": 1,
+      "content": "Find the value of $a$ so that a Type A tile meets Condition 1.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "b",
+      "marks": 3,
+      "content": "Type B tiles are divided using the rule $g(x) = -\\dfrac{1}{100}x^{3} + \\dfrac{3}{10}x^{2} - 2x + 10$.\n\nShow that a Type B tile meets Condition 1.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "HARD",
+      "imageDescription": "Diagram of a single Type B square tile with corners at (0,0), (20,0), (20,20), (0,20), showing the cubic curve dividing two coloured regions."
+    },
+    {
+      "questionNumber": 7,
+      "part": "c",
+      "marks": 2,
+      "content": "Determine the endpoints of $f(x)$ and $g(x)$ on each tile. Hence, use these values to confirm that Type A and Type B tiles can be placed in any order to produce a continuous pattern in order to meet Condition 2.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "a",
+      "marks": 1,
+      "content": "Part of the graph of $y = f(x)$ is shown below. The rule $A(k) = k\\sin(k)$ gives the area bounded by the graph of $f$, the horizontal axis and the line $x = k$.\n\nState the value of $A\\left(\\dfrac{\\pi}{3}\\right)$.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "EASY",
+      "imageDescription": "Graph of y = f(x) showing a curve from (0,0) rising to a maximum and then decreasing, with shaded area A(k) between the curve and the x-axis up to a vertical line x = k. The x-axis shows values 0.5, 1.0, 1.5, 2.0, 2.5."
+    },
+    {
+      "questionNumber": 8,
+      "part": "b",
+      "marks": 2,
+      "content": "Evaluate $f\\left(\\dfrac{\\pi}{3}\\right)$.",
+      "topic": "Calculus",
+      "subtopic": "Fundamental Theorem",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "c",
+      "marks": 2,
+      "content": "Consider the average value of the function $f$ over the interval $x \\in [0, k]$, where $k \\in [0, 2]$.\n\nFind the value of $k$ that results in the maximum average value.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "HARD",
+      "imageDescription": null
+    }
+  ]
+}

@@ -8,72 +8,97 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-// ─── Syllabus Structure ───────────────────────────────────────────────────────
-
 model Topic {
   id          String     @id @default(cuid())
-  name        String     @unique   // e.g. "Calculus"
-  slug        String     @unique   // e.g. "calculus"
+  name        String     @unique
+  createdAt   DateTime   @default(now())
   description String?
   order       Int        @default(0)
-  subtopics   Subtopic[]
+  slug        String     @unique
   questions   Question[]
-  createdAt   DateTime   @default(now())
+  subtopics   Subtopic[]
 }
 
 model Subtopic {
   id        String     @id @default(cuid())
-  name      String                          // e.g. "Differentiation"
-  slug      String                          // e.g. "differentiation"
+  name      String
+  slug      String
   order     Int        @default(0)
   topicId   String
-  topic     Topic      @relation(fields: [topicId], references: [id], onDelete: Cascade)
   questions Question[]
+  topic     Topic      @relation(fields: [topicId], references: [id], onDelete: Cascade)
 
   @@unique([topicId, slug])
 }
 
-// ─── Exams ────────────────────────────────────────────────────────────────────
-
 model Exam {
   id        String     @id @default(cuid())
   year      Int
-  examType  ExamType                        // EXAM_1 or EXAM_2
-  pdfUrl    String?                         // Supabase Storage URL
-  answerUrl String?                         // Answer/solution PDF URL
-  questions Question[]
+  examType  ExamType
   createdAt DateTime   @default(now())
+  answerUrl String?
+  pdfUrl    String?
+  questions Question[]
 
   @@unique([year, examType])
+}
+
+model Question {
+  id             String     @id @default(cuid())
+  examId         String
+  marks          Int
+  createdAt      DateTime   @default(now())
+  content        String
+  difficulty     Difficulty @default(MEDIUM)
+  imageUrl       String?
+  part           String?
+  questionNumber Int
+  subtopicId     String?
+  topicId        String
+  updatedAt      DateTime   @updatedAt
+  attempts       Attempt[]
+  exam           Exam       @relation(fields: [examId], references: [id], onDelete: Cascade)
+  subtopic       Subtopic?  @relation(fields: [subtopicId], references: [id])
+  topic          Topic      @relation(fields: [topicId], references: [id])
+  solution       Solution?
+}
+
+model Solution {
+  id         String   @id @default(cuid())
+  questionId String   @unique
+  content    String
+  imageUrl   String?
+  videoUrl   String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id        String    @id
+  email     String    @unique
+  name      String?
+  createdAt DateTime  @default(now())
+  role      Role      @default(STUDENT)
+  attempts  Attempt[]
+}
+
+model Attempt {
+  id          String        @id @default(cuid())
+  userId      String
+  questionId  String
+  status      AttemptStatus @default(ATTEMPTED)
+  marksEarned Int?
+  createdAt   DateTime      @default(now())
+  question    Question      @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, questionId])
 }
 
 enum ExamType {
   EXAM_1
   EXAM_2
-}
-
-// ─── Questions ────────────────────────────────────────────────────────────────
-
-model Question {
-  id           String     @id @default(cuid())
-  examId       String
-  exam         Exam       @relation(fields: [examId], references: [id], onDelete: Cascade)
-  topicId      String
-  topic        Topic      @relation(fields: [topicId], references: [id])
-  subtopicId   String?
-  subtopic     Subtopic?  @relation(fields: [subtopicId], references: [id])
-
-  questionNumber Int                        // e.g. 3
-  part           String?                   // e.g. "a", "b", "c"
-  marks          Int
-  content        String                    // Question text (may include LaTeX)
-  imageUrl       String?                   // Optional image/diagram URL
-  difficulty     Difficulty @default(MEDIUM)
-
-  solution       Solution?
-  attempts       Attempt[]
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
 }
 
 enum Difficulty {
@@ -82,46 +107,9 @@ enum Difficulty {
   HARD
 }
 
-// ─── Solutions ────────────────────────────────────────────────────────────────
-
-model Solution {
-  id         String   @id @default(cuid())
-  questionId String   @unique
-  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  content    String                        // Solution text / LaTeX
-  imageUrl   String?                       // Optional worked solution image
-  videoUrl   String?                       // Optional YouTube / video link
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-}
-
-// ─── Users & Progress ─────────────────────────────────────────────────────────
-
-model User {
-  id        String    @id                  // Matches Supabase Auth user UUID
-  email     String    @unique
-  name      String?
-  role      Role      @default(STUDENT)
-  attempts  Attempt[]
-  createdAt DateTime  @default(now())
-}
-
 enum Role {
   STUDENT
   ADMIN
-}
-
-model Attempt {
-  id         String        @id @default(cuid())
-  userId     String
-  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  questionId String
-  question   Question      @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  status     AttemptStatus @default(ATTEMPTED)
-  marksEarned Int?
-  createdAt  DateTime      @default(now())
-
-  @@unique([userId, questionId])
 }
 
 enum AttemptStatus {

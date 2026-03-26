@@ -1,0 +1,216 @@
+{
+  "year": 2018,
+  "examType": "EXAM_1",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "marks": 1,
+      "content": "If $y = (-3x^{3} + x^{2} - 64)^{3}$, find $\\dfrac{dy}{dx}$.",
+      "topic": "Calculus",
+      "subtopic": "Chain Rule",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "marks": 2,
+      "content": "Let $f(x) = \\dfrac{e^{x}}{\\cos(x)}$. Evaluate $f'(\\pi)$.",
+      "topic": "Calculus",
+      "subtopic": "Quotient Rule",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "marks": 3,
+      "content": "The derivative with respect to $x$ of the function $f: (1, \\infty) \\to R$ has the rule $f'(x) = \\dfrac{1}{2} - \\dfrac{1}{(2x-2)}$. Given that $f(2) = 0$, find $f(x)$ in terms of $x$.",
+      "topic": "Calculus",
+      "subtopic": "Antidifferentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "marks": 2,
+      "content": "Let $f: [0, 2\\pi] \\to R$, $f(x) = 2\\cos(x) + 1$. Solve the equation $2\\cos(x) + 1 = 0$ for $0 \\leq x \\leq 2\\pi$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "marks": 3,
+      "content": "Let $f: [0, 2\\pi] \\to R$, $f(x) = 2\\cos(x) + 1$. Sketch the graph of the function $f$ on the axes below. Label the endpoints and local minimum point with their coordinates.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Axes provided with x-axis marked at $\\dfrac{\\pi}{3}$, $\\dfrac{2\\pi}{3}$, $\\pi$, $\\dfrac{4\\pi}{3}$, $\\dfrac{5\\pi}{3}$, $2\\pi$ and y-axis from $-2$ to $4$; answer space only"
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "marks": 1,
+      "content": "Let $X$ be a normally distributed random variable with a mean of 6 and a variance of 4. Let $Z$ be a random variable with the standard normal distribution. Find $\\Pr(X > 6)$.",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "marks": 1,
+      "content": "Let $X$ be a normally distributed random variable with a mean of 6 and a variance of 4. Let $Z$ be a random variable with the standard normal distribution. Find $b$ such that $\\Pr(X > 7) = \\Pr(Z < b)$.",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "marks": 3,
+      "content": "Let $f: (2, \\infty) \\to R$, where $f(x) = \\dfrac{1}{(x-2)^{2}}$. State the rule and domain of $f^{-1}$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "a",
+      "marks": 2,
+      "content": "Two boxes each contain four stones that differ only in colour. Box 1 contains four black stones. Box 2 contains two black stones and two white stones. A box is chosen randomly and one stone is drawn randomly from it. Each box is equally likely to be chosen, as is each stone. What is the probability that the randomly drawn stone is black?",
+      "topic": "Probability",
+      "subtopic": "Probability Rules",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "b",
+      "marks": 2,
+      "content": "Two boxes each contain four stones that differ only in colour. Box 1 contains four black stones. Box 2 contains two black stones and two white stones. A box is chosen randomly and one stone is drawn randomly from it. It is not known from which box the stone has been drawn. Given that the stone that is drawn is black, what is the probability that it was drawn from Box 1?",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "a",
+      "marks": 3,
+      "content": "Let $P$ be a point on the straight line $y = 2x - 4$ such that the length of $OP$, the line segment from the origin $O$ to $P$, is a minimum. Find the coordinates of $P$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "b",
+      "marks": 2,
+      "content": "Let $P$ be a point on the straight line $y = 2x - 4$ such that the length of $OP$, the line segment from the origin $O$ to $P$, is a minimum. Find the distance $OP$. Express your answer in the form $\\dfrac{a\\sqrt{b}}{b}$, where $a$ and $b$ are positive integers.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "a",
+      "marks": 1,
+      "content": "Let $f: R \\to R$, $f(x) = x^{2}e^{kx}$, where $k$ is a positive real constant. Show that $f'(x) = xe^{kx}(kx + 2)$.",
+      "topic": "Calculus",
+      "subtopic": "Product Rule",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "b",
+      "marks": 2,
+      "content": "Let $f: R \\to R$, $f(x) = x^{2}e^{kx}$, where $k$ is a positive real constant. Find the value of $k$ for which the graphs of $y = f(x)$ and $y = f'(x)$ have exactly one point of intersection.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "c",
+      "marks": 1,
+      "content": "Let $g(x) = -\\dfrac{2xe^{kx}}{k}$. The diagram below shows sections of the graphs of $f$ and $g$ for $x \\geq 0$. Let $A$ be the area of the region bounded by the curves $y = f(x)$, $y = g(x)$ and the line $x = 2$. Write down a definite integral that gives the value of $A$.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph showing $y = f(x)$ above the $x$-axis and $y = g(x)$ below the $x$-axis for $x \\geq 0$, both passing through the origin, with the bounded shaded region between the two curves and the vertical line $x = 2$"
+    },
+    {
+      "questionNumber": 8,
+      "part": "d",
+      "marks": 3,
+      "content": "Let $g(x) = -\\dfrac{2xe^{kx}}{k}$. Using your result from part a., or otherwise, find the value of $k$ such that $A = \\dfrac{16}{k}$.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": "a.i",
+      "marks": 2,
+      "content": "Consider a part of the graph of $y = x\\sin(x)$. Given that $\\int (x\\sin(x))\\,dx = \\sin(x) - x\\cos(x) + c$, evaluate $\\int_{n\\pi}^{(n+1)\\pi} (x\\sin(x))\\,dx$ when $n$ is a positive even integer or 0. Give your answer in simplest form.",
+      "topic": "Calculus",
+      "subtopic": "Fundamental Theorem",
+      "difficulty": "HARD",
+      "imageDescription": "Graph of $y = x\\sin(x)$ shown for $x$ from $-5\\pi$ to $5\\pi$, displaying oscillating behaviour with increasing amplitude"
+    },
+    {
+      "questionNumber": 9,
+      "part": "a.ii",
+      "marks": 1,
+      "content": "Consider a part of the graph of $y = x\\sin(x)$. Given that $\\int (x\\sin(x))\\,dx = \\sin(x) - x\\cos(x) + c$, evaluate $\\int_{n\\pi}^{(n+1)\\pi} (x\\sin(x))\\,dx$ when $n$ is a positive odd integer. Give your answer in simplest form.",
+      "topic": "Calculus",
+      "subtopic": "Fundamental Theorem",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": "b",
+      "marks": 2,
+      "content": "Find the equation of the tangent to $y = x\\sin(x)$ at the point $\\left(-\\dfrac{5\\pi}{2}, \\dfrac{5\\pi}{2}\\right)$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": "c",
+      "marks": 1,
+      "content": "The translation $T$ maps the graph of $y = x\\sin(x)$ onto the graph of $y = (3\\pi - x)\\sin(x)$, where $T: R^{2} \\to R^{2}$, $T\\left(\\begin{bmatrix} x \\\\ y \\end{bmatrix}\\right) = \\begin{bmatrix} x \\\\ y \\end{bmatrix} + \\begin{bmatrix} a \\\\ 0 \\end{bmatrix}$ and $a$ is a real constant. State the value of $a$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": "d",
+      "marks": 2,
+      "content": "Let $f: [0, 3\\pi] \\to R$, $f(x) = (3\\pi - x)\\sin(x)$ and $g: [0, 3\\pi] \\to R$, $g(x) = (x - 3\\pi)\\sin(x)$. The line $l_{1}$ is the tangent to the graph of $f$ at the point $\\left(\\dfrac{\\pi}{2}, \\dfrac{5\\pi}{2}\\right)$ and the line $l_{2}$ is the tangent to the graph of $g$ at $\\left(\\dfrac{\\pi}{2}, -\\dfrac{5\\pi}{2}\\right)$, as shown in the diagram. Find the total area of the shaded regions shown in the diagram.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": "Graph showing $f$ and $g$ on $[0, 3\\pi]$ with tangent lines $l_{1}$ and $l_{2}$; shaded regions bounded by the tangent lines and the curves are shown"
+    }
+  ]
+}

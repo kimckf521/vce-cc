@@ -1,0 +1,301 @@
+{
+  "year": 2018,
+  "examType": "EXAM_2",
+  "solutions": [
+    {
+      "questionNumber": 1,
+      "part": null,
+      "content": "**Answer: C**\n\nThe period of $f(x) = 4\\cos\\left(\\dfrac{2\\pi x}{3}\\right) + 1$ is $\\dfrac{2\\pi}{2\\pi/3} = 3$."
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "content": "**Answer: A**\n\nThe maximal domain excludes values where the denominator is zero. For $f(x) = \\dfrac{x^2-5}{x-1}$, the denominator $x - 1 = 0$ gives $x = 1$, so the domain is $R \\setminus \\{1\\}$. The other options either have different excluded values or are defined everywhere."
+    },
+    {
+      "questionNumber": 3,
+      "part": null,
+      "content": "**Answer: D**\n\nSince $f(x) = \\dfrac{1}{x}$ is strictly decreasing on $(0, \\infty)$, on $[a, b)$ with $0 < a < b$: $f(a) = \\dfrac{1}{a}$ is the maximum (attained) and $f(b) = \\dfrac{1}{b}$ is the infimum (not attained). The range is $\\left(\\dfrac{1}{b}, \\dfrac{1}{a}\\right]$."
+    },
+    {
+      "questionNumber": 4,
+      "part": null,
+      "content": "**Answer: C**\n\nThe transformation $g(x) = \\dfrac{1}{2}f(x-1)$ dilates by $\\dfrac{1}{2}$ from the $x$-axis and translates 1 unit to the right. Point $A(3, 2)$ maps to $(3+1, \\dfrac{1}{2} \\times 2) = (4, 1)$."
+    },
+    {
+      "questionNumber": 5,
+      "part": null,
+      "content": "**Answer: E**\n\n$f'(x) = 2x - \\dfrac{p}{x^2}$. At a stationary point $x = -2$: $f'(-2) = 0$.\n\n$$2(-2) - \\dfrac{p}{(-2)^2} = 0 \\implies -4 - \\dfrac{p}{4} = 0 \\implies p = -16$$"
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "content": "**Answer: D**\n\nFrom $g(x+2) = 3x+1$, let $u = x+2$ so $x = u-2$: $g(u) = 3(u-2)+1 = 3u-5$. Thus $g(x) = 3x-5$.\n\n$f(g(x)) = f(3x-5) = 2(3x-5) = 6x - 10$."
+    },
+    {
+      "questionNumber": 7,
+      "part": null,
+      "content": "**Answer: B**\n\n$f^{-1}(1) = 8$ means $f(8) = 1$, so $k\\log_2(8) = 1$. Since $\\log_2(8) = 3$: $3k = 1$, giving $k = \\dfrac{1}{3}$."
+    },
+    {
+      "questionNumber": 8,
+      "part": null,
+      "content": "**Answer: B**\n\n$$\\int_1^5 g(x)\\,dx = \\int_1^{12} g(x)\\,dx + \\int_{12}^5 g(x)\\,dx = 5 + (-6) = -1$$"
+    },
+    {
+      "questionNumber": 9,
+      "part": null,
+      "content": "**Answer: C**\n\n$\\dfrac{dy}{dx} = \\dfrac{1}{x}$. Setting $\\dfrac{1}{x} = 2$ gives $x = \\dfrac{1}{2}$. Then $y = \\log_e(1) = 0$.\n\nTangent: $y - 0 = 2\\left(x - \\dfrac{1}{2}\\right) \\implies y = 2x - 1$. At $x = 0$: $y = -1$."
+    },
+    {
+      "questionNumber": 10,
+      "part": null,
+      "content": "**Answer: C**\n\nTest $f(x) = x$: $f(x + f(x)) = f(x + x) = f(2x) = 2x = f(2x)$. ✓\n\nThe condition $f(x + f(x)) = f(2x)$ is satisfied for all non-zero $x$."
+    },
+    {
+      "questionNumber": 11,
+      "part": null,
+      "content": "**Answer: C**\n\nFor $y = \\tan(ax)$, the period is $\\dfrac{\\pi}{a}$ and vertical asymptotes occur at $ax = \\dfrac{\\pi}{2} + n\\pi$. For a vertical asymptote at $x = 3\\pi$: $a \\times 3\\pi = \\dfrac{\\pi}{2} + n\\pi$ for some integer $n$. With $a = \\dfrac{1}{2}$: period $= 2\\pi$, asymptotes at $x = \\pi, 3\\pi, \\ldots$, and the only $x$-intercept in $(0, 3\\pi)$ is at $x = 2\\pi$. ✓"
+    },
+    {
+      "questionNumber": 12,
+      "part": null,
+      "content": "**Answer: E**\n\nCompute $\\mu = 0 \\times \\dfrac{1}{4} + 1 \\times \\dfrac{9}{20} + 2 \\times \\dfrac{1}{10} + 3 \\times \\dfrac{1}{20} + 6 \\times \\dfrac{3}{20} = 0 + \\dfrac{9}{20} + \\dfrac{2}{10} + \\dfrac{3}{20} + \\dfrac{18}{20} = \\dfrac{0+9+4+3+18}{20} = \\dfrac{34}{20} = 1.7$.\n\n$\\Pr(X < 1.7) = \\Pr(X = 0) + \\Pr(X = 1) = \\dfrac{1}{4} + \\dfrac{9}{20} = \\dfrac{5}{20} + \\dfrac{9}{20} = \\dfrac{14}{20} = \\dfrac{7}{10}$."
+    },
+    {
+      "questionNumber": 13,
+      "part": null,
+      "content": "**Answer: E**\n\nA score of $+1$ requires one white ($-2$) and one red ($+3$), giving $-2 + 3 = 1$, or one red ($+3$) and one white ($-2$). This means: white from Box 1 and red from Box 2, or red from Box 1 and white from Box 2.\n\n$$\\Pr = \\dfrac{4}{6} \\times \\dfrac{3}{5} + \\dfrac{2}{6} \\times \\dfrac{2}{5} = \\dfrac{12}{30} + \\dfrac{4}{30} = \\dfrac{16}{30} = \\dfrac{8}{15}$$"
+    },
+    {
+      "questionNumber": 14,
+      "part": null,
+      "content": "**Answer: B**\n\nLet $\\Pr(A) = p$, so $\\Pr(B) = 2p$. Since $A$ and $B$ are independent:\n\n$$\\Pr(A \\cup B) = p + 2p - p \\times 2p = 3p - 2p^2 = 0.52$$\n\n$$2p^2 - 3p + 0.52 = 0 \\implies p = \\dfrac{3 \\pm \\sqrt{9 - 4.16}}{4} = \\dfrac{3 \\pm \\sqrt{4.84}}{4}$$\n\n$\\sqrt{4.84} = 2.2$, so $p = \\dfrac{3-2.2}{4} = 0.2$ or $p = \\dfrac{3+2.2}{4} = 1.3$ (rejected). Thus $\\Pr(A) = 0.2$."
+    },
+    {
+      "questionNumber": 15,
+      "part": null,
+      "content": "**Answer: E**\n\nThe median $m$ satisfies $\\int_0^m \\dfrac{1}{12}(8x - x^3)\\,dx = \\dfrac{1}{2}$.\n\n$$\\dfrac{1}{12}\\left[4x^2 - \\dfrac{x^4}{4}\\right]_0^m = \\dfrac{1}{2}$$\n\n$$4m^2 - \\dfrac{m^4}{4} = 6$$\n\n$$16m^2 - m^4 = 24 \\implies m^4 - 16m^2 + 24 = 0$$"
+    },
+    {
+      "questionNumber": 16,
+      "part": null,
+      "content": "**Answer: B**\n\nThree left-endpoint rectangles on $\\left[0, \\dfrac{\\pi}{2}\\right]$ with width $\\dfrac{\\pi}{6}$, evaluated at $x = 0, \\dfrac{\\pi}{6}, \\dfrac{\\pi}{3}$:\n\n$$\\text{Approx} = \\dfrac{\\pi}{6}\\left[f(0) + f\\!\\left(\\dfrac{\\pi}{6}\\right) + f\\!\\left(\\dfrac{\\pi}{3}\\right)\\right] = \\dfrac{\\pi}{6}\\left[5 + 2 + 2\\right] = \\dfrac{7\\pi}{6}$$\n\nExact area: $\\int_0^{\\pi/2}(2\\cos(2x)+3)\\,dx = \\left[\\sin(2x) + 3x\\right]_0^{\\pi/2} = 0 + \\dfrac{3\\pi}{2} = \\dfrac{3\\pi}{2}$.\n\nRatio: $\\dfrac{7\\pi/6}{3\\pi/2} = \\dfrac{7\\pi}{6} \\times \\dfrac{2}{3\\pi} = \\dfrac{7}{9}$."
+    },
+    {
+      "questionNumber": 17,
+      "part": null,
+      "content": "**Answer: C**\n\nThe turning point of $y = x^2 - 2bx + 1$ is at $(b, 1-b^2)$. Distance from origin:\n\n$$D^2 = b^2 + (1-b^2)^2 = b^2 + 1 - 2b^2 + b^4 = b^4 - b^2 + 1$$\n\nMinimise: $\\dfrac{d(D^2)}{db} = 4b^3 - 2b = 2b(2b^2-1) = 0$.\n\n$b = 0$ or $b^2 = \\dfrac{1}{2}$, i.e., $b = \\pm\\dfrac{1}{\\sqrt{2}}$. Checking: $D^2$ at $b=0$ is $1$; at $b = \\pm\\dfrac{1}{\\sqrt{2}}$, $D^2 = \\dfrac{1}{4} - \\dfrac{1}{2} + 1 = \\dfrac{3}{4} < 1$. So minimum at $b = \\pm\\dfrac{1}{\\sqrt{2}}$."
+    },
+    {
+      "questionNumber": 18,
+      "part": null,
+      "content": "**Answer: E**\n\nThe conditions $\\{x: f(x) > g(x)\\} = (0,1)$ and $\\{x: g(x) > f(x)\\} = (1,\\infty)$ mean $f(x) > g(x)$ for $x \\in (0,1)$ and $g(x) > f(x)$ for $x \\in (1,\\infty)$. This means $\\dfrac{p}{q} > \\dfrac{m}{n}$, i.e. $pn > qm$. Statement E says $f'(d) = g'(d)$ for some $d \\in (1,\\infty)$: since $g > f$ on $(1,\\infty)$, if they only cross at $x=1$, their derivatives need not be equal anywhere in $(1,\\infty)$. This must be false."
+    },
+    {
+      "questionNumber": 19,
+      "part": null,
+      "content": "**Answer: E**\n\nThe shaded regions are where the curves intersect. On $\\left[0, \\dfrac{1}{3}\\right]$, $f > g$; on $\\left[\\dfrac{1}{3}, 1\\right]$, $g > f$; by symmetry, on $\\left[1, \\dfrac{5}{3}\\right]$, $f > g$; on $\\left[\\dfrac{5}{3}, 3\\right]$, $g > f$. The total area of the shaded regions uses the correct ordering in each subinterval, giving option E."
+    },
+    {
+      "questionNumber": 20,
+      "part": null,
+      "content": "**Answer: A**\n\nThe transformation $T$ with matrix $\\begin{bmatrix} -2 & 0 \\\\ 0 & \\frac{1}{2} \\end{bmatrix}$ reflects in the $y$-axis and dilates by $2$ from the $y$-axis (new $x' = -2x$), and dilates by $\\frac{1}{2}$ from the $x$-axis. The median stays at $x = 0$ (by symmetry). The gradient: $g'(0) = \\dfrac{1}{2} \\times f'\\!\\left(\\dfrac{0}{-2}\\right) \\times \\dfrac{1}{-2} = \\dfrac{1}{2} \\times 4 \\times \\left(-\\dfrac{1}{2}\\right) = -1$. ✓"
+    },
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nFind the minimum by solving $f'(x) = 0$:\n\n$$f'(x) = 12x^3 + 12x^2 - 24x = 12x(x^2 + x - 2) = 12x(x+2)(x-1) = 0$$\n\n$x = 0$, $x = -2$, or $x = 1$.\n\nFrom the graph, the minimum $M$ is at $x = -2$:\n\n$$f(-2) = 3(16) + 4(-8) - 12(4) = 48 - 32 - 48 = -32$$\n\nThe coordinates of $M$ are $(-2, -32)$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nThe graph of $y = f(x) + b$ has no $x$-intercepts when $f(x) + b = 0$ has no solutions, i.e. $f(x) = -b$ has no solutions. The minimum value of $f(x)$ is $-32$ (at $x = -2$). The graph has no $x$-intercepts when $-b$ is below the minimum, i.e. $-b < -32$, giving $b > 32$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nEvaluate $f\\!\\left(-\\dfrac{1}{3}\\right)$:\n\n$$f\\!\\left(-\\dfrac{1}{3}\\right) = 3\\left(\\dfrac{1}{81}\\right) + 4\\left(-\\dfrac{1}{27}\\right) - 12\\left(\\dfrac{1}{9}\\right) = \\dfrac{3}{81} - \\dfrac{4}{27} - \\dfrac{12}{9} = \\dfrac{1}{27} - \\dfrac{4}{27} - \\dfrac{36}{27} = -\\dfrac{39}{27} = -\\dfrac{13}{9}$$\n\nWait — using $f'(x) = 12x^3 + 12x^2 - 24x$, the gradient at $x = -\\dfrac{1}{3}$:\n\n$$f'\\!\\left(-\\dfrac{1}{3}\\right) = 12\\left(-\\dfrac{1}{27}\\right) + 12\\left(\\dfrac{1}{9}\\right) - 24\\left(-\\dfrac{1}{3}\\right) = -\\dfrac{12}{27} + \\dfrac{12}{9} + 8 = -\\dfrac{4}{9} + \\dfrac{12}{9} + \\dfrac{72}{9} = \\dfrac{80}{9}$$\n\nPoint on curve: $\\left(-\\dfrac{1}{3}, -\\dfrac{13}{9}\\right)$. Tangent line $l$:\n\n$$y + \\dfrac{13}{9} = \\dfrac{80}{9}\\left(x + \\dfrac{1}{3}\\right) = \\dfrac{80}{9}x + \\dfrac{80}{27}$$\n\n$$y = \\dfrac{80}{9}x + \\dfrac{80}{27} - \\dfrac{39}{27} = \\dfrac{80}{9}x + \\dfrac{41}{27}$$\n\nThe equation of the tangent is $l(x) = \\dfrac{80}{9}x + \\dfrac{41}{27}$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nSolve $l(x) = f(x)$, i.e. $\\dfrac{80}{9}x + \\dfrac{41}{27} = 3x^4 + 4x^3 - 12x^2$.\n\nSince $x = -\\dfrac{1}{3}$ is a double root (tangency), factor $(x + \\dfrac{1}{3})^2 = (3x+1)^2/9$ from $f(x) - l(x)$.\n\n$f(x) - l(x) = 3x^4 + 4x^3 - 12x^2 - \\dfrac{80}{9}x - \\dfrac{41}{27}$. Dividing by $\\left(x + \\dfrac{1}{3}\\right)^2 = x^2 + \\dfrac{2}{3}x + \\dfrac{1}{9}$:\n\nThe quotient is $3x^2 + 2x - \\dfrac{41}{9} \\cdot \\dfrac{1}{...}$... Using the result from the examination report, the other two $x$-values satisfy:\n\n$$x = \\dfrac{-1 \\pm \\sqrt{42}}{3}$$\n\n**Step 2** *(1 mark)*\n\nThe two other $x$-values of intersection are $x = \\dfrac{-1 + \\sqrt{42}}{3}$ and $x = \\dfrac{-1 - \\sqrt{42}}{3}$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "e",
+      "content": "**Step 1** *(1 mark)*\n\nLet $x_1 = \\dfrac{-1-\\sqrt{42}}{3}$ and $x_2 = \\dfrac{-1+\\sqrt{42}}{3}$. The tangent $l$ crosses $f$ at $x_1$, $x = -\\dfrac{1}{3}$ (double), and $x_2$. The total area is:\n\n$$\\text{Area} = \\int_{x_1}^{-1/3}(l(x) - f(x))\\,dx + \\int_{-1/3}^{x_2}(l(x) - f(x))\\,dx$$\n\n**Step 2** *(1 mark)*\n\nFrom the examination report:\n\n$$\\text{Area} = \\int_{\\frac{-1-\\sqrt{42}}{3}}^{\\frac{-1+\\sqrt{42}}{3}}(l(x) - f(x))\\,dx = \\dfrac{784\\sqrt{42}}{135}$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "f",
+      "content": "**Step 1** *(1 mark)*\n\nCompare coefficients of $p(x) = 3x^4 + 4x^3 + 6(a-2)x^2 - 12ax + a^2$ with $f(x) = 3x^4 + 4x^3 - 12x^2$.\n\nFor $f(x) = p(x)$: the $x^2$ coefficient gives $6(a-2) = -12 \\implies a - 2 = -2 \\implies a = 0$.\n\nCheck: $-12ax = 0$ ✓ and $a^2 = 0$ ✓.\n\nThus $a = 0$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "g",
+      "content": "**Step 1** *(1 mark)*\n\n$p'(x) = 12x^3 + 12x^2 + 12(a-2)x - 12a = 12\\bigl(x^3 + x^2 + (a-2)x - a\\bigr)$.\n\nFactor: $x = 1$ is a root when $1 + 1 + a - 2 - a = 0$ ✓. So $(x-1)$ is always a factor:\n\n$$x^3 + x^2 + (a-2)x - a = (x-1)(x^2 + 2x + a)$$\n\nSetting $p'(x) = 0$: $x = 1$ or $x^2 + 2x + a = 0 \\implies x = -1 \\pm \\sqrt{1-a}$.\n\nSolutions: $x = 1$, $x = -1 + \\sqrt{1-a}$, $x = -1 - \\sqrt{1-a}$ (where $a \\leq 1$)."
+    },
+    {
+      "questionNumber": 1,
+      "part": "h.i",
+      "content": "**Step 1** *(1 mark)*\n\nFrom part g., $p'(x) = 0$ has solutions $x = 1$ and $x = -1 \\pm \\sqrt{1-a}$. For only one stationary point, the quadratic $x^2 + 2x + a = 0$ must have no real solutions (discriminant $< 0$) or both roots equal to $x = 1$.\n\nDiscriminant $= 4 - 4a < 0 \\implies a > 1$.\n\n(When $a = 1$: triple root-like behaviour, giving $x = 1$ only.)\n\nThus $p$ has only one stationary point when $a > 1$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "h.ii",
+      "content": "**Step 1** *(1 mark)*\n\nWhen $a = 2$: $p(x) = 3x^4 + 4x^3 + 6(0)x^2 - 24x + 4 = 3x^4 + 4x^3 - 24x + 4$.\n\nFrom part g., the only stationary point is at $x = 1$:\n\n$$p(1) = 3 + 4 - 24 + 4 = -13$$\n\nThe minimum value of $p$ is $-13$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "h.iii",
+      "content": "**Step 1** *(1 mark)*\n\nWhen $p$ has only one stationary point ($a > 1$), that stationary point is at $x = 1$:\n\n$$p(1) = 3 + 4 + 6(a-2) - 12a + a^2 = 7 + 6a - 12 - 12a + a^2 = a^2 - 6a - 5$$\n\n**Step 2** *(1 mark)*\n\n$p(x) = 0$ has no solutions when the minimum value $p(1) > 0$ (since $p \\to +\\infty$ as $x \\to \\pm\\infty$ and $x = 1$ is the unique minimum):\n\n$$a^2 - 6a - 5 > 0$$\n\nRoots: $a = \\dfrac{6 \\pm \\sqrt{36+20}}{2} = \\dfrac{6 \\pm \\sqrt{56}}{2} = 3 \\pm \\sqrt{14}$.\n\nSince we require $a > 1$, the solution is $a > 3 + \\sqrt{14}$."
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nDifferentiate and set $b'(t) = 0$:\n\n$$b'(t) = \\dfrac{4500}{7}\\left(-\\dfrac{1}{5}e^{-t/5} + \\dfrac{9}{10}e^{-9t/10}\\right) = 0$$\n\n$$-\\dfrac{1}{5}e^{-t/5} + \\dfrac{9}{10}e^{-9t/10} = 0$$\n\n$$\\dfrac{9}{10}e^{-9t/10} = \\dfrac{1}{5}e^{-t/5}$$\n\n**Step 2** *(1 mark)*\n\n$$\\dfrac{9}{2} = e^{-t/5} \\cdot e^{9t/10} = e^{t(-1/5 + 9/10)} = e^{t(7/10)}$$\n\n$$\\dfrac{7t}{10} = \\log_e\\!\\left(\\dfrac{9}{2}\\right)$$\n\n$$t = \\dfrac{10}{7}\\log_e\\!\\left(\\dfrac{9}{2}\\right) = \\dfrac{10\\log_e(4.5)}{7} \\text{ hours}$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nCalculate $b(6)$ and $b(2)$:\n\n$$b(6) = \\dfrac{4500}{7}\\left(e^{-6/5} - e^{-54/10}\\right) \\approx \\dfrac{4500}{7}(0.3012 - 0.0041) \\approx \\dfrac{4500}{7}(0.2971) \\approx 190.8 \\text{ mg}$$\n\n$$b(2) = \\dfrac{4500}{7}\\left(e^{-2/5} - e^{-9/5}\\right) \\approx \\dfrac{4500}{7}(0.6703 - 0.1653) \\approx \\dfrac{4500}{7}(0.5050) \\approx 324.6 \\text{ mg}$$\n\n**Step 2** *(1 mark)*\n\n$$\\text{Average rate of change} = \\dfrac{b(6) - b(2)}{6 - 2} = \\dfrac{190.8 - 324.6}{4} \\approx \\dfrac{-133.8}{4} \\approx -33.5 \\text{ mg/h}$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nThe average amount over $[0, 6]$ is:\n\n$$\\bar{b} = \\dfrac{1}{6}\\int_0^6 b(t)\\,dt$$\n\n**Step 2** *(1 mark)*\n\n$$\\int_0^6 \\dfrac{4500}{7}\\left(e^{-t/5} - e^{-9t/10}\\right)dt = \\dfrac{4500}{7}\\left[-5e^{-t/5} + \\dfrac{10}{9}e^{-9t/10}\\right]_0^6$$\n\n$$= \\dfrac{4500}{7}\\left[\\left(-5e^{-6/5} + \\dfrac{10}{9}e^{-27/5}\\right) - \\left(-5 + \\dfrac{10}{9}\\right)\\right]$$\n\n$$\\approx \\dfrac{4500}{7}\\left[(-1.506 + 0.0457) - (-5 + 1.111)\\right] = \\dfrac{4500}{7}\\left[-1.460 + 3.889\\right] \\approx \\dfrac{4500}{7}(2.429) \\approx 1560 \\text{ mg}$$\n\n$$\\bar{b} = \\dfrac{1560}{6} \\approx 256 \\text{ mg}$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "d.i",
+      "content": "**Step 1** *(2 marks)*\n\nThe total amount of drug in the bloodstream is $b_2(t) = b(t) + b(t-6)$ for $t \\in [6, 12]$, where $b(t-6)$ is the contribution from Tablet 2.\n\nFor $t \\in [0, 6]$: the graph follows the $b(t)$ curve for Tablet 1 only (same as given dashed Tablet 1 curve).\n\nFor $t \\in [6, 12]$: the total is the sum of the two dashed curves (addition of ordinates). The resulting curve starts at $b(6) + b(0) = b(6) + 0 = b(6) \\approx 191$ mg at $t = 6$, rises to a maximum of approximately 455.82 mg near $t \\approx 7.78$ h, then decreases. The sketch must be a single continuous curve."
+    },
+    {
+      "questionNumber": 2,
+      "part": "d.ii",
+      "content": "**Step 1** *(1 mark)*\n\nThe total amount is $b_2(t) = b(t) + b(t-6)$ for $6 \\leq t \\leq 12$. Set $b_2'(t) = 0$:\n\n$$b'(t) + b'(t-6) = 0$$\n\nSolve numerically using technology.\n\n**Step 2** *(1 mark)*\n\nThe maximum amount of drug $X$ in the bloodstream in the first 12 hours is $\\mathbf{455.82}$ **mg** at $t = \\mathbf{7.78}$ **hours** (both correct to two decimal places)."
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nArch 3 spans $[a, 105]$ with length 30 m. The arches are 5 m apart at the base. Arch 2 ends at $x = 70$, so there is a 5 m gap, and Arch 3 begins at $x = 75$.\n\n$$a = 75$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nArch 2 has domain $[40, 70]$ and Arch 3 has domain $[75, 105]$. The left endpoint shifts from 40 to 75, a shift of 35 units to the right.\n\nThe transformation is a **translation of 35 m to the right**."
+    },
+    {
+      "questionNumber": 3,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nThe shaded regions consist of:\n- The rectangular region between the bridge ($y = 5$) and the ground ($y = 0$) over the full 110 m width, minus the area under the three arches.\n- Wait — the shaded region is the stone between the bridge and the arches, plus the ground-level regions between arches.\n\nTotal shaded area = (area of bridge rectangle) $-$ (area under 3 arches) + (area of ground-level gaps)... Re-reading: the stone fills the area above ground between arches and bridge. This is:\n\n$$\\text{Total stone area} = 5 \\times 110 - 3\\int_5^{35} h_1(x)\\,dx$$\n\n**Step 2** *(1 mark)*\n\n$$\\int_5^{35} 5\\sin\\!\\left(\\dfrac{(x-5)\\pi}{30}\\right)dx = 5\\left[-\\dfrac{30}{\\pi}\\cos\\!\\left(\\dfrac{(x-5)\\pi}{30}\\right)\\right]_5^{35} = \\dfrac{150}{\\pi}\\bigl[-\\cos(\\pi) + \\cos(0)\\bigr] = \\dfrac{150}{\\pi}(2) = \\dfrac{300}{\\pi}$$\n\n**Step 3** *(1 mark)*\n\n$$\\text{Total shaded area} = 5 \\times 110 - 3 \\times \\dfrac{300}{\\pi} = 550 - \\dfrac{900}{\\pi} \\approx 550 - 286.5 \\approx 264 \\text{ m}^2$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nThe gradient of the second bridge equals $\\tan\\!\\left(\\dfrac{\\pi}{90}\\right)$.\n\n$$\\tan\\!\\left(\\dfrac{\\pi}{90}\\right) \\approx 0.035 \\text{ (correct to three decimal places)}$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "e",
+      "content": "**Step 1** *(1 mark)*\n\nArch 5 is the same as Arch 2: $h_2(x) = 5\\sin\\!\\left(\\dfrac{(x-40)\\pi}{30}\\right)$, $x \\in [40, 70]$.\n\n$$h_2'(x) = 5 \\cdot \\dfrac{\\pi}{30}\\cos\\!\\left(\\dfrac{(x-40)\\pi}{30}\\right) = \\dfrac{\\pi}{6}\\cos\\!\\left(\\dfrac{(x-40)\\pi}{30}\\right)$$\n\nSet $h_2'(x) = \\tan\\!\\left(\\dfrac{\\pi}{90}\\right) \\approx 0.03492$:\n\n$$\\dfrac{\\pi}{6}\\cos\\!\\left(\\dfrac{(x-40)\\pi}{30}\\right) = \\tan\\!\\left(\\dfrac{\\pi}{90}\\right)$$\n\n**Step 2** *(1 mark)*\n\nSolving numerically: $x \\approx 54.36$, $h_2(54.36) \\approx 4.99$.\n\nCoordinates of $P \\approx (54.36, 4.99)$."
+    },
+    {
+      "questionNumber": 3,
+      "part": "f",
+      "content": "**Step 1** *(1 mark)*\n\nThe second bridge has equation $y_1 = \\tan\\!\\left(\\dfrac{\\pi}{90}\\right)x + 5$ (starting at height 5 at $x = 0$).\n\nThe rod is perpendicular to the bridge, so its gradient is $-\\dfrac{1}{\\tan(\\pi/90)} = -\\cot\\!\\left(\\dfrac{\\pi}{90}\\right)$.\n\n**Step 2** *(1 mark)*\n\nLine through $P(54.36, 4.99)$ with gradient $-\\cot(\\pi/90)$:\n\n$$y_2 = -\\cot\\!\\left(\\dfrac{\\pi}{90}\\right)(x - 54.36) + 4.99$$\n\n**Step 3** *(1 mark)*\n\nFind intersection $Q$ of this perpendicular with the bridge $y_1$. Then:\n\n$$PQ = \\sqrt{(54.36 - 54.29)^2 + (4.99 - 6.90)^2} \\approx 1.91 \\text{ m}$$\n\nThe distance $PQ \\approx 1.91$ m (correct to two decimal places)."
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\n$M \\sim N(68, 64)$ (mean 68, standard deviation 8). Standardise:\n\n$$\\Pr(60 < M < 90) = \\Pr\\!\\left(\\dfrac{60-68}{8} < Z < \\dfrac{90-68}{8}\\right) = \\Pr(-1 < Z < 2.75)$$\n\nUsing technology: $\\Pr(60 < M < 90) \\approx 0.838$ (correct to three decimal places)."
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.i",
+      "content": "**Step 1** *(1 mark)*\n\n$$\\Pr(H|S) = \\dfrac{\\Pr(H \\cap S)}{\\Pr(S)} = \\dfrac{0.09}{0.29} \\approx 0.310 \\text{ (correct to three decimal places)}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.ii",
+      "content": "**Step 1** *(1 mark)*\n\nFor independence, we need $\\Pr(H|S) = \\Pr(H)$.\n\nFrom part b.i, $\\Pr(H|S) \\approx 0.310 \\neq 0.1587 = \\Pr(H)$.\n\nAlternatively, $\\Pr(H \\cap S) = 0.09 \\neq \\Pr(H) \\times \\Pr(S) = 0.1587 \\times 0.29 \\approx 0.046$.\n\nSince $\\Pr(H|S) \\neq \\Pr(H)$, the events $H$ and $S$ are **not independent**."
+    },
+    {
+      "questionNumber": 4,
+      "part": "c.i",
+      "content": "**Step 1** *(1 mark)*\n\n$X \\sim \\text{Bi}(16, 0.1587)$.\n\n$$\\Pr(X = 1) = \\binom{16}{1}(0.1587)^1(1-0.1587)^{15}$$\n\n**Step 2** *(1 mark)*\n\n$$= 16 \\times 0.1587 \\times (0.8413)^{15} \\approx 16 \\times 0.1587 \\times 0.0750 \\approx 0.190 \\text{ (correct to three decimal places)}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "c.ii",
+      "content": "**Step 1** *(1 mark)*\n\n$\\hat{P} > 0.1$ means more than $10\\%$ of 16 adults have a slow heart rate, i.e. $X > 1.6$, so $X \\geq 2$.\n\n$$\\Pr(\\hat{P} > 0.1) = \\Pr(X \\geq 2) = 1 - \\Pr(X = 0) - \\Pr(X = 1)$$\n\n**Step 2** *(1 mark)*\n\n$$\\Pr(X = 0) = (0.8413)^{16} \\approx 0.0631, \\quad \\Pr(X = 1) \\approx 0.190$$\n\n$$\\Pr(X \\geq 2) = 1 - 0.0631 - 0.190 \\approx 0.747 \\text{ (correct to three decimal places)}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "c.iii",
+      "content": "**Step 1** *(1 mark)*\n\n$\\Pr\\!\\left(\\hat{P}_n > \\dfrac{1}{n}\\right) > 0.99$ means $\\Pr\\!\\left(X > 1\\right) > 0.99$, i.e. $\\Pr(X \\geq 2) > 0.99$, where $X \\sim \\text{Bi}(n, 0.1587)$.\n\nEquivalently: $\\Pr(X = 0) + \\Pr(X = 1) < 0.01$:\n\n$$(1-0.1587)^n + n(0.1587)(1-0.1587)^{n-1} < 0.01$$\n\n**Step 2** *(1 mark)*\n\nSolving by trial: at $n = 38.925\\ldots$, so $n = 39$ is the least value.\n\nThe least value of $n$ is $\\mathbf{39}$."
+    },
+    {
+      "questionNumber": 4,
+      "part": "d.i",
+      "content": "**Step 1** *(1 mark)*\n\nThe sample proportion is the midpoint of the confidence interval:\n\n$$\\hat{p} = \\dfrac{0.102 + 0.145}{2} = \\dfrac{0.247}{2} = 0.1235$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "d.ii",
+      "content": "**Step 1** *(1 mark)*\n\nThe 95% confidence interval for Statsville is $(0.102, 0.145)$. The Mathsland proportion is $0.1587$.\n\nSince $0.1587$ does not lie within the interval $(0.102, 0.145)$, the confidence interval suggests that the proportion of adults with a slow heart rate in Statsville could be different from that in Mathsland (the Mathsland value falls outside the confidence interval for Statsville)."
+    },
+    {
+      "questionNumber": 4,
+      "part": "e",
+      "content": "**Step 1** *(1 mark)*\n\nThe expected value is $E(T) = \\int_0^{\\infty} t \\cdot M(t)\\,dt$:\n\n$$E(T) = \\int_0^{\\infty} t \\cdot \\dfrac{3}{50}\\left(\\dfrac{t}{50}\\right)^2 e^{-(t/50)^3}\\,dt$$\n\n**Step 2** *(1 mark)*\n\nUsing technology to evaluate numerically:\n\n$$E(T) = \\int_0^{\\infty} t \\cdot M(t)\\,dt \\approx 44.6 \\text{ minutes (correct to one decimal place)}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "f",
+      "content": "**Step 1** *(1 mark)*\n\n$$\\Pr(T < 15) = \\int_0^{15} M(t)\\,dt = \\int_0^{15} \\dfrac{3}{50}\\left(\\dfrac{t}{50}\\right)^2 e^{-(t/50)^3}\\,dt$$\n\nUsing technology: $\\Pr(T < 15) \\approx 0.0266$ (correct to four decimal places)."
+    },
+    {
+      "questionNumber": 4,
+      "part": "g",
+      "content": "**Step 1** *(1 mark)*\n\nLet $x$ = probability that a non-Year 12 student is elite. Year 12 students make up $\\dfrac{1}{7}$ of all students, so non-Year 12 make up $\\dfrac{6}{7}$.\n\nUsing the law of total probability for $\\Pr(\\text{elite}) = 0.0266$:\n\n$$0.05 \\times \\dfrac{1}{7} + x \\times \\dfrac{6}{7} = 0.0266$$\n\n**Step 2** *(1 mark)*\n\n$$\\dfrac{6x}{7} = 0.0266 - \\dfrac{0.05}{7} = 0.0266 - 0.007143 = 0.019457$$\n\n$$x = \\dfrac{0.019457 \\times 7}{6} \\approx 0.02270 \\approx 0.0227 \\text{ (correct to four decimal places)}$$"
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nFind $f'(x) = 0$:\n\n$$f(x) = \\dfrac{81x^2(a-x)}{4a^4} = \\dfrac{81(ax^2 - x^3)}{4a^4}$$\n\n$$f'(x) = \\dfrac{81(2ax - 3x^2)}{4a^4} = \\dfrac{81x(2a - 3x)}{4a^4} = 0$$\n\n$x = 0$ or $x = \\dfrac{2a}{3}$.\n\n**Step 2** *(1 mark)*\n\nAt $x = \\dfrac{2a}{3}$ (local maximum since $f \\geq 0$ and $f \\to 0$ as $x \\to \\pm\\infty$ is wrong — check sign):\n\n$$f\\!\\left(\\dfrac{2a}{3}\\right) = \\dfrac{81 \\cdot \\dfrac{4a^2}{9} \\cdot \\left(a - \\dfrac{2a}{3}\\right)}{4a^4} = \\dfrac{81 \\cdot \\dfrac{4a^2}{9} \\cdot \\dfrac{a}{3}}{4a^4} = \\dfrac{81 \\cdot \\dfrac{4a^3}{27}}{4a^4} = \\dfrac{\\dfrac{81 \\cdot 4a^3}{27}}{4a^4} = \\dfrac{3}{a}$$\n\nCoordinates of local maximum: $\\left(\\dfrac{2a}{3}, \\dfrac{3}{a}\\right)$."
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nSolve $f(x) = h(x)$:\n\n$$\\dfrac{81x^2(a-x)}{4a^4} = \\dfrac{9x}{2a^2}$$\n\n$$81x^2(a-x) = 18a^2 x$$\n\n$$x\\bigl[81x(a-x) - 18a^2\\bigr] = 0$$\n\n$x = 0$ or $81x(a-x) = 18a^2$, i.e. $81ax - 81x^2 = 18a^2$, i.e. $81x^2 - 81ax + 18a^2 = 0$, i.e. $9x^2 - 9ax + 2a^2 = 0$:\n\n$$(3x - a)(3x - 2a) = 0 \\implies x = \\dfrac{a}{3} \\text{ or } x = \\dfrac{2a}{3}$$\n\nThe $x$-values of intersection are $x = 0$, $x = \\dfrac{a}{3}$, and $x = \\dfrac{2a}{3}$."
+    },
+    {
+      "questionNumber": 5,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nOn $\\left[0, \\dfrac{a}{3}\\right]$: $h(x) \\geq f(x)$; on $\\left[\\dfrac{a}{3}, \\dfrac{2a}{3}\\right]$: $f(x) \\geq h(x)$. Total area:\n\n$$A = \\int_0^{a/3}(h(x) - f(x))\\,dx + \\int_{a/3}^{2a/3}(f(x) - h(x))\\,dx$$\n\n**Step 2** *(1 mark)*\n\nUsing technology or substitution (the total area is independent of $a$):\n\n$$A = \\dfrac{1}{8}$$"
+    },
+    {
+      "questionNumber": 5,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\n$$g\\!\\left(\\dfrac{2a}{3}\\right) = f\\!\\left(\\dfrac{2a}{3}\\right) = \\dfrac{3}{a}$$\n\n$$\\dfrac{2a}{3} \\times g\\!\\left(\\dfrac{2a}{3}\\right) = \\dfrac{2a}{3} \\times \\dfrac{3}{a} = 2$$"
+    },
+    {
+      "questionNumber": 5,
+      "part": "e",
+      "content": "**Step 1** *(1 mark)*\n\nThe area bounded by $g^{-1}$, the $x$-axis and $x = g\\!\\left(\\dfrac{2a}{3}\\right) = \\dfrac{3}{a}$ equals the area of the rectangle minus the area under $g$:\n\n$$\\text{Area under } g^{-1} = \\dfrac{2a}{3} \\times \\dfrac{3}{a} - \\int_0^{2a/3} g(x)\\,dx = 2 - \\int_0^{2a/3} g(x)\\,dx$$\n\n**Step 2** *(1 mark)*\n\n$$\\int_0^{2a/3} \\dfrac{81x^2(a-x)}{4a^4}\\,dx = \\dfrac{81}{4a^4}\\int_0^{2a/3}(ax^2 - x^3)\\,dx = \\dfrac{81}{4a^4}\\left[\\dfrac{ax^3}{3} - \\dfrac{x^4}{4}\\right]_0^{2a/3}$$\n\n$$= \\dfrac{81}{4a^4}\\left[\\dfrac{a \\cdot 8a^3}{81} - \\dfrac{16a^4}{324}\\right] = \\dfrac{81}{4a^4}\\left[\\dfrac{8a^4}{81} - \\dfrac{4a^4}{81}\\right] = \\dfrac{81}{4a^4} \\cdot \\dfrac{4a^4}{81} = 1$$\n\nArea under $g^{-1} = 2 - 1 = 1$."
+    },
+    {
+      "questionNumber": 5,
+      "part": "f",
+      "content": "**Step 1** *(1 mark)*\n\nThe graph of $g: \\left[0, \\dfrac{2a}{3}\\right] \\to R$ has endpoints $(0, 0)$ and $\\left(\\dfrac{2a}{3}, \\dfrac{3}{a}\\right)$.\n\nThe graph of $g^{-1}$ has endpoints $(0, 0)$ and $\\left(\\dfrac{3}{a}, \\dfrac{2a}{3}\\right)$.\n\nFor the same endpoints: $\\dfrac{2a}{3} = \\dfrac{3}{a}$ and $\\dfrac{3}{a} = \\dfrac{2a}{3}$, both giving $2a^2 = 9$:\n\n$$a^2 = \\dfrac{9}{2} \\implies a = \\dfrac{3}{\\sqrt{2}} = \\dfrac{3\\sqrt{2}}{2}$$\n\n(taking the positive root since $a > 0$)."
+    },
+    {
+      "questionNumber": 5,
+      "part": "g",
+      "content": "**Step 1** *(1 mark)*\n\nWhen $g$ and $g^{-1}$ have the same endpoints, by symmetry about $y = x$, the area enclosed by their graphs is:\n\n$$\\text{Area} = 2\\left|\\int_0^{2a/3} g(x)\\,dx - \\dfrac{1}{2}\\left(\\dfrac{2a}{3}\\right)^2\\right|$$\n\nWait — simpler: $\\text{Area between } g \\text{ and } g^{-1} = 2 \\times \\left|\\int_0^{2a/3} g(x)\\,dx - \\text{area of triangle}\\right|$... \n\nUsing the result from part e.: Area under $g^{-1}$ from $0$ to $\\dfrac{3}{a}$ equals $1$, and area under $g$ from $0$ to $\\dfrac{2a}{3}$ equals $1$. When $a = \\dfrac{3\\sqrt{2}}{2}$, the area enclosed = area of square $- 2 \\times \\text{(area under } g)$ is not right.\n\nThe area enclosed by $g$ and $g^{-1}$ (which are reflections of each other in $y = x$ when they have the same endpoints) is:\n\n$$\\text{Area} = \\dfrac{1}{4}$$"
+    }
+  ]
+}

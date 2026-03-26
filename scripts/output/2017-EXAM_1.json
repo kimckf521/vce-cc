@@ -1,0 +1,236 @@
+{
+  "year": 2017,
+  "examType": "EXAM_1",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "marks": 2,
+      "content": "Let $f: (-2, \\infty) \\to R$, $f(x) = \\dfrac{x}{x+2}$.\n\nDifferentiate $f$ with respect to $x$.",
+      "topic": "Calculus",
+      "subtopic": "Quotient Rule",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "marks": 2,
+      "content": "Let $g(x) = (2 - x^{3})^{3}$.\n\nEvaluate $g'(1)$.",
+      "topic": "Calculus",
+      "subtopic": "Chain Rule",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "marks": 2,
+      "content": "Let $y = x\\log_{e}(3x)$.\n\nFind $\\dfrac{dy}{dx}$.",
+      "topic": "Calculus",
+      "subtopic": "Product Rule",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "marks": 2,
+      "content": "Hence, calculate $\\int_{1}^{2} (\\log_{e}(3x) + 1)\\,dx$. Express your answer in the form $\\log_{e}(a)$, where $a$ is a positive integer.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "marks": 1,
+      "content": "Let $f: [-3, 0] \\to R$, $f(x) = (x+2)^{2}(x-1)$.\n\nShow that $(x+2)^{2}(x-1) = x^{3} + 3x^{2} - 4$.",
+      "topic": "Algebra",
+      "subtopic": "Polynomials",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "marks": 3,
+      "content": "Let $f: [-3, 0] \\to R$, $f(x) = (x+2)^{2}(x-1)$.\n\nSketch the graph of $f$ on the axes below. Label the axis intercepts and any stationary points with their coordinates.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Coordinate axes provided with x from -4 to 2 and y from -6 to 6, with gridlines at integer values"
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "marks": 2,
+      "content": "In a large population of fish, the proportion of angel fish is $\\dfrac{1}{4}$.\n\nLet $\\hat{P}$ be the random variable that represents the sample proportion of angel fish for samples of size $n$ drawn from the population.\n\nFind the smallest integer value of $n$ such that the standard deviation of $\\hat{P}$ is less than or equal to $\\dfrac{1}{100}$.",
+      "topic": "Statistics",
+      "subtopic": "Confidence Intervals",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "marks": 1,
+      "content": "For Jac to log on to a computer successfully, Jac must type the correct password. Unfortunately, Jac has forgotten the password. If Jac types the wrong password, Jac can make another attempt. The probability of success on any attempt is $\\dfrac{2}{5}$. Assume that the result of each attempt is independent of the result of any other attempt. A maximum of three attempts can be made.\n\nWhat is the probability that Jac does not log on to the computer successfully?",
+      "topic": "Probability",
+      "subtopic": "Probability Rules",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "marks": 1,
+      "content": "For Jac to log on to a computer successfully, Jac must type the correct password. Unfortunately, Jac has forgotten the password. If Jac types the wrong password, Jac can make another attempt. The probability of success on any attempt is $\\dfrac{2}{5}$. Assume that the result of each attempt is independent of the result of any other attempt. A maximum of three attempts can be made.\n\nCalculate the probability that Jac logs on to the computer successfully. Express your answer in the form $\\dfrac{a}{b}$, where $a$ and $b$ are positive integers.",
+      "topic": "Probability",
+      "subtopic": "Probability Rules",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "c",
+      "marks": 2,
+      "content": "For Jac to log on to a computer successfully, Jac must type the correct password. Unfortunately, Jac has forgotten the password. If Jac types the wrong password, Jac can make another attempt. The probability of success on any attempt is $\\dfrac{2}{5}$. Assume that the result of each attempt is independent of the result of any other attempt. A maximum of three attempts can be made.\n\nCalculate the probability that Jac logs on to the computer successfully on the second or on the third attempt. Express your answer in the form $\\dfrac{c}{d}$, where $c$ and $d$ are positive integers.",
+      "topic": "Probability",
+      "subtopic": "Probability Rules",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "a",
+      "marks": 1,
+      "content": "Let $(\\tan(\\theta) - 1)(\\sin(\\theta) - \\sqrt{3}\\cos(\\theta))(\\sin(\\theta) + \\sqrt{3}\\cos(\\theta)) = 0$.\n\nState all possible values of $\\tan(\\theta)$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "b",
+      "marks": 2,
+      "content": "Hence, find all possible solutions for $(\\tan(\\theta) - 1)(\\sin^{2}(\\theta) - 3\\cos^{2}(\\theta)) = 0$, where $0 \\leq \\theta \\leq \\pi$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "a",
+      "marks": 1,
+      "content": "Let $f: [0, \\infty) \\to R$, $f(x) = \\sqrt{x+1}$.\n\nState the range of $f$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "b.i",
+      "marks": 2,
+      "content": "Let $f: [0, \\infty) \\to R$, $f(x) = \\sqrt{x+1}$. Let $g: (-\\infty, c] \\to R$, $g(x) = x^{2} + 4x + 3$, where $c < 0$.\n\nFind the largest possible value of $c$ such that the range of $g$ is a subset of the domain of $f$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "b.ii",
+      "marks": 1,
+      "content": "Let $f: [0, \\infty) \\to R$, $f(x) = \\sqrt{x+1}$. Let $g: (-\\infty, c] \\to R$, $g(x) = x^{2} + 4x + 3$, where $c < 0$.\n\nFor the value of $c$ found in part b.i., state the range of $f(g(x))$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "c",
+      "marks": 1,
+      "content": "Let $f: [0, \\infty) \\to R$, $f(x) = \\sqrt{x+1}$. Let $h: R \\to R$, $h(x) = x^{2} + 3$.\n\nState the range of $f(h(x))$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "a",
+      "marks": 1,
+      "content": "For events $A$ and $B$ from a sample space, $\\Pr(A \\mid B) = \\dfrac{1}{5}$ and $\\Pr(B \\mid A) = \\dfrac{1}{4}$. Let $\\Pr(A \\cap B) = p$.\n\nFind $\\Pr(A)$ in terms of $p$.",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "b",
+      "marks": 2,
+      "content": "For events $A$ and $B$ from a sample space, $\\Pr(A \\mid B) = \\dfrac{1}{5}$ and $\\Pr(B \\mid A) = \\dfrac{1}{4}$. Let $\\Pr(A \\cap B) = p$.\n\nFind $\\Pr(A' \\cap B')$ in terms of $p$.",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "c",
+      "marks": 2,
+      "content": "For events $A$ and $B$ from a sample space, $\\Pr(A \\mid B) = \\dfrac{1}{5}$ and $\\Pr(B \\mid A) = \\dfrac{1}{4}$. Let $\\Pr(A \\cap B) = p$.\n\nGiven that $\\Pr(A \\cup B) \\leq \\dfrac{1}{5}$, state the largest possible interval for $p$.",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": "a",
+      "marks": 2,
+      "content": "The graph of $f: [0, 1] \\to R$, $f(x) = \\sqrt{x}(1-x)$ is shown below.\n\nCalculate the area between the graph of $f$ and the $x$-axis.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of y = sqrt(x)(1-x) on [0,1], starting at origin, rising to a maximum then returning to (1,0), with the region between the curve and the x-axis shaded"
+    },
+    {
+      "questionNumber": 9,
+      "part": "b",
+      "marks": 1,
+      "content": "The graph of $f: [0, 1] \\to R$, $f(x) = \\sqrt{x}(1-x)$ is shown. The edges of the right-angled triangle $ABC$ are the line segments $AC$ and $BC$, which are tangent to the graph of $f$, and the line segment $AB$, which is part of the horizontal axis. Let $\\theta$ be the angle that $AC$ makes with the positive direction of the horizontal axis, where $45^{\\circ} \\leq \\theta < 90^{\\circ}$.\n\nFor $x$ in the interval $(0, 1)$, show that the gradient of the tangent to the graph of $f$ is $\\dfrac{1-3x}{2\\sqrt{x}}$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of y = sqrt(x)(1-x) with right-angled triangle ABC where AC and BC are tangents to the curve and AB lies on the x-axis; theta is the angle AC makes with the positive x-axis"
+    },
+    {
+      "questionNumber": 9,
+      "part": "c",
+      "marks": 2,
+      "content": "The graph of $f: [0, 1] \\to R$, $f(x) = \\sqrt{x}(1-x)$ is shown. The edges of the right-angled triangle $ABC$ are the line segments $AC$ and $BC$, which are tangent to the graph of $f$, and the line segment $AB$, which is part of the horizontal axis. Let $\\theta$ be the angle that $AC$ makes with the positive direction of the horizontal axis, where $45^{\\circ} \\leq \\theta < 90^{\\circ}$.\n\nFind the equation of the line through $B$ and $C$ in the form $y = mx + c$, for $\\theta = 45^{\\circ}$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": "Graph of y = sqrt(x)(1-x) with right-angled triangle ABC where AC and BC are tangents to the curve and AB lies on the x-axis"
+    },
+    {
+      "questionNumber": 9,
+      "part": "d",
+      "marks": 4,
+      "content": "The graph of $f: [0, 1] \\to R$, $f(x) = \\sqrt{x}(1-x)$ is shown. The edges of the right-angled triangle $ABC$ are the line segments $AC$ and $BC$, which are tangent to the graph of $f$, and the line segment $AB$, which is part of the horizontal axis. Let $\\theta$ be the angle that $AC$ makes with the positive direction of the horizontal axis, where $45^{\\circ} \\leq \\theta < 90^{\\circ}$.\n\nFind the coordinates of $C$ when $\\theta = 45^{\\circ}$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": "Graph of y = sqrt(x)(1-x) with right-angled triangle ABC where AC and BC are tangents to the curve and AB lies on the x-axis"
+    }
+  ]
+}

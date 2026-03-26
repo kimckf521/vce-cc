@@ -1,0 +1,271 @@
+{
+  "year": 2016,
+  "examType": "EXAM_2",
+  "solutions": [
+    {
+      "questionNumber": 1,
+      "part": null,
+      "content": "**Answer: A**\n\n$f(x) = 5 - x$ is decreasing, so the range $[-4, 5)$ corresponds to $-4 \\leq 5 - x < 5$.\n\nSolving: $0 < x \\leq 9$, giving domain $D = (0, 9]$."
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "content": "**Answer: B**\n\n$f(x) = 1 - 2\\cos\\!\\left(\\dfrac{\\pi x}{2}\\right)$.\n\nPeriod $= \\dfrac{2\\pi}{\\pi/2} = 4$.\n\nSince $-1 \\leq \\cos\\!\\left(\\dfrac{\\pi x}{2}\\right) \\leq 1$, the range is $[1-2, 1+2] = [-1, 3]$.\n\nPeriod $4$ and range $[-1, 3]$."
+    },
+    {
+      "questionNumber": 3,
+      "part": null,
+      "content": "**Answer: C**\n\nFrom the graph, $f$ has a local minimum at $x = -2$ and a local maximum at $x = \\dfrac{1}{3}$.\n\n$f'(x) < 0$ (decreasing) when $x < -2$ or $x > \\dfrac{1}{3}$.\n\nSo $f'(x) < 0$ for $x \\in \\left(-\\infty, -2\\right) \\cup \\left(\\dfrac{1}{3}, \\infty\\right)$."
+    },
+    {
+      "questionNumber": 4,
+      "part": null,
+      "content": "**Answer: D**\n\n$f(0) = 0 - 2\\sqrt{1} = -2$\n\n$f(3) = 27 - 2\\sqrt{4} = 27 - 4 = 23$\n\nAverage rate of change $= \\dfrac{f(3) - f(0)}{3 - 0} = \\dfrac{23 - (-2)}{3} = \\dfrac{25}{3}$"
+    },
+    {
+      "questionNumber": 5,
+      "part": null,
+      "content": "**Answer: D**\n\n$g(x) = \\sqrt{2x-6}$, domain $[3, \\infty)$.\n\nRange of $g$: when $x = 3$, $g = 0$; as $x \\to \\infty$, $g \\to \\infty$. Range is $[0, \\infty)$.\n\nDomain of $g^{-1}$ = range of $g$ = $[0, \\infty)$.\n\nLet $y = \\sqrt{2x-6}$. Then $y^2 = 2x-6$, so $x = \\dfrac{y^2+6}{2}$.\n\nThus $g^{-1}: [0,\\infty) \\to R$, $g^{-1}(x) = \\dfrac{x^2+6}{2}$."
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "content": "**Answer: A**\n\n$f(x) = \\sin(2x)$. At $x = \\dfrac{\\pi}{4}$: $f = \\sin\\!\\left(\\dfrac{\\pi}{2}\\right) = 1$. Point: $\\left(\\dfrac{\\pi}{4}, 1\\right)$.\n\nAt $x = \\dfrac{3\\pi}{4}$: $f = \\sin\\!\\left(\\dfrac{3\\pi}{2}\\right) = -1$. Point: $\\left(\\dfrac{3\\pi}{4}, -1\\right)$.\n\n$d^2 = \\left(\\dfrac{3\\pi}{4} - \\dfrac{\\pi}{4}\\right)^2 + (-1-1)^2 = \\left(\\dfrac{\\pi}{2}\\right)^2 + 4 = \\dfrac{\\pi^2 + 16}{4}$"
+    },
+    {
+      "questionNumber": 7,
+      "part": null,
+      "content": "**Answer: C**\n\n$\\Pr(\\text{same}) = \\sum_k [\\Pr(X=k)]^2 = 0.5^2 + 0.25^2 + 0.2^2 + 0.05^2$\n\n$= 0.25 + 0.0625 + 0.04 + 0.0025 = 0.355$"
+    },
+    {
+      "questionNumber": 8,
+      "part": null,
+      "content": "**Answer: B**\n\nThe graph starts at $0$ when $t = 0$, peaks at $10$ near $t = 7$, and returns to $0$ at $t = 14$. This is a cosine curve with vertical shift $5$, amplitude $5$, period $14$.\n\n$y = 5 - 5\\cos\\!\\left(\\dfrac{\\pi t}{7}\\right)$:\n\nAt $t=0$: $y = 5 - 5 = 0$ ✓; at $t=7$: $y = 5 - 5\\cos(\\pi) = 10$ ✓; period $= 14$ ✓"
+    },
+    {
+      "questionNumber": 9,
+      "part": null,
+      "content": "**Answer: D**\n\nGiven $\\dfrac{d(xe^{kx})}{dx} = (kx+1)e^{kx}$, integrating both sides:\n\n$xe^{kx} = \\displaystyle\\int (kx+1)e^{kx}\\,dx = k\\int xe^{kx}\\,dx + \\int e^{kx}\\,dx$\n\nSo $k\\displaystyle\\int xe^{kx}\\,dx = xe^{kx} - \\int e^{kx}\\,dx$\n\n$\\displaystyle\\int xe^{kx}\\,dx = \\dfrac{1}{k}\\left(xe^{kx} - \\int e^{kx}\\,dx\\right) + c$"
+    },
+    {
+      "questionNumber": 10,
+      "part": null,
+      "content": "**Answer: D**\n\n$y = x^2 - 5$. Positive $x$-intercept: $x = \\sqrt{5}$, so $A = (\\sqrt{5}, 0)$. $y$-intercept: $B = (0, -5)$.\n\nSlope of $AB = \\dfrac{-5-0}{0-\\sqrt{5}} = \\sqrt{5}$.\n\nTangent slope $= y' = 2x$. Set $2x = \\sqrt{5}$: $x = \\dfrac{\\sqrt{5}}{2}$."
+    },
+    {
+      "questionNumber": 11,
+      "part": null,
+      "content": "**Answer: D**\n\nTest $f(x) = \\dfrac{1}{x}$:\n\n$f(x) - f(y) = \\dfrac{1}{x} - \\dfrac{1}{y} = \\dfrac{y-x}{xy}$\n\n$(y-x)f(xy) = (y-x) \\cdot \\dfrac{1}{xy} = \\dfrac{y-x}{xy}$ ✓"
+    },
+    {
+      "questionNumber": 12,
+      "part": null,
+      "content": "**Answer: D**\n\n$g(x) = \\sqrt{2x-5}$.\n\nReflection in $x$-axis: $h(x) = -\\sqrt{2x-5}$.\n\nDilation from $y$-axis by factor $\\dfrac{1}{2}$ replaces $x$ with $2x$:\n\n$f(x) = h(2x) = -\\sqrt{2(2x)-5} = -\\sqrt{4x-5}$"
+    },
+    {
+      "questionNumber": 13,
+      "part": null,
+      "content": "**Answer: D**\n\nThe shaded region consists of:\n- Area under $f$ from $0$ to $a$\n- Area between $f$ and $g$ from $a$ to $c$\n- Area under $f$ from $c$ to $d$\n\nThis equals $\\displaystyle\\int_0^a f(x)\\,dx + \\int_a^c (f(x) - g(x))\\,dx + \\int_c^d f(x)\\,dx$"
+    },
+    {
+      "questionNumber": 14,
+      "part": null,
+      "content": "**Answer: E**\n\nRectangle area $A = u(4 - u^2)$ for $u > 0$.\n\n$A'(u) = 4 - 3u^2 = 0 \\Rightarrow u = \\dfrac{2}{\\sqrt{3}}$\n\n$A\\!\\left(\\dfrac{2}{\\sqrt{3}}\\right) = \\dfrac{2}{\\sqrt{3}}\\left(4 - \\dfrac{4}{3}\\right) = \\dfrac{2}{\\sqrt{3}} \\cdot \\dfrac{8}{3} = \\dfrac{16}{3\\sqrt{3}} = \\dfrac{16\\sqrt{3}}{9}$"
+    },
+    {
+      "questionNumber": 15,
+      "part": null,
+      "content": "**Answer: C**\n\n$\\Pr(\\text{both red}) = \\dfrac{6}{10} \\times \\dfrac{5}{9} = \\dfrac{30}{90} = \\dfrac{1}{3}$\n\n$\\Pr(\\text{both blue}) = \\dfrac{4}{10} \\times \\dfrac{3}{9} = \\dfrac{12}{90} = \\dfrac{2}{15}$\n\n$\\Pr(\\text{same colour}) = \\dfrac{1}{3} + \\dfrac{2}{15} = \\dfrac{5}{15} + \\dfrac{2}{15} = \\dfrac{7}{15}$"
+    },
+    {
+      "questionNumber": 16,
+      "part": null,
+      "content": "**Answer: E**\n\n$X \\sim N(12,\\, 0.25^2)$.\n\n$\\Pr(X > 12.5) = \\Pr\\!\\left(Z > \\dfrac{12.5 - 12}{0.25}\\right) = \\Pr(Z > 2)$"
+    },
+    {
+      "questionNumber": 17,
+      "part": null,
+      "content": "**Answer: A**\n\n$X \\sim \\text{Bi}(16,\\, 0.2)$. We need $\\Pr\\!\\left(\\hat{P} \\geq \\dfrac{3}{16}\\right) = \\Pr(X \\geq 3) = 1 - \\Pr(X \\leq 2)$.\n\n$\\Pr(X \\leq 2) = 0.8^{16} + 16(0.2)(0.8^{15}) + \\binom{16}{2}(0.04)(0.8^{14})$\n$\\approx 0.0281 + 0.1126 + 0.2111 = 0.3518$\n\n$\\Pr(X \\geq 3) \\approx 1 - 0.3518 = 0.6482$"
+    },
+    {
+      "questionNumber": 18,
+      "part": null,
+      "content": "**Answer: B**\n\n$\\Pr(X < a) = \\displaystyle\\int_{3\\pi}^{a} \\dfrac{1}{4}\\cos\\!\\left(\\dfrac{x}{2}\\right)\\,dx = \\left[\\dfrac{1}{2}\\sin\\!\\left(\\dfrac{x}{2}\\right)\\right]_{3\\pi}^{a}$\n\n$= \\dfrac{1}{2}\\left(\\sin\\!\\left(\\dfrac{a}{2}\\right) - \\sin\\!\\left(\\dfrac{3\\pi}{2}\\right)\\right) = \\dfrac{1}{2}\\left(\\sin\\!\\left(\\dfrac{a}{2}\\right) + 1\\right) = \\dfrac{\\sqrt{3}+2}{4}$\n\n$\\sin\\!\\left(\\dfrac{a}{2}\\right) = \\dfrac{\\sqrt{3}}{2}$\n\nFor $a \\in [3\\pi, 5\\pi]$, $\\dfrac{a}{2} \\in \\left[\\dfrac{3\\pi}{2}, \\dfrac{5\\pi}{2}\\right]$.\n\n$\\dfrac{a}{2} = \\dfrac{7\\pi}{3}$ gives $\\sin\\!\\left(\\dfrac{7\\pi}{3}\\right) = \\sin\\!\\left(\\dfrac{\\pi}{3}\\right) = \\dfrac{\\sqrt{3}}{2}$ ✓\n\n$a = \\dfrac{14\\pi}{3}$"
+    },
+    {
+      "questionNumber": 19,
+      "part": null,
+      "content": "**Answer: E**\n\nSum of probabilities: $a + b + b + 2b + 0.2 = 1 \\Rightarrow a = 0.8 - 4b$.\n\nFor valid distribution: $a \\geq 0 \\Rightarrow b \\leq 0.2$; $b \\geq 0$. So $b \\in [0, 0.2]$.\n\n$E(X) = -a + 0\\cdot b + b\\cdot b + 2b\\cdot (2b) + 4(0.2) = -(0.8-4b) + 5b^2 + 0.8 = 4b + 5b^2$\n\nSince $E'(b) = 4 + 10b > 0$, $E$ is increasing:\n- Minimum at $b=0$: $E = 0$\n- Maximum at $b=0.2$: $E = 0.8 + 0.2 = 1$\n\nSmallest and largest values: $0$ and $1$."
+    },
+    {
+      "questionNumber": 20,
+      "part": null,
+      "content": "**Answer: E**\n\n$T$ maps $(x, y) \\to (-x,\\, 3y+5)$. If $(x, y)$ is on $y = f(x)$, then $(-x,\\, 3f(x)+5)$ is on $y = g(x)$.\n\nSo $g(x) = 3f(-x) + 5$.\n\n$\\displaystyle\\int_{-3}^{0} g(x)\\,dx = \\int_{-3}^{0} (3f(-x) + 5)\\,dx$\n\nLet $u = -x$: $= \\displaystyle\\int_{0}^{3} (3f(u) + 5)\\,du = 3\\int_0^3 f(u)\\,du + 15 = 3(5) + 15 = 30$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nThe period of $f(x) = 2\\cos\\!\\left(\\dfrac{x}{2}\\right) + \\pi$ is:\n\n$$\\text{Period} = \\frac{2\\pi}{\\frac{1}{2}} = 4\\pi$$\n\n**Step 2** *(1 mark)*\n\nSince $-1 \\leq \\cos\\!\\left(\\dfrac{x}{2}\\right) \\leq 1$, the range is:\n\n$$[\\pi - 2,\\; \\pi + 2]$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nDifferentiate using the chain rule:\n\n$$f'(x) = -\\sin\\!\\left(\\frac{x}{2}\\right)$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nAt $x = \\pi$:\n\n$f'(\\pi) = -\\sin\\!\\left(\\dfrac{\\pi}{2}\\right) = -1$\n\n$f(\\pi) = 2\\cos\\!\\left(\\dfrac{\\pi}{2}\\right) + \\pi = \\pi$\n\nTangent: $y - \\pi = -1(x - \\pi)$\n\n$$y = -x + 2\\pi$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nSet $f'(x) = 1$:\n\n$-\\sin\\!\\left(\\dfrac{x}{2}\\right) = 1 \\implies \\sin\\!\\left(\\dfrac{x}{2}\\right) = -1$\n\n$\\dfrac{x}{2} = \\dfrac{3\\pi}{2} + 2n\\pi \\implies x = 3\\pi + 4n\\pi,\\quad n \\in \\mathbb{Z}$\n\nIn $[0, 8\\pi]$: $x = 3\\pi$ and $x = 7\\pi$.\n\n**Step 2** *(1 mark)*\n\nTangent at $x = 3\\pi$: $f(3\\pi) = 2\\cos\\!\\left(\\dfrac{3\\pi}{2}\\right) + \\pi = \\pi$\n\n$y - \\pi = 1(x - 3\\pi) \\implies \\boxed{y = x - 2\\pi}$\n\nTangent at $x = 7\\pi$: $f(7\\pi) = 2\\cos\\!\\left(\\dfrac{7\\pi}{2}\\right) + \\pi = \\pi$\n\n$y - \\pi = 1(x - 7\\pi) \\implies \\boxed{y = x - 6\\pi}$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "e",
+      "content": "**Step 1** *(1 mark)*\n\nUnder $T$: $x' = x - \\pi$ and $y' = ay + b$, so $x = x' + \\pi$ and $y = \\dfrac{y' - b}{a}$.\n\n**Step 2** *(1 mark)*\n\nSubstitute into $y = 2\\cos\\!\\left(\\dfrac{x}{2}\\right) + \\pi$:\n\n$$\\frac{y'-b}{a} = 2\\cos\\!\\left(\\frac{x'+\\pi}{2}\\right) + \\pi$$\n\n$$y' = 2a\\cos\\!\\left(\\frac{x'+\\pi}{2}\\right) + a\\pi + b = -2a\\sin\\!\\left(\\frac{x'}{2}\\right) + a\\pi + b$$\n\n**Step 3** *(1 mark)*\n\nFor this to equal $f'(x') = -\\sin\\!\\left(\\dfrac{x'}{2}\\right)$, compare coefficients:\n\n$-2a = -1 \\implies a = \\dfrac{1}{2}$\n\n$a\\pi + b = 0 \\implies b = -\\dfrac{\\pi}{2}$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "f",
+      "content": "**Step 1** *(1 mark)*\n\nSubstitute $f(x) = 2\\cos\\!\\left(\\dfrac{x}{2}\\right) + \\pi$ and $f'(x) = -\\sin\\!\\left(\\dfrac{x}{2}\\right)$:\n\n$$2\\cos\\!\\left(\\frac{x}{2}\\right) + \\pi = -2\\sin\\!\\left(\\frac{x}{2}\\right) + \\pi$$\n\n$$2\\cos\\!\\left(\\frac{x}{2}\\right) = -2\\sin\\!\\left(\\frac{x}{2}\\right)$$\n\n$$\\tan\\!\\left(\\frac{x}{2}\\right) = -1$$\n\n**Step 2** *(1 mark)*\n\n$\\dfrac{x}{2} = \\dfrac{3\\pi}{4} + n\\pi \\implies x = \\dfrac{3\\pi}{2} + 2n\\pi,\\quad n \\in \\mathbb{Z}$\n\nIn $[0, 8\\pi]$:\n\n$$x = \\frac{3\\pi}{2},\\quad \\frac{7\\pi}{2},\\quad \\frac{11\\pi}{2},\\quad \\frac{15\\pi}{2}$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "a.i",
+      "content": "**Step 1** *(1 mark)*\n\nExpand: $f(x) = -\\dfrac{1}{3}(x+2)(x-1)^2 = -\\dfrac{x^3}{3} + x - \\dfrac{2}{3}$\n\nWait — expanding:\n$(x+2)(x-1)^2 = (x+2)(x^2-2x+1) = x^3 - 2x^2 + x + 2x^2 - 4x + 2 = x^3 - 3x + 2$\n\nSo $f(x) = -\\dfrac{x^3-3x+2}{3} = -\\dfrac{x^3}{3} + x - \\dfrac{2}{3}$\n\nIntegrate and apply $g(0) = 1$:\n\n$$g(x) = -\\frac{x^4}{12} + \\frac{x^2}{2} - \\frac{2x}{3} + c$$\n\n$g(0) = c = 1$, so $g(x) = -\\dfrac{x^4}{12} + \\dfrac{x^2}{2} - \\dfrac{2x}{3} + 1$ ∎"
+    },
+    {
+      "questionNumber": 2,
+      "part": "a.ii",
+      "content": "**Step 1** *(1 mark)*\n\n$g'(x) = f(x) = -\\dfrac{1}{3}(x+2)(x-1)^2 = 0$\n\n$$x = -2 \\quad \\text{or} \\quad x = 1$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "b.i",
+      "content": "**Step 1** *(1 mark)*\n\nThe tangent at $A$ is $y = 3 - \\dfrac{4x}{3}$.\n\nAt $x = 0$: $y = 3$.\n\n$$B = (0,\\; 3)$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "b.ii",
+      "content": "**Step 1** *(1 mark)*\n\nThe line perpendicular to the tangent at $A$ has gradient $\\dfrac{3}{4}$ (negative reciprocal of $-\\dfrac{4}{3}$).\n\nLine through $A\\!\\left(2, \\dfrac{1}{3}\\right)$ with gradient $\\dfrac{3}{4}$:\n\n$$y - \\frac{1}{3} = \\frac{3}{4}(x - 2) \\implies y = \\frac{3x}{4} - \\frac{7}{6}$$\n\n**Step 2** *(1 mark)*\n\nAt $x = 0$: $y = -\\dfrac{7}{6}$.\n\n$$C = \\left(0,\\; -\\frac{7}{6}\\right)$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "b.iii",
+      "content": "**Step 1** *(1 mark)*\n\nThe triangle $ABC$ has $B = (0, 3)$, $C = \\left(0, -\\dfrac{7}{6}\\right)$, $A = \\left(2, \\dfrac{1}{3}\\right)$.\n\nBase $BC$ along the $y$-axis: $|BC| = 3 + \\dfrac{7}{6} = \\dfrac{25}{6}$\n\nPerpendicular height from $A$ to $y$-axis $= 2$.\n\n**Step 2** *(1 mark)*\n\n$$\\text{Area} = \\frac{1}{2} \\times \\frac{25}{6} \\times 2 = \\frac{25}{6}$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "c.i",
+      "content": "**Step 1** *(1 mark)*\n\nThe tangent at $A$ has gradient $-\\dfrac{4}{3}$. Set $g'(x) = f(x) = -\\dfrac{4}{3}$:\n\n$-\\dfrac{1}{3}(x+2)(x-1)^2 = -\\dfrac{4}{3} \\implies (x+2)(x-1)^2 = 4$\n\nExpanding: $x^3 - 3x + 2 = 4 \\implies x^3 - 3x - 2 = 0$\n\n$(x+1)^2(x-2) = 0$, so $x = -1$ (double root) or $x = 2$.\n\nSince $D \\neq A$, take $x = -1$.\n\n**Step 2** *(1 mark)*\n\n$g(-1) = -\\dfrac{1}{12} + \\dfrac{1}{2} + \\dfrac{2}{3} + 1 = \\dfrac{-1 + 6 + 8 + 12}{12} = \\dfrac{25}{12}$\n\n$$D = \\left(-1,\\; \\frac{25}{12}\\right)$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "c.ii",
+      "content": "**Step 1** *(1 mark)*\n\nTangent to $g$ at $D\\!\\left(-1, \\dfrac{25}{12}\\right)$ with slope $-\\dfrac{4}{3}$:\n\n$$y - \\frac{25}{12} = -\\frac{4}{3}(x + 1) \\implies y = \\frac{3}{4} - \\frac{4x}{3}$$\n\n**Step 2** *(1 mark)*\n\nLine $AC$ has equation $y = \\dfrac{3x}{4} - \\dfrac{7}{6}$.\n\nSolve simultaneously:\n$\\dfrac{3}{4} - \\dfrac{4x}{3} = \\dfrac{3x}{4} - \\dfrac{7}{6}$\n\nMultiply by $12$: $9 - 16x = 9x - 14 \\implies 25x = 23 \\implies x = \\dfrac{23}{25}$\n\n$y = \\dfrac{3}{4}\\cdot\\dfrac{23}{25} - \\dfrac{7}{6} = \\dfrac{69}{100} - \\dfrac{7}{6} = \\dfrac{207 - 350}{300} = -\\dfrac{143}{300}$\n\nSo $E = \\left(\\dfrac{23}{25},\\; -\\dfrac{143}{300}\\right)$.\n\n**Step 3** *(1 mark)*\n\n$$|AE| = \\sqrt{\\left(2 - \\frac{23}{25}\\right)^2 + \\left(\\frac{1}{3} + \\frac{143}{300}\\right)^2} = \\sqrt{\\left(\\frac{27}{25}\\right)^2 + \\left(\\frac{243}{300}\\right)^2}$$\n\n$= \\sqrt{\\dfrac{729}{625} + \\dfrac{729}{1111...}}$\n\n$= \\dfrac{27}{25}\\sqrt{1 + \\dfrac{9}{16}} = \\dfrac{27}{25} \\cdot \\dfrac{5}{4} = \\dfrac{27}{20}$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nLet $X \\sim \\text{Bi}(22,\\, 0.1)$. Use the complement:\n\n$$\\Pr(X \\geq 1) = 1 - \\Pr(X = 0) = 1 - (0.9)^{22}$$\n\n**Step 2** *(1 mark)*\n\n$$= 1 - 0.0985\\ldots \\approx 0.9015$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nApply conditional probability:\n\n$$\\Pr(X < 5 \\mid X \\geq 1) = \\frac{\\Pr(1 \\leq X \\leq 4)}{\\Pr(X \\geq 1)}$$\n\n**Step 2** *(1 mark)*\n\n$$= \\frac{0.839389\\ldots}{0.901522\\ldots} \\approx 0.9311$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nLet $Y \\sim N(190,\\, 6^2)$ (mean $190$ min $= 3$ h $10$ min, SD $6$ min).\n\nThree hours $= 180$ minutes.\n\n$$z = \\frac{180 - 190}{6} = -\\frac{10}{6} \\approx -1.6667$$\n\n**Step 2** *(1 mark)*\n\n$$\\Pr(Y \\leq 180) \\approx 0.0478$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nFrom part **c**, $p = \\Pr(Y < 180) \\approx 0.04779$.\n\nLet $X_2 \\sim \\text{Bi}(100,\\; 0.04779)$. Then $\\hat{P} = X_2/100$, so $\\hat{P} \\geq 0.05 \\iff X_2 \\geq 5$ and $\\hat{P} \\geq 0.06 \\iff X_2 \\geq 6$.\n\n$$\\Pr(\\hat{P} \\geq 0.06 \\mid \\hat{P} \\geq 0.05) = \\frac{\\Pr(X_2 \\geq 6)}{\\Pr(X_2 \\geq 5)}$$\n\n**Step 2** *(2 marks)*\n\n$$= \\frac{0.34433\\ldots}{0.52340\\ldots} \\approx 0.658$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "e",
+      "content": "**Step 1** *(1 mark)*\n\nLet $Y_2 \\sim N(180,\\, \\sigma^2)$ (mean $180$ min $= 3$ h).\n\n$12\\%$ work for more than $190$ min, so $\\Pr(Y_2 > 190) = 0.12$, giving $\\Pr(Y_2 \\leq 190) = 0.88$.\n\n$$z = \\frac{190 - 180}{\\sigma} \\quad \\text{where } \\Pr(Z \\leq z) = 0.88 \\implies z \\approx 1.1750$$\n\n**Step 2** *(1 mark)*\n\n$$\\sigma = \\frac{10}{1.1750} \\approx 8.5106$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "f",
+      "content": "**Step 1** *(1 mark)*\n\nSince $Y_2 \\sim N(180, \\sigma^2)$ with mean $180$ min, by symmetry:\n\n$$\\Pr(Y_2 < 180) = \\frac{1}{2}$$\n\nThe supplier tests laptops one at a time. The probability that the **first** laptop with battery life less than $3$ hours is the **third** one tested:\n\n$$\\Pr(\\text{first two} \\geq 180) \\times \\Pr(\\text{third} < 180) = \\frac{1}{2} \\times \\frac{1}{2} \\times \\frac{1}{2} = \\frac{1}{8}$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "g",
+      "content": "**Step 1** *(1 mark)*\n\nWith $\\hat{p} = \\dfrac{6}{100} = 0.06$ and $n = 100$, the $95\\%$ confidence interval is:\n\n$$\\hat{p} \\pm 1.96\\sqrt{\\frac{\\hat{p}(1-\\hat{p})}{n}} = 0.06 \\pm 1.96\\sqrt{\\frac{0.06 \\times 0.94}{100}} \\approx 0.06 \\pm 0.0464$$\n\n$$\\approx (0.01,\\; 0.11)$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "h.i",
+      "content": "**Step 1** *(1 mark)*\n\nUsing technology to evaluate:\n\n$$E(X) = \\int_0^{210} x\\,f(x)\\,dx = \\int_0^{210} \\frac{x(210-x)e^{\\frac{x-210}{20}}}{400}\\,dx \\approx 170.01 \\text{ minutes}$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "h.ii",
+      "content": "**Step 1** *(1 mark)*\n\nSolve $\\displaystyle\\int_0^m f(x)\\,dx = \\dfrac{1}{2}$ using technology.\n\nUsing the antiderivative $F(m) = \\dfrac{(230-m)e^{-(210-m)/20}}{20} - \\dfrac{230e^{-10.5}}{20}$, set $F(m) = 0.5$ and solve numerically.\n\n**Step 2** *(1 mark)*\n\n$$m \\approx 176.44 \\text{ minutes}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nPerform polynomial division:\n\n$$\\frac{2x+1}{x+2} = \\frac{2(x+2) - 3}{x+2} = 2 - \\frac{3}{x+2}$$\n\n**Step 2** *(1 mark)*\n\n$$f(x) = 2 + \\frac{-3}{x+2}$$\n\nwhere $a = 2$ and $b = -3$."
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.i",
+      "content": "**Step 1** *(1 mark)*\n\nLet $y = \\dfrac{2x+1}{x+2}$. Swap $x$ and $y$:\n\n$$x = \\frac{2y+1}{y+2} \\implies x(y+2) = 2y+1 \\implies y(x-2) = 1-2x$$\n\n$$y = \\frac{1-2x}{x-2} = \\frac{-3}{x-2} + 2 \\cdot\\frac{x-2}{x-2}$$\n\nWait: $\\dfrac{1-2x}{x-2} = \\dfrac{-2(x-2) - 3}{x-2} = -2 - \\dfrac{3}{x-2}$\n\n**Step 2** *(1 mark)*\n\nRange of $f$ is $R\\setminus\\{2\\}$, which becomes the domain of $f^{-1}$.\n\n$$f^{-1}: R\\setminus\\{2\\} \\to R,\\quad f^{-1}(x) = -2 - \\frac{3}{x-2} = \\frac{1-2x}{x-2}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.ii",
+      "content": "**Step 1** *(1 mark)*\n\nSolve $f(x) = x$: $\\dfrac{2x+1}{x+2} = x \\implies 2x+1 = x^2+2x \\implies x^2 = 1$, so $x = \\pm 1$.\n\nThe intersections are at $(-1, -1)$ and $(1, 1)$.\n\nOn $[-1, 1]$, $f(x) < x$ (since e.g. $f(0) = \\frac{1}{2} < 0$... actually $f(0) = 1/2 > 0$, check: $x - f(x) = x - \\frac{2x+1}{x+2} = \\frac{x(x+2)-(2x+1)}{x+2} = \\frac{x^2-1}{x+2}$). For $x \\in (-1,1)$ and $x > -2$: $x^2 - 1 < 0$, so $x > f(x)$.\n\n$$\\text{Area} = \\int_{-1}^{1} \\left(x - f(x)\\right)dx = \\int_{-1}^{1}\\frac{1-x^2}{x+2}\\,dx$$\n\n$$= \\Big[-(x^2-1)\\log_e|x+2| + \\ldots\\Big]_{-1}^{1} = 4 - 3\\log_e 3 \\text{ units}^2$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.iii",
+      "content": "**Step 1** *(1 mark)*\n\nBy symmetry of $f$ and $f^{-1}$ about $y = x$, the enclosed area between $f$ and $f^{-1}$ is twice the area between $f$ and $y = x$:\n\n$$\\text{Area} = 2(4 - 3\\log_e 3) = 8 - 6\\log_e 3 \\text{ units}^2$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nDistance squared from origin to $P\\!\\left(c,\\, \\dfrac{2c+1}{c+2}\\right)$:\n\n$$D^2 = c^2 + \\left(\\frac{2c+1}{c+2}\\right)^2$$\n\n**Step 2** *(1 mark)*\n\nMinimise $D^2$ by solving $\\dfrac{d(D^2)}{dc} = 0$:\n\n$$2c + 2\\cdot\\frac{2c+1}{c+2}\\cdot\\frac{(c+2)\\cdot 2-(2c+1)}{(c+2)^2} = 0$$\n\n$$2c + \\frac{2(2c+1)\\cdot 3}{(c+2)^3} = 0$$\n\n$$c(c+2)^3 = -3(2c+1)$$\n\nThis simplifies (using CAS) to $c = \\sqrt{3} - 2$, $d = 2 - \\sqrt{3}$.\n\n**Step 3** *(1 mark)*\n\nMinimum distance:\n\n$$= \\sqrt{(\\sqrt{3}-2)^2 + (2-\\sqrt{3})^2} = \\sqrt{2(\\sqrt{3}-2)^2} = |\\sqrt{3}-2|\\sqrt{2} = (2-\\sqrt{3})\\sqrt{2}$$\n\n$$= 2\\sqrt{2} - \\sqrt{6}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nFor $x_1, x_2 \\in (-k, \\infty)$ with $x_1 < x_2$:\n\n$$g(x_2) - g(x_1) = \\frac{kx_2+1}{x_2+k} - \\frac{kx_1+1}{x_1+k} = \\frac{(kx_2+1)(x_1+k) - (kx_1+1)(x_2+k)}{(x_1+k)(x_2+k)}$$\n\nExpanding the numerator:\n\n$$= \\frac{(k^2-1)(x_2 - x_1)}{(x_1+k)(x_2+k)}$$\n\n**Step 2** *(1 mark)*\n\nSince $x_2 > x_1 > -k$:\n- $x_2 - x_1 > 0$\n- $x_1 + k > 0$ and $x_2 + k > 0$\n- $k^2 - 1 > 0$ (since $k > 1$)\n\nTherefore $g(x_2) - g(x_1) > 0$, i.e. $x_1 < x_2 \\implies g(x_1) < g(x_2)$. $\\square$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.i",
+      "content": "**Step 1** *(1 mark)*\n\nSolve $g(x) = -x$:\n\n$$\\frac{kx+1}{x+k} = -x \\implies kx+1 = -x(x+k) = -x^2 - kx$$\n\n$$x^2 + 2kx + 1 = 0 \\implies x = -k \\pm \\sqrt{k^2-1}$$\n\n**Step 2** *(1 mark)*\n\nFor $x > -k$, take the positive root:\n\n$$x = -k + \\sqrt{k^2-1}, \\quad y = -x = k - \\sqrt{k^2-1}$$\n\n$$X = \\left(-k + \\sqrt{k^2-1},\\; k - \\sqrt{k^2-1}\\right)$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.ii",
+      "content": "**Step 1** *(1 mark)*\n\nSet $x$-coordinate of $X$ equal to $-\\dfrac{1}{2}$:\n\n$$-k + \\sqrt{k^2-1} = -\\frac{1}{2} \\implies \\sqrt{k^2-1} = k - \\frac{1}{2}$$\n\nSquare both sides:\n\n$$k^2 - 1 = k^2 - k + \\frac{1}{4} \\implies k = \\frac{5}{4}$$\n\n**Step 2** *(1 mark)*\n\nVerify: $x = -\\dfrac{5}{4} + \\sqrt{\\dfrac{25}{16}-1} = -\\dfrac{5}{4} + \\dfrac{3}{4} = -\\dfrac{1}{2}$, $y = \\dfrac{1}{2}$ ✓\n\n$$k = \\frac{5}{4}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.iii",
+      "content": "**Step 1** *(1 mark)*\n\nWith $X = (x_0, -x_0)$ where $x_0 = -k + \\sqrt{k^2-1}$, $Y = (1,1)$, $Z = (-1,-1)$:\n\nArea of triangle $XYZ = \\dfrac{1}{2}|\\det([Y-X, Z-X])|$\n\n$Y - X = (1-x_0,\\, 1+x_0)$, $Z - X = (-1-x_0,\\, -1+x_0)$\n\n$\\det = (1-x_0)(-1+x_0) - (1+x_0)(-1-x_0) = -(x_0^2-1) + (1+x_0)^2 - \\ldots$\n\nActually: $\\det = (1-x_0)(x_0-1) - (1+x_0)(-1-x_0) = -(1-x_0)^2 + (1+x_0)^2 = 4x_0$\n\nArea $= \\dfrac{1}{2}|4x_0| = 2|x_0| = 2(k - \\sqrt{k^2-1})$ (since $x_0 < 0$ for $k > 1$)\n\n**Step 2** *(1 mark)*\n\n$s(k) = [\\text{Area}]^2 = 4(k-\\sqrt{k^2-1})^2 \\geq 1$\n\n$(k-\\sqrt{k^2-1})^2 \\geq \\dfrac{1}{4} \\implies k - \\sqrt{k^2-1} \\geq \\dfrac{1}{2}$ (since $k - \\sqrt{k^2-1} > 0$)\n\n$k - \\dfrac{1}{2} \\geq \\sqrt{k^2-1} \\implies k^2 - k + \\dfrac{1}{4} \\geq k^2-1 \\implies k \\leq \\dfrac{5}{4}$\n\nFor $k > 1$: $\\boxed{1 < k \\leq \\dfrac{5}{4}}$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "f.i",
+      "content": "**Step 1** *(1 mark)*\n\nThe graphs of $g$ and $y = x$ intersect when $g(x) = x$:\n\n$\\dfrac{kx+1}{x+k} = x \\implies kx+1 = x^2+kx \\implies x^2 = 1 \\implies x = \\pm 1$\n\nFor $k > 1$ and $x \\in (-1,1)$: $g(x) > x$ (since $g(x)-x = \\dfrac{1-x^2}{x+k} > 0$).\n\n**Step 2** *(1 mark)*\n\n$$A(k) = \\int_{-1}^{1} \\left(g(x) - x\\right)dx = \\int_{-1}^{1} \\frac{1-x^2}{x+k}\\,dx$$\n\nEvaluating:\n\n$$A(k) = \\left[(k^2-1)\\log_e|x+k| + 2kx - x^2\\right]_{-1}^{1} \\cdot \\frac{1}{\\ldots}$$\n\n$$A(k) = 2k - (k^2-1)\\log_e\\!\\left(\\frac{k+1}{k-1}\\right)$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "f.ii",
+      "content": "**Step 1** *(1 mark)*\n\n**Show $A(k) > 0$:** Since $g(x) > x$ for all $x \\in (-1,1)$ when $k > 1$ (as $\\dfrac{1-x^2}{x+k} > 0$), the integrand is positive, so $A(k) > 0$.\n\n**Step 2** *(1 mark)*\n\n**Show $A(k) < 2$:** For all $x \\in [-1, 1]$ and $k > 1$:\n\n$$g(x) - x = \\frac{1-x^2}{x+k} < \\frac{1-x^2}{1+k-1} = 1-x^2 \\leq 1$$\n\nActually, a cleaner bound: since $x + k > 1$ for $x > -1$ and $k > 1$:\n\n$$A(k) = \\int_{-1}^{1}\\frac{1-x^2}{x+k}\\,dx < \\int_{-1}^{1}(1-x^2)\\,dx = \\left[x - \\frac{x^3}{3}\\right]_{-1}^{1} = \\frac{4}{3} - \\left(-\\frac{4}{3}\\right)... $$\n\nWait: $\\displaystyle\\int_{-1}^{1}(1-x^2)\\,dx = \\left[x-\\frac{x^3}{3}\\right]_{-1}^{1} = \\left(1-\\frac{1}{3}\\right) - \\left(-1+\\frac{1}{3}\\right) = \\frac{4}{3} \\cdot 2 \\cdot \\frac{1}{\\ldots}$\n\nActually $= \\frac{2}{3} - (-\\frac{2}{3}) = \\frac{4}{3} < 2$.\n\nSince $x + k > 1$ for $x \\in (-1,1)$, $k > 1$:\n$$A(k) < \\int_{-1}^{1}(1-x^2)\\,dx = \\frac{4}{3} < 2$$\n\nTherefore $0 < A(k) < 2$ for all $k > 1$. $\\square$"
+    }
+  ]
+}

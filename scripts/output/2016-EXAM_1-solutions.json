@@ -5,112 +5,112 @@
     {
       "questionNumber": 1,
       "part": "a",
-      "content": "Differentiate using the quotient rule:\n$$\\frac{dy}{dx} = \\frac{-\\sin(x)(x^2+2) - 2x\\cos(x)}{(x^2+2)^2}$$"
+      "content": "**Step 1** *(1 mark)*\n\nApply the quotient rule with $u = \\cos(x)$ and $v = x^2 + 2$.\n\n$u' = -\\sin(x)$\n\n$v' = 2x$\n\n**Step 2** *(1 mark)*\n\n$$\\frac{dy}{dx} = \\frac{-\\sin(x)(x^2+2) - 2x\\cos(x)}{(x^2+2)^2}$$"
     },
     {
       "questionNumber": 1,
       "part": "b",
-      "content": "Using the product rule and chain rule:\n$$f'(x) = 2x e^{5x} + 5x^2 e^{5x}$$\nEvaluating at $x = 1$:\n$$f'(1) = 2(1)e^5 + 5(1)^2 e^5 = 7e^5$$"
+      "content": "**Step 1** *(1 mark)*\n\nApply the product rule with $u = x^2$ and $v = e^{5x}$.\n\n$u' = 2x$\n\n$v' = 5e^{5x}$\n\n$f'(x) = 2x e^{5x} + 5x^2 e^{5x}$\n\n**Step 2** *(1 mark)*\n\nEvaluate $f'(1)$.\n\n$f'(1) = 2(1)e^{5} + 5(1)^2 e^{5}$\n\n$= 7e^5$"
     },
     {
       "questionNumber": 2,
       "part": "a",
-      "content": "Using the chain rule on $f(x) = \\sqrt{1-2x} = (1-2x)^{1/2}$:\n$$f'(x) = \\frac{1}{2}(1-2x)^{-1/2} \\times (-2) = -\\frac{1}{\\sqrt{1-2x}}$$"
+      "content": "**Step 1** *(1 mark)*\n\nApply the chain rule to $f(x) = \\sqrt{1-2x} = (1-2x)^{1/2}$.\n\nThe derivative of $(1-2x)^{1/2}$ is $\\frac{1}{2}(1-2x)^{-1/2} \\times (-2)$.\n\n$$f'(x) = -\\frac{1}{\\sqrt{1-2x}}$$"
     },
     {
       "questionNumber": 2,
       "part": "b",
-      "content": "The gradient of the tangent at $x = -1$ is $f'(-1)$, so:\n$$\\tan\\theta = f'(-1) = -\\frac{1}{\\sqrt{3}}$$\nSince $\\tan\\theta = -\\frac{1}{\\sqrt{3}}$ and $\\theta$ is obtuse:\n$$\\theta = \\frac{5\\pi}{6} \\quad \\text{or} \\quad 150°$$"
+      "content": "**Step 1** *(1 mark)*\n\nRecognise that the gradient of the tangent at $x = -1$ equals $\\tan(\\theta)$.\n\n$\\tan(\\theta) = f'(-1) = -\\dfrac{1}{\\sqrt{3}}$\n\n**Step 2** *(1 mark)*\n\nDetermine the angle $\\theta$ where $0 < \\theta < \\pi$ and $\\tan(\\theta) = -\\dfrac{1}{\\sqrt{3}}$.\n\n$\\theta = \\dfrac{5\\pi}{6}$ or $150°$"
     },
     {
       "questionNumber": 3,
       "part": "a",
-      "content": "Sketch the graph of $y = \\frac{3}{x-1} + 2$ showing:\n- Vertical asymptote at $x = 1$ (labelled)\n- Horizontal asymptote at $y = 2$ (labelled)\n- $x$-intercept at $\\left(-\\frac{1}{2}, 0\\right)$ (labelled)\n- $y$-intercept at $(0, -1)$ (labelled)\n- Two branches showing correct asymptotic behaviour"
+      "content": "**Step 1** *(1 mark)*\n\nDraw the correct shape of the graph showing two branches of the hyperbola, one branch for $x < 1$ and one branch for $x > 1$.\n\n**Step 2** *(1 mark)*\n\nLabel the asymptotes $x = 1$ (vertical) and $y = 2$ (horizontal), preferably using dashed lines.\n\n**Step 3** *(1 mark)*\n\nLabel the axis intercepts: $x$-intercept at $\\left(-\\frac{1}{2}, 0\\right)$ and $y$-intercept at $(0, -1)$."
     },
     {
       "questionNumber": 3,
       "part": "b",
-      "content": "The area is given by:\n$$\\text{Area} = \\int_2^4 \\left(2 + \\frac{3}{x-1}\\right) dx$$\n$$= \\Big[2x + 3\\log_e(x-1)\\Big]_2^4$$\n$$= \\left(8 + 3\\log_e(3)\\right) - \\left(4 + 3\\log_e(1)\\right)$$\n$$= 4 + 3\\log_e(3)$$\nAlternatively $4 + \\log_e(27)$."
+      "content": "**Step 1** *(1 mark)*\n\nSet up the definite integral for the area.\n\n$$\\text{Area} = \\int_2^4 \\left(2 + \\frac{3}{x-1}\\right) dx$$\n\n**Step 2** *(1 mark)*\n\nFind the antiderivative and evaluate.\n\n$= \\Big[2x + 3\\log_e(x-1)\\Big]_2^4$\n\n$= \\left(8 + 3\\log_e(3)\\right) - \\left(4 + 3\\log_e(1)\\right)$\n\n$= 4 + 3\\log_e(3)$\n\nAlternatively, $4 + \\log_e(27)$."
     },
     {
       "questionNumber": 4,
       "part": "a",
-      "content": "Let $X$ be the number of tagged sheep observed in 4 sightings.\n$X \\sim \\text{Bi}\\left(4, \\frac{1}{3}\\right)$\n$$\\Pr(X = 0) = \\left(\\frac{2}{3}\\right)^4 = \\frac{16}{81}$$"
+      "content": "**Step 1** *(1 mark)*\n\nIdentify the distribution as $X \\sim \\text{Bi}\\left(4, \\dfrac{1}{3}\\right)$.\n\n$$\\Pr(X = 0) = \\left(\\frac{2}{3}\\right)^4 = \\frac{16}{81}$$"
     },
     {
       "questionNumber": 4,
       "part": "b",
-      "content": "$$\\Pr(X \\geq 1) = 1 - \\Pr(X = 0) = 1 - \\frac{16}{81} = \\frac{65}{81}$$"
+      "content": "**Step 1** *(1 mark)*\n\nUse the complement.\n\n$\\Pr(X \\geq 1) = 1 - \\Pr(X = 0)$\n\n$= 1 - \\dfrac{16}{81}$\n\n$= \\dfrac{65}{81}$"
     },
     {
       "questionNumber": 4,
       "part": "c",
-      "content": "Over 6 days, let $Y$ be the number of days with no tagged sheep sighted.\n$$Y \\sim \\text{Bi}\\left(6, \\frac{16}{81}\\right)$$\n$$\\Pr(Y = 0) = \\left(\\frac{16}{81}\\right)^6 \\quad \\text{or equivalently} \\quad \\left(\\frac{2}{3}\\right)^{24}$$"
+      "content": "**Step 1** *(1 mark)*\n\nRecognise that over 6 days, each day the probability of no tagged sheep is $\\dfrac{16}{81}$, so $Y \\sim \\text{Bi}\\left(6, \\dfrac{16}{81}\\right)$.\n\n$$\\Pr(Y = 0) = \\left(\\frac{16}{81}\\right)^6 \\text{ or equivalently } \\left(\\frac{2}{3}\\right)^{24}$$"
     },
     {
       "questionNumber": 5,
       "part": "ai",
-      "content": "$$h(x) = f(g(x)) = \\log_e(x^2 + 1)$$"
+      "content": "**Step 1** *(1 mark)*\n\nFind the composite function $h(x) = f(g(x))$.\n\n$h(x) = \\log_e(x^2 + 1)$"
     },
     {
       "questionNumber": 5,
       "part": "aii",
-      "content": "Domain of $h$: $R$\n\nRange of $h$: $[0, \\infty)$ or $R^+ \\cup \\{0\\}$"
+      "content": "**Step 1** *(1 mark)*\n\nThe domain of $h$ is $R$.\n\n**Step 2** *(1 mark)*\n\nSince $x^2 + 1 \\geq 1$ for all $x \\in R$, we have $\\log_e(x^2+1) \\geq 0$.\n\nThe range of $h$ is $[0, \\infty)$."
     },
     {
       "questionNumber": 5,
       "part": "aiii",
-      "content": "Consider the left-hand side:\n$$h(x) + h(-x) = \\log_e(x^2+1) + \\log_e((-x)^2+1)$$\n$$= \\log_e(x^2+1) + \\log_e(x^2+1)$$\n$$= 2\\log_e(x^2+1)$$\n\nConsider the right-hand side:\n$$f\\!\\left(\\left(g(x)\\right)^2\\right) = \\log_e\\!\\left((x^2+1)^2\\right) = 2\\log_e(x^2+1)$$\n\nHence $h(x) + h(-x) = f\\!\\left(\\left(g(x)\\right)^2\\right)$."
+      "content": "**Step 1** *(1 mark)*\n\nEvaluate the left-hand side.\n\n$h(x) + h(-x) = \\log_e(x^2 + 1) + \\log_e((-x)^2 + 1)$\n\n$= \\log_e(x^2 + 1) + \\log_e(x^2 + 1)$\n\n$= 2\\log_e(x^2 + 1)$\n\n**Step 2** *(1 mark)*\n\nEvaluate the right-hand side.\n\n$f\\left((g(x))^2\\right) = \\log_e\\left((x^2+1)^2\\right)$\n\n$= 2\\log_e(x^2 + 1)$\n\nHence $h(x) + h(-x) = f\\left((g(x))^2\\right)$."
     },
     {
       "questionNumber": 5,
       "part": "aiv",
-      "content": "Find the derivative:\n$$h'(x) = \\frac{2x}{x^2+1}$$\nSet $h'(x) = 0$: $2x = 0$, so $x = 0$.\n\n$h(0) = \\log_e(0+1) = 0$, so the stationary point is $(0, 0)$.\n\nSince $h'(x) < 0$ for $x < 0$ and $h'(x) > 0$ for $x > 0$ (or using the range $[0, \\infty)$), the stationary point at $(0, 0)$ is a minimum."
+      "content": "**Step 1** *(1 mark)*\n\nFind $h'(x)$ and set it equal to zero.\n\n$h'(x) = \\dfrac{2x}{x^2 + 1} = 0$\n\nThis gives $2x = 0$, i.e. $x = 0$.\n\n**Step 2** *(1 mark)*\n\nDetermine the nature of the stationary point.\n\nWhen $x = 0$, $h(0) = \\log_e(1) = 0$, so the stationary point is $(0, 0)$.\n\nSince the range of $h$ is $[0, \\infty)$, the value $h(0) = 0$ is the minimum value.\n\nTherefore $(0, 0)$ is a minimum stationary point."
     },
     {
       "questionNumber": 5,
       "part": "bi",
-      "content": "Let $x = \\log_e(y^2 + 1)$\n$$e^x = y^2 + 1$$\n$$y^2 = e^x - 1$$\n$$y = \\pm\\sqrt{e^x - 1}$$\nSince the range of $k^{-1}$ must equal the domain of $k$, which is $(-\\infty, 0]$, we select the negative root:\n$$k^{-1}(x) = -\\sqrt{e^x - 1}$$"
+      "content": "**Step 1** *(1 mark)*\n\nTo find the inverse, let $x = \\log_e(y^2 + 1)$.\n\n$e^x = y^2 + 1$\n\n$y^2 = e^x - 1$\n\n$y = \\pm\\sqrt{e^x - 1}$\n\n**Step 2** *(1 mark)*\n\nSince the range of $k$ is $(-\\infty, 0]$, the range of $k^{-1}$ must also be $(-\\infty, 0]$.\n\nSelect the negative root.\n\n$k^{-1}(x) = -\\sqrt{e^x - 1}$"
     },
     {
       "questionNumber": 5,
       "part": "bii",
-      "content": "Domain of $k^{-1}$: $[0, \\infty)$ or $R^+ \\cup \\{0\\}$\n\nRange of $k^{-1}$: $(-\\infty, 0]$ or $R^- \\cup \\{0\\}$"
+      "content": "**Step 1** *(1 mark)*\n\nThe domain of $k^{-1}$ equals the range of $k$.\n\nDomain of $k^{-1}$: $[0, \\infty)$\n\n**Step 2** *(1 mark)*\n\nThe range of $k^{-1}$ equals the domain of $k$.\n\nRange of $k^{-1}$: $(-\\infty, 0]$"
     },
     {
       "questionNumber": 6,
       "part": "a",
-      "content": "Evaluate the function at the endpoints:\n$$f\\!\\left(-\\frac{\\pi}{3}\\right) = 2\\sin\\!\\left(-\\frac{2\\pi}{3}\\right) - 1 = -\\sqrt{3} - 1$$\n$$f\\!\\left(\\frac{\\pi}{6}\\right) = 2\\sin\\!\\left(\\frac{\\pi}{3}\\right) - 1 = \\sqrt{3} - 1$$\n\nAverage rate of change:\n$$= \\frac{(\\sqrt{3}-1) - (-\\sqrt{3}-1)}{\\frac{\\pi}{6} - \\left(-\\frac{\\pi}{3}\\right)} = \\frac{2\\sqrt{3}}{\\frac{\\pi}{2}} = \\frac{4\\sqrt{3}}{\\pi}$$"
+      "content": "**Step 1** *(1 mark)*\n\nEvaluate $f$ at both endpoints.\n\n$f\\left(-\\dfrac{\\pi}{3}\\right) = 2\\sin\\left(-\\dfrac{2\\pi}{3}\\right) - 1 = -\\sqrt{3} - 1$\n\n$f\\left(\\dfrac{\\pi}{6}\\right) = 2\\sin\\left(\\dfrac{\\pi}{3}\\right) - 1 = \\sqrt{3} - 1$\n\n**Step 2** *(1 mark)*\n\nCalculate the average rate of change.\n\n$$\\text{Average rate of change} = \\frac{(\\sqrt{3}-1) - (-\\sqrt{3}-1)}{\\dfrac{\\pi}{6} - \\left(-\\dfrac{\\pi}{3}\\right)}$$\n\n$$= \\frac{2\\sqrt{3}}{\\dfrac{\\pi}{2}}$$\n\n$$= \\frac{4\\sqrt{3}}{\\pi}$$"
     },
     {
       "questionNumber": 6,
       "part": "b",
-      "content": "$$\\text{Average value} = \\frac{1}{\\frac{\\pi}{6} - \\left(-\\frac{\\pi}{3}\\right)} \\int_{-\\frac{\\pi}{3}}^{\\frac{\\pi}{6}} \\left(2\\sin(2x) - 1\\right) dx$$\n$$= \\frac{2}{\\pi} \\Big[-\\cos(2x) - x\\Big]_{-\\frac{\\pi}{3}}^{\\frac{\\pi}{6}}$$\n$$= \\frac{2}{\\pi}\\left[\\left(-\\cos\\frac{\\pi}{3} - \\frac{\\pi}{6}\\right) - \\left(-\\cos\\left(-\\frac{2\\pi}{3}\\right) + \\frac{\\pi}{3}\\right)\\right]$$\n$$= \\frac{2}{\\pi}\\left[\\left(-\\frac{1}{2} - \\frac{\\pi}{6}\\right) - \\left(\\frac{1}{2} + \\frac{\\pi}{3}\\right)\\right]$$\n$$= \\frac{2}{\\pi}\\left(-1 - \\frac{\\pi}{2}\\right) = -\\frac{2}{\\pi} - 1$$"
+      "content": "**Step 1** *(1 mark)*\n\nWrite the average value formula.\n\n$$\\text{Average value} = \\frac{1}{\\dfrac{\\pi}{6} - \\left(-\\dfrac{\\pi}{3}\\right)} \\int_{-\\pi/3}^{\\pi/6} (2\\sin(2x) - 1)\\, dx$$\n\n**Step 2** *(1 mark)*\n\nFind the antiderivative.\n\n$= \\dfrac{2}{\\pi} \\Big[-\\cos(2x) - x\\Big]_{-\\pi/3}^{\\pi/6}$\n\n**Step 3** *(1 mark)*\n\nEvaluate at the terminals.\n\n$= \\dfrac{2}{\\pi}\\left[\\left(-\\cos\\left(\\dfrac{\\pi}{3}\\right) - \\dfrac{\\pi}{6}\\right) - \\left(-\\cos\\left(-\\dfrac{2\\pi}{3}\\right) + \\dfrac{\\pi}{3}\\right)\\right]$\n\n$= \\dfrac{2}{\\pi}\\left[\\left(-\\dfrac{1}{2} - \\dfrac{\\pi}{6}\\right) - \\left(\\dfrac{1}{2} + \\dfrac{\\pi}{3}\\right)\\right]$\n\n$= \\dfrac{2}{\\pi}\\left(-1 - \\dfrac{\\pi}{2}\\right)$\n\n$= -\\dfrac{2}{\\pi} - 1$"
     },
     {
       "questionNumber": 7,
       "part": "a",
-      "content": "Using the law of total probability (tree diagram):\n$$\\Pr(F) = \\frac{4}{9} \\times \\frac{1}{20} + \\frac{5}{9} \\times \\frac{2}{25}$$\n$$= \\frac{4}{180} + \\frac{10}{225} = \\frac{1}{45} + \\frac{2}{45} = \\frac{1}{15}$$"
+      "content": "**Step 1** *(1 mark)*\n\nIdentify the two cases using the law of total probability.\n\n$\\Pr(F) = \\Pr(A) \\times \\Pr(F|A) + \\Pr(B) \\times \\Pr(F|B)$\n\n$= \\dfrac{4}{9} \\times \\dfrac{1}{20} + \\dfrac{5}{9} \\times \\dfrac{2}{25}$\n\n**Step 2** *(1 mark)*\n\nSimplify.\n\n$= \\dfrac{4}{180} + \\dfrac{10}{225}$\n\n$= \\dfrac{1}{45} + \\dfrac{2}{45}$\n\n$= \\dfrac{1}{15}$"
     },
     {
       "questionNumber": 7,
       "part": "b",
-      "content": "Using conditional probability:\n$$\\Pr(A \\mid F) = \\frac{\\Pr(A \\cap F)}{\\Pr(F)} = \\frac{\\frac{1}{45}}{\\frac{1}{15}} = \\frac{1}{3}$$"
+      "content": "**Step 1** *(1 mark)*\n\nApply the conditional probability formula.\n\n$\\Pr(A|F) = \\dfrac{\\Pr(A \\cap F)}{\\Pr(F)}$\n\n$= \\dfrac{\\dfrac{1}{45}}{\\dfrac{1}{15}}$\n\n$= \\dfrac{1}{3}$"
     },
     {
       "questionNumber": 8,
       "part": "a",
-      "content": "Differentiate using the product rule:\n$$\\frac{d}{dx}\\left(\\frac{x^k}{k^2}(k\\log_e(x)-1)\\right) = (k\\log_e(x)-1)\\times\\frac{kx^{k-1}}{k^2} + \\frac{x^k}{k^2}\\times\\frac{k}{x}$$\n$$= x^{k-1}\\log_e(x) - \\frac{x^{k-1}}{k} + \\frac{x^{k-1}}{k}$$\n$$= x^{k-1}\\log_e(x)$$\nHence:\n$$\\int x^{k-1}\\log_e(x)\\, dx = \\frac{x^k}{k^2}(k\\log_e(x)-1)$$"
+      "content": "**Step 1** *(1 mark)*\n\nDifferentiate $\\dfrac{x^k}{k^2}(k\\log_e(x) - 1)$ using the product rule.\n\nLet $u = k\\log_e(x) - 1$ and $v = \\dfrac{x^k}{k^2}$.\n\n$u' = \\dfrac{k}{x}$\n\n$v' = \\dfrac{kx^{k-1}}{k^2} = \\dfrac{x^{k-1}}{k}$\n\n$\\dfrac{d}{dx}\\left[\\dfrac{x^k}{k^2}(k\\log_e(x)-1)\\right] = (k\\log_e(x)-1)\\cdot\\dfrac{x^{k-1}}{k} + \\dfrac{x^k}{k^2}\\cdot\\dfrac{k}{x}$\n\n**Step 2** *(1 mark)*\n\nSimplify to obtain the required result.\n\n$= x^{k-1}\\log_e(x) - \\dfrac{x^{k-1}}{k} + \\dfrac{x^{k-1}}{k}$\n\n$= x^{k-1}\\log_e(x)$\n\nHence $\\displaystyle\\int x^{k-1}\\log_e(x)\\,dx = \\dfrac{x^k}{k^2}(k\\log_e(x) - 1)$."
     },
     {
       "questionNumber": 8,
       "part": "bi",
-      "content": "Using the result from part a. with $k = 2$:\n$$P\\!\\left(X > \\frac{1}{e}\\right) = \\int_{\\frac{1}{e}}^{1} -4x\\log_e(x)\\, dx$$\n$$= -4\\left[\\frac{x^2}{4}(2\\log_e(x)-1)\\right]_{\\frac{1}{e}}^{1}$$\n$$= -4\\left[\\frac{1}{4}(0-1) - \\frac{1}{4e^2}(-2-1)\\right]$$\n$$= -4\\left[-\\frac{1}{4} + \\frac{3}{4e^2}\\right]$$\n$$= 1 - \\frac{3}{e^2}$$"
+      "content": "**Step 1** *(1 mark)*\n\nUsing the result from part (a) with $k = 2$, set up the integral.\n\n$P\\left(X > \\dfrac{1}{e}\\right) = \\displaystyle\\int_{1/e}^{1} -4x\\log_e(x)\\,dx$\n\n$= -4\\left[\\dfrac{x^2}{4}(2\\log_e(x) - 1)\\right]_{1/e}^{1}$\n\n**Step 2** *(1 mark)*\n\nEvaluate at the terminals.\n\nAt $x = 1$: $\\dfrac{1}{4}(0 - 1) = -\\dfrac{1}{4}$\n\nAt $x = \\dfrac{1}{e}$: $\\dfrac{1}{4e^2}(-2 - 1) = -\\dfrac{3}{4e^2}$\n\n$= -4\\left(-\\dfrac{1}{4} + \\dfrac{3}{4e^2}\\right)$\n\n$= 1 - \\dfrac{3}{e^2}$"
     },
     {
       "questionNumber": 8,
       "part": "bii",
-      "content": "Since $e > \\frac{5}{2}$, we have $e^2 > \\frac{25}{4}$, so:\n$$\\frac{3}{e^2} < \\frac{3}{\\frac{25}{4}} = \\frac{12}{25} < \\frac{1}{2}$$\nTherefore:\n$$1 - \\frac{3}{e^2} > 1 - \\frac{1}{2} = \\frac{1}{2}$$\nThus $\\Pr\\!\\left(X > \\frac{1}{e}\\right) > \\frac{1}{2}$, which means the median is greater than $\\frac{1}{e}$."
+      "content": "**Step 1** *(1 mark)*\n\nSince $e > \\dfrac{5}{2}$, we have $e^2 > \\dfrac{25}{4}$, so $\\dfrac{3}{e^2} < \\dfrac{12}{25} < \\dfrac{1}{2}$.\n\n**Step 2** *(1 mark)*\n\nTherefore $1 - \\dfrac{3}{e^2} > \\dfrac{1}{2}$.\n\nThus $\\Pr\\left(X > \\dfrac{1}{e}\\right) > \\dfrac{1}{2}$, which means the median is greater than $\\dfrac{1}{e}$."
     }
   ]
 }

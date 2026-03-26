@@ -1,0 +1,266 @@
+{
+  "year": 2019,
+  "examType": "EXAM_1",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": "a.i",
+      "marks": 1,
+      "content": "Let $f: \\left(\\dfrac{1}{3}, \\infty\\right) \\to R$, $f(x) = \\dfrac{1}{3x-1}$.\n\nFind $f'(x)$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "a.ii",
+      "marks": 1,
+      "content": "Let $f: \\left(\\dfrac{1}{3}, \\infty\\right) \\to R$, $f(x) = \\dfrac{1}{3x-1}$.\n\nFind an antiderivative of $f(x)$.",
+      "topic": "Calculus",
+      "subtopic": "Antidifferentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "marks": 2,
+      "content": "Let $g: R\\backslash\\{-1\\} \\to R$, $g(x) = \\dfrac{\\sin(\\pi x)}{x+1}$.\n\nEvaluate $g'(1)$.",
+      "topic": "Calculus",
+      "subtopic": "Quotient Rule",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "marks": 2,
+      "content": "Let $f: R\\backslash\\left\\{\\dfrac{1}{3}\\right\\} \\to R$, $f(x) = \\dfrac{1}{3x-1}$.\n\nFind the rule of $f^{-1}$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "marks": 1,
+      "content": "Let $f: R\\backslash\\left\\{\\dfrac{1}{3}\\right\\} \\to R$, $f(x) = \\dfrac{1}{3x-1}$.\n\nState the domain of $f^{-1}$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "c",
+      "marks": 1,
+      "content": "Let $g$ be the function obtained by applying the transformation $T$ to the function $f$, where\n$$T\\left(\\begin{bmatrix} x \\\\ y \\end{bmatrix}\\right) = \\begin{bmatrix} x \\\\ y \\end{bmatrix} + \\begin{bmatrix} c \\\\ d \\end{bmatrix}$$\nand $c, d \\in R$.\n\nFind the values of $c$ and $d$ given that $g = f^{-1}$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "marks": 2,
+      "content": "The only possible outcomes when a coin is tossed are a head or a tail. When an unbiased coin is tossed, the probability of tossing a head is the same as the probability of tossing a tail.\n\nJo has three coins in her pocket; two are unbiased and one is biased. When the biased coin is tossed, the probability of tossing a head is $\\dfrac{1}{3}$.\n\nJo randomly selects a coin from her pocket and tosses it.\n\nFind the probability that she tosses a head.",
+      "topic": "Probability",
+      "subtopic": "Probability Rules",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "marks": 1,
+      "content": "The only possible outcomes when a coin is tossed are a head or a tail. When an unbiased coin is tossed, the probability of tossing a head is the same as the probability of tossing a tail.\n\nJo has three coins in her pocket; two are unbiased and one is biased. When the biased coin is tossed, the probability of tossing a head is $\\dfrac{1}{3}$.\n\nJo randomly selects a coin from her pocket and tosses it.\n\nFind the probability that she selected an unbiased coin, given that she tossed a head.",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "marks": 2,
+      "content": "Solve $1 - \\cos\\left(\\dfrac{x}{2}\\right) = \\cos\\left(\\dfrac{x}{2}\\right)$ for $x \\in [-2\\pi, \\pi]$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "marks": 2,
+      "content": "The function $f: [-2\\pi, \\pi] \\to R$, $f(x) = \\cos\\left(\\dfrac{x}{2}\\right)$ is shown on the axes below.\n\nLet $g: [-2\\pi, \\pi] \\to R$, $g(x) = 1 - f(x)$.\n\nSketch the graph of $g$ on the axes above. Label all points of intersection of the graphs of $f$ and $g$, and the endpoints of $g$, with their coordinates.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of f(x) = cos(x/2) on [-2pi, pi] shown on axes with x-axis from -2pi to pi and y-axis from -2 to 2"
+    },
+    {
+      "questionNumber": 5,
+      "part": "a.i",
+      "marks": 1,
+      "content": "Let $f: R\\backslash\\{1\\} \\to R$, $f(x) = \\dfrac{2}{(x-1)^{2}} + 1$.\n\nEvaluate $f(-1)$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Rational Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "a.ii",
+      "marks": 2,
+      "content": "Let $f: R\\backslash\\{1\\} \\to R$, $f(x) = \\dfrac{2}{(x-1)^{2}} + 1$.\n\nSketch the graph of $f$ on the axes below, labelling all asymptotes with their equations.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Rational Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "marks": 2,
+      "content": "Let $f: R\\backslash\\{1\\} \\to R$, $f(x) = \\dfrac{2}{(x-1)^{2}} + 1$.\n\nFind the area bounded by the graph of $f$, the $x$-axis, the line $x = -1$ and the line $x = 0$.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "a",
+      "marks": 1,
+      "content": "Fred owns a company that produces thousands of pegs each day. He randomly selects 41 pegs that are produced on one day and finds eight faulty pegs.\n\nWhat is the proportion of faulty pegs in this sample?",
+      "topic": "Statistics",
+      "subtopic": "Sampling",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "b",
+      "marks": 2,
+      "content": "Pegs are packed each day in boxes. Each box holds 12 pegs. Let $\\hat{P}$ be the random variable that represents the proportion of faulty pegs in a box.\n\nThe actual proportion of faulty pegs produced by the company each day is $\\dfrac{1}{6}$.\n\nFind $\\Pr\\!\\left(\\hat{P} < \\dfrac{1}{6}\\right)$. Express your answer in the form $a(b)^{n}$, where $a$ and $b$ are positive rational numbers and $n$ is a positive integer.",
+      "topic": "Statistics",
+      "subtopic": "Sampling",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "a",
+      "marks": 1,
+      "content": "The graph of the relation $y = \\sqrt{1 - x^{2}}$ is shown on the axes below. $P$ is a point on the graph of this relation, $A$ is the point $(-1, 0)$ and $B$ is the point $(x, 0)$.\n\nFind an expression for the length $PB$ in terms of $x$ only.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "EASY",
+      "imageDescription": "Upper semicircle y = sqrt(1 - x^2) with point P(x,y) on the curve, A at (-1,0), B at (x,0), and shaded triangle ABP"
+    },
+    {
+      "questionNumber": 7,
+      "part": "b",
+      "marks": 3,
+      "content": "The graph of the relation $y = \\sqrt{1 - x^{2}}$ is shown on the axes below. $P$ is a point on the graph of this relation, $A$ is the point $(-1, 0)$ and $B$ is the point $(x, 0)$.\n\nFind the maximum area of the triangle $ABP$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": "Upper semicircle y = sqrt(1 - x^2) with point P(x,y) on the curve, A at (-1,0), B at (x,0), and shaded triangle ABP"
+    },
+    {
+      "questionNumber": 8,
+      "part": "a",
+      "marks": 1,
+      "content": "The function $f: R \\to R$, $f(x)$ is a polynomial function of degree 4. Part of the graph of $f$ is shown below. The graph of $f$ touches the $x$-axis at the origin.\n\nFind the rule of $f$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Degree-4 polynomial touching x-axis at origin, crossing at (-1,0) and (1,0), with local maxima at (-1/sqrt(2), 1) and (1/sqrt(2), 1)"
+    },
+    {
+      "questionNumber": 8,
+      "part": "b",
+      "marks": 1,
+      "content": "Let $g$ be a function with the same rule as $f$.\n\nLet $h: D \\to R$, $h(x) = \\log_e(g(x)) - \\log_e(x^{3} + x^{2})$, where $D$ is the maximal domain of $h$.\n\nState $D$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Logarithmic Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "c",
+      "marks": 2,
+      "content": "Let $g$ be a function with the same rule as $f$.\n\nLet $h: D \\to R$, $h(x) = \\log_e(g(x)) - \\log_e(x^{3} + x^{2})$, where $D$ is the maximal domain of $h$.\n\nState the range of $h$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Logarithmic Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": "a",
+      "marks": 1,
+      "content": "Consider the functions $f: R \\to R$, $f(x) = 3 + 2x - x^{2}$ and $g: R \\to R$, $g(x) = e^{x}$.\n\nState the rule of $g(f(x))$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Exponential Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": "b",
+      "marks": 2,
+      "content": "Consider the functions $f: R \\to R$, $f(x) = 3 + 2x - x^{2}$ and $g: R \\to R$, $g(x) = e^{x}$.\n\nFind the values of $x$ for which the derivative of $g(f(x))$ is negative.",
+      "topic": "Calculus",
+      "subtopic": "Chain Rule",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": "c",
+      "marks": 1,
+      "content": "Consider the functions $f: R \\to R$, $f(x) = 3 + 2x - x^{2}$ and $g: R \\to R$, $g(x) = e^{x}$.\n\nState the rule of $f(g(x))$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": "d",
+      "marks": 2,
+      "content": "Consider the functions $f: R \\to R$, $f(x) = 3 + 2x - x^{2}$ and $g: R \\to R$, $g(x) = e^{x}$.\n\nSolve $f(g(x)) = 0$.",
+      "topic": "Algebra",
+      "subtopic": "Exponential Equations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": "e",
+      "marks": 2,
+      "content": "Consider the functions $f: R \\to R$, $f(x) = 3 + 2x - x^{2}$ and $g: R \\to R$, $g(x) = e^{x}$.\n\nFind the coordinates of the stationary point of the graph of $f(g(x))$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": "f",
+      "marks": 1,
+      "content": "Consider the functions $f: R \\to R$, $f(x) = 3 + 2x - x^{2}$ and $g: R \\to R$, $g(x) = e^{x}$.\n\nState the number of solutions to $g(f(x)) + f(g(x)) = 0$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Exponential Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    }
+  ]
+}

@@ -1,0 +1,596 @@
+{
+  "year": 2020,
+  "examType": "EXAM_2",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f$ and $g$ be functions such that $f(-1) = 4$, $f(2) = 5$, $g(-1) = 2$, $g(2) = 7$ and $g(4) = 6$.\n\nThe value of $g(f(-1))$ is\n\n**A.** 2\n**B.** 4\n**C.** 5\n**D.** 6\n**E.** 7",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "marks": 1,
+      "content": "Let $p(x) = x^{3} - 2ax^{2} + x - 1$, where $a \\in R$. When $p$ is divided by $x + 2$, the remainder is 5.\n\nThe value of $a$ is\n\n**A.** 2\n**B.** $-\\dfrac{7}{4}$\n**C.** $\\dfrac{1}{2}$\n**D.** $-\\dfrac{3}{2}$\n**E.** $-2$",
+      "topic": "Algebra",
+      "subtopic": "Polynomials",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f'(x) = \\dfrac{2}{\\sqrt{2x - 3}}$. If $f(6) = 4$, then\n\n**A.** $f(x) = 2\\sqrt{2x - 3}$\n**B.** $f(x) = \\sqrt{2x - 3} - 2$\n**C.** $f(x) = 2\\sqrt{2x - 3} - 2$\n**D.** $f(x) = \\sqrt{2x - 3} + 2$\n**E.** $f(x) = \\sqrt{2x - 3}$",
+      "topic": "Calculus",
+      "subtopic": "Antidifferentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": null,
+      "marks": 1,
+      "content": "The solutions of the equation $2\\cos\\left(2x - \\dfrac{\\pi}{3}\\right) + 1 = 0$ are\n\n**A.** $x = \\dfrac{\\pi(6k - 2)}{6}$ or $x = \\dfrac{\\pi(6k - 3)}{6}$, for $k \\in Z$\n**B.** $x = \\dfrac{\\pi(6k - 2)}{6}$ or $x = \\dfrac{\\pi(6k + 5)}{6}$, for $k \\in Z$\n**C.** $x = \\dfrac{\\pi(6k - 1)}{6}$ or $x = \\dfrac{\\pi(6k + 2)}{6}$, for $k \\in Z$\n**D.** $x = \\dfrac{\\pi(6k - 1)}{6}$ or $x = \\dfrac{\\pi(6k + 3)}{6}$, for $k \\in Z$\n**E.** $x = \\pi$ or $x = \\dfrac{\\pi(6k + 2)}{6}$, for $k \\in Z$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": null,
+      "marks": 1,
+      "content": "The graph of the function $f : D \\to R$, $f(x) = \\dfrac{3x + 2}{5 - x}$, where $D$ is the maximal domain, has asymptotes\n\n**A.** $x = -5$, $y = \\dfrac{3}{2}$\n**B.** $x = -3$, $y = 5$\n**C.** $x = \\dfrac{2}{3}$, $y = -3$\n**D.** $x = 5$, $y = 3$\n**E.** $x = 5$, $y = -3$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Rational Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "marks": 1,
+      "content": "Part of the graph of $y = f'(x)$ is shown below. The corresponding part of the graph of $y = f(x)$ is best represented by\n\n**A.** A curve with two local maxima and one local minimum, with the function first decreasing then increasing then decreasing then increasing.\n**B.** A curve with one local minimum and increasing overall from left to right.\n**C.** A curve with one local maximum and one local minimum.\n**D.** A curve with one local minimum on the left and a slight oscillation on the right.\n**E.** A curve with two local maxima and one local minimum, all above the x-axis.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of y = f'(x) showing a curve that dips below the x-axis on the left (with a minimum), crosses zero, rises to a local maximum, then slightly oscillates before rising again on the right. Five candidate graphs for y = f(x) are shown as options A through E."
+    },
+    {
+      "questionNumber": 7,
+      "part": null,
+      "marks": 1,
+      "content": "If $f(x) = e^{g(x^{2})}$, where $g$ is a differentiable function, then $f'(x)$ is equal to\n\n**A.** $2xe^{g^{x^{2}}}$\n**B.** $2xg(x^{2})e^{g(x^{2})}$\n**C.** $2xg'(x^{2})e^{g(x^{2})}$\n**D.** $2xg'(2x)e^{g(x^{2})}$\n**E.** $2xg'(x^{2})e^{g(2x)}$",
+      "topic": "Calculus",
+      "subtopic": "Chain Rule",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": null,
+      "marks": 1,
+      "content": "Items are packed in boxes of 25 and the mean number of defective items per box is 1.4. Assuming that the probability of an item being defective is binomially distributed, the probability that a box contains more than three defective items, correct to three decimal places, is\n\n**A.** 0.037\n**B.** 0.048\n**C.** 0.056\n**D.** 0.114\n**E.** 0.162",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": null,
+      "marks": 1,
+      "content": "If $\\int_{4}^{8} f(x)\\,dx = 5$, then $\\int_{0}^{2} f(2(x + 2))\\,dx$ is equal to\n\n**A.** 12\n**B.** 10\n**C.** 8\n**D.** $\\dfrac{1}{2}$\n**E.** $\\dfrac{5}{2}$",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 10,
+      "part": null,
+      "marks": 1,
+      "content": "Given that $\\log_{2}(n + 1) = x$, the values of $n$ for which $x$ is a positive integer are\n\n**A.** $n = 2^{k}$, $k \\in Z^{+}$\n**B.** $n = 2^{k} - 1$, $k \\in Z^{+}$\n**C.** $n = 2^{k-1}$, $k \\in Z^{+}$\n**D.** $n = 2k - 1$, $k \\in Z^{+}$\n**E.** $n = 2k$, $k \\in Z^{+}$",
+      "topic": "Algebra",
+      "subtopic": "Logarithmic Equations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 11,
+      "part": null,
+      "marks": 1,
+      "content": "The lengths of plastic pipes that are cut by a particular machine are a normally distributed random variable, $X$, with a mean of 250 mm. $Z$ is the standard normal random variable. If $\\Pr(X < 259) = 1 - \\Pr(Z > 1.5)$, then the standard deviation of the lengths of plastic pipes, in millimetres, is\n\n**A.** 1.5\n**B.** 3\n**C.** 6\n**D.** 9\n**E.** 12",
+      "topic": "Statistics",
+      "subtopic": "Normal Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 12,
+      "part": null,
+      "marks": 1,
+      "content": "A clock has a minute hand that is 10 cm long and a clock face with a radius of 15 cm. At 12.00 noon, both hands of the clock point vertically upwards and the tip of the minute hand is at its maximum distance above the base of the clock face. The height, $h$ centimetres, of the tip of the minute hand above the base of the clock face $t$ minutes after 12.00 noon is given by\n\n**A.** $h(t) = 15 + 10\\sin\\left(\\dfrac{\\pi t}{30}\\right)$\n**B.** $h(t) = 15 - 10\\sin\\left(\\dfrac{\\pi t}{30}\\right)$\n**C.** $h(t) = 15 + 10\\sin\\left(\\dfrac{\\pi t}{60}\\right)$\n**D.** $h(t) = 15 + 10\\cos\\left(\\dfrac{\\pi t}{60}\\right)$\n**E.** $h(t) = 15 + 10\\cos\\left(\\dfrac{\\pi t}{30}\\right)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Diagram of a clock face with radius 15 cm, with the minute hand (10 cm long) pointing upward. The height h of the tip of the minute hand above the base of the clock face is indicated."
+    },
+    {
+      "questionNumber": 13,
+      "part": null,
+      "marks": 1,
+      "content": "The transformation $T : R^{2} \\to R^{2}$ that maps the graph of $y = \\cos(x)$ onto the graph of $y = \\cos(2x + 4)$ is\n\n**A.** $T\\begin{pmatrix}x \\\\ y\\end{pmatrix} = \\begin{bmatrix}\\dfrac{1}{2} & 0 \\\\ 0 & 1\\end{bmatrix}\\begin{pmatrix}x \\\\ y\\end{pmatrix} + \\begin{pmatrix}-4 \\\\ 0\\end{pmatrix}$\n**B.** $T\\begin{pmatrix}x \\\\ y\\end{pmatrix} = \\begin{bmatrix}\\dfrac{1}{2} & 0 \\\\ 0 & 1\\end{bmatrix}\\begin{pmatrix}x \\\\ y\\end{pmatrix} + \\begin{pmatrix}-4 \\\\ 0\\end{pmatrix}$\n**C.** $T\\begin{pmatrix}x \\\\ y\\end{pmatrix} = \\begin{bmatrix}\\dfrac{1}{2} & 0 \\\\ 0 & 1\\end{bmatrix}\\begin{pmatrix}x \\\\ y\\end{pmatrix} + \\begin{pmatrix}-2 \\\\ 0\\end{pmatrix}$\n**D.** $T\\begin{pmatrix}x \\\\ y\\end{pmatrix} = \\begin{bmatrix}2 & 0 \\\\ 0 & 1\\end{bmatrix}\\begin{pmatrix}x \\\\ y\\end{pmatrix} + \\begin{pmatrix}2 \\\\ 0\\end{pmatrix}$\n**E.** $T\\begin{pmatrix}x \\\\ y\\end{pmatrix} = \\begin{bmatrix}2 & 0 \\\\ 0 & 1\\end{bmatrix}\\begin{pmatrix}x \\\\ y\\end{pmatrix} + \\begin{pmatrix}2 \\\\ 0\\end{pmatrix}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 14,
+      "part": null,
+      "marks": 1,
+      "content": "The random variable $X$ is normally distributed. The mean of $X$ is twice the standard deviation of $X$. If $\\Pr(X > 5.2) = 0.9$, then the standard deviation of $X$ is closest to\n\n**A.** 7.238\n**B.** 14.476\n**C.** 3.327\n**D.** 1.585\n**E.** 3.169",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 15,
+      "part": null,
+      "marks": 1,
+      "content": "Part of the graph of a function $f$, where $a > 0$, is shown below, with points $(-2a, 2a)$, $(0, -a)$ and $(a, a)$ indicated.\n\nThe average value of the function $f$ over the interval $[-2a, a]$ is\n\n**A.** 0\n**B.** $\\dfrac{a}{3}$\n**C.** $\\dfrac{a}{2}$\n**D.** $\\dfrac{3a}{4}$\n**E.** $a$",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Piecewise linear graph of f passing through (-2a, 2a), (0, -a) and (a, a), forming a V-shape with vertices at those key points."
+    },
+    {
+      "questionNumber": 16,
+      "part": null,
+      "marks": 1,
+      "content": "A right-angled triangle, $OBC$, is formed using the horizontal axis and the point $C(m, 9 - m^{2})$, where $m \\in (0, 3)$, on the parabola $y = 9 - x^{2}$, as shown below.\n\nThe maximum area of the triangle $OBC$ is\n\n**A.** $\\dfrac{\\sqrt{3}}{3}$\n**B.** $\\dfrac{2\\sqrt{3}}{3}$\n**C.** $\\sqrt{3}$\n**D.** $3\\sqrt{3}$\n**E.** $9\\sqrt{3}$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph showing the parabola y = 9 - x^2, with a right-angled triangle OBC shaded, where O is the origin, B is at (m, 0) on the x-axis and C is at (m, 9 - m^2) on the parabola."
+    },
+    {
+      "questionNumber": 17,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f(x) = -\\log_{e}(x + 2)$. A tangent to the graph of $f$ has a vertical axis intercept at $(0, c)$. The maximum value of $c$ is\n\n**A.** $-1$\n**B.** $-1 + \\log_{e}(2)$\n**C.** $-\\log_{e}(2)$\n**D.** $-1 - \\log_{e}(2)$\n**E.** $\\log_{e}(2)$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 18,
+      "part": null,
+      "marks": 1,
+      "content": "Let $a \\in (0, \\infty)$ and $b \\in R$. Consider the function $h : [-a, 0) \\cup (0, a] \\to R$, $h(x) = \\dfrac{a}{x} + b$.\n\nThe range of $h$ is\n\n**A.** $[b - 1, b + 1]$\n**B.** $(b - 1, b + 1)$\n**C.** $(-\\infty, b - 1) \\cup (b + 1, \\infty)$\n**D.** $(-\\infty, b - 1] \\cup [b + 1, \\infty)$\n**E.** $[b - 1, \\infty)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 19,
+      "part": null,
+      "marks": 1,
+      "content": "Shown below is the graph of $p$, which is the probability function for the number of times, $x$, that a '6' is rolled on a fair six-sided die in 20 trials.\n\nLet $q$ be the probability function for the number of times, $w$, that a '6' is **not** rolled on a fair six-sided die in 20 trials. $q(w)$ is given by\n\n**A.** $p(20 - w)$\n**B.** $p\\left(1 - \\dfrac{w}{20}\\right)$\n**C.** $p\\left(\\dfrac{w}{20}\\right)$\n**D.** $p(w - 20)$\n**E.** $1 - p(w)$",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Discrete probability distribution graph showing p(x) for x = 0 to 20, with the distribution peaking around x = 3-4, representing the binomial distribution for rolling a 6 in 20 trials."
+    },
+    {
+      "questionNumber": 20,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f : R \\to R$, $f(x) = \\cos(ax)$, where $a \\in R\\backslash\\{0\\}$, be a function with the property $f(x) = f(x + h)$, for all $h \\in Z$.\n\nLet $g : D \\to R$, $g(x) = \\log_{2}(f(x))$ be a function where the range of $g$ is $[-1, 0]$. A possible interval for $D$ is\n\n**A.** $\\left[\\dfrac{1}{4}, \\dfrac{5}{12}\\right]$\n**B.** $\\left[1, \\dfrac{7}{6}\\right]$\n**C.** $\\left[\\dfrac{5}{3}, 2\\right]$\n**D.** $\\left[-\\dfrac{1}{3}, 0\\right]$\n**E.** $\\left[-\\dfrac{1}{12}, \\dfrac{1}{4}\\right]$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Logarithmic Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "marks": 1,
+      "content": "Let $f : R \\to R$, $f(x) = a(x + 2)^{2}(x - 2)^{2}$, where $a \\in R$. Part of the graph of $f$ is shown below, passing through $(0, 4)$, $(-2, 0)$ and $(2, 0)$.\n\nShow that $a = \\dfrac{1}{4}$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "EASY",
+      "imageDescription": "Graph of f(x) = a(x+2)^2(x-2)^2, a quartic with x-intercepts at (-2, 0) and (2, 0) and y-intercept at (0, 4), with the curve having a local maximum at (0, 4) and touching the x-axis at both x = -2 and x = 2."
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "marks": 1,
+      "content": "Express $f(x) = \\dfrac{1}{4}(x + 2)^{2}(x - 2)^{2}$ in the form $f(x) = \\dfrac{1}{4}x^{4} + bx^{2} + c$, where $b$ and $c$ are integers.",
+      "topic": "Algebra",
+      "subtopic": "Polynomials",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.i",
+      "marks": 1,
+      "content": "Part of the graph of the derivative function $f'$ is shown below, with x-intercepts at $(-2, 0)$ and $(2, 0)$.\n\nWrite the rule for $f'$ in terms of $x$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": "Graph of f'(x) showing a cubic-like curve with zeros at x = -2 and x = 2, having a local maximum between x = -2 and x = 0 and a local minimum between x = 0 and x = 2."
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.ii",
+      "marks": 2,
+      "content": "Find the minimum value of the graph of $f'$ on the interval $x \\in (0, 2)$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "d",
+      "marks": 1,
+      "content": "Let $h : R \\to R$, $h(x) = -\\dfrac{1}{4}(x + 2)^{2}(x - 2)^{2} + 2$. Parts of the graphs of $f$ and $h$ are shown below.\n\nWrite a sequence of two transformations that map the graph of $f$ onto the graph of $h$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graphs of both f(x) = (1/4)(x+2)^2(x-2)^2 and h(x) = -(1/4)(x+2)^2(x-2)^2 + 2, showing f with maximum at (0,4) and h reflected below with a minimum, intersecting at x = -2 and x = 2."
+    },
+    {
+      "questionNumber": 1,
+      "part": "e.i",
+      "marks": 1,
+      "content": "Parts of the graphs of $f$ and $h$ are shown, with shaded regions between them.\n\nState the values of $x$ for which the graphs of $f$ and $h$ intersect.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "EASY",
+      "imageDescription": "Graphs of f and h with two shaded regions between the curves, near x = -2 and x = 2 respectively."
+    },
+    {
+      "questionNumber": 1,
+      "part": "e.ii",
+      "marks": 1,
+      "content": "Write down a definite integral that will give the total area of the shaded regions in the graph above.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "e.iii",
+      "marks": 1,
+      "content": "Find the total area of the shaded regions in the graph above. Give your answer correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "f",
+      "marks": 2,
+      "content": "Let $D$ be the vertical distance between the graphs of $f$ and $h$. Find all values of $x$ for which $D$ is at most 2 units. Give your answers correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "marks": 1,
+      "content": "An area of parkland has a river running through it. The north bank of the river is modelled by the function $f_{1} : [0, 200] \\to R$, $f_{1}(x) = 20\\cos\\left(\\dfrac{\\pi x}{100}\\right) + 40$. The south bank of the river is modelled by the function $f_{2} : [0, 200] \\to R$, $f_{2}(x) = 20\\cos\\left(\\dfrac{\\pi x}{100}\\right) + 30$. The horizontal axis points east and the vertical axis points north. All distances are measured in metres.\n\nA swimmer always starts at point $P$, which has coordinates $(50, 30)$. The swimmer swims north from point $P$. Find the distance, in metres, that the swimmer needs to swim to get to the north bank of the river.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": "Graph of the river parkland showing the north bank f1 and south bank f2 as cosine curves over [0, 200], with point P at (50, 30) and compass directions indicated."
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "marks": 2,
+      "content": "The swimmer swims east from point $P$. Find the distance, in metres, that the swimmer needs to swim to get to the north bank of the river.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "c",
+      "marks": 2,
+      "content": "On another occasion, the swimmer swims the minimum distance from point $P$ to the north bank of the river. Find this minimum distance. Give your answer in metres, correct to one decimal place.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "d",
+      "marks": 1,
+      "content": "Calculate the surface area of the section of the river shown on the graph on page 16, in square metres.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "e",
+      "marks": 3,
+      "content": "A horizontal line is drawn through point $P$. The section of the river that is south of the line is declared a 'no swimming' zone. Find the area of the 'no swimming' zone, correct to the nearest square metre.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "f",
+      "marks": 2,
+      "content": "Scientists observe that the north bank of the river is changing over time. It is moving further north from its current position. They model its predicted new location using the function with rule $y = kf_{1}(x)$, where $k \\geq 1$. Find the values of $k$ for which the distance **north** across the river, for all parts of the river, is strictly less than 20 m.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "marks": 1,
+      "content": "A transport company has detailed records of all its deliveries. The number of minutes a delivery is made before or after its scheduled delivery time can be modelled as a normally distributed random variable, $T$, with a mean of zero and a standard deviation of four minutes. A graph of the probability distribution of $T$ is shown below.\n\nIf $\\Pr(T \\leq a) = 0.6$, find $a$ to the nearest minute.",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "EASY",
+      "imageDescription": "Bell-shaped normal distribution curve for T with mean 0 and standard deviation 4, with the horizontal axis labelled from -12 to 12."
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "marks": 2,
+      "content": "Find the probability, correct to three decimal places, of a delivery being no later than three minutes after its scheduled delivery time, given that it arrives after its scheduled delivery time.",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "c",
+      "marks": 3,
+      "content": "Using the model described, the transport company can make 46.48% of its deliveries over the interval $-3 \\leq t \\leq 2$. It has an improved delivery model with a mean of $k$ and a standard deviation of four minutes. Find the values of $k$, correct to one decimal place, so that 46.48% of the transport company's deliveries can be made over the interval $-4.5 \\leq t \\leq 0.5$.",
+      "topic": "Statistics",
+      "subtopic": "Normal Distribution",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "d",
+      "marks": 2,
+      "content": "A rival transport company claims that there is a 0.85 probability that each delivery it makes will arrive on time or earlier. Assume that whether each delivery is on time or earlier is independent of other deliveries.\n\nAssuming that the rival company's claim is true, find the probability that on a day in which the rival company makes eight deliveries, fewer than half of them arrive on time or earlier. Give your answer correct to three decimal places.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "e.i",
+      "marks": 1,
+      "content": "Assuming that the rival company's claim is true, consider a day in which it makes $n$ deliveries.\n\nExpress, in terms of $n$, the probability that one or more deliveries will **not** arrive on time or earlier.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "e.ii",
+      "marks": 1,
+      "content": "Hence, or otherwise, find the minimum value of $n$ such that there is at least a 0.95 probability that one or more deliveries will **not** arrive on time or earlier.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "f",
+      "marks": 2,
+      "content": "An analyst from a government department believes the rival transport company's claim is only true for deliveries made before 4 pm. For deliveries made after 4 pm, the analyst believes the probability of a delivery arriving on time or earlier is $x$, where $0.3 \\leq x \\leq 0.7$. After observing a large number of the rival transport company's deliveries, the analyst believes that the overall probability that a delivery arrives on time or earlier is actually 0.75. Let the probability that a delivery is made after 4 pm be $y$. Assuming that the analyst's beliefs are true, find the minimum and maximum values of $y$.",
+      "topic": "Probability",
+      "subtopic": "Probability Rules",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "marks": 1,
+      "content": "The graph of the function $f(x) = 2xe^{(1 - x^{2})}$, where $0 \\leq x \\leq 3$, is shown below.\n\nFind the slope of the tangent to $f$ at $x = 1$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": "Graph of f(x) = 2x*e^(1-x^2) for 0 <= x <= 3, showing a curve that rises from the origin to a maximum and then decreases, with the x-axis intercept near x = 3."
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "marks": 1,
+      "content": "Find the obtuse angle that the tangent to $f$ at $x = 1$ makes with the positive direction of the horizontal axis. Give your answer correct to the nearest degree.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "c",
+      "marks": 1,
+      "content": "Find the slope of the tangent to $f$ at a point $x = p$. Give your answer in terms of $p$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "d.i",
+      "marks": 2,
+      "content": "Find the value of $p$ for which the tangent to $f$ at $x = 1$ and the tangent to $f$ at $x = p$ are perpendicular to each other. Give your answer correct to three decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "d.ii",
+      "marks": 3,
+      "content": "Hence, find the coordinates of the point where the tangents to the graph of $f$ at $x = 1$ and $x = p$ intersect when they are perpendicular. Give your answer correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.i",
+      "marks": 1,
+      "content": "Two line segments connect the points $(0, f(0))$ and $(3, f(3))$ to a single point $Q(n, f(n))$, where $1 < n < 3$, as shown in the graph below. The first line segment connects the point $(0, f(0))$ and the point $Q(n, f(n))$, where $1 < n < 3$.\n\nFind the equation of this line segment in terms of $n$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of f(x) = 2x*e^(1-x^2) with two shaded regions: one between the curve and the line from (0, f(0)) to Q(n, f(n)), and one between the curve and the line from Q(n, f(n)) to (3, f(3))."
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.ii",
+      "marks": 1,
+      "content": "The second line segment connects the point $Q(n, f(n))$ and the point $(3, f(3))$, where $1 < n < 3$. Find the equation of this line segment in terms of $n$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.iii",
+      "marks": 3,
+      "content": "Find the value of $n$, where $1 < n < 3$, if there are equal areas between the function $f$ and each line segment. Give your answer correct to three decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "marks": 3,
+      "content": "Let $f : R \\to R$, $f(x) = x^{3} - x$. Let $g_{a} : R \\to R$ be the function representing the tangent to the graph of $f$ at $x = a$, where $a \\in R$. Let $(b, 0)$ be the $x$-intercept of the graph of $g_{a}$.\n\nShow that $b = \\dfrac{2a^{3}}{3a^{2} - 1}$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "marks": 1,
+      "content": "State the values of $a$ for which $b$ does not exist.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "c",
+      "marks": 1,
+      "content": "State the nature of the graph of $g_{a}$ when $b$ does not exist.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "d.i",
+      "marks": 1,
+      "content": "State all values of $a$ for which $b = 1.1$. Give your answers correct to four decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "d.ii",
+      "marks": 1,
+      "content": "The graph of $f$ has an $x$-intercept at $(1, 0)$. State the values of $a$ for which $1 \\leq b < 1.1$. Give your answers correct to three decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "e",
+      "marks": 3,
+      "content": "The coordinate $(b, 0)$ is the horizontal axis intercept of $g_{a}$. Let $g_{b}$ be the function representing the tangent to the graph of $f$ at $x = b$, as shown in the graph below.\n\nFind the values of $a$ for which the graphs of $g_{a}$ and $g_{b}$, where $b$ exists, are parallel and where $b \\neq a$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": "Graph showing f(x) = x^3 - x with two tangent lines g_a (tangent at x = a) and g_b (tangent at x = b), both shown as straight lines intersecting the curve."
+    },
+    {
+      "questionNumber": 5,
+      "part": "f",
+      "marks": 1,
+      "content": "Let $p : R \\to R$, $p(x) = x^{3} + wx$, where $w \\in R$.\n\nShow that $p(-x) = -p(x)$ for all $w \\in R$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "g",
+      "marks": 1,
+      "content": "A property of the graphs of $p$ is that two distinct parallel tangents will always occur at $(t, p(t))$ and $(-t, p(-t))$ for all $t \\neq 0$.\n\nFind all values of $w$ such that a tangent to the graph of $p$ at $(t, p(t))$, for some $t > 0$, will have an $x$-intercept at $(-t, 0)$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "h",
+      "marks": 1,
+      "content": "Let $T : R^{2} \\to R^{2}$, $T\\begin{pmatrix}x \\\\ y\\end{pmatrix} = \\begin{bmatrix}m & 0 \\\\ 0 & n\\end{bmatrix}\\begin{pmatrix}x \\\\ y\\end{pmatrix} + \\begin{pmatrix}h \\\\ k\\end{pmatrix}$, where $m, n \\in R\\backslash\\{0\\}$ and $h, k \\in R$.\n\nState any restrictions on the values of $m$, $n$, $h$ and $k$, given that the image of $p$ under the transformation $T$ always has the property that parallel tangents occur at $x = -t$ and $x = t$ for **all** $t \\neq 0$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "HARD",
+      "imageDescription": null
+    }
+  ]
+}

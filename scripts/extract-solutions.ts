@@ -34,9 +34,34 @@ Rules:
 1. Extract EVERY question and sub-part solution — do not skip any
 2. For math expressions, use LaTeX wrapped in dollar signs: $f(x) = x^2 + 3x$
 3. For displayed equations on their own line, use double dollar signs: $$\\int_0^1 x^2 \\, dx = \\frac{1}{3}$$
-4. Include all working steps — not just the final answer
-5. Parts are labelled "a", "b", "c" etc. If no parts, set part to null
-6. Keep the solution concise but complete
+4. Break the solution into clear numbered steps — one sentence or calculation per step
+5. Each essential step that earns marks must be labelled using this EXACT format:
+   **Step 1** *(1 mark)*
+
+   First sentence of this step.
+
+   Second sentence or equation of this step.
+
+   Third sentence if needed.
+
+   **Step 2** *(1 mark)*
+
+   First sentence of next step.
+
+   Second sentence of next step.
+6. CRITICAL: Every single sentence or equation within a step must be on its OWN paragraph — separated by a blank line. NEVER combine multiple sentences into one paragraph.
+7. CRITICAL: When a calculation has multiple lines of working (e.g. expanding, then simplifying, then final answer), each line MUST be its own paragraph. For example, instead of writing $A = B = C$ in one line, write:
+   $A = B$
+
+   $= C$
+8. CRITICAL: When applying differentiation rules (quotient, product, chain rule), you MUST explicitly state all component derivatives. For example:
+   - Quotient rule: state $u$, $v$, $u'$, and $v'$ each on their own line before applying the formula
+   - Product rule: state both functions and their derivatives before combining
+   - Chain rule: state the outer and inner functions and their derivatives
+7. There must ALWAYS be a blank line between the **Step N** *(mark)* label and its first sentence
+8. There must ALWAYS be a blank line between consecutive steps
+9. Parts are labelled "a", "b", "c" etc. If no parts, set part to null
+10. Never put the step label and its content on the same line
 
 Return ONLY valid JSON — no markdown, no explanation, no code fences.`;
 
@@ -77,7 +102,7 @@ Extract ALL solutions and return them as a JSON object with this exact structure
     {
       "questionNumber": 1,
       "part": "a",
-      "content": "Differentiate using the quotient rule:\\n$$\\\\frac{d}{dx}\\\\left(\\\\frac{\\\\cos(x)}{x^2+2}\\\\right) = \\\\frac{-\\\\sin(x)(x^2+2) - 2x\\\\cos(x)}{(x^2+2)^2}$$"
+      "content": "**Step 1** *(1 mark)*\\n\\nApply the quotient rule where $u = \\\\cos(x)$ and $v = x^2 + 2$.\\n\\n**Step 2** *(1 mark)*\\n\\n$$\\\\frac{dy}{dx} = \\\\frac{-\\\\sin(x)(x^2+2) - 2x\\\\cos(x)}{(x^2+2)^2}$$"
     },
     {
       "questionNumber": 1,

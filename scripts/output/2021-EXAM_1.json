@@ -1,0 +1,226 @@
+{
+  "year": 2021,
+  "examType": "EXAM_1",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "marks": 1,
+      "content": "Differentiate $y = 2e^{-3x}$ with respect to $x$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "marks": 2,
+      "content": "Evaluate $f'(4)$, where $f(x) = x\\sqrt{2x+1}$.",
+      "topic": "Calculus",
+      "subtopic": "Product Rule",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "marks": 2,
+      "content": "Let $f'(x) = x^{3} + x$.\n\nFind $f(x)$ given that $f(1) = 2$.",
+      "topic": "Calculus",
+      "subtopic": "Antidifferentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "marks": 1,
+      "content": "Consider the function $g : R \\to R$, $g(x) = 2\\sin(2x)$.\n\nState the range of $g$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "marks": 1,
+      "content": "Consider the function $g : R \\to R$, $g(x) = 2\\sin(2x)$.\n\nState the period of $g$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "c",
+      "marks": 3,
+      "content": "Consider the function $g : R \\to R$, $g(x) = 2\\sin(2x)$.\n\nSolve $2\\sin(2x) = \\sqrt{3}$ for $x \\in R$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "marks": 3,
+      "content": "Sketch the graph of $y = 1 - \\dfrac{2}{x-2}$ on the axes below. Label asymptotes with their equations and axis intercepts with their coordinates.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Rational Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Blank axes provided with x-range approximately -6 to 6 and y-range approximately -6 to 6 for sketching"
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "marks": 1,
+      "content": "Find the values of $x$ for which $1 - \\dfrac{2}{x-2} \\geq 3$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Rational Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "marks": 2,
+      "content": "Let $f : R \\to R$, $f(x) = x^{2} - 4$ and $g : R \\to R$, $g(x) = 4(x-1)^{2} - 4$.\n\nThe graphs of $f$ and $g$ have a common horizontal axis intercept at $(2, 0)$.\n\nFind the coordinates of the other horizontal axis intercept of the graph of $g$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "marks": 2,
+      "content": "Let $f : R \\to R$, $f(x) = x^{2} - 4$ and $g : R \\to R$, $g(x) = 4(x-1)^{2} - 4$.\n\nLet the graph of $h$ be a transformation of the graph of $f$ where the transformations have been applied in the following order:\n- dilation by a factor of $\\dfrac{1}{2}$ from the vertical axis (parallel to the horizontal axis)\n- translation by two units to the right (in the direction of the positive horizontal axis)\n\nState the rule of $h$ and the coordinates of the horizontal axis intercepts of the graph of $h$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "a",
+      "marks": 1,
+      "content": "An online shopping site sells boxes of doughnuts. A box contains 20 doughnuts. There are only four types of doughnuts in the box: glazed with custard, glazed with no custard, not glazed with custard, not glazed with no custard.\n\nIt is known that, in the box:\n- $\\dfrac{1}{2}$ of the doughnuts are with custard\n- $\\dfrac{7}{10}$ of the doughnuts are not glazed\n- $\\dfrac{1}{10}$ of the doughnuts are glazed, with custard\n\nA doughnut is chosen at random from the box.\n\nFind the probability that it is not glazed, with custard.",
+      "topic": "Probability",
+      "subtopic": "Probability Rules",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "b",
+      "marks": 2,
+      "content": "The 20 doughnuts in the box are randomly allocated to two new boxes, Box $A$ and Box $B$. Each new box contains 10 doughnuts. One of the two new boxes is chosen at random and then a doughnut from that box is chosen at random. Let $g$ be the number of glazed doughnuts in Box $A$.\n\nFind the probability, in terms of $g$, that the doughnut comes from Box $B$ given that it is glazed.",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "c",
+      "marks": 3,
+      "content": "The online shopping site has over one million visitors per day. It is known that half of these visitors are less than 25 years old. Let $\\hat{P}$ be the random variable representing the proportion of visitors who are less than 25 years old in a random sample of five visitors.\n\nFind $\\Pr\\left(\\hat{P} \\geq 0.8\\right)$. Do not use a normal approximation.",
+      "topic": "Statistics",
+      "subtopic": "Sampling",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "a",
+      "marks": 1,
+      "content": "A random variable $X$ has the probability density function $f$ given by\n$$f(x) = \\begin{cases} \\dfrac{k}{x^{2}} & 1 \\leq x \\leq 2 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\nwhere $k$ is a positive real number.\n\nShow that $k = 2$.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "b",
+      "marks": 2,
+      "content": "A random variable $X$ has the probability density function $f$ given by\n$$f(x) = \\begin{cases} \\dfrac{k}{x^{2}} & 1 \\leq x \\leq 2 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\nwhere $k$ is a positive real number.\n\nFind $E(X)$.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "a",
+      "marks": 3,
+      "content": "The gradient of a function is given by $\\dfrac{dy}{dx} = \\sqrt{x+6} - \\dfrac{x}{2} - \\dfrac{3}{2}$.\n\nThe graph of the function has a single stationary point at $\\left(3, \\dfrac{29}{4}\\right)$.\n\nFind the rule of the function.",
+      "topic": "Calculus",
+      "subtopic": "Antidifferentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "b",
+      "marks": 2,
+      "content": "The gradient of a function is given by $\\dfrac{dy}{dx} = \\sqrt{x+6} - \\dfrac{x}{2} - \\dfrac{3}{2}$.\n\nThe graph of the function has a single stationary point at $\\left(3, \\dfrac{29}{4}\\right)$.\n\nDetermine the nature of the stationary point.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": "a",
+      "marks": 2,
+      "content": "Consider the unit circle $x^{2} + y^{2} = 1$ and the tangent to the circle at the point $P$, shown in the diagram below. The tangent passes through $A(2, 0)$.\n\nShow that the equation of the line that passes through the points $A$ and $P$ is given by $y = -\\dfrac{x}{\\sqrt{3}} + \\dfrac{2}{\\sqrt{3}}$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "HARD",
+      "imageDescription": "Unit circle centred at the origin O with point P in the first quadrant, point A at (2,0), and a tangent line from A touching the circle at P"
+    },
+    {
+      "questionNumber": 9,
+      "part": "b.i",
+      "marks": 1,
+      "content": "Let $T : R^{2} \\to R^{2}$, $T\\left(\\begin{bmatrix} x \\\\ y \\end{bmatrix}\\right) = \\begin{bmatrix} 1 & 0 \\\\ 0 & q \\end{bmatrix}\\begin{bmatrix} x \\\\ y \\end{bmatrix}$, where $q \\in R\\backslash\\{0\\}$, and let the graph of the function $h$ be the transformation of the line that passes through the points $A$ and $P$ under $T$.\n\nFind the values of $q$ for which the graph of $h$ intersects with the unit circle at least once.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": "b.ii",
+      "marks": 1,
+      "content": "Let $T : R^{2} \\to R^{2}$, $T\\left(\\begin{bmatrix} x \\\\ y \\end{bmatrix}\\right) = \\begin{bmatrix} 1 & 0 \\\\ 0 & q \\end{bmatrix}\\begin{bmatrix} x \\\\ y \\end{bmatrix}$, where $q \\in R\\backslash\\{0\\}$, and let the graph of the function $h$ be the transformation of the line that passes through the points $A$ and $P$ under $T$.\n\nLet the graph of $h$ intersect the unit circle twice. Find the values of $q$ for which the coordinates of the points of intersection have only positive values.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": "c.i",
+      "marks": 2,
+      "content": "For $0 < q \\leq 1$, let $P'$ be the point of intersection of the graph of $h$ with the unit circle, where $P'$ is always the point of intersection that is closest to $A$, as shown in the diagram below.\n\nLet $g$ be the function that gives the area of triangle $OAP'$ in terms of $\\theta$.\n\nDefine the function $g$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": "Unit circle with origin O, point A at (2,0), point P' on the circle in the first quadrant, and angle theta marked at origin between OP' and the positive x-axis; shaded region shows triangle OAP'"
+    },
+    {
+      "questionNumber": 9,
+      "part": "c.ii",
+      "marks": 2,
+      "content": "For $0 < q \\leq 1$, let $P'$ be the point of intersection of the graph of $h$ with the unit circle, where $P'$ is always the point of intersection that is closest to $A$.\n\nLet $g$ be the function that gives the area of triangle $OAP'$ in terms of $\\theta$.\n\nDetermine the maximum possible area of the triangle $OAP'$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    }
+  ]
+}

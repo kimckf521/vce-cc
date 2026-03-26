@@ -146,8 +146,7 @@ export default function QuestionCard({
       {showSolution && solution && (
         <SolutionModal
           questionLabel={questionLabel}
-          content={solution.content}
-          videoUrl={solution.videoUrl}
+          solutions={[{ part: part ?? null, content: solution.content, videoUrl: solution.videoUrl }]}
           onClose={() => setShowSolution(false)}
         />
       )}

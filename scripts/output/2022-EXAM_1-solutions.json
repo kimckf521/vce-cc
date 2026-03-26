@@ -1,0 +1,116 @@
+{
+  "year": 2022,
+  "examType": "EXAM_1",
+  "solutions": [
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nApply the product rule to $y = 3xe^{2x}$, with $u = 3x$ and $v = e^{2x}$:\n\n$$\\dfrac{dy}{dx} = u'v + uv' = 3 \\cdot e^{2x} + 3x \\cdot 2e^{2x}$$\n\n$$\\dfrac{dy}{dx} = 6xe^{2x} + 3e^{2x}$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nWrite $f(x) = \\dfrac{\\cos(x)}{e^x} = \\cos(x) \\cdot e^{-x}$. Apply the product rule with $u = \\cos(x)$ and $v = e^{-x}$:\n\n$$f'(x) = -\\sin(x) \\cdot e^{-x} + \\cos(x) \\cdot (-e^{-x})$$\n\n**Step 2** *(1 mark)*\n\nSimplify by factoring out $e^{-x}$, or equivalently write with denominator $e^x$:\n\n$$f'(x) = \\dfrac{-e^x \\cdot \\sin(x) - e^x \\cdot \\cos(x)}{e^{2x}} = -\\dfrac{\\sin(x) + \\cos(x)}{e^x}$$\n\nor equivalently $f'(x) = -e^{-x}(\\sin(x) + \\cos(x))$."
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nFor $g(x) = \\dfrac{3}{2x - 3}$, use the standard result $\\int \\dfrac{1}{ax+b}\\,dx = \\dfrac{1}{a}\\log_e|ax+b| + c$:\n\n$$\\int g(x)\\,dx = \\dfrac{3}{2}\\log_e(2x - 3) + c$$\n\nAn antiderivative is $\\dfrac{3}{2}\\log_e(2x-3)$."
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nExpand the integrand:\n\n$$\\int_0^1 f(x)(2f(x) - 3)\\,dx = \\int_0^1 \\left(2[f(x)]^2 - 3f(x)\\right)dx$$\n\n**Step 2** *(1 mark)*\n\nSplit using linearity of integration:\n\n$$= 2\\int_0^1 [f(x)]^2\\,dx - 3\\int_0^1 f(x)\\,dx$$\n\n**Step 3** *(1 mark)*\n\nSubstitute the given values $\\int_0^1 [f(x)]^2\\,dx = \\dfrac{1}{5}$ and $\\int_0^1 f(x)\\,dx = \\dfrac{1}{3}$:\n\n$$= 2 \\cdot \\dfrac{1}{5} - 3 \\cdot \\dfrac{1}{3} = \\dfrac{2}{5} - 1 = -\\dfrac{3}{5}$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nRewrite both equations in the form $y = mx + c$. From equation (1): $kx - 5y = 4 + k$, so $m_1 = \\dfrac{k}{5}$.\n\nFrom equation (2): $3x + (k+8)y = -1$, so $m_2 = -\\dfrac{3}{k+8}$.\n\nFor infinitely many solutions, the lines must be identical, so first set $m_1 = m_2$:\n\n$$\\dfrac{k}{5} = -\\dfrac{3}{k+8}$$\n\n$$k(k+8) = -15$$\n\n$$k^2 + 8k + 15 = 0$$\n\n$$(k+3)(k+5) = 0 \\implies k = -3 \\text{ or } k = -5$$\n\n**Step 2** *(1 mark)*\n\nFor the lines to be identical, the $y$-intercepts must also be equal.\n\nFrom equation (1): $y$-intercept $c_1 = -\\dfrac{k+4}{5}$.\n\nFrom equation (2): $y$-intercept $c_2 = -\\dfrac{1}{k+8}$.\n\nSet $c_1 = c_2$:\n\n$$-\\dfrac{k+4}{5} = -\\dfrac{1}{k+8}$$\n\n$$(k+4)(k+8) = 5$$\n\n$$k^2 + 12k + 27 = 0$$\n\n$$(k+3)(k+9) = 0 \\implies k = -3 \\text{ or } k = -9$$\n\n**Step 3** *(1 mark)*\n\nThe value common to both conditions is $k = -3$.\n\nTherefore $k = -3$ gives infinitely many solutions."
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\n$X \\sim \\text{Bi}\\!\\left(4, \\dfrac{1}{2}\\right)$. Use $\\Pr(X = x) = \\dbinom{4}{x}\\left(\\dfrac{1}{2}\\right)^4$.\n\nThe missing values are:\n\n$$\\Pr(X = 1) = \\binom{4}{1}\\left(\\dfrac{1}{2}\\right)^4 = \\dfrac{4}{16}$$\n\n$$\\Pr(X = 3) = \\binom{4}{3}\\left(\\dfrac{1}{2}\\right)^4 = \\dfrac{4}{16}$$\n\n$$\\Pr(X = 4) = \\binom{4}{4}\\left(\\dfrac{1}{2}\\right)^4 = \\dfrac{1}{16}$$\n\n**Step 2** *(1 mark)*\n\nThe completed table is:\n\n| $x$ | 0 | 1 | 2 | 3 | 4 |\n|---|---|---|---|---|---|\n| $\\Pr(X = x)$ | $\\dfrac{1}{16}$ | $\\dfrac{4}{16}$ | $\\dfrac{6}{16}$ | $\\dfrac{4}{16}$ | $\\dfrac{1}{16}$ |"
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nGiven the first card is blue, the remaining three draws are independent with $\\Pr(\\text{red}) = \\dfrac{1}{2}$. We need exactly two red from three draws:\n\n$$\\Pr(\\text{exactly 2 red from next 3}) = \\binom{3}{2}\\left(\\dfrac{1}{2}\\right)^2\\left(\\dfrac{1}{2}\\right)^1 = 3 \\cdot \\dfrac{1}{8} = \\dfrac{3}{8}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nWith the new deck, $\\Pr(\\text{red}) = \\dfrac{2}{3}$ and $\\Pr(\\text{blue}) = \\dfrac{1}{3}$. The first card is blue (given), so we need exactly 2 red from the next 3 draws.\n\nCount arrangements: the three draws can be RRB, RBR, or BRR:\n\n$$\\Pr(\\text{2 Red, 1 Blue from next 3}) = \\binom{3}{2}\\left(\\dfrac{2}{3}\\right)^2\\left(\\dfrac{1}{3}\\right)^1$$\n\n**Step 2** *(1 mark)*\n\n$$= 3 \\cdot \\dfrac{4}{9} \\cdot \\dfrac{1}{3} = \\dfrac{12}{27} = \\dfrac{4}{9}$$"
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nWrite $100 = 10^2$, so:\n\n$$10^{3x-13} = 10^2$$\n\n$$3x - 13 = 2$$\n\n**Step 2** *(1 mark)*\n\n$$3x = 15 \\implies x = 5$$"
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nThe expression $\\log_e(x^2 - 2x - 3)$ is defined when $x^2 - 2x - 3 > 0$.\n\nFactorise: $(x-3)(x+1) > 0$.\n\n**Step 2** *(1 mark)*\n\nThe roots are $x = -1$ and $x = 3$. Since the coefficient of $x^2$ is positive, the parabola opens upward, so the expression is positive outside the roots:\n\n$$x < -1 \\quad \\text{or} \\quad x > 3$$\n\n**Step 3** *(1 mark)*\n\nThe maximal domain is $x \\in (-\\infty, -1) \\cup (3, \\infty)$."
+    },
+    {
+      "questionNumber": 6,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nThe reflection of $f(x) = 2\\sin(2x) - 1$ in the horizontal axis gives $g(x) = -f(x) = -2\\sin(2x) + 1$.\n\n**Step 2** *(1 mark)*\n\nSketch $g(x) = -2\\sin(2x) + 1$ on $[0, 2\\pi]$: the graph has amplitude 2, midline $y = 1$, ranging from $-1$ to $3$. It starts at $(0, 1)$, rises to a maximum of $3$ at $x = \\dfrac{\\pi}{4}$, returns to $1$ at $x = \\dfrac{\\pi}{2}$, dips to a minimum of $-1$ at $x = \\dfrac{3\\pi}{4}$, and the pattern repeats for the second period."
+    },
+    {
+      "questionNumber": 6,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nSet $f(k) = 0$:\n\n$$2\\sin(2k) - 1 = 0 \\implies \\sin(2k) = \\dfrac{1}{2}$$\n\nThe reference angle is $\\dfrac{\\pi}{6}$.\n\n**Step 2** *(1 mark)*\n\nFor $k \\in [0, 2\\pi]$, we have $2k \\in [0, 4\\pi]$. The solutions to $\\sin(\\theta) = \\dfrac{1}{2}$ in $[0, 4\\pi]$ are:\n\n$$2k = \\dfrac{\\pi}{6},\\ \\dfrac{5\\pi}{6},\\ \\dfrac{13\\pi}{6},\\ \\dfrac{17\\pi}{6}$$\n\n**Step 3** *(1 mark)*\n\nDivide by 2:\n\n$$k = \\dfrac{\\pi}{12},\\ \\dfrac{5\\pi}{12},\\ \\dfrac{13\\pi}{12},\\ \\dfrac{17\\pi}{12}$$"
+    },
+    {
+      "questionNumber": 6,
+      "part": "c.i",
+      "content": "**Step 1** *(1 mark)*\n\nReflecting $f(x) = 2\\sin(2x) - 1$ in the horizontal axis gives $g(x) = -2\\sin(2x) + 1$. A vertical translation of $b$ units maps $h(x) = 2\\sin(2x) - 1$ to $h(x) + b$. For this to equal $-2\\sin(2x) + 1$, we need $b = 2$.\n\n$$b = 2$$"
+    },
+    {
+      "questionNumber": 6,
+      "part": "c.ii",
+      "content": "**Step 1** *(1 mark)*\n\nAfter the vertical translation ($b = 2$), we have $h(x) + 2 = 2\\sin(2x) + 1$. A horizontal translation by $a$ gives $2\\sin(2(x - a)) + 1$. For this to equal $g(x) = -2\\sin(2x) + 1$:\n\n$$2\\sin(2(x-a)) = -2\\sin(2x)$$\n\n$$\\sin(2x - 2a) = -\\sin(2x) = \\sin(2x + \\pi)$$\n\nSo $2a = -\\pi$, giving $a = -\\dfrac{\\pi}{2}$, but $a > 0$ is required. Using the identity $-\\sin(\\theta) = \\sin(\\theta - \\pi)$:\n\n$$2a = \\pi \\implies a = \\dfrac{\\pi}{2}$$\n\nThe smallest positive value is $a = \\dfrac{\\pi}{2}$."
+    },
+    {
+      "questionNumber": 6,
+      "part": "c.iii",
+      "content": "**Step 1** *(1 mark)*\n\nThe domain of $g(x)$ is $[0, 2\\pi]$. Since $h(x)$ is translated $a = \\dfrac{\\pi}{2}$ units to the right and $b = 2$ units up to produce $g(x)$ on $[0, 2\\pi]$, the domain $D$ of $h(x)$ must satisfy:\n\n$$D + \\dfrac{\\pi}{2} = [0, 2\\pi]$$\n\n$$D = \\left[-\\dfrac{\\pi}{2},\\ \\dfrac{3\\pi}{2}\\right]$$"
+    },
+    {
+      "questionNumber": 7,
+      "part": "a.i",
+      "content": "**Step 1** *(1 mark)*\n\nEach tile is a $20\\,\\text{cm} \\times 20\\,\\text{cm}$ square:\n\n$$\\text{Area} = 20 \\times 20 = 400\\,\\text{cm}^2$$"
+    },
+    {
+      "questionNumber": 7,
+      "part": "a.ii",
+      "content": "**Step 1** *(1 mark)*\n\nCondition 1 requires each colour to cover half the tile area, i.e. $200\\,\\text{cm}^2$. The area below $f(x) = 4\\sin\\!\\left(\\dfrac{\\pi x}{10}\\right) + a$ from $x = 0$ to $x = 20$ must equal half the tile area.\n\nSince $\\int_0^{20} \\sin\\!\\left(\\dfrac{\\pi x}{10}\\right)dx = 0$ (complete period), we need:\n\n$$\\int_0^{20} f(x)\\,dx = \\int_0^{20} a\\,dx = 20a = 200$$\n\n$$a = 10$$"
+    },
+    {
+      "questionNumber": 7,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nCompute $\\int_0^{20} g(x)\\,dx$ where $g(x) = -\\dfrac{1}{100}x^3 + \\dfrac{3}{10}x^2 - 2x + 10$:\n\n$$\\int_0^{20} g(x)\\,dx = \\left[-\\dfrac{x^4}{400} + \\dfrac{x^3}{10} - x^2 + 10x\\right]_0^{20}$$\n\n**Step 2** *(1 mark)*\n\nEvaluate at $x = 20$:\n\n$$= -\\dfrac{160000}{400} + \\dfrac{8000}{10} - 400 + 200 = -400 + 800 - 400 + 200 = 200$$\n\n**Step 3** *(1 mark)*\n\nSince $\\int_0^{20} g(x)\\,dx = 200\\,\\text{cm}^2 = \\dfrac{1}{2} \\times 400\\,\\text{cm}^2 = \\dfrac{1}{2}$ area of tile, the Type B tile meets Condition 1."
+    },
+    {
+      "questionNumber": 7,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nEvaluate the endpoints of each function:\n\nFor $f(x) = 4\\sin\\!\\left(\\dfrac{\\pi x}{10}\\right) + 10$:\n$$f(0) = 4\\sin(0) + 10 = 10, \\quad f(20) = 4\\sin(2\\pi) + 10 = 10$$\n\nFor $g(x) = -\\dfrac{1}{100}x^3 + \\dfrac{3}{10}x^2 - 2x + 10$:\n$$g(0) = 10, \\quad g(20) = -80 + 120 - 40 + 10 = 10$$\n\n**Step 2** *(1 mark)*\n\nSince $f(0) = f(20) = g(0) = g(20) = 10$, both curves begin and end at the same height ($y = 10$) on each tile. Therefore, tiles of Type A and Type B can be placed in any order (AA, AB, BA, BB) and the dividing curves will meet seamlessly at each join, confirming Condition 2 is satisfied."
+    },
+    {
+      "questionNumber": 8,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nThe rule given is $A(k) = k\\sin(k)$. Substitute $k = \\dfrac{\\pi}{3}$:\n\n$$A\\!\\left(\\dfrac{\\pi}{3}\\right) = \\dfrac{\\pi}{3} \\cdot \\sin\\!\\left(\\dfrac{\\pi}{3}\\right) = \\dfrac{\\pi}{3} \\cdot \\dfrac{\\sqrt{3}}{2} = \\dfrac{\\pi\\sqrt{3}}{6}$$"
+    },
+    {
+      "questionNumber": 8,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nBy the Fundamental Theorem of Calculus, $f(k) = A'(k)$ (the area function $A(k) = \\int_0^k f(x)\\,dx$ so $A'(k) = f(k)$).\n\nDifferentiate $A(k) = k\\sin(k)$ using the product rule:\n\n$$A'(k) = \\sin(k) + k\\cos(k)$$\n\n**Step 2** *(1 mark)*\n\nSubstitute $k = \\dfrac{\\pi}{3}$:\n\n$$f\\!\\left(\\dfrac{\\pi}{3}\\right) = \\sin\\!\\left(\\dfrac{\\pi}{3}\\right) + \\dfrac{\\pi}{3}\\cos\\!\\left(\\dfrac{\\pi}{3}\\right) = \\dfrac{\\sqrt{3}}{2} + \\dfrac{\\pi}{3} \\cdot \\dfrac{1}{2} = \\dfrac{\\sqrt{3}}{2} + \\dfrac{\\pi}{6} = \\dfrac{3\\sqrt{3} + \\pi}{6}$$"
+    },
+    {
+      "questionNumber": 8,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nThe average value of $f$ over $[0, k]$ is:\n\n$$\\text{Average} = \\dfrac{1}{k}\\int_0^k f(x)\\,dx = \\dfrac{A(k)}{k} = \\dfrac{k\\sin(k)}{k} = \\sin(k)$$\n\n**Step 2** *(1 mark)*\n\nTo maximise $\\sin(k)$ for $k \\in [0, 2]$: since $\\sin$ is increasing on $\\left[0, \\dfrac{\\pi}{2}\\right]$ and $\\dfrac{\\pi}{2} \\approx 1.571 < 2$, the maximum of $\\sin(k)$ on $[0, 2]$ occurs at $k = \\dfrac{\\pi}{2}$.\n\n$$k = \\dfrac{\\pi}{2}$$"
+    }
+  ]
+}

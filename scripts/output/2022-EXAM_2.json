@@ -1,0 +1,586 @@
+{
+  "year": 2022,
+  "examType": "EXAM_2",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": null,
+      "marks": 1,
+      "content": "The period of the function $f(x) = 3\\cos(2x + \\pi)$ is\n\n**A.** $2\\pi$\n\n**B.** $\\pi$\n\n**C.** $\\dfrac{2\\pi}{3}$\n\n**D.** $2$\n\n**E.** $3$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "marks": 1,
+      "content": "The graph of $y = \\dfrac{1}{(x + 3)^{2}} + 4$ has a horizontal asymptote with the equation\n\n**A.** $y = 4$\n\n**B.** $y = 3$\n\n**C.** $y = 0$\n\n**D.** $x = -2$\n\n**E.** $x = -3$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Rational Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": null,
+      "marks": 1,
+      "content": "The gradient of the graph of $y = e^{3x}$ at the point where the graph crosses the vertical axis is equal to\n\n**A.** $0$\n\n**B.** $\\dfrac{1}{e}$\n\n**C.** $1$\n\n**D.** $e$\n\n**E.** $3$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": null,
+      "marks": 1,
+      "content": "Which one of the following functions is not continuous over the interval $x \\in [0, 5]$?\n\n**A.** $f(x) = \\dfrac{1}{(x + 3)^{2}}$\n\n**B.** $f(x) = \\sqrt{x + 3}$\n\n**C.** $f(x) = x^{\\frac{1}{3}}$\n\n**D.** $f(x) = \\tan\\left(\\dfrac{x}{3}\\right)$\n\n**E.** $f(x) = \\sin^{2}\\left(\\dfrac{x}{3}\\right)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": null,
+      "marks": 1,
+      "content": "The largest value of $a$ such that the function $f : (-\\infty, a] \\to R$, $f(x) = x^{2} + 3x - 10$, where $f$ is one-to-one, is\n\n**A.** $-12.25$\n\n**B.** $-5$\n\n**C.** $-1.5$\n\n**D.** $0$\n\n**E.** $2$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "marks": 1,
+      "content": "Which of the pairs of functions below are **not** inverse functions?\n\n**A.** $f(x) = 5x + 3$, $x \\in R$ and $g(x) = \\dfrac{x - 3}{5}$, $x \\in R$\n\n**B.** $f(x) = \\dfrac{2}{3}x + 2$, $x \\in R$ and $g(x) = \\dfrac{3}{2}x - 3$, $x \\in R$\n\n**C.** $f(x) = x^{2}$, $x < 0$ and $g(x) = \\sqrt{x}$, $x > 0$\n\n**D.** $f(x) = \\dfrac{1}{x}$, $x \\ne 0$ and $g(x) = \\dfrac{1}{x}$, $x \\ne 0$\n\n**E.** $f(x) = \\log_e(x) + 1$, $x > 0$ and $g(x) = e^{x-1}$, $x \\in R$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": null,
+      "marks": 1,
+      "content": "The graph of $y = f(x)$ is shown below.\n\nThe graph of $y = f'(x)$, the first derivative of $f(x)$ with respect to $x$, could be\n\n**A.** [Graph showing a cubic-like curve with two turning points]\n\n**B.** [Graph showing a curve with a maximum then decreasing]\n\n**C.** [Graph showing a curve with a minimum then increasing]\n\n**D.** [Graph showing a curve with a vertical asymptote]\n\n**E.** [Graph showing a curve dipping below then returning above the x-axis]",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of y = f(x) showing a cubic-like curve that comes from the bottom left, has an inflection point, rises steeply, reaches a local maximum, then decreases to a local minimum before rising again. Five possible derivative graphs are shown as options A through E."
+    },
+    {
+      "questionNumber": 8,
+      "part": null,
+      "marks": 1,
+      "content": "If $\\int_0^b f(x)\\,dx = 10$ and $\\int_0^a f(x)\\,dx = -4$, where $0 < a < b$, then $\\int_a^b f(x)\\,dx$ is equal to\n\n**A.** $-6$\n\n**B.** $-4$\n\n**C.** $0$\n\n**D.** $10$\n\n**E.** $14$",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f : [0, \\infty) \\to R$, $f(x) = \\sqrt{2x + 1}$.\n\nThe shortest distance, $d$, from the origin to the point $(x, y)$ on the graph of $f$ is given by\n\n**A.** $d = x^{2} + 2x + 1$\n\n**B.** $d = x^{2} + \\sqrt{2x + 1}$\n\n**C.** $d = \\sqrt{x^{2} - 2x + 1}$\n\n**D.** $d = x + 1$\n\n**E.** $d = 2x + 1$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": "Graph of f on [0, infinity) showing a square root curve, with a point (x, y) on the curve and a dashed line d from the origin to that point."
+    },
+    {
+      "questionNumber": 10,
+      "part": null,
+      "marks": 1,
+      "content": "An organisation randomly surveyed 1000 Australian adults and found that 55% of those surveyed were happy with their level of physical activity.\n\nAn approximate 95% confidence interval for the percentage of Australian adults who were happy with their level of physical activity is closest to\n\n**A.** $(4.1, 6.9)$\n\n**B.** $(50.9, 59.1)$\n\n**C.** $(52.4, 57.6)$\n\n**D.** $(51.9, 58.1)$\n\n**E.** $(45.2, 64.8)$",
+      "topic": "Statistics",
+      "subtopic": "Confidence Intervals",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 11,
+      "part": null,
+      "marks": 1,
+      "content": "If $\\dfrac{d}{dx}(x \\cdot \\sin(x)) = \\sin(x) + x \\cdot \\cos(x)$, then $\\dfrac{1}{k}\\int x\\cos(x)\\,dx$ is equal to\n\n**A.** $k\\left(x \\cdot \\sin(x) - \\int \\sin(x)\\,dx\\right) + c$\n\n**B.** $\\dfrac{1}{k}x \\cdot \\sin(x) - \\int \\sin(x)\\,dx + c$\n\n**C.** $\\dfrac{1}{k}\\left(x \\cdot \\sin(x) - \\int \\sin(x)\\,dx\\right) + c$\n\n**D.** $\\dfrac{1}{k}\\left(x \\cdot \\sin(x) - \\sin(x)\\right) + c$\n\n**E.** $\\dfrac{1}{k}\\left(\\int x \\cdot \\sin(x)\\,dx - \\int \\sin(x)\\,dx\\right) + c$",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 12,
+      "part": null,
+      "marks": 1,
+      "content": "A bag contains three red pens and $x$ black pens. Two pens are randomly drawn from the bag without replacement. The probability of drawing a pen of each colour is equal to\n\n**A.** $\\dfrac{6x}{(2 + x)(3 + x)}$\n\n**B.** $\\dfrac{3x}{(2 + x)(3 + x)}$\n\n**C.** $\\dfrac{x}{2 + x}$\n\n**D.** $\\dfrac{3 + x}{(2 + x)(3 + x)}$\n\n**E.** $\\dfrac{3 + x}{5 + 2x}$",
+      "topic": "Probability",
+      "subtopic": "Probability Rules",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 13,
+      "part": null,
+      "marks": 1,
+      "content": "The function $f(x) = \\log_e\\left(\\dfrac{x + a}{x - a}\\right)$, where $a$ is a positive real constant, has the maximal domain\n\n**A.** $[-a, a]$\n\n**B.** $(-a, a)$\n\n**C.** $R\\backslash[-a, a]$\n\n**D.** $R\\backslash(-a, a)$\n\n**E.** $R$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Logarithmic Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 14,
+      "part": null,
+      "marks": 1,
+      "content": "A continuous random variable, $X$, has a probability density function given by\n\n$$f(x) = \\begin{cases} \\dfrac{2}{9}xe^{-\\frac{1}{9}x^{2}} & x \\ge 0 \\\\ 0 & x < 0 \\end{cases}$$\n\nThe expected value of $X$, correct to three decimal places, is\n\n**A.** $1.000$\n\n**B.** $2.659$\n\n**C.** $3.730$\n\n**D.** $6.341$\n\n**E.** $9.000$",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 15,
+      "part": null,
+      "marks": 1,
+      "content": "The maximal domain of the function with rule $f(x) = \\sqrt{x^{2} - 2x - 3}$ is given by\n\n**A.** $(-\\infty, \\infty)$\n\n**B.** $(-\\infty, -3) \\cup (1, \\infty)$\n\n**C.** $(-1, 3)$\n\n**D.** $[-3, 1]$\n\n**E.** $(-\\infty, -1] \\cup [3, \\infty)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 16,
+      "part": null,
+      "marks": 1,
+      "content": "The function $f(x) = \\dfrac{1}{3}x^{3} + mx^{2} + nx + p$, for $m, n, p \\in R$, has turning points at $x = -3$ and $x = 1$ and passes through the point $(3, 4)$.\n\nThe values of $m$, $n$ and $p$ respectively are\n\n**A.** $m = 0$, $n = -\\dfrac{7}{3}$, $p = 2$\n\n**B.** $m = 1$, $n = -3$, $p = -5$\n\n**C.** $m = -1$, $n = -3$, $p = 13$\n\n**D.** $m = \\dfrac{5}{4}$, $n = \\dfrac{3}{2}$, $p = -\\dfrac{83}{4}$\n\n**E.** $m = \\dfrac{5}{2}$, $n = 6$, $p = -\\dfrac{91}{2}$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 17,
+      "part": null,
+      "marks": 1,
+      "content": "A function $g$ is continuous on the domain $x \\in [a, b]$ and has the following properties:\n- The average rate of change of $g$ between $x = a$ and $x = b$ is positive.\n- The instantaneous rate of change of $g$ at $x = \\dfrac{a + b}{2}$ is negative.\n\nTherefore, on the interval $x \\in [a, b]$, the function must be\n\n**A.** many-to-one.\n\n**B.** one-to-many.\n\n**C.** one-to-one.\n\n**D.** strictly decreasing.\n\n**E.** strictly increasing.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 18,
+      "part": null,
+      "marks": 1,
+      "content": "If $X$ is a binomial random variable where $n = 20$, $p = 0.88$ and $\\Pr(X \\ge 16 \\mid X \\ge a) = 0.9175$, correct to four decimal places, then $a$ is equal to\n\n**A.** $11$\n\n**B.** $12$\n\n**C.** $13$\n\n**D.** $14$\n\n**E.** $15$",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 19,
+      "part": null,
+      "marks": 1,
+      "content": "A box is formed from a rectangular sheet of cardboard, which has a width of $a$ units and a length of $b$ units, by first cutting out squares of side length $x$ units from each corner and then folding upwards to form a container with an open top.\n\nThe maximum volume of the box occurs when $x$ is equal to\n\n**A.** $\\dfrac{a - b + \\sqrt{a^{2} - ab + b^{2}}}{6}$\n\n**B.** $\\dfrac{a + b + \\sqrt{a^{2} - ab + b^{2}}}{6}$\n\n**C.** $\\dfrac{a - b - \\sqrt{a^{2} - ab + b^{2}}}{6}$\n\n**D.** $\\dfrac{a + b - \\sqrt{a^{2} - ab + b^{2}}}{6}$\n\n**E.** $\\dfrac{a + b - \\sqrt{a^{2} - 2ab + b^{2}}}{6}$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 20,
+      "part": null,
+      "marks": 1,
+      "content": "A soccer player kicks a ball with an angle of elevation of $\\theta^\\circ$, where $\\theta$ is a normally distributed random variable with a mean of $42^\\circ$ and a standard deviation of $8^\\circ$.\n\nThe horizontal distance that the ball travels before landing is given by the function $d = 50\\sin(2\\theta)$.\n\nThe probability that the ball travels more than 40 m horizontally before landing is closest to\n\n**A.** $0.969$\n\n**B.** $0.937$\n\n**C.** $0.226$\n\n**D.** $0.149$\n\n**E.** $0.027$",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "marks": 1,
+      "content": "The diagram below shows part of the graph of $y = f(x)$, where $f(x) = \\dfrac{x^{2}}{12}$.\n\nState the equation of the axis of symmetry of the graph of $f$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "EASY",
+      "imageDescription": "Graph of f(x) = x^2/12, a parabola with vertex at the origin, with a point M marked on the left branch of the curve."
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "marks": 1,
+      "content": "State the derivative of $f$ with respect to $x$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "c",
+      "marks": 2,
+      "content": "The tangent to $f$ at point $M$ has gradient $-2$.\n\nFind the equation of the tangent to $f$ at point $M$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "d.i",
+      "marks": 1,
+      "content": "The diagram below shows part of the graph of $y = f(x)$, the tangent to $f$ at point $M$ and the line perpendicular to the tangent at point $M$.\n\nFind the equation of the line perpendicular to the tangent passing through point $M$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph showing the parabola f(x) = x^2/12, the tangent line at M, the perpendicular line at M cutting the parabola at another point N, with the enclosed shaded region between the perpendicular line and the curve."
+    },
+    {
+      "questionNumber": 1,
+      "part": "d.ii",
+      "marks": 2,
+      "content": "The line perpendicular to the tangent at point $M$ also cuts $f$ at point $N$, as shown in the diagram above.\n\nFind the area enclosed by this line and the curve $y = f(x)$.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "e",
+      "marks": 4,
+      "content": "Another parabola is defined by the rule $g(x) = \\dfrac{x^{2}}{4a^{2}}$, where $a > 0$.\n\nA tangent to $g$ and the line perpendicular to the tangent at $x = -b$, where $b > 0$, are shown below.\n\nFind the value of $b$, in terms of $a$, such that the shaded area is a minimum.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": "Graph showing the parabola g(x) = x^2/(4a^2), a tangent line, and the perpendicular to the tangent at x = -b, with the shaded enclosed region between the perpendicular line and the parabola. The point -b is marked on the x-axis."
+    },
+    {
+      "questionNumber": 2,
+      "part": "a.i",
+      "marks": 1,
+      "content": "On a remote island, there are only two species of animals: foxes and rabbits. The foxes are the predators and the rabbits are their prey.\n\nThe populations of foxes and rabbits increase and decrease in a periodic pattern, with the period of both populations being the same. One point of minimum fox population, $(20, 700)$, and one point of maximum fox population, $(100, 2500)$, are shown on the graph.\n\nThe population of rabbits can be modelled by the rule $r(t) = 1700\\sin\\left(\\dfrac{\\pi t}{80}\\right) + 2500$.\n\nState the initial population of rabbits.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": "Graph showing periodic fox population f(t) and rabbit population r(t) over time t (weeks) from 0 to 320. Fox population has minimum (20, 700) and maximum (100, 2500) marked. Both populations oscillate with the same period."
+    },
+    {
+      "questionNumber": 2,
+      "part": "a.ii",
+      "marks": 1,
+      "content": "State the minimum and maximum population of rabbits.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "a.iii",
+      "marks": 1,
+      "content": "State the number of weeks between maximum populations of rabbits.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "marks": 2,
+      "content": "The population of foxes can be modelled by the rule $f(t) = a\\sin(b(t - 60)) + 1600$.\n\nShow that $a = 900$ and $b = \\dfrac{\\pi}{80}$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "c",
+      "marks": 1,
+      "content": "Find the maximum combined population of foxes and rabbits. Give your answer correct to the nearest whole number.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "d",
+      "marks": 1,
+      "content": "What is the number of weeks between the periods when the combined population of foxes and rabbits is a maximum?",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "e",
+      "marks": 4,
+      "content": "The population of foxes is better modelled by the transformation of $y = \\sin(t)$ under $Q$ given by\n\n$$Q : R^{2} \\to R^{2},\\quad Q\\left(\\begin{bmatrix} t \\\\ y \\end{bmatrix}\\right) = \\begin{bmatrix} \\dfrac{90}{\\pi} & 0 \\\\ 0 & 900 \\end{bmatrix}\\begin{bmatrix} t \\\\ y \\end{bmatrix} + \\begin{bmatrix} 60 \\\\ 1600 \\end{bmatrix}$$\n\nFind the average population during the first 300 weeks for the combined population of foxes and rabbits, where the population of foxes is modelled by the transformation of $y = \\sin(t)$ under the transformation $Q$. Give your answer correct to the nearest whole number.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "f",
+      "marks": 2,
+      "content": "Over a longer period of time, it is found that the increase and decrease in the population of rabbits gets smaller and smaller. The population of rabbits over a longer period of time can be modelled by the rule\n\n$$s(t) = 1700 \\cdot e^{-0.003t} \\cdot \\sin\\left(\\dfrac{\\pi t}{80}\\right) + 2500, \\quad \\text{for all } t \\ge 0$$\n\nFind the average rate of change between the first two times when the population of rabbits is at a maximum. Give your answer correct to one decimal place.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "g",
+      "marks": 2,
+      "content": "Find the time, where $t > 40$, in weeks, when the rate of change of the rabbit population is at its greatest positive value. Give your answer correct to the nearest whole number.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "h",
+      "marks": 1,
+      "content": "Over time, the rabbit population approaches a particular value.\n\nState this value.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Exponential Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a.i",
+      "marks": 1,
+      "content": "Mika is flipping a coin. The unbiased coin has a probability of $\\dfrac{1}{2}$ of landing on heads and $\\dfrac{1}{2}$ of landing on tails.\n\nLet $X$ be the binomial random variable representing the number of times that the coin lands on heads. Mika flips the coin five times.\n\nFind $\\Pr(X = 5)$.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a.ii",
+      "marks": 1,
+      "content": "Find $\\Pr(X \\ge 2)$.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a.iii",
+      "marks": 2,
+      "content": "Find $\\Pr(X \\ge 2 \\mid X < 5)$, correct to three decimal places.",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a.iv",
+      "marks": 2,
+      "content": "Find the expected value and the standard deviation for $X$.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b.i",
+      "marks": 1,
+      "content": "The height reached by each of Mika's coin flips is given by a continuous random variable, $H$, with the probability density function\n\n$$f(h) = \\begin{cases} ah^{2} + bh + c & 1.5 \\le h \\le 3 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\n\nwhere $h$ is the vertical height reached by the coin flip, in metres, between the coin and the floor, and $a$, $b$ and $c$ are real constants.\n\nState the value of the definite integral $\\int_{1.5}^{3} f(h)\\,dh$.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b.ii",
+      "marks": 3,
+      "content": "Given that $\\Pr(H \\le 2) = 0.35$ and $\\Pr(H \\ge 2.5) = 0.25$, find the values of $a$, $b$ and $c$.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b.iii",
+      "marks": 1,
+      "content": "The ceiling of Mika's room is 3 m above the floor. The minimum distance between the coin and the ceiling is a continuous random variable, $D$, with probability density function $g$.\n\nThe function $g$ is a transformation of the function $f$ given by $g(d) = f(rd + s)$, where $d$ is the minimum distance between the coin and the ceiling, and $r$ and $s$ are real constants.\n\nFind the values of $r$ and $s$.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "c.i",
+      "marks": 1,
+      "content": "Mika's sister Bella also has a coin. On each flip, Bella's coin has a probability of $p$ of landing on heads and $(1 - p)$ of landing on tails, where $p$ is a constant value between 0 and 1.\n\nBella flips her coin 25 times in order to estimate $p$. Let $\\hat{P}$ be the random variable representing the proportion of times that Bella's coin lands on heads in her sample.\n\nIs the random variable $\\hat{P}$ discrete or continuous? Justify your answer.",
+      "topic": "Statistics",
+      "subtopic": "Sampling",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "c.ii",
+      "marks": 1,
+      "content": "If $\\hat{p} = 0.4$, find an approximate 95% confidence interval for $p$, correct to three decimal places.",
+      "topic": "Statistics",
+      "subtopic": "Confidence Intervals",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "c.iii",
+      "marks": 1,
+      "content": "Bella knows that she can decrease the width of a 95% confidence interval by using a larger sample of coin flips.\n\nIf $\\hat{p} = 0.4$, how many coin flips would be required to halve the width of the confidence interval found in **part c.ii.**?",
+      "topic": "Statistics",
+      "subtopic": "Confidence Intervals",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "marks": 1,
+      "content": "Consider the function $f$, where $f : \\left(-\\dfrac{1}{2}, \\dfrac{1}{2}\\right) \\to R$, $f(x) = \\log_e\\left(x + \\dfrac{1}{2}\\right) - \\log_e\\left(\\dfrac{1}{2} - x\\right)$.\n\nPart of the graph of $y = f(x)$ is shown below, with vertical asymptotes at $x = -\\dfrac{1}{2}$ and $x = \\dfrac{1}{2}$.\n\nState the range of $f(x)$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Logarithmic Functions",
+      "difficulty": "EASY",
+      "imageDescription": "Graph of f(x) on the open interval (-1/2, 1/2), showing a strictly increasing curve passing through the origin, with vertical asymptotes at x = -1/2 and x = 1/2."
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.i",
+      "marks": 2,
+      "content": "Find $f'(0)$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.ii",
+      "marks": 1,
+      "content": "State the maximal domain over which $f$ is strictly increasing.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "c",
+      "marks": 1,
+      "content": "Show that $f(x) + f(-x) = 0$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Logarithmic Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "d",
+      "marks": 3,
+      "content": "Find the domain and the rule of $f^{-1}$, the inverse of $f$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.i",
+      "marks": 1,
+      "content": "Let $h$ be the function $h : \\left(-\\dfrac{1}{2}, \\dfrac{1}{2}\\right) \\to R$, $h(x) = \\dfrac{1}{k}\\left(\\log_e\\left(x + \\dfrac{1}{2}\\right) - \\log_e\\left(\\dfrac{1}{2} - x\\right)\\right)$, where $k \\in R$ and $k > 0$.\n\nThe inverse function of $h$ is defined by $h^{-1} : R \\to R$, $h^{-1}(x) = \\dfrac{e^{kx} - 1}{2(e^{kx} + 1)}$.\n\nThe area of the regions bound by the functions $h$ and $h^{-1}$ can be expressed as a function, $A(k)$. The graph below shows the relevant area shaded.\n\nDetermine the range of values of $k$ such that $A(k) > 0$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "HARD",
+      "imageDescription": "Graph showing h and h^{-1} on the same axes, with the regions between them shaded. Vertical asymptotes at x = -1/2 and x = 1/2 are shown for h, and the line y = x is shown as the axis of symmetry."
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.ii",
+      "marks": 0,
+      "content": "This question has been redacted following the findings of the Independent Review into the VCAA's Examination-Setting Policies, Processes and Procedures for the VCE.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "marks": 1,
+      "content": "Consider the composite function $g(x) = f(\\sin(2x))$, where the function $f(x)$ is an unknown but differentiable function for all values of $x$.\n\nUse the following table of values for $f$ and $f'$.\n\n| $x$ | $\\dfrac{1}{2}$ | $\\dfrac{\\sqrt{2}}{2}$ | $\\dfrac{\\sqrt{3}}{2}$ |\n|---|---|---|---|\n| $f(x)$ | $-2$ | $5$ | $3$ |\n| $f'(x)$ | $7$ | $0$ | $\\dfrac{1}{9}$ |\n\nFind the value of $g\\left(\\dfrac{\\pi}{6}\\right)$.",
+      "topic": "Calculus",
+      "subtopic": "Chain Rule",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "marks": 1,
+      "content": "The derivative of $g$ with respect to $x$ is given by $g'(x) = 2\\cos(2x) \\cdot f'(\\sin(2x))$.\n\nShow that $g'\\left(\\dfrac{\\pi}{6}\\right) = \\dfrac{1}{9}$.",
+      "topic": "Calculus",
+      "subtopic": "Chain Rule",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "c",
+      "marks": 2,
+      "content": "Find the equation of the tangent to $g$ at $x = \\dfrac{\\pi}{6}$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "d",
+      "marks": 2,
+      "content": "Find the average value of the derivative function $g'(x)$ between $x = \\dfrac{\\pi}{8}$ and $x = \\dfrac{\\pi}{6}$.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "e",
+      "marks": 3,
+      "content": "Find **four** solutions to the equation $g'(x) = 0$ for the interval $x \\in [0, \\pi]$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    }
+  ]
+}

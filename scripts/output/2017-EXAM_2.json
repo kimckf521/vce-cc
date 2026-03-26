@@ -1,0 +1,556 @@
+{
+  "year": 2017,
+  "examType": "EXAM_2",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f: R \\to R$, $f(x) = 5\\sin(2x) - 1$.\n\nThe period and range of this function are respectively\n\n**A.** $\\pi$ and $[-1, 4]$\n\n**B.** $2\\pi$ and $[-1, 5]$\n\n**C.** $\\pi$ and $[-6, 4]$\n\n**D.** $2\\pi$ and $[-6, 4]$\n\n**E.** $4\\pi$ and $[-6, 4]$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "marks": 1,
+      "content": "Part of the graph of a cubic polynomial function $f$ and the coordinates of its stationary points are shown below. The stationary points are $(-3, 36)$ and $\\left(\\dfrac{5}{3}, \\dfrac{-400}{27}\\right)$.\n\n$f'(x) < 0$ for the interval\n\n**A.** $(0, 3)$\n\n**B.** $(-\\infty, -5) \\cup (0, 3)$\n\n**C.** $(-\\infty, -3) \\cup \\left(\\dfrac{5}{3}, \\infty\\right)$\n\n**D.** $\\left(-3, \\dfrac{5}{3}\\right)$\n\n**E.** $\\left(\\dfrac{-400}{27}, 36\\right)$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of a cubic polynomial with local maximum at (-3, 36) and local minimum at (5/3, -400/27), showing the curve crossing the x-axis near x = -6 and x = 0"
+    },
+    {
+      "questionNumber": 3,
+      "part": null,
+      "marks": 1,
+      "content": "A box contains five red marbles and three yellow marbles. Two marbles are drawn at random from the box without replacement.\n\nThe probability that the marbles are of **different** colours is\n\n**A.** $\\dfrac{5}{8}$\n\n**B.** $\\dfrac{3}{5}$\n\n**C.** $\\dfrac{15}{28}$\n\n**D.** $\\dfrac{15}{56}$\n\n**E.** $\\dfrac{30}{28}$",
+      "topic": "Probability",
+      "subtopic": "Probability Rules",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f$ and $g$ be functions such that $f(2) = 5$, $f(3) = 4$, $g(2) = 5$, $g(3) = 2$ and $g(4) = 1$.\n\nThe value of $f(g(3))$ is\n\n**A.** 1\n\n**B.** 2\n\n**C.** 3\n\n**D.** 4\n\n**E.** 5",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": null,
+      "marks": 1,
+      "content": "The 95% confidence interval for the proportion of ferry tickets that are cancelled on the intended departure day is calculated from a large sample to be $(0.039, 0.121)$.\n\nThe sample proportion from which this interval was constructed is\n\n**A.** 0.080\n\n**B.** 0.041\n\n**C.** 0.100\n\n**D.** 0.062\n\n**E.** 0.059",
+      "topic": "Statistics",
+      "subtopic": "Confidence Intervals",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "marks": 1,
+      "content": "Part of the graph of the function $f$ is shown below. The same scale has been used on both axes.\n\nThe corresponding part of the graph of the inverse function $f^{-1}$ is best represented by\n\n**A.** A graph showing a curve decreasing from top-left to bottom-right, passing through the origin\n\n**B.** A graph showing a curve decreasing steeply from positive y into the fourth quadrant\n\n**C.** A graph showing a curve increasing from bottom-left through the origin to top-right (concave up)\n\n**D.** A graph showing a curve decreasing from top-left through the origin, concave shape\n\n**E.** A graph showing a curve entirely in the fourth quadrant, decreasing steeply",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of function f showing a curve that passes through the origin, with the curve in the third quadrant going downward steeply and in the first quadrant going upward gently (resembling a cube root or similar function). Five answer options A–E each show different curve shapes for the inverse."
+    },
+    {
+      "questionNumber": 7,
+      "part": null,
+      "marks": 1,
+      "content": "The equation $(p-1)x^{2} + 4x = 5 - p$ has no real roots when\n\n**A.** $p^{2} - 6p + 6 < 0$\n\n**B.** $p^{2} - 6p + 1 > 0$\n\n**C.** $p^{2} - 6p - 6 < 0$\n\n**D.** $p^{2} - 6p + 1 < 0$\n\n**E.** $p^{2} - 6p + 6 > 0$",
+      "topic": "Algebra",
+      "subtopic": "Quadratics",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": null,
+      "marks": 1,
+      "content": "If $y = a^{b-4x} + 2$, where $a > 0$, then $x$ is equal to\n\n**A.** $\\dfrac{1}{4}(b - \\log_{a}(y-2))$\n\n**B.** $\\dfrac{1}{4}(b - \\log_{a}(y+2))$\n\n**C.** $b - \\log_{a}\\left(\\dfrac{1}{4}(y+2)\\right)$\n\n**D.** $\\dfrac{b}{4} - \\log_{a}(y-2)$\n\n**E.** $\\dfrac{1}{4}(b + 2 - \\log_{a}(y))$",
+      "topic": "Algebra",
+      "subtopic": "Logarithmic Equations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": null,
+      "marks": 1,
+      "content": "The average rate of change of the function with the rule $f(x) = x^{2} - 2x$ over the interval $[1, a]$, where $a > 1$, is 8.\n\nThe value of $a$ is\n\n**A.** 9\n\n**B.** 8\n\n**C.** 7\n\n**D.** 4\n\n**E.** $1 + \\sqrt{2}$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 10,
+      "part": null,
+      "marks": 1,
+      "content": "A transformation $T: R^{2} \\to R^{2}$ with rule $T\\left(\\begin{bmatrix} x \\\\ y \\end{bmatrix}\\right) = \\begin{bmatrix} 2 & 0 \\\\ 0 & \\dfrac{1}{3} \\end{bmatrix}\\begin{bmatrix} x \\\\ y \\end{bmatrix}$ maps the graph of $y = 3\\sin\\left(2\\left(x + \\dfrac{\\pi}{4}\\right)\\right)$ onto the graph of\n\n**A.** $y = \\sin(x + \\pi)$\n\n**B.** $y = \\sin\\left(x - \\dfrac{\\pi}{2}\\right)$\n\n**C.** $y = \\cos(x + \\pi)$\n\n**D.** $y = \\cos(x)$\n\n**E.** $y = \\cos\\left(x - \\dfrac{\\pi}{2}\\right)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 11,
+      "part": null,
+      "marks": 1,
+      "content": "The function $f: R \\to R$, $f(x) = x^{3} + ax^{2} + bx$ has a local maximum at $x = -1$ and a local minimum at $x = 3$.\n\nThe values of $a$ and $b$ are respectively\n\n**A.** $-2$ and $-3$\n\n**B.** $2$ and $1$\n\n**C.** $3$ and $-9$\n\n**D.** $-3$ and $-9$\n\n**E.** $-6$ and $-15$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 12,
+      "part": null,
+      "marks": 1,
+      "content": "The sum of the solutions of $\\sin(2x) = \\dfrac{\\sqrt{3}}{2}$ over the interval $[-\\pi, d]$ is $-\\pi$.\n\nThe value of $d$ could be\n\n**A.** $0$\n\n**B.** $\\dfrac{\\pi}{6}$\n\n**C.** $\\dfrac{3\\pi}{4}$\n\n**D.** $\\dfrac{7\\pi}{6}$\n\n**E.** $\\dfrac{3\\pi}{2}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 13,
+      "part": null,
+      "marks": 1,
+      "content": "Let $h: (-1, 1) \\to R$, $h(x) = \\dfrac{1}{x-1}$.\n\nWhich one of the following statements about $h$ is **not** true?\n\n**A.** $h(x)h(-x) = -h(x^{2})$\n\n**B.** $h(x) + h(-x) = 2h(x^{2})$\n\n**C.** $h(x) - h(0) = xh(x)$\n\n**D.** $h(x) - h(-x) = 2xh(x^{2})$\n\n**E.** $(h(x))^{2} = h(x^{2})$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Rational Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 14,
+      "part": null,
+      "marks": 1,
+      "content": "The random variable $X$ has the following probability distribution, where $0 < p < \\dfrac{1}{3}$.\n\n| $x$ | $-1$ | $0$ | $1$ |\n|---|---|---|---|\n| $\\Pr(X = x)$ | $p$ | $2p$ | $1-3p$ |\n\nThe variance of $X$ is\n\n**A.** $2p(1-3p)$\n\n**B.** $1 - 4p$\n\n**C.** $(1-3p)^{2}$\n\n**D.** $6p - 16p^{2}$\n\n**E.** $p(5-9p)$",
+      "topic": "Probability",
+      "subtopic": "Discrete Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 15,
+      "part": null,
+      "marks": 1,
+      "content": "A rectangle $ABCD$ has vertices $A(0, 0)$, $B(u, 0)$, $C(u, v)$ and $D(0, v)$, where $(u, v)$ lies on the graph of $y = -x^{3} + 8$, as shown below.\n\nThe maximum area of the rectangle is\n\n**A.** $\\sqrt[3]{2}$\n\n**B.** $6\\sqrt[3]{2}$\n\n**C.** $16$\n\n**D.** $8$\n\n**E.** $3\\sqrt[3]{2}$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": "Rectangle ABCD with A at origin, B on the positive x-axis, C at (u,v), D on the positive y-axis, where (u,v) lies on the curve y = -x^3 + 8. The curve is shown passing through (0,8) and (2,0)."
+    },
+    {
+      "questionNumber": 16,
+      "part": null,
+      "marks": 1,
+      "content": "For random samples of five Australians, $\\hat{P}$ is the random variable that represents the proportion who live in a capital city.\n\nGiven that $\\Pr\\left(\\hat{P} = 0\\right) = \\dfrac{1}{243}$, then $\\Pr\\left(\\hat{P} > 0.6\\right)$, correct to four decimal places, is\n\n**A.** 0.0453\n\n**B.** 0.3209\n\n**C.** 0.4609\n\n**D.** 0.5390\n\n**E.** 0.7901",
+      "topic": "Statistics",
+      "subtopic": "Confidence Intervals",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 17,
+      "part": null,
+      "marks": 1,
+      "content": "The graph of a function $f$, where $f(-x) = f(x)$, is shown below. The graph has $x$-intercepts at $(a, 0)$, $(b, 0)$, $(c, 0)$ and $(d, 0)$ only.\n\nThe area bound by the curve and the $x$-axis on the interval $[a, d]$ is\n\n**A.** $\\int_{a}^{d} f(x)\\,dx$\n\n**B.** $\\int_{a}^{b} f(x)\\,dx - \\int_{c}^{b} f(x)\\,dx + \\int_{c}^{d} f(x)\\,dx$\n\n**C.** $2\\int_{a}^{b} f(x)\\,dx + \\int_{b}^{c} f(x)\\,dx$\n\n**D.** $2\\int_{a}^{b} f(x)\\,dx - 2\\int_{b}^{b+c} f(x)\\,dx$\n\n**E.** $\\int_{a}^{b} f(x)\\,dx + \\int_{c}^{b} f(x)\\,dx + \\int_{d}^{c} f(x)\\,dx$",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": "Graph of an even function f with x-intercepts at a, b, c, d (symmetric about y-axis), showing two arches above the x-axis (near a-b and c-d) and a trough below the x-axis between b and c"
+    },
+    {
+      "questionNumber": 18,
+      "part": null,
+      "marks": 1,
+      "content": "Let $X$ be a discrete random variable with binomial distribution $X \\sim \\text{Bi}(n, p)$. The mean and the standard deviation of this distribution are equal.\n\nGiven that $0 < p < 1$, the smallest number of trials, $n$, such that $p \\leq 0.01$ is\n\n**A.** 37\n\n**B.** 49\n\n**C.** 98\n\n**D.** 99\n\n**E.** 101",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 19,
+      "part": null,
+      "marks": 1,
+      "content": "A probability density function $f$ is given by\n\n$$f(x) = \\begin{cases} \\cos(x) + 1 & k < x < (k+1) \\\\ 0 & \\text{elsewhere} \\end{cases}$$\n\nwhere $0 < k < 2$.\n\nThe value of $k$ is\n\n**A.** $1$\n\n**B.** $\\dfrac{3\\pi - 1}{2}$\n\n**C.** $\\pi - 1$\n\n**D.** $\\dfrac{\\pi - 1}{2}$\n\n**E.** $\\dfrac{\\pi}{2}$",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 20,
+      "part": null,
+      "marks": 1,
+      "content": "The graphs of $f: \\left[0, \\dfrac{\\pi}{2}\\right] \\to R$, $f(x) = \\cos(x)$ and $g: \\left[0, \\dfrac{\\pi}{2}\\right] \\to R$, $g(x) = \\sqrt{3}\\sin(x)$ are shown below. The graphs intersect at $B$.\n\nThe ratio of the area of the shaded region to the area of triangle $OAB$ is\n\n**A.** $9:8$\n\n**B.** $\\sqrt{3} - 1 : \\dfrac{\\sqrt{3}\\pi}{8}$\n\n**C.** $8\\sqrt{3} - 3 : 3\\pi$\n\n**D.** $\\sqrt{3} - 1 : \\dfrac{\\sqrt{3}\\pi}{4}$\n\n**E.** $1 : \\dfrac{\\sqrt{3}\\pi}{8}$",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": "Graphs of f(x) = cos(x) and g(x) = sqrt(3)sin(x) on [0, pi/2], intersecting at point B, with point A at (pi/2, 0) and O at the origin. The shaded region is bounded by both curves and the x-axis between O and A."
+    },
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "marks": 2,
+      "content": "Let $f: R \\to R$, $f(x) = x^{3} - 5x$. Part of the graph of $f$ is shown below.\n\nFind the coordinates of the turning points.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": "Graph of f(x) = x^3 - 5x showing a local maximum in the second quadrant and a local minimum in the fourth quadrant, with x-intercepts visible near x = -2.2, 0, and 2.2"
+    },
+    {
+      "questionNumber": 1,
+      "part": "b.i",
+      "marks": 2,
+      "content": "Let $f: R \\to R$, $f(x) = x^{3} - 5x$. $A(-1, f(-1))$ and $B(1, f(1))$ are two points on the graph of $f$.\n\nFind the equation of the straight line through $A$ and $B$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "b.ii",
+      "marks": 1,
+      "content": "Let $f: R \\to R$, $f(x) = x^{3} - 5x$. $A(-1, f(-1))$ and $B(1, f(1))$ are two points on the graph of $f$.\n\nFind the distance $AB$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.i",
+      "marks": 2,
+      "content": "Let $g: R \\to R$, $g(x) = x^{3} - kx$, $k \\in R^{+}$. Let $C(-1, g(-1))$ and $D(1, g(1))$ be two points on the graph of $g$.\n\nFind the distance $CD$ in terms of $k$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.ii",
+      "marks": 1,
+      "content": "Let $g: R \\to R$, $g(x) = x^{3} - kx$, $k \\in R^{+}$. Let $C(-1, g(-1))$ and $D(1, g(1))$ be two points on the graph of $g$.\n\nFind the values of $k$ such that the distance $CD$ is equal to $k + 1$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "d.i",
+      "marks": 1,
+      "content": "Let $g: R \\to R$, $g(x) = x^{3} - kx$, $k \\in R^{+}$. The diagram shows part of the graphs of $g$ and $y = x$. These graphs intersect at the points with the coordinates $(0, 0)$ and $(a, a)$.\n\nFind the value of $a$ in terms of $k$.",
+      "topic": "Algebra",
+      "subtopic": "Polynomials",
+      "difficulty": "EASY",
+      "imageDescription": "Graphs of g(x) = x^3 - kx and y = x intersecting at (0,0) and (a,a), with the region between the two curves (below y=x and above g) shaded"
+    },
+    {
+      "questionNumber": 1,
+      "part": "d.ii",
+      "marks": 2,
+      "content": "Let $g: R \\to R$, $g(x) = x^{3} - kx$, $k \\in R^{+}$. The diagram shows part of the graphs of $g$ and $y = x$. These graphs intersect at the points with the coordinates $(0, 0)$ and $(a, a)$.\n\nFind the area of the shaded region in terms of $k$.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graphs of g(x) = x^3 - kx and y = x intersecting at (0,0) and (a,a), with the region between the two curves shaded"
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "marks": 1,
+      "content": "Sammy visits a giant Ferris wheel. Sammy enters a capsule on the Ferris wheel from a platform above the ground. The Ferris wheel is rotating anticlockwise. The capsule is attached to the Ferris wheel at point $P$. The height of $P$ above the ground, $h$, is modelled by $h(t) = 65 - 55\\cos\\left(\\dfrac{\\pi t}{15}\\right)$, where $t$ is the time in minutes after Sammy enters the capsule and $h$ is measured in metres. Sammy exits the capsule after one complete rotation of the Ferris wheel.\n\nState the minimum and maximum heights of $P$ above the ground.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": "Diagram of a large Ferris wheel with capsules, showing point P on the wheel and height h measured from the ground to P, with a platform visible at the base"
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "marks": 1,
+      "content": "Sammy visits a giant Ferris wheel. The height of $P$ above the ground is modelled by $h(t) = 65 - 55\\cos\\left(\\dfrac{\\pi t}{15}\\right)$, where $t$ is the time in minutes after Sammy enters the capsule. Sammy exits the capsule after one complete rotation of the Ferris wheel.\n\nFor how much time is Sammy in the capsule?",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "c",
+      "marks": 2,
+      "content": "Sammy visits a giant Ferris wheel. The height of $P$ above the ground is modelled by $h(t) = 65 - 55\\cos\\left(\\dfrac{\\pi t}{15}\\right)$, where $t$ is the time in minutes after Sammy enters the capsule.\n\nFind the rate of change of $h$ with respect to $t$ and, hence, state the value of $t$ at which the rate of change of $h$ is at its maximum.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "d",
+      "marks": 1,
+      "content": "As the Ferris wheel rotates, a stationary boat at $B$, on a nearby river, first becomes visible at point $P_{1}$. $B$ is 500 m horizontally from the vertical axis through the centre $C$ of the Ferris wheel and angle $CBO = \\theta$, as shown below.\n\nFind $\\theta$ in degrees, correct to two decimal places.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Diagram showing the Ferris wheel circle with centre C, point P_1 on the circle where the boat first becomes visible, point B at 500 m horizontally from the vertical axis through C, and angle theta = CBO at B. The origin O is at the base of the vertical axis."
+    },
+    {
+      "questionNumber": 2,
+      "part": "e",
+      "marks": 1,
+      "content": "Part of the path of $P$ is given by $y = \\sqrt{3025 - x^{2}} + 65$, $x \\in [-55, 55]$, where $x$ and $y$ are in metres.\n\nFind $\\dfrac{dy}{dx}$.",
+      "topic": "Calculus",
+      "subtopic": "Chain Rule",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "f",
+      "marks": 3,
+      "content": "As the Ferris wheel continues to rotate, the boat at $B$ is no longer visible from the point $P_{2}(u, v)$ onwards. The line through $B$ and $P_{2}$ is tangent to the path of $P$, where angle $OBP_{2} = \\alpha$.\n\nFind the gradient of the line segment $P_{2}B$ in terms of $u$ and, hence, find the coordinates of $P_{2}$, correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": "Diagram showing the Ferris wheel circle with P_2(u,v) in the upper part of the circle, a tangent line from P_2 to point B at 500 m away on the x-axis, with angle alpha = OBP_2 at B"
+    },
+    {
+      "questionNumber": 2,
+      "part": "g",
+      "marks": 1,
+      "content": "As the Ferris wheel continues to rotate, the boat at $B$ is no longer visible from the point $P_{2}(u, v)$ onwards. The line through $B$ and $P_{2}$ is tangent to the path of $P$, where angle $OBP_{2} = \\alpha$.\n\nFind $\\alpha$ in degrees, correct to two decimal places.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "h",
+      "marks": 2,
+      "content": "Hence or otherwise, find the length of time, to the nearest minute, during which the boat at $B$ is visible.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "marks": 3,
+      "content": "The time Jennifer spends on her homework each day varies, but she does some homework every day. The continuous random variable $T$, which models the time, $t$, in minutes, that Jennifer spends each day on her homework, has a probability density function $f$, where\n\n$$f(t) = \\begin{cases} \\dfrac{1}{625}(t-20) & 20 \\leq t < 45 \\\\ \\dfrac{1}{625}(70-t) & 45 \\leq t \\leq 70 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\n\nSketch the graph of $f$ on the axes provided below.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Coordinate axes with y-axis marked at 1/50 and 1/25, and t-axis from 0 to 100 with marks at 20, 40, 60, 80, 100; grid provided for sketching"
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "marks": 2,
+      "content": "The continuous random variable $T$ has probability density function\n\n$$f(t) = \\begin{cases} \\dfrac{1}{625}(t-20) & 20 \\leq t < 45 \\\\ \\dfrac{1}{625}(70-t) & 45 \\leq t \\leq 70 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\n\nFind $\\Pr(25 \\leq T \\leq 55)$.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "c",
+      "marks": 2,
+      "content": "The continuous random variable $T$ has probability density function\n\n$$f(t) = \\begin{cases} \\dfrac{1}{625}(t-20) & 20 \\leq t < 45 \\\\ \\dfrac{1}{625}(70-t) & 45 \\leq t \\leq 70 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\n\nFind $\\Pr(T \\leq 25 \\mid T \\leq 55)$.",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "d",
+      "marks": 2,
+      "content": "The continuous random variable $T$ has probability density function\n\n$$f(t) = \\begin{cases} \\dfrac{1}{625}(t-20) & 20 \\leq t < 45 \\\\ \\dfrac{1}{625}(70-t) & 45 \\leq t \\leq 70 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\n\nFind $a$ such that $\\Pr(T \\geq a) = 0.7$, correct to four decimal places.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "e.i",
+      "marks": 2,
+      "content": "The probability that Jennifer spends more than 50 minutes on her homework on any given day is $\\dfrac{8}{25}$. Assume that the amount of time spent on her homework on any day is independent of the time spent on her homework on any other day.\n\nFind the probability that Jennifer spends more than 50 minutes on her homework on more than three of seven randomly chosen days, correct to four decimal places.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "e.ii",
+      "marks": 2,
+      "content": "The probability that Jennifer spends more than 50 minutes on her homework on any given day is $\\dfrac{8}{25}$. Assume that the amount of time spent on her homework on any day is independent of the time spent on her homework on any other day.\n\nFind the probability that Jennifer spends more than 50 minutes on her homework on at least two of seven randomly chosen days, given that she spends more than 50 minutes on her homework on at least one of those days, correct to four decimal places.",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "f",
+      "marks": 2,
+      "content": "Let $p$ be the probability that on any given day Jennifer spends more than $d$ minutes on her homework. Let $q$ be the probability that on two or three days out of seven randomly chosen days she spends more than $d$ minutes on her homework.\n\nExpress $q$ as a polynomial in terms of $p$.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "g.i",
+      "marks": 2,
+      "content": "Let $p$ be the probability that on any given day Jennifer spends more than $d$ minutes on her homework. Let $q$ be the probability that on two or three days out of seven randomly chosen days she spends more than $d$ minutes on her homework.\n\nFind the maximum value of $q$, correct to four decimal places, and the value of $p$ for which this maximum occurs, correct to four decimal places.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "g.ii",
+      "marks": 2,
+      "content": "Let $p$ be the probability that on any given day Jennifer spends more than $d$ minutes on her homework. Let $q$ be the probability that on two or three days out of seven randomly chosen days she spends more than $d$ minutes on her homework.\n\nFind the value of $d$ for which the maximum found in part g.i. occurs, correct to the nearest minute.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "marks": 2,
+      "content": "Let $f: R \\to R$, $f(x) = 2^{x+1} - 2$. Part of the graph of $f$ is shown below.\n\nThe transformation $T: R^{2} \\to R^{2}$, $T\\left(\\begin{bmatrix} x \\\\ y \\end{bmatrix}\\right) = \\begin{bmatrix} x \\\\ y \\end{bmatrix} + \\begin{bmatrix} c \\\\ d \\end{bmatrix}$ maps the graph of $y = 2^{x}$ onto the graph of $f$.\n\nState the values of $c$ and $d$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "EASY",
+      "imageDescription": "Graph of f(x) = 2^(x+1) - 2 showing the curve passing through the origin, with a horizontal asymptote at y = -2 shown as a dashed line, and the curve passing through approximately (-1, -1) and (1, 2)"
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "marks": 2,
+      "content": "Let $f: R \\to R$, $f(x) = 2^{x+1} - 2$.\n\nFind the rule and domain for $f^{-1}$, the inverse function of $f$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "c",
+      "marks": 3,
+      "content": "Let $f: R \\to R$, $f(x) = 2^{x+1} - 2$.\n\nFind the area bounded by the graphs of $f$ and $f^{-1}$.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "d",
+      "marks": 2,
+      "content": "Let $f: R \\to R$, $f(x) = 2^{x+1} - 2$. Part of the graphs of $f$ and $f^{-1}$ are shown below.\n\nFind the gradient of $f$ and the gradient of $f^{-1}$ at $x = 0$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graphs of f(x) = 2^(x+1) - 2 and its inverse f^(-1) shown together, intersecting at the origin, with f having a horizontal asymptote at y = -2 and f^(-1) having a vertical asymptote at x = -2"
+    },
+    {
+      "questionNumber": 4,
+      "part": "e",
+      "marks": 1,
+      "content": "The functions $g_{k}$, where $k \\in R^{+}$, are defined with domain $R$ such that $g_{k}(x) = 2e^{kx} - 2$.\n\nFind the value of $k$ such that $g_{k}(x) = f(x)$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Exponential Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "f",
+      "marks": 1,
+      "content": "The functions $g_{k}$, where $k \\in R^{+}$, are defined with domain $R$ such that $g_{k}(x) = 2e^{kx} - 2$.\n\nFind the rule for the inverse functions $g_{k}^{-1}$ of $g_{k}$, where $k \\in R^{+}$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "g.i",
+      "marks": 1,
+      "content": "The functions $g_{k}$, where $k \\in R^{+}$, are defined with domain $R$ such that $g_{k}(x) = 2e^{kx} - 2$.\n\nDescribe the transformation that maps the graph of $g_{1}$ onto the graph of $g_{k}$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "g.ii",
+      "marks": 1,
+      "content": "The functions $g_{k}$, where $k \\in R^{+}$, are defined with domain $R$ such that $g_{k}(x) = 2e^{kx} - 2$.\n\nDescribe the transformation that maps the graph of $g_{1}^{-1}$ onto the graph of $g_{k}^{-1}$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "h",
+      "marks": 2,
+      "content": "The functions $g_{k}$, where $k \\in R^{+}$, are defined with domain $R$ such that $g_{k}(x) = 2e^{kx} - 2$. The lines $L_{1}$ and $L_{2}$ are the tangents at the origin to the graphs of $g_{k}$ and $g_{k}^{-1}$ respectively.\n\nFind the value(s) of $k$ for which the angle between $L_{1}$ and $L_{2}$ is $30^{\\circ}$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "i.i",
+      "marks": 2,
+      "content": "The functions $g_{k}$, where $k \\in R^{+}$, are defined with domain $R$ such that $g_{k}(x) = 2e^{kx} - 2$. Let $p$ be the value of $k$ for which $g_{k}(x) = g_{k}^{-1}(x)$ has only one solution.\n\nFind $p$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "i.ii",
+      "marks": 1,
+      "content": "The functions $g_{k}$, where $k \\in R^{+}$, are defined with domain $R$ such that $g_{k}(x) = 2e^{kx} - 2$. Let $p$ be the value of $k$ for which $g_{k}(x) = g_{k}^{-1}(x)$ has only one solution. Let $A(k)$ be the area bounded by the graphs of $g_{k}$ and $g_{k}^{-1}$ for all $k > p$.\n\nState the smallest value of $b$ such that $A(k) < b$.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    }
+  ]
+}

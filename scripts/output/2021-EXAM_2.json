@@ -1,0 +1,576 @@
+{
+  "year": 2021,
+  "examType": "EXAM_2",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": null,
+      "marks": 1,
+      "content": "The period of the function with rule $y = \\tan\\left(\\dfrac{\\pi x}{2}\\right)$ is\n\n**A.** 1\n**B.** 2\n**C.** 4\n**D.** $2\\pi$\n**E.** $4\\pi$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "marks": 1,
+      "content": "The graph of $y = \\log_e(x) + \\log_e(2x)$, where $x > 0$, is identical, over the same domain, to the graph of\n\n**A.** $y = 2\\log_e\\left(\\dfrac{1}{2}x\\right)$\n**B.** $y = 2\\log_e(2x)$\n**C.** $y = \\log_e(2x^{2})$\n**D.** $y = \\log_e(3x)$\n**E.** $y = \\log_e(4x)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Logarithmic Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": null,
+      "marks": 1,
+      "content": "A box contains many coloured glass beads. A random sample of 48 beads is selected and it is found that the proportion of blue-coloured beads in this sample is 0.125. Based on this sample, a 95% confidence interval for the proportion of blue-coloured glass beads is\n\n**A.** (0.0314, 0.2186)\n**B.** (0.0465, 0.2035)\n**C.** (0.0018, 0.2482)\n**D.** (0.0896, 0.1604)\n**E.** (0.0264, 0.2136)",
+      "topic": "Statistics",
+      "subtopic": "Confidence Intervals",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": null,
+      "marks": 1,
+      "content": "The maximum value of the function $h : [0, 2] \\to R$, $h(x) = (x-2)e^{x}$ is\n\n**A.** $-e$\n**B.** 0\n**C.** 1\n**D.** 2\n**E.** $e$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the following four functional relations.\n$$f(x) = f(-x) \\qquad -f(x) = f(-x) \\qquad f(x) = -f(x) \\qquad (f(x))^{2} = f(x^{2})$$\nThe number of these functional relations that are satisfied by the function $f : R \\to R$, $f(x) = x$ is\n\n**A.** 0\n**B.** 1\n**C.** 2\n**D.** 3\n**E.** 4",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "marks": 1,
+      "content": "The probability of winning a game is 0.25. The probability of winning a game is independent of winning any other game. If Ben plays 10 games, the probability that he will win exactly four times is closest to\n\n**A.** 0.1460\n**B.** 0.2241\n**C.** 0.9219\n**D.** 0.0781\n**E.** 0.7759",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": null,
+      "marks": 1,
+      "content": "The tangent to the graph of $y = x^{3} - ax^{2} + 1$ at $x = 1$ passes through the origin. The value of $a$ is\n\n**A.** $\\dfrac{1}{2}$\n**B.** 1\n**C.** $\\dfrac{3}{2}$\n**D.** 2\n**E.** $\\dfrac{5}{2}$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": null,
+      "marks": 1,
+      "content": "The graph of the function $f$ is shown below. The graph has a vertical asymptote at $x = a$ and is increasing and concave up for $x > a$.\n\nThe graph corresponding to $f'$ is\n\n**A.** A graph showing a curve approaching a horizontal asymptote from below for $x > a$, with a vertical asymptote at $x = a$\n**B.** A graph showing a decreasing curve with a vertical asymptote at $x = a$\n**C.** A graph showing a curve in the region $x > a$ that is concave down\n**D.** A graph showing a curve that decreases then increases around $x = a$\n**E.** A graph showing a decreasing curve for $x > a$ approaching zero",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of function f with a vertical asymptote at x = a; f is increasing and concave up for x > a, with five candidate graphs (A through E) showing possible graphs of f'"
+    },
+    {
+      "questionNumber": 9,
+      "part": null,
+      "marks": 1,
+      "content": "Let $g(x) = x + 2$ and $f(x) = x^{2} - 4$. If $h$ is the composite function given by $h : [-5, -1) \\to R$, $h(x) = f(g(x))$, then the range of $h$ is\n\n**A.** $(-3, 5)$\n**B.** $[-3, 5)$\n**C.** $(-3, 5)$\n**D.** $(-4, 5]$\n**E.** $[-4, 5]$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 10,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the functions $f(x) = \\sqrt{x+2}$ and $g(x) = \\sqrt{1-2x}$, defined over their maximal domains. The maximal domain of the function $h = f + g$ is\n\n**A.** $\\left(-2, \\dfrac{1}{2}\\right)$\n**B.** $[-2, \\infty)$\n**C.** $(-\\infty, -2) \\cup \\left(\\dfrac{1}{2}, \\infty\\right)$\n**D.** $\\left[-2, \\dfrac{1}{2}\\right]$\n**E.** $[-2, 1]$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 11,
+      "part": null,
+      "marks": 1,
+      "content": "If $\\int_{0}^{a} f(x)\\,dx = k$, then $\\int_{0}^{a} (3f(x) + 2)\\,dx$ is\n\n**A.** $3k + 2a$\n**B.** $3k$\n**C.** $k + 2a$\n**D.** $k + 2$\n**E.** $3k + 2$",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 12,
+      "part": null,
+      "marks": 1,
+      "content": "For a certain species of bird, the proportion of birds with a crest is known to be $\\dfrac{3}{5}$. Let $\\hat{P}$ be the random variable representing the proportion of birds with a crest in samples of size $n$ for this specific bird. The smallest sample size for which the standard deviation of $\\hat{P}$ is less than 0.08 is\n\n**A.** 7\n**B.** 27\n**C.** 37\n**D.** 38\n**E.** 43",
+      "topic": "Statistics",
+      "subtopic": "Sampling",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 13,
+      "part": null,
+      "marks": 1,
+      "content": "The value of an investment, in dollars, after $n$ months can be modelled by the function\n$$f(n) = 2500 \\times (1.004)^{n}$$\nwhere $n \\in \\{0, 1, 2, \\ldots\\}$. The average rate of change of the value of the investment over the first 12 months is closest to\n\n**A.** \\$10.00 per month.\n**B.** \\$10.20 per month.\n**C.** \\$10.50 per month.\n**D.** \\$125.00 per month.\n**E.** \\$127.00 per month.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Exponential Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 14,
+      "part": null,
+      "marks": 1,
+      "content": "A value of $k$ for which the average value of $y = \\cos\\left(kx - \\dfrac{\\pi}{2}\\right)$ over the interval $[0, \\pi]$ is equal to the average value of $y = \\sin(x)$ over the same interval is\n\n**A.** $\\dfrac{1}{6}$\n**B.** $\\dfrac{1}{5}$\n**C.** $\\dfrac{1}{4}$\n**D.** $\\dfrac{1}{3}$\n**E.** $\\dfrac{1}{2}$",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 15,
+      "part": null,
+      "marks": 1,
+      "content": "Four fair coins are tossed at the same time. The outcome for each coin is independent of the outcome for any other coin. The probability that there is an equal number of heads and tails, given that there is at least one head, is\n\n**A.** $\\dfrac{1}{2}$\n**B.** $\\dfrac{1}{3}$\n**C.** $\\dfrac{3}{4}$\n**D.** $\\dfrac{2}{5}$\n**E.** $\\dfrac{4}{7}$",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 16,
+      "part": null,
+      "marks": 1,
+      "content": "Let $\\cos(x) = \\dfrac{3}{5}$ and $\\sin^{2}(y) = \\dfrac{25}{169}$, where $x \\in \\left[\\dfrac{3\\pi}{2}, 2\\pi\\right]$ and $y \\in \\left[\\dfrac{3\\pi}{2}, 2\\pi\\right]$. The value of $\\sin(x) + \\cos(y)$ is\n\n**A.** $\\dfrac{8}{65}$\n**B.** $-\\dfrac{112}{65}$\n**C.** $\\dfrac{112}{65}$\n**D.** $-\\dfrac{8}{65}$\n**E.** $\\dfrac{64}{65}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 17,
+      "part": null,
+      "marks": 1,
+      "content": "A discrete random variable $X$ has a binomial distribution with a probability of success of $p = 0.1$ for $n$ trials, where $n > 2$. If the probability of obtaining at least two successes after $n$ trials is at least 0.5, then the smallest possible value of $n$ is\n\n**A.** 15\n**B.** 16\n**C.** 17\n**D.** 18\n**E.** 19",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 18,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f : R \\to R$, $f(x) = (2x-1)(2x+1)(3x-1)$ and $g : (-\\infty, 0) \\to R$, $g(x) = x\\log_e(-x)$. The maximum number of solutions for the equation $f(x-k) = g(x)$, where $k \\in R$, is\n\n**A.** 0\n**B.** 1\n**C.** 2\n**D.** 3\n**E.** 4",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 19,
+      "part": null,
+      "marks": 1,
+      "content": "Which one of the following functions is differentiable for all real values of $x$?\n\n**A.** $f(x) = \\begin{cases} x & x < 0 \\\\ -x & x \\geq 0 \\end{cases}$\n**B.** $f(x) = \\begin{cases} x & x < 0 \\\\ -x & x > 0 \\end{cases}$\n**C.** $f(x) = \\begin{cases} 8x + 4 & x < 0 \\\\ (2x+1)^{2} & x \\geq 0 \\end{cases}$\n**D.** $f(x) = \\begin{cases} 2x + 1 & x < 0 \\\\ (2x+1)^{2} & x \\geq 0 \\end{cases}$\n**E.** $f(x) = \\begin{cases} 4x + 1 & x < 0 \\\\ (2x+1)^{2} & x \\geq 0 \\end{cases}$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 20,
+      "part": null,
+      "marks": 1,
+      "content": "Let $A$ and $B$ be two independent events from a sample space. If $\\Pr(A) = p$, $\\Pr(B) = p^{2}$ and $\\Pr(A) + \\Pr(B) = 1$, then $\\Pr(A' \\cup B)$ is equal to\n\n**A.** $1 - p - p^{2}$\n**B.** $p^{2} - p^{3}$\n**C.** $p - p^{3}$\n**D.** $1 - p + p^{3}$\n**E.** $1 - p - p^{2} + p^{3}$",
+      "topic": "Probability",
+      "subtopic": "Probability Rules",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "marks": 1,
+      "content": "A rectangular sheet of cardboard has a width of $h$ centimetres. Its length is twice its width. Squares of side length $x$ centimetres, where $x > 0$, are cut from each of the corners. The sides of this sheet of cardboard are then folded up to make a rectangular box with an open top. Assume that the thickness of the cardboard is negligible and that $V_{box} > 0$.\n\nA box is to be made from a sheet of cardboard with $h = 25$ cm.\n\nShow that the volume, $V_{box}$, in cubic centimetres, is given by $V_{box}(x) = 2x(25 - 2x)(25 - x)$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": "Rectangular sheet of cardboard with width h cm and length 2h cm, with squares of side x cm cut from each corner; also shows the resulting open-top box"
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "marks": 1,
+      "content": "A box is to be made from a sheet of cardboard with $h = 25$ cm, where $V_{box}(x) = 2x(25-2x)(25-x)$.\n\nState the domain of $V_{box}$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "c",
+      "marks": 1,
+      "content": "A box is to be made from a sheet of cardboard with $h = 25$ cm, where $V_{box}(x) = 2x(25-2x)(25-x)$.\n\nFind the derivative of $V_{box}$ with respect to $x$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "d",
+      "marks": 3,
+      "content": "A box is to be made from a sheet of cardboard with $h = 25$ cm, where $V_{box}(x) = 2x(25-2x)(25-x)$.\n\nCalculate the maximum possible volume of the box and for which value of $x$ this occurs.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "e",
+      "marks": 2,
+      "content": "A box is to be made from a sheet of cardboard with $h = 25$ cm.\n\nWaste minimisation is a goal when making cardboard boxes. Percentage wasted is based on the area of the sheet of cardboard that is cut out before the box is made.\n\nFind the percentage of the sheet of cardboard that is wasted when $x = 5$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "f.i",
+      "marks": 1,
+      "content": "Now consider a box made from a rectangular sheet of cardboard where $h > 0$ and the box's length is still twice its width. Let $V_{box}$ be the function that gives the volume of the box.\n\nState the domain of $V_{box}$ in terms of $h$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "f.ii",
+      "marks": 3,
+      "content": "Now consider a box made from a rectangular sheet of cardboard where $h > 0$ and the box's length is still twice its width.\n\nFind the maximum volume for any such rectangular box, $V_{box}$, in terms of $h$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "g",
+      "marks": 2,
+      "content": "Now consider making a box from a square sheet of cardboard with side lengths of $h$ centimetres.\n\nShow that the maximum volume of the box occurs when $x = \\dfrac{h}{6}$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "marks": 1,
+      "content": "Four rectangles of equal width are drawn and used to approximate the area under the parabola $y = x^{2}$ from $x = 0$ to $x = 1$. The heights of the rectangles are the values of the graph of $y = x^{2}$ at the right endpoint of each rectangle.\n\nState the width of each of the rectangles shown above.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "EASY",
+      "imageDescription": "Graph of y = x^2 from x = 0 to x = 1 with four rectangles of equal width using right-endpoint heights, point (1,1) labelled"
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "marks": 1,
+      "content": "Four rectangles of equal width are drawn and used to approximate the area under the parabola $y = x^{2}$ from $x = 0$ to $x = 1$. The heights of the rectangles are the values of the graph of $y = x^{2}$ at the right endpoint of each rectangle.\n\nFind the total area of the four rectangles shown above.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "c",
+      "marks": 2,
+      "content": "Find the area between the graph of $y = x^{2}$, the $x$-axis and the line $x = 1$.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "d",
+      "marks": 1,
+      "content": "The graph of $f$ is shown below.\n\nApproximate $\\int_{-2}^{2} f(x)\\,dx$ using four rectangles of equal width and the right endpoint of each rectangle.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of a function f shown over approximately x from -3 to 3, with y values ranging from about -8 to 8; the function rises to a maximum around x = -1 then decreases"
+    },
+    {
+      "questionNumber": 2,
+      "part": "e",
+      "marks": 1,
+      "content": "Parts of the graphs of $y = x^{2}$ and $y = \\sqrt{x}$ are shown below.\n\nFind the area of the shaded region.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graphs of y = sqrt(x) and y = x^2 shown with the region between them from x = 0 to x = 1 shaded"
+    },
+    {
+      "questionNumber": 2,
+      "part": "f",
+      "marks": 4,
+      "content": "The graph of $y = x^{2}$ is transformed to the graph of $y = ax^{2}$, where $a \\in (0, 2]$.\n\nFind the values of $a$ such that the area defined by the region(s) bounded by the graphs of $y = ax^{2}$ and $y = \\sqrt{x}$ and the lines $x = 0$ and $x = a$ is equal to $\\dfrac{1}{3}$. Give your answer correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "marks": 2,
+      "content": "Let $q(x) = \\log_e(x^{2} - 1) - \\log_e(1 - x)$.\n\nState the maximal domain and the range of $q$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Logarithmic Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b.i",
+      "marks": 1,
+      "content": "Let $q(x) = \\log_e(x^{2} - 1) - \\log_e(1 - x)$.\n\nFind the equation of the tangent to the graph of $q$ when $x = -2$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b.ii",
+      "marks": 1,
+      "content": "Let $q(x) = \\log_e(x^{2} - 1) - \\log_e(1 - x)$.\n\nFind the equation of the line that is perpendicular to the graph of $q$ when $x = -2$ and passes through the point $(-2, 0)$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "c",
+      "marks": 1,
+      "content": "Let $p(x) = e^{-2x} - 2e^{-x} + 1$.\n\nExplain why $p$ is not a one-to-one function.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Exponential Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "d",
+      "marks": 1,
+      "content": "Let $p(x) = e^{-2x} - 2e^{-x} + 1$.\n\nFind the gradient of the tangent to the graph of $p$ at $x = a$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "e",
+      "marks": 3,
+      "content": "Let $p(x) = e^{-2x} - 2e^{-x} + 1$. The diagram shows parts of the graph of $p$ and the line $y = x + 2$. The line $y = x + 2$ and the tangent to the graph of $p$ at $x = a$ intersect with an acute angle of $\\theta$ between them.\n\nFind the value(s) of $a$ for which $\\theta = 60°$. Give your answer(s) correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": "Graph showing parts of p(x) = e^{-2x} - 2e^{-x} + 1 and the line y = x + 2 intersecting"
+    },
+    {
+      "questionNumber": 3,
+      "part": "f",
+      "marks": 3,
+      "content": "Let $p(x) = e^{-2x} - 2e^{-x} + 1$.\n\nFind the $x$-coordinate of the point of intersection between the line $y = x + 2$ and the graph of $p$, and hence find the area bounded by $y = x + 2$, the graph of $p$ and the $x$-axis, both correct to three decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "marks": 1,
+      "content": "A teacher coaches their school's table tennis team. The teacher has an adjustable ball machine. The speed, measured in metres per second, of the balls shot by the ball machine is a normally distributed random variable $W$. The teacher sets the ball machine with a mean speed of 10 metres per second and a standard deviation of 0.8 metres per second.\n\nDetermine $\\Pr(W \\geq 11)$, correct to three decimal places.",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "marks": 1,
+      "content": "The speed of balls shot by the ball machine is normally distributed with mean 10 m/s and standard deviation 0.8 m/s.\n\nFind the value of $k$, in metres per second, which 80% of ball speeds are below. Give your answer in metres per second, correct to one decimal place.",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "c",
+      "marks": 2,
+      "content": "The teacher adjusts the height setting for the ball machine. With the new height setting, 8% of balls do not land on the table. Let $\\hat{P}$ be the random variable representing the sample proportion of balls that do not land on the table in random samples of 25 balls.\n\nFind the mean and the standard deviation of $\\hat{P}$.",
+      "topic": "Statistics",
+      "subtopic": "Sampling",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "d",
+      "marks": 2,
+      "content": "The teacher adjusts the height setting for the ball machine. With the new height setting, 8% of balls do not land on the table. Let $\\hat{P}$ be the random variable representing the sample proportion of balls that do not land on the table in random samples of 25 balls.\n\nUse the binomial distribution to find $\\Pr(\\hat{P} > 0.1)$, correct to three decimal places.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "e",
+      "marks": 1,
+      "content": "The teacher can also adjust the spin setting on the ball machine. The spin, measured in revolutions per second, is a continuous random variable $X$ with the probability density function\n$$f(x) = \\begin{cases} \\dfrac{x}{500} & 0 \\leq x < 20 \\\\ \\dfrac{50-x}{750} & 20 \\leq x \\leq 50 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\n\nFind the maximum possible spin applied by the ball machine, in revolutions per second.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "f",
+      "marks": 2,
+      "content": "The spin, measured in revolutions per second, is a continuous random variable $X$ with the probability density function\n$$f(x) = \\begin{cases} \\dfrac{x}{500} & 0 \\leq x < 20 \\\\ \\dfrac{50-x}{750} & 20 \\leq x \\leq 50 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\n\nFind the median spin, in revolutions per second, correct to one decimal place.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "g",
+      "marks": 3,
+      "content": "The spin, measured in revolutions per second, is a continuous random variable $X$ with the probability density function\n$$f(x) = \\begin{cases} \\dfrac{x}{500} & 0 \\leq x < 20 \\\\ \\dfrac{50-x}{750} & 20 \\leq x \\leq 50 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\n\nFind the standard deviation of the spin, in revolutions per second, correct to one decimal place.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "h",
+      "marks": 2,
+      "content": "The teacher adjusts the spin setting so that the median spin becomes 30 revolutions per second. This will transform the original probability density function $f$ to a new probability density function $g$, where $g(x) = af\\left(\\dfrac{x}{b}\\right)$.\n\nFind the values of $a$ and $b$ for which the new median spin is 30 revolutions per second, giving your answer correct to two decimal places.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "marks": 1,
+      "content": "Part of the graph of $f : R \\to R$, $f(x) = \\sin\\left(\\dfrac{x}{2}\\right) + \\cos(2x)$ is shown below.\n\nState the period of $f$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of f(x) = sin(x/2) + cos(2x) shown over the interval approximately -4pi to 4pi, displaying oscillating behaviour with period 4pi"
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "marks": 1,
+      "content": "Part of the graph of $f : R \\to R$, $f(x) = \\sin\\left(\\dfrac{x}{2}\\right) + \\cos(2x)$ is shown.\n\nState the minimum value of $f$, correct to three decimal places.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "c",
+      "marks": 1,
+      "content": "For $f(x) = \\sin\\left(\\dfrac{x}{2}\\right) + \\cos(2x)$, find the smallest positive value of $h$ for which $f(h - x) = f(x)$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "d",
+      "marks": 1,
+      "content": "Consider the set of functions of the form $g_{a} : R \\to R$, $g_{a}(x) = \\sin\\left(\\dfrac{x}{a}\\right) + \\cos(ax)$, where $a$ is a positive integer.\n\nState the value of $a$ such that $g_{a}(x) = f(x)$ for all $x$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "e.i",
+      "marks": 1,
+      "content": "Consider the set of functions of the form $g_{a} : R \\to R$, $g_{a}(x) = \\sin\\left(\\dfrac{x}{a}\\right) + \\cos(ax)$, where $a$ is a positive integer.\n\nFind an antiderivative of $g_{a}$ in terms of $a$.",
+      "topic": "Calculus",
+      "subtopic": "Antidifferentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "e.ii",
+      "marks": 3,
+      "content": "Consider the set of functions of the form $g_{a} : R \\to R$, $g_{a}(x) = \\sin\\left(\\dfrac{x}{a}\\right) + \\cos(ax)$, where $a$ is a positive integer.\n\nUse a definite integral to show that the area bounded by $g_{a}$ and the $x$-axis over the interval $[0, 2a\\pi]$ is equal above and below the $x$-axis for all values of $a$.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "f",
+      "marks": 1,
+      "content": "Consider the set of functions of the form $g_{a} : R \\to R$, $g_{a}(x) = \\sin\\left(\\dfrac{x}{a}\\right) + \\cos(ax)$, where $a$ is a positive integer.\n\nExplain why the maximum value of $g_{a}$ cannot be greater than 2 for all values of $a$ and why the minimum value of $g_{a}$ cannot be less than $-2$ for all values of $a$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "g",
+      "marks": 1,
+      "content": "Consider the set of functions of the form $g_{a} : R \\to R$, $g_{a}(x) = \\sin\\left(\\dfrac{x}{a}\\right) + \\cos(ax)$, where $a$ is a positive integer.\n\nFind the greatest possible minimum value of $g_{a}$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    }
+  ]
+}

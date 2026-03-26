@@ -1,0 +1,121 @@
+{
+  "year": 2017,
+  "examType": "EXAM_1",
+  "solutions": [
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nApply the quotient rule with $u = x$ and $v = x + 2$:\n\n$$f'(x) = \\dfrac{u'v - uv'}{v^2} = \\dfrac{1 \\cdot (x+2) - x \\cdot 1}{(x+2)^2}$$\n\n**Step 2** *(1 mark)*\n\nSimplify the numerator:\n\n$$f'(x) = \\dfrac{x + 2 - x}{(x+2)^2} = \\dfrac{2}{(x+2)^2}$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nApply the chain rule. Let $u = 2 - x^3$, so $g(x) = u^3$:\n\n$$g'(x) = 3(2 - x^3)^2 \\times (-3x^2) = -9x^2(2 - x^3)^2$$\n\n**Step 2** *(1 mark)*\n\nEvaluate at $x = 1$:\n\n$$g'(1) = -9(1)^2(2 - 1)^2 = -9 \\times 1 \\times 1 = -9$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nApply the product rule with $u = x$ and $v = \\log_e(3x)$:\n\n$$\\dfrac{dy}{dx} = 1 \\cdot \\log_e(3x) + x \\cdot \\dfrac{1}{3x} \\cdot 3$$\n\n**Step 2** *(1 mark)*\n\nSimplify:\n\n$$\\dfrac{dy}{dx} = \\log_e(3x) + 1$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nFrom part a, $\\dfrac{d}{dx}[x\\log_e(3x)] = \\log_e(3x) + 1$.\n\nHence, by the fundamental theorem of calculus:\n\n$$\\int_1^2 (\\log_e(3x) + 1)\\,dx = \\Big[x\\log_e(3x)\\Big]_1^2$$\n\n**Step 2** *(1 mark)*\n\nEvaluate:\n\n$$= 2\\log_e(6) - 1 \\cdot \\log_e(3)$$\n\n$$= \\log_e(6^2) - \\log_e(3)$$\n\n$$= \\log_e\\!\\left(\\dfrac{36}{3}\\right)$$\n\n$$= \\log_e(12)$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nExpand $(x+2)^2$ first:\n\n$$(x+2)^2(x-1) = (x^2 + 4x + 4)(x-1)$$\n\nExpand fully:\n\n$$= x^3 + 4x^2 + 4x - x^2 - 4x - 4$$\n\n$$= x^3 + 3x^2 - 4 \\quad \\checkmark$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nFind key features. The domain is $[-3, 0]$.\n\n$x$-intercepts: $f(x) = 0$ gives $(x+2)^2(x-1) = 0$, so $x = -2$ (within domain) and $x = 1$ (outside domain). Also check endpoints: $f(-3) = (1)^2(-4) = -4$ and $f(0) = (4)(-1) = -4$. So $y$-intercept is $(0, -4)$ and the left endpoint is $(-3, -4)$.\n\n**Step 2** *(1 mark)*\n\nFind stationary points using $f'(x) = 3x^2 + 6x = 3x(x+2) = 0$, giving $x = 0$ or $x = -2$.\n\nAt $x = -2$: $f(-2) = 0$ — this is a stationary point (turning point) at $(-2, 0)$.\n\nAt $x = 0$: $f(0) = -4$ — this is a stationary point at the endpoint $(0, -4)$.\n\n**Step 3** *(1 mark)*\n\nSketch on $[-3, 0]$: the graph starts at $(-3, -4)$, rises to the $x$-intercept and stationary point $(-2, 0)$, then falls back to $(0, -4)$. The point $(-2, 0)$ is a local maximum, and $(0, -4)$ is a local minimum (endpoint stationary point). Label: $(-3, -4)$, $(-2, 0)$, $(0, -4)$."
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nThe standard deviation of $\\hat{P}$ is:\n\n$$\\text{sd}(\\hat{P}) = \\sqrt{\\dfrac{p(1-p)}{n}}$$\n\nwhere $p = \\dfrac{1}{4}$. Set up the inequality:\n\n$$\\sqrt{\\dfrac{\\dfrac{1}{4} \\times \\dfrac{3}{4}}{n}} \\leq \\dfrac{1}{100}$$\n\n**Step 2** *(1 mark)*\n\nSquare both sides:\n\n$$\\dfrac{\\dfrac{3}{16}}{n} \\leq \\dfrac{1}{10000}$$\n\n$$n \\geq \\dfrac{3}{16} \\times 10000 = \\dfrac{30000}{16} = 1875$$\n\nThe smallest integer value of $n$ is $\\mathbf{1875}$."
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nJac does not log on successfully only if all three attempts fail. The probability of failure on any attempt is $1 - \\dfrac{2}{5} = \\dfrac{3}{5}$.\n\n$$\\Pr(\\text{no success}) = \\left(\\dfrac{3}{5}\\right)^3 = \\dfrac{27}{125}$$"
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nUsing the complement of part a:\n\n$$\\Pr(\\text{success}) = 1 - \\Pr(\\text{no success}) = 1 - \\dfrac{27}{125} = \\dfrac{98}{125}$$"
+    },
+    {
+      "questionNumber": 5,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nSuccess on the second attempt means Fail then Succeed (FS):\n\n$$\\Pr(\\text{FS}) = \\dfrac{3}{5} \\times \\dfrac{2}{5} = \\dfrac{6}{25}$$\n\n**Step 2** *(1 mark)*\n\nSuccess on the third attempt means Fail, Fail, Succeed (FFS):\n\n$$\\Pr(\\text{FFS}) = \\left(\\dfrac{3}{5}\\right)^2 \\times \\dfrac{2}{5} = \\dfrac{9}{25} \\times \\dfrac{2}{5} = \\dfrac{18}{125}$$\n\nAdding:\n\n$$\\Pr(\\text{second or third}) = \\dfrac{6}{25} + \\dfrac{18}{125} = \\dfrac{30}{125} + \\dfrac{18}{125} = \\dfrac{48}{125}$$"
+    },
+    {
+      "questionNumber": 6,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nFor the product to equal zero, at least one factor must equal zero.\n\n- $\\tan(\\theta) - 1 = 0 \\Rightarrow \\tan(\\theta) = 1$\n- $\\sin(\\theta) - \\sqrt{3}\\cos(\\theta) = 0 \\Rightarrow \\tan(\\theta) = \\sqrt{3}$\n- $\\sin(\\theta) + \\sqrt{3}\\cos(\\theta) = 0 \\Rightarrow \\tan(\\theta) = -\\sqrt{3}$\n\nThe possible values of $\\tan(\\theta)$ are $1$, $\\sqrt{3}$, and $-\\sqrt{3}$."
+    },
+    {
+      "questionNumber": 6,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nNote that $\\sin^2(\\theta) - 3\\cos^2(\\theta) = (\\sin(\\theta) - \\sqrt{3}\\cos(\\theta))(\\sin(\\theta) + \\sqrt{3}\\cos(\\theta))$.\n\nSo the equation becomes $(\\tan(\\theta) - 1)(\\sin(\\theta) - \\sqrt{3}\\cos(\\theta))(\\sin(\\theta) + \\sqrt{3}\\cos(\\theta)) = 0$, which is exactly the equation from part a.\n\n**Step 2** *(1 mark)*\n\nUsing the values from part a, solve for $\\theta \\in [0, \\pi]$:\n\n- $\\tan(\\theta) = 1 \\Rightarrow \\theta = \\dfrac{\\pi}{4}$\n- $\\tan(\\theta) = \\sqrt{3} \\Rightarrow \\theta = \\dfrac{\\pi}{3}$\n- $\\tan(\\theta) = -\\sqrt{3} \\Rightarrow \\theta = \\dfrac{2\\pi}{3}$\n\nSolutions: $\\theta = \\dfrac{\\pi}{4},\\; \\dfrac{\\pi}{3},\\; \\dfrac{2\\pi}{3}$"
+    },
+    {
+      "questionNumber": 7,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nThe domain of $f$ is $[0, \\infty)$. Since $f(x) = \\sqrt{x+1}$ and the minimum value occurs at $x = 0$: $f(0) = \\sqrt{1} = 1$.\n\nThe range of $f$ is $[1, \\infty)$."
+    },
+    {
+      "questionNumber": 7,
+      "part": "b.i",
+      "content": "**Step 1** *(1 mark)*\n\nFor the composition $f(g(x))$ to exist, the range of $g$ must be a subset of the domain of $f$, which is $[0, \\infty)$. So we need $g(x) \\geq 0$ for all $x$ in the domain of $g$.\n\n$g(x) = x^2 + 4x + 3 = (x+1)(x+3)$. The vertex of $g$ is at $x = -2$, where $g(-2) = 4 - 8 + 3 = -1 < 0$.\n\n**Step 2** *(1 mark)*\n\nFor the range of $g$ to be a subset of $[0, \\infty)$, we need $g(x) \\geq 0$ on the domain $(-\\infty, c]$. The roots of $g$ are $x = -1$ and $x = -3$. For $x \\leq c < 0$, we need $g(c) \\geq 0$.\n\nSince $g(x) \\geq 0$ for $x \\leq -3$ or $x \\geq -1$, and we need $c < 0$, the largest value of $c$ such that $g(x) \\geq 0$ on $(-\\infty, c]$ is $c = -3$."
+    },
+    {
+      "questionNumber": 7,
+      "part": "b.ii",
+      "content": "**Step 1** *(1 mark)*\n\nWith $c = -3$, the domain of $g$ is $(-\\infty, -3]$. On this domain, $g(-3) = 0$ is the minimum value of $g$ (since the vertex is at $x = -2$ which is outside the domain, and $g$ is decreasing on $(-\\infty, -2)$). As $x \\to -\\infty$, $g(x) \\to +\\infty$. So the range of $g$ is $[0, \\infty)$.\n\nSince the range of $g$ equals the domain of $f = [0, \\infty)$, the range of $f(g(x))$ equals the range of $f$, which is $[1, \\infty)$."
+    },
+    {
+      "questionNumber": 7,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\n$h(x) = x^2 + 3$ has range $[3, \\infty)$ (minimum at $x = 0$, giving $h(0) = 3$).\n\nSince the range of $h$ is $[3, \\infty) \\subseteq [0, \\infty)$ = domain of $f$, we can form $f(h(x)) = \\sqrt{x^2 + 3 + 1} = \\sqrt{x^2 + 4}$.\n\nThe minimum of $x^2 + 4$ is $4$ (at $x = 0$), so the minimum of $\\sqrt{x^2 + 4}$ is $2$.\n\nThe range of $f(h(x))$ is $[2, \\infty)$."
+    },
+    {
+      "questionNumber": 8,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nUsing the conditional probability formula:\n\n$$\\Pr(B \\mid A) = \\dfrac{\\Pr(A \\cap B)}{\\Pr(A)}$$\n\n$$\\dfrac{1}{4} = \\dfrac{p}{\\Pr(A)}$$\n\n$$\\Pr(A) = 4p$$"
+    },
+    {
+      "questionNumber": 8,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nFirst find $\\Pr(B)$ using $\\Pr(A \\mid B) = \\dfrac{\\Pr(A \\cap B)}{\\Pr(B)}$:\n\n$$\\dfrac{1}{5} = \\dfrac{p}{\\Pr(B)} \\Rightarrow \\Pr(B) = 5p$$\n\n**Step 2** *(1 mark)*\n\nUsing $\\Pr(A \\cup B) = \\Pr(A) + \\Pr(B) - \\Pr(A \\cap B) = 4p + 5p - p = 8p$.\n\nBy De Morgan's law, $\\Pr(A' \\cap B') = 1 - \\Pr(A \\cup B) = 1 - 8p$."
+    },
+    {
+      "questionNumber": 8,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nFrom part b, $\\Pr(A \\cup B) = 8p$. The condition is $8p \\leq \\dfrac{1}{5}$, so $p \\leq \\dfrac{1}{40}$.\n\n**Step 2** *(1 mark)*\n\nSince $p = \\Pr(A \\cap B)$ is a probability, $p > 0$ (if $p = 0$ then $\\Pr(A) = 0$ and the conditional probabilities would be undefined).\n\nThe largest possible interval for $p$ is $\\left(0,\\, \\dfrac{1}{40}\\right]$."
+    },
+    {
+      "questionNumber": 9,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nExpand $f(x) = \\sqrt{x}(1-x) = x^{1/2} - x^{3/2}$.\n\n$$\\text{Area} = \\int_0^1 (x^{1/2} - x^{3/2})\\,dx = \\left[\\dfrac{2}{3}x^{3/2} - \\dfrac{2}{5}x^{5/2}\\right]_0^1$$\n\n**Step 2** *(1 mark)*\n\nEvaluate:\n\n$$= \\dfrac{2}{3}(1) - \\dfrac{2}{5}(1) - 0 = \\dfrac{2}{3} - \\dfrac{2}{5} = \\dfrac{10}{15} - \\dfrac{6}{15} = \\dfrac{4}{15}$$"
+    },
+    {
+      "questionNumber": 9,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nDifferentiate $f(x) = x^{1/2} - x^{3/2}$ using the power rule:\n\n$$f'(x) = \\dfrac{1}{2}x^{-1/2} - \\dfrac{3}{2}x^{1/2} = \\dfrac{1}{2\\sqrt{x}} - \\dfrac{3}{2}\\sqrt{x}$$\n\nObtain a common denominator of $2\\sqrt{x}$:\n\n$$f'(x) = \\dfrac{1}{2\\sqrt{x}} - \\dfrac{3\\sqrt{x} \\cdot \\sqrt{x}}{2\\sqrt{x}} = \\dfrac{1 - 3x}{2\\sqrt{x}} \\quad \\checkmark$$"
+    },
+    {
+      "questionNumber": 9,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nFor $\\theta = 45°$, the tangent line $BC$ has gradient $\\tan(180° - 45°) = -1$ (since $BC$ slopes downward from $C$ to $B$ on the positive $x$-axis).\n\nSet $f'(x) = -1$:\n\n$$\\dfrac{1 - 3x}{2\\sqrt{x}} = -1 \\Rightarrow 1 - 3x = -2\\sqrt{x}$$\n\n$$3x - 2\\sqrt{x} - 1 = 0$$\n\nLet $a = \\sqrt{x}$: $3a^2 - 2a - 1 = 0 \\Rightarrow (3a + 1)(a - 1) = 0$\n\nSo $a = -\\dfrac{1}{3}$ (not feasible since $a = \\sqrt{x} \\geq 0$) or $a = 1$, giving $x = 1$.\n\n**Step 2** *(1 mark)*\n\nThe point of tangency is $\\left(1,\\, f(1)\\right) = (1,\\, 0)$. Since $\\theta = 45°$ is the angle $AC$ makes with the positive $x$-axis, and $B$ lies on the $x$-axis, $B$ is the point $(1, 0)$.\n\nThe line $BC$ has gradient $-1$ through $(1, 0)$:\n\n$$y = -(x - 1) = -x + 1$$"
+    },
+    {
+      "questionNumber": 9,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nFor $\\theta = 45°$, the line $AC$ has gradient $\\tan(45°) = 1$. Set $f'(x) = 1$:\n\n$$\\dfrac{1 - 3x}{2\\sqrt{x}} = 1 \\Rightarrow 1 - 3x = 2\\sqrt{x}$$\n\nLet $a = \\sqrt{x}$: $3a^2 + 2a - 1 = 0 \\Rightarrow (3a - 1)(a + 1) = 0$\n\nSo $a = \\dfrac{1}{3}$ or $a = -1$ (not feasible), giving $x = \\dfrac{1}{9}$.\n\n**Step 2** *(1 mark)*\n\nThe point of tangency on line $AC$ is $\\left(\\dfrac{1}{9},\\, f\\!\\left(\\dfrac{1}{9}\\right)\\right)$:\n\n$$f\\!\\left(\\dfrac{1}{9}\\right) = \\dfrac{1}{3}\\left(1 - \\dfrac{1}{9}\\right) = \\dfrac{1}{3} \\times \\dfrac{8}{9} = \\dfrac{8}{27}$$\n\nEquation of line $AC$ (gradient $1$, through $\\left(\\dfrac{1}{9}, \\dfrac{8}{27}\\right)$):\n\n$$y - \\dfrac{8}{27} = 1 \\cdot \\left(x - \\dfrac{1}{9}\\right) \\Rightarrow y = x + \\dfrac{8}{27} - \\dfrac{3}{27} = x + \\dfrac{5}{27}$$\n\n**Step 3** *(1 mark)*\n\nFind intersection of $y = -x + 1$ (line $BC$) and $y = x + \\dfrac{5}{27}$ (line $AC$):\n\n$$-x + 1 = x + \\dfrac{5}{27} \\Rightarrow 2x = 1 - \\dfrac{5}{27} = \\dfrac{22}{27} \\Rightarrow x = \\dfrac{11}{27}$$\n\n$$y = -\\dfrac{11}{27} + 1 = \\dfrac{16}{27}$$\n\n**Step 4** *(1 mark)*\n\nThe coordinates of $C$ are $\\left(\\dfrac{11}{27},\\, \\dfrac{16}{27}\\right)$."
+    }
+  ]
+}

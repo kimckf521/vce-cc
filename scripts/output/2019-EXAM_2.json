@@ -1,0 +1,576 @@
+{
+  "year": 2019,
+  "examType": "EXAM_2",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f: R \\to R$, $f(x) = 3\\sin\\left(\\dfrac{2x}{5}\\right) - 2$.\n\nThe period and range of $f$ are respectively\n\n**A.** $5\\pi$ and $[-3, 3]$\n\n**B.** $5\\pi$ and $[-5, 1]$\n\n**C.** $5\\pi$ and $[-1, 5]$\n\n**D.** $\\dfrac{5\\pi}{2}$ and $[-5, 1]$\n\n**E.** $\\dfrac{5\\pi}{2}$ and $[-3, 3]$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "marks": 1,
+      "content": "The set of values of $k$ for which $x^{2} + 2x - k = 0$ has two real solutions is\n\n**A.** $\\{-1, 1\\}$\n\n**B.** $(-1, \\infty)$\n\n**C.** $(-\\infty, -1)$\n\n**D.** $\\{-1\\}$\n\n**E.** $[-1, \\infty)$",
+      "topic": "Algebra",
+      "subtopic": "Quadratics",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f: R\\backslash\\{4\\} \\to R$, $f(x) = \\dfrac{a}{x - 4}$, where $a > 0$.\n\nThe average rate of change of $f$ from $x = 6$ to $x = 8$ is\n\n**A.** $a\\log_e(2)$\n\n**B.** $\\dfrac{a}{2}\\log_e(2)$\n\n**C.** $2a$\n\n**D.** $-\\dfrac{a}{4}$\n\n**E.** $-\\dfrac{a}{8}$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": null,
+      "marks": 1,
+      "content": "$\\int_{0}^{\\frac{\\pi}{6}} \\left(a\\sin(x) + b\\cos(x)\\right) dx$ is equal to\n\n**A.** $\\dfrac{(2 - \\sqrt{3})a - b}{2}$\n\n**B.** $\\dfrac{b - (2 - \\sqrt{3})a}{2}$\n\n**C.** $\\dfrac{(2 - \\sqrt{3})a + b}{2}$\n\n**D.** $\\dfrac{(2 - \\sqrt{3})b - a}{2}$\n\n**E.** $\\dfrac{(2 - \\sqrt{3})b + a}{2}$",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f'(x) = 3x^{2} - 2x$ such that $f(4) = 0$.\n\nThe rule of $f$ is\n\n**A.** $f(x) = x^{3} - x^{2}$\n\n**B.** $f(x) = x^{3} - x^{2} + 48$\n\n**C.** $f(x) = x^{3} - x^{2} - 48$\n\n**D.** $f(x) = 6x - 2$\n\n**E.** $f(x) = 6x - 24$",
+      "topic": "Calculus",
+      "subtopic": "Antidifferentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "marks": 1,
+      "content": "A rectangular sheet of cardboard has a length of 80 cm and a width of 50 cm. Squares, of side length $x$ centimetres, are cut from each of the corners, as shown in the diagram below.\n\nA rectangular box with an open top is then constructed.\n\nThe volume of the box is a maximum when $x$ is equal to\n\n**A.** 10\n\n**B.** 20\n\n**C.** 25\n\n**D.** $\\dfrac{100}{3}$\n\n**E.** $\\dfrac{200}{3}$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Rectangular cardboard sheet 80cm by 50cm with squares of side x cm cut from each corner, and diagram of resulting open-top box"
+    },
+    {
+      "questionNumber": 7,
+      "part": null,
+      "marks": 1,
+      "content": "The discrete random variable $X$ has the following probability distribution.\n\n| $x$ | 0 | 1 | 2 | 3 |\n|---|---|---|---|---|\n| $\\Pr(X = x)$ | $a$ | $3a$ | $5a$ | $7a$ |\n\nThe mean of $X$ is\n\n**A.** $\\dfrac{1}{16}$\n\n**B.** $1$\n\n**C.** $\\dfrac{35}{16}$\n\n**D.** $\\dfrac{17}{8}$\n\n**E.** $2$",
+      "topic": "Probability",
+      "subtopic": "Discrete Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": null,
+      "marks": 1,
+      "content": "An archer can successfully hit a target with a probability of 0.9. The archer attempts to hit the target 80 times. The outcome of each attempt is independent of any other attempt.\n\nGiven that the archer successfully hits the target at least 70 times, the probability that the archer successfully hits the target exactly 74 times, correct to four decimal places, is\n\n**A.** 0.3635\n\n**B.** 0.8266\n\n**C.** 0.1494\n\n**D.** 0.3005\n\n**E.** 0.1701",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": null,
+      "marks": 1,
+      "content": "The point $(a, b)$ is transformed by\n$$T\\left(\\begin{bmatrix} x \\\\ y \\end{bmatrix}\\right) = \\begin{bmatrix} \\dfrac{1}{2} & 0 \\\\ 0 & -2 \\end{bmatrix} \\begin{bmatrix} x \\\\ y \\end{bmatrix} + \\begin{bmatrix} -\\dfrac{1}{2} \\\\ -2 \\end{bmatrix}$$\n\nIf the image of $(a, b)$ is $(0, 0)$, then $(a, b)$ is\n\n**A.** $(1, 1)$\n\n**B.** $(-1, 1)$\n\n**C.** $(-1, 0)$\n\n**D.** $(0, 1)$\n\n**E.** $(1, -1)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 10,
+      "part": null,
+      "marks": 1,
+      "content": "Which one of the following statements is true for $f: R \\to R$, $f(x) = x + \\sin(x)$?\n\n**A.** The graph of $f$ has a horizontal asymptote\n\n**B.** There are infinitely many solutions to $f(x) = 4$\n\n**C.** $f$ has a period of $2\\pi$\n\n**D.** $f'(x) \\geq 0$ for $x \\in R$\n\n**E.** $f'(x) = \\cos(x)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 11,
+      "part": null,
+      "marks": 1,
+      "content": "$A$ and $B$ are events from a sample space such that $\\Pr(A) = p$, where $p > 0$, $\\Pr(B|A) = m$ and $\\Pr(B|A') = n$.\n\n$A$ and $B$ are independent events when\n\n**A.** $m = n$\n\n**B.** $m = 1 - p$\n\n**C.** $m + n = 1$\n\n**D.** $m = p$\n\n**E.** $m + n = 1 - p$",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 12,
+      "part": null,
+      "marks": 1,
+      "content": "If $\\int_{1}^{4} f(x)\\,dx = 4$ and $\\int_{2}^{4} f(x)\\,dx = -2$, then $\\int_{1}^{2} (f(x) + x)\\,dx$ is equal to\n\n**A.** $2$\n\n**B.** $6$\n\n**C.** $8$\n\n**D.** $\\dfrac{7}{2}$\n\n**E.** $\\dfrac{15}{2}$",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 13,
+      "part": null,
+      "marks": 1,
+      "content": "The graph of the function $f$ passes through the point $(-2, 7)$.\n\nIf $h(x) = f\\left(\\dfrac{x}{2}\\right) + 5$, then the graph of the function $h$ must pass through the point\n\n**A.** $(-1, -12)$\n\n**B.** $(-1, 19)$\n\n**C.** $(-4, 12)$\n\n**D.** $(-4, -14)$\n\n**E.** $(3, 3.5)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 14,
+      "part": null,
+      "marks": 1,
+      "content": "The weights of packets of lollies are normally distributed with a mean of 200 g.\n\nIf 97% of these packets of lollies have a weight of more than 190 g, then the standard deviation of the distribution, correct to one decimal place, is\n\n**A.** 3.3 g\n\n**B.** 5.3 g\n\n**C.** 6.1 g\n\n**D.** 9.4 g\n\n**E.** 12.1 g",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 15,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f: [2, \\infty) \\to R$, $f(x) = x^{2} - 4x + 2$ and $f(5) = 7$. The function $g$ is the inverse function of $f$.\n\n$g'(7)$ is equal to\n\n**A.** $\\dfrac{1}{6}$\n\n**B.** $5$\n\n**C.** $\\dfrac{\\sqrt{7}}{14}$\n\n**D.** $6$\n\n**E.** $\\dfrac{1}{7}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 16,
+      "part": null,
+      "marks": 1,
+      "content": "Part of the graph of $y = f(x)$ is shown below.\n\nThe corresponding part of the graph of $y = f'(x)$ is best represented by\n\n**A.** [Graph A]\n\n**B.** [Graph B]\n\n**C.** [Graph C]\n\n**D.** [Graph D]\n\n**E.** [Graph E]",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of y = f(x) showing a curve that decreases from top-left, has a local minimum near x=5, then increases sharply; five candidate graphs of y = f'(x) shown as options A through E"
+    },
+    {
+      "questionNumber": 17,
+      "part": null,
+      "marks": 1,
+      "content": "A box contains $n$ marbles that are identical in every way except colour, of which $k$ marbles are coloured red and the remainder of the marbles are coloured green. Two marbles are drawn randomly from the box.\n\nIf the first marble is **not** replaced into the box before the second marble is drawn, then the probability that the two marbles drawn are the same colour is\n\n**A.** $\\dfrac{k^{2} + (n-k)^{2}}{n^{2}}$\n\n**B.** $\\dfrac{k^{2} + (n-k-1)^{2}}{n^{2}}$\n\n**C.** $\\dfrac{2k(n-k-1)}{n(n-1)}$\n\n**D.** $\\dfrac{k(k-1) + (n-k)(n-k-1)}{n(n-1)}$\n\n**E.** $^{n}C_{2}\\left(\\dfrac{k}{n}\\right)^{2}\\left(1 - \\dfrac{k}{n}\\right)^{n-2}$",
+      "topic": "Probability",
+      "subtopic": "Probability Rules",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 18,
+      "part": null,
+      "marks": 1,
+      "content": "The distribution of a continuous random variable, $X$, is defined by the probability density function $f$, where\n$$f(x) = \\begin{cases} p(x) & -a \\leq x \\leq b \\\\ 0 & \\text{otherwise} \\end{cases}$$\nand $a, b \\in R^{+}$.\n\nThe graph of the function $p$ is shown below. It is known that the average value of $p$ over the interval $[-a, b]$ is $\\dfrac{3}{4}$.\n\n$\\Pr(X > 0)$ is\n\n**A.** $\\dfrac{2}{3}$\n\n**B.** $\\dfrac{3}{4}$\n\n**C.** $\\dfrac{4}{5}$\n\n**D.** $\\dfrac{7}{9}$\n\n**E.** $\\dfrac{5}{6}$",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "HARD",
+      "imageDescription": "Piecewise linear graph of p(x) with vertex at (0, 2a), passing through (-a, 0) and (b, b)"
+    },
+    {
+      "questionNumber": 19,
+      "part": null,
+      "marks": 1,
+      "content": "Given that $\\tan(\\alpha) = d$, where $d > 0$ and $0 < \\alpha < \\dfrac{\\pi}{2}$, the sum of the solutions to $\\tan(2x) = d$, where $0 < x < \\dfrac{5\\pi}{4}$, in terms of $\\alpha$, is\n\n**A.** $0$\n\n**B.** $2\\alpha$\n\n**C.** $\\pi + 2\\alpha$\n\n**D.** $\\dfrac{\\pi}{2} + \\alpha$\n\n**E.** $\\dfrac{3(\\pi + \\alpha)}{2}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 20,
+      "part": null,
+      "marks": 1,
+      "content": "The expression $\\log_{x}(y) + \\log_{y}(z)$, where $x$, $y$ and $z$ are all real numbers greater than 1, is equal to\n\n**A.** $-\\dfrac{1}{\\log_{y}(x)} - \\dfrac{1}{\\log_{z}(y)}$\n\n**B.** $\\dfrac{1}{\\log_{x}(y)} + \\dfrac{1}{\\log_{z}(y)}$\n\n**C.** $-\\dfrac{1}{\\log_{x}(y)} - \\dfrac{1}{\\log_{y}(z)}$\n\n**D.** $\\dfrac{1}{\\log_{y}(x)} + \\dfrac{1}{\\log_{z}(y)}$\n\n**E.** $\\log_{y}(x) + \\log_{z}(y)$",
+      "topic": "Algebra",
+      "subtopic": "Logarithmic Equations",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "marks": 1,
+      "content": "Let $f: R \\to R$, $f(x) = x^{2}e^{-x^{2}}$.\n\nFind $f'(x)$.",
+      "topic": "Calculus",
+      "subtopic": "Product Rule",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "b.i",
+      "marks": 1,
+      "content": "Let $f: R \\to R$, $f(x) = x^{2}e^{-x^{2}}$.\n\nState the nature of the stationary point on the graph of $f$ at the origin.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "b.ii",
+      "marks": 2,
+      "content": "Let $f: R \\to R$, $f(x) = x^{2}e^{-x^{2}}$.\n\nFind the maximum value of the function $f$ and the values of $x$ for which the maximum occurs.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "b.iii",
+      "marks": 1,
+      "content": "Let $f: R \\to R$, $f(x) = x^{2}e^{-x^{2}}$.\n\nFind the values of $d \\in R$ for which $f(x) + d$ is always negative.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.i",
+      "marks": 1,
+      "content": "Let $f: R \\to R$, $f(x) = x^{2}e^{-x^{2}}$.\n\nFind the equation of the tangent to the graph of $f$ at $x = -1$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.ii",
+      "marks": 2,
+      "content": "Let $f: R \\to R$, $f(x) = x^{2}e^{-x^{2}}$.\n\nFind the area enclosed by the graph of $f$ and the tangent to the graph of $f$ at $x = -1$, correct to four decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "d",
+      "marks": 3,
+      "content": "Let $f: R \\to R$, $f(x) = x^{2}e^{-x^{2}}$.\n\nLet $M(m, n)$ be a point on the graph of $f$, where $m \\in [0, 1]$.\n\nFind the minimum distance between $M$ and the point $(0, e)$, and the value of $m$ for which this occurs, correct to three decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "marks": 1,
+      "content": "An amusement park is planning to build a zip-line above a hill on its property.\n\nThe hill is modelled by $y = \\dfrac{3x(x-30)^{2}}{2000}$, $x \\in [0, 30]$, where $x$ is the horizontal distance, in metres, from an origin and $y$ is the height, in metres, above this origin.\n\nFind $\\dfrac{dy}{dx}$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of hill modelled by y = 3x(x-30)^2/2000 for x in [0,30], showing hill shape with maximum height around x=10"
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "marks": 1,
+      "content": "An amusement park is planning to build a zip-line above a hill on its property.\n\nThe hill is modelled by $y = \\dfrac{3x(x-30)^{2}}{2000}$, $x \\in [0, 30]$.\n\nState the set of values for which the gradient of the hill is strictly decreasing.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "c",
+      "marks": 1,
+      "content": "The cable for the zip-line is connected to a pole at the origin at a height of 10 m and is straight for $0 \\leq x \\leq a$, where $10 \\leq a \\leq 20$. The straight section joins the curved section at $A(a, b)$. The cable is then exactly 3 m vertically above the hill from $a \\leq x \\leq 30$.\n\nState the rule, in terms of $x$, for the height of the cable above the horizontal axis for $x \\in [a, 30]$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Diagram of zip-line cable: straight section from height 10 at origin to point A(a,b), then curved section 3m above hill from a to 30"
+    },
+    {
+      "questionNumber": 2,
+      "part": "d",
+      "marks": 3,
+      "content": "The hill is modelled by $y = \\dfrac{3x(x-30)^{2}}{2000}$, $x \\in [0, 30]$.\n\nFind the values of $x$ for which the gradient of the cable is equal to the average gradient of the hill for $x \\in [10, 30]$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "e.i",
+      "marks": 1,
+      "content": "The gradients of the straight and curved sections of the cable approach the same value at $x = a$, so there is a continuous and smooth join at $A$.\n\nState the gradient of the cable at $A$, in terms of $a$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "e.ii",
+      "marks": 3,
+      "content": "The gradients of the straight and curved sections of the cable approach the same value at $x = a$, so there is a continuous and smooth join at $A$.\n\nFind the coordinates of $A$, with each value correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "e.iii",
+      "marks": 1,
+      "content": "The gradients of the straight and curved sections of the cable approach the same value at $x = a$, so there is a continuous and smooth join at $A$.\n\nFind the value of the gradient at $A$, correct to one decimal place.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "marks": 1,
+      "content": "During a telephone call, a phone uses a dual-tone frequency electrical signal to communicate with the telephone exchange.\n\nThe strength, $f$, of a simple dual-tone frequency signal is given by the function $f(t) = \\sin\\left(\\dfrac{\\pi t}{3}\\right) + \\sin\\left(\\dfrac{\\pi t}{6}\\right)$, where $t$ is a measure of time and $t \\geq 0$.\n\nState the period of the function.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of f(t) = sin(pi*t/3) + sin(pi*t/6) for t >= 0 showing combined sinusoidal wave"
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "marks": 1,
+      "content": "The strength, $f$, of a simple dual-tone frequency signal is given by $f(t) = \\sin\\left(\\dfrac{\\pi t}{3}\\right) + \\sin\\left(\\dfrac{\\pi t}{6}\\right)$, where $t \\geq 0$.\n\nFind the values of $t$ where $f(t) = 0$ for the interval $t \\in [0, 6]$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "c",
+      "marks": 1,
+      "content": "The strength, $f$, of a simple dual-tone frequency signal is given by $f(t) = \\sin\\left(\\dfrac{\\pi t}{3}\\right) + \\sin\\left(\\dfrac{\\pi t}{6}\\right)$, where $t \\geq 0$.\n\nFind the maximum strength of the dual-tone frequency signal, correct to two decimal places.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "d",
+      "marks": 2,
+      "content": "The strength, $f$, of a simple dual-tone frequency signal is given by $f(t) = \\sin\\left(\\dfrac{\\pi t}{3}\\right) + \\sin\\left(\\dfrac{\\pi t}{6}\\right)$, where $t \\geq 0$.\n\nFind the area between the graph of $f$ and the horizontal axis for $t \\in [0, 6]$.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "e",
+      "marks": 2,
+      "content": "Let $g$ be the function obtained by applying the transformation $T$ to the function $f$, where\n$$T\\left(\\begin{bmatrix} x \\\\ y \\end{bmatrix}\\right) = \\begin{bmatrix} a & 0 \\\\ 0 & b \\end{bmatrix} \\begin{bmatrix} x \\\\ y \\end{bmatrix} + \\begin{bmatrix} c \\\\ d \\end{bmatrix}$$\nand $a$, $b$, $c$ and $d$ are real numbers.\n\nFind the values of $a$, $b$, $c$ and $d$ given that $\\int_{2}^{0} g(t)\\,dt + \\int_{2}^{6} g(t)\\,dt$ has the same area calculated in part d.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "f",
+      "marks": 2,
+      "content": "The strength, $f$, of a simple dual-tone frequency signal is given by $f(t) = \\sin\\left(\\dfrac{\\pi t}{3}\\right) + \\sin\\left(\\dfrac{\\pi t}{6}\\right)$, where $t \\geq 0$.\n\nThe rectangle bounded by the line $y = k$, $k \\in R^{+}$, the horizontal axis, and the lines $x = 0$ and $x = 12$ has the same area as the area between the graph of $f$ and the horizontal axis for one period of the dual-tone frequency signal.\n\nFind the value of $k$.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "marks": 2,
+      "content": "The Lorenz birdwing is the largest butterfly in Town A. The probability density function that describes its life span, $X$, in weeks, is given by\n$$f(x) = \\begin{cases} \\dfrac{4}{625}(5x^{3} - x^{4}) & 0 \\leq x \\leq 5 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\n\nFind the mean life span of the Lorenz birdwing butterfly.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "marks": 2,
+      "content": "The probability density function that describes the life span, $X$, in weeks, of the Lorenz birdwing butterfly is given by\n$$f(x) = \\begin{cases} \\dfrac{4}{625}(5x^{3} - x^{4}) & 0 \\leq x \\leq 5 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\n\nIn a sample of 80 Lorenz birdwing butterflies, how many butterflies are expected to live longer than two weeks, correct to the nearest integer?",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "c",
+      "marks": 2,
+      "content": "The probability density function that describes the life span, $X$, in weeks, of the Lorenz birdwing butterfly is given by\n$$f(x) = \\begin{cases} \\dfrac{4}{625}(5x^{3} - x^{4}) & 0 \\leq x \\leq 5 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\n\nWhat is the probability that a Lorenz birdwing butterfly lives for at least four weeks, given that it lives for at least two weeks, correct to four decimal places?",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "d",
+      "marks": 1,
+      "content": "The wingspans of Lorenz birdwing butterflies in Town A are normally distributed with a mean of 14.1 cm and a standard deviation of 2.1 cm.\n\nFind the probability that a randomly selected Lorenz birdwing butterfly in Town A has a wingspan between 16 cm and 18 cm, correct to four decimal places.",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "e",
+      "marks": 1,
+      "content": "The wingspans of Lorenz birdwing butterflies in Town A are normally distributed with a mean of 14.1 cm and a standard deviation of 2.1 cm.\n\nA Lorenz birdwing butterfly is considered to be **very small** if its wingspan is in the smallest 5% of all the Lorenz birdwing butterflies in Town A.\n\nFind the greatest possible wingspan, in centimetres, for a **very small** Lorenz birdwing butterfly in Town A, correct to one decimal place.",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "f.i",
+      "marks": 1,
+      "content": "Each year, a detailed study is conducted on a random sample of 36 Lorenz birdwing butterflies in Town A. A Lorenz birdwing butterfly is considered to be **very large** if its wingspan is greater than 17.5 cm. The probability that the wingspan of any Lorenz birdwing butterfly in Town A is greater than 17.5 cm is 0.0527, correct to four decimal places.\n\nFind the probability that three or more of the butterflies, in a random sample of 36 Lorenz birdwing butterflies from Town A, are **very large**, correct to four decimal places.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "f.ii",
+      "marks": 2,
+      "content": "Each year, a detailed study is conducted on a random sample of 36 Lorenz birdwing butterflies in Town A. A Lorenz birdwing butterfly is considered to be **very large** if its wingspan is greater than 17.5 cm. The probability that the wingspan of any Lorenz birdwing butterfly in Town A is greater than 17.5 cm is 0.0527.\n\nThe probability that $n$ or more butterflies, in a random sample of 36 Lorenz birdwing butterflies from Town A, are **very large** is less than 1%.\n\nFind the smallest value of $n$, where $n$ is an integer.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "f.iii",
+      "marks": 2,
+      "content": "Each year, a detailed study is conducted on a random sample of 36 Lorenz birdwing butterflies in Town A. A Lorenz birdwing butterfly is considered to be **very large** if its wingspan is greater than 17.5 cm. The probability that the wingspan of any Lorenz birdwing butterfly in Town A is greater than 17.5 cm is 0.0527.\n\nFor random samples of 36 Lorenz birdwing butterflies in Town A, $\\hat{P}$ is the random variable that represents the proportion of butterflies that are **very large**.\n\nFind the expected value and the standard deviation of $\\hat{P}$, correct to four decimal places.",
+      "topic": "Statistics",
+      "subtopic": "Sampling",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "f.iv",
+      "marks": 2,
+      "content": "Each year, a detailed study is conducted on a random sample of 36 Lorenz birdwing butterflies in Town A. A Lorenz birdwing butterfly is considered to be **very large** if its wingspan is greater than 17.5 cm. The probability that the wingspan of any Lorenz birdwing butterfly in Town A is greater than 17.5 cm is 0.0527.\n\nWhat is the probability that a sample proportion of butterflies that are **very large** lies within one standard deviation of 0.0527, correct to four decimal places? Do not use a normal approximation.",
+      "topic": "Statistics",
+      "subtopic": "Sampling",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "g",
+      "marks": 2,
+      "content": "The Lorenz birdwing butterfly also lives in Town B. In a particular sample of Lorenz birdwing butterflies from Town B, an approximate 95% confidence interval for the proportion of butterflies that are **very large** was calculated to be $(0.0234, 0.0866)$, correct to four decimal places.\n\nDetermine the sample size used in the calculation of this confidence interval.",
+      "topic": "Statistics",
+      "subtopic": "Confidence Intervals",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "marks": 1,
+      "content": "Let $f: R \\to R$, $f(x) = 1 - x^{3}$. The tangent to the graph of $f$ at $x = a$, where $0 < a < 1$, intersects the graph of $f$ again at $P$ and intersects the horizontal axis at $Q$. The shaded regions shown in the diagram below are bounded by the graph of $f$, its tangent at $x = a$ and the horizontal axis.\n\nFind the equation of the tangent to the graph of $f$ at $x = a$, in terms of $a$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of f(x) = 1 - x^3 with tangent line at (a, 1-a^3) intersecting f again at P (upper left) and x-axis at Q (right of x=1), with two shaded regions"
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "marks": 1,
+      "content": "Let $f: R \\to R$, $f(x) = 1 - x^{3}$. The tangent to the graph of $f$ at $x = a$, where $0 < a < 1$, intersects the graph of $f$ again at $P$ and intersects the horizontal axis at $Q$.\n\nFind the $x$-coordinate of $Q$, in terms of $a$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "c",
+      "marks": 2,
+      "content": "Let $f: R \\to R$, $f(x) = 1 - x^{3}$. The tangent to the graph of $f$ at $x = a$, where $0 < a < 1$, intersects the graph of $f$ again at $P$ and intersects the horizontal axis at $Q$.\n\nFind the $x$-coordinate of $P$, in terms of $a$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "d",
+      "marks": 3,
+      "content": "Let $f: R \\to R$, $f(x) = 1 - x^{3}$. The tangent to the graph of $f$ at $x = a$, where $0 < a < 1$, intersects the graph of $f$ again at $P$ and intersects the horizontal axis at $Q$. Let $A$ be the function that determines the total area of the shaded regions.\n\nFind the rule of $A$, in terms of $a$.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "e",
+      "marks": 2,
+      "content": "Let $f: R \\to R$, $f(x) = 1 - x^{3}$. Let $A$ be the function that determines the total area of the shaded regions bounded by the graph of $f$, its tangent at $x = a$ and the horizontal axis.\n\nFind the value of $a$ for which $A$ is a minimum.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "f",
+      "marks": 2,
+      "content": "Let $f: R \\to R$, $f(x) = 1 - x^{3}$. Consider the regions bounded by the graph of $f^{-1}$, the tangent to the graph of $f^{-1}$ at $x = b$, where $0 < b < 1$, and the vertical axis.\n\nFind the value of $b$ for which the total area of these regions is a minimum.",
+      "topic": "Calculus",
+      "subtopic": "Inverse Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "g",
+      "marks": 1,
+      "content": "Let $f: R \\to R$, $f(x) = 1 - x^{3}$.\n\nFind the value of the acute angle between the tangent to the graph of $f$ and the tangent to the graph of $f^{-1}$ at $x = 1$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    }
+  ]
+}

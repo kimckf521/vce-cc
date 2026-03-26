@@ -1,0 +1,596 @@
+{
+  "year": 2018,
+  "examType": "EXAM_2",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f: R \\to R$, $f(x) = 4\\cos\\left(\\dfrac{2\\pi x}{3}\\right) + 1$. The period of this function is\n\n**A.** 1\n**B.** 2\n**C.** 3\n**D.** 4\n**E.** 5",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "marks": 1,
+      "content": "The maximal domain of the function $f$ is $R\\backslash\\{1\\}$. A possible rule for $f$ is\n\n**A.** $f(x) = \\dfrac{x^{2} - 5}{x - 1}$\n**B.** $f(x) = \\dfrac{x + 4}{x - 5}$\n**C.** $f(x) = \\dfrac{x^{2} + x + 4}{x^{2} + 1}$\n**D.** $f(x) = \\dfrac{5 - x^{2}}{1 + x}$\n**E.** $f(x) = \\sqrt{x - 1}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the function $f: [a, b) \\to R$, $f(x) = \\dfrac{1}{x}$, where $a$ and $b$ are positive real numbers. The range of $f$ is\n\n**A.** $\\left[\\dfrac{1}{a}, \\dfrac{1}{b}\\right)$\n**B.** $\\left(\\dfrac{1}{a}, \\dfrac{1}{b}\\right]$\n**C.** $\\left[\\dfrac{1}{b}, \\dfrac{1}{a}\\right)$\n**D.** $\\left(\\dfrac{1}{b}, \\dfrac{1}{a}\\right]$\n**E.** $[a, b)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": null,
+      "marks": 1,
+      "content": "The point $A(3, 2)$ lies on the graph of the function $f$. A transformation maps the graph of $f$ to the graph of $g$, where $g(x) = \\dfrac{1}{2}f(x - 1)$. The same transformation maps the point $A$ to the point $P$. The coordinates of the point $P$ are\n\n**A.** $(2, 1)$\n**B.** $(2, 4)$\n**C.** $(4, 1)$\n**D.** $(4, 2)$\n**E.** $(4, 4)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": null,
+      "marks": 1,
+      "content": "Consider $f(x) = x^{2} + \\dfrac{p}{x}$, $x \\neq 0$, $p \\in R$. There is a stationary point on the graph of $f$ when $x = -2$. The value of $p$ is\n\n**A.** $-16$\n**B.** $-8$\n**C.** $2$\n**D.** $8$\n**E.** $16$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f$ and $g$ be two functions such that $f(x) = 2x$ and $g(x + 2) = 3x + 1$. The function $f(g(x))$ is\n\n**A.** $6x - 5$\n**B.** $6x + 1$\n**C.** $6x^{2} + 1$\n**D.** $6x - 10$\n**E.** $6x + 2$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f: R^{+} \\to R$, $f(x) = k\\log_{2}(x)$, $k \\in R$. Given that $f^{-1}(1) = 8$, the value of $k$ is\n\n**A.** $0$\n**B.** $\\dfrac{1}{3}$\n**C.** $3$\n**D.** $8$\n**E.** $12$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Logarithmic Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": null,
+      "marks": 1,
+      "content": "If $\\int_{1}^{12} g(x)\\,dx = 5$ and $\\int_{12}^{5} g(x)\\,dx = -6$, then $\\int_{1}^{5} g(x)\\,dx$ is equal to\n\n**A.** $-11$\n**B.** $-1$\n**C.** $1$\n**D.** $3$\n**E.** $11$",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": null,
+      "marks": 1,
+      "content": "A tangent to the graph of $y = \\log_{e}(2x)$ has a gradient of 2. This tangent will cross the $y$-axis at\n\n**A.** $0$\n**B.** $-0.5$\n**C.** $-1$\n**D.** $-1 - \\log_{e}(2)$\n**E.** $-2\\log_{e}(2)$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 10,
+      "part": null,
+      "marks": 1,
+      "content": "The function $f$ has the property $f(x + f(x)) = f(2x)$ for all non-zero real numbers $x$. Which one of the following is a possible rule for the function?\n\n**A.** $f(x) = 1 - x$\n**B.** $f(x) = x - 1$\n**C.** $f(x) = x$\n**D.** $f(x) = \\dfrac{x}{2}$\n**E.** $f(x) = \\dfrac{1 - x}{2}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 11,
+      "part": null,
+      "marks": 1,
+      "content": "The graph of $y = \\tan(ax)$, where $a \\in R^{+}$, has a vertical asymptote $x = 3\\pi$ and has exactly one $x$-intercept in the region $(0, 3\\pi)$. The value of $a$ is\n\n**A.** $\\dfrac{1}{6}$\n**B.** $\\dfrac{1}{3}$\n**C.** $\\dfrac{1}{2}$\n**D.** $1$\n**E.** $2$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 12,
+      "part": null,
+      "marks": 1,
+      "content": "The discrete random variable $X$ has the following probability distribution.\n\n| $x$ | 0 | 1 | 2 | 3 | 6 |\n|---|---|---|---|---|---|\n| $\\Pr(X = x)$ | $\\dfrac{1}{4}$ | $\\dfrac{9}{20}$ | $\\dfrac{1}{10}$ | $\\dfrac{1}{20}$ | $\\dfrac{3}{20}$ |\n\nLet $\\mu$ be the mean of $X$. $\\Pr(X < \\mu)$ is\n\n**A.** $\\dfrac{1}{2}$\n**B.** $\\dfrac{1}{4}$\n**C.** $\\dfrac{17}{20}$\n**D.** $\\dfrac{4}{5}$\n**E.** $\\dfrac{7}{10}$",
+      "topic": "Probability",
+      "subtopic": "Discrete Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 13,
+      "part": null,
+      "marks": 1,
+      "content": "In a particular scoring game, there are two boxes of marbles and a player must randomly select one marble from each box. The first box contains four white marbles and two red marbles. The second box contains two white marbles and three red marbles. Each white marble scores $-2$ points and each red marble scores $+3$ points. The points obtained from the two marbles randomly selected by a player are added together to obtain a final score. What is the probability that the final score will equal $+1$?\n\n**A.** $\\dfrac{2}{3}$\n**B.** $\\dfrac{1}{5}$\n**C.** $\\dfrac{2}{5}$\n**D.** $\\dfrac{2}{15}$\n**E.** $\\dfrac{8}{15}$",
+      "topic": "Probability",
+      "subtopic": "Probability Rules",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 14,
+      "part": null,
+      "marks": 1,
+      "content": "Two events, $A$ and $B$, are independent, where $\\Pr(B) = 2\\Pr(A)$ and $\\Pr(A \\cup B) = 0.52$. $\\Pr(A)$ is equal to\n\n**A.** $0.1$\n**B.** $0.2$\n**C.** $0.3$\n**D.** $0.4$\n**E.** $0.5$",
+      "topic": "Probability",
+      "subtopic": "Probability Rules",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 15,
+      "part": null,
+      "marks": 1,
+      "content": "A probability density function, $f$, is given by\n$$f(x) = \\begin{cases} \\dfrac{1}{12}(8x - x^{3}) & 0 \\leq x \\leq 2 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\nThe median, $m$, of this function satisfies the equation\n\n**A.** $-m^{4} + 16m^{2} - 6 = 0$\n**B.** $-m^{4} + 4m^{2} - 6 = 0$\n**C.** $m^{4} - 16m^{2} = 0$\n**D.** $m^{4} - 16m^{2} + 24 = 0.5$\n**E.** $m^{4} - 16m^{2} + 24 = 0$",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 16,
+      "part": null,
+      "marks": 1,
+      "content": "Jamie approximates the area between the $x$-axis and the graph of $y = 2\\cos(2x) + 3$, over the interval $\\left[0, \\dfrac{\\pi}{2}\\right]$, using the three rectangles shown below. Jamie's approximation as a fraction of the exact area is\n\n**A.** $\\dfrac{5}{9}$\n**B.** $\\dfrac{7}{9}$\n**C.** $\\dfrac{9}{11}$\n**D.** $\\dfrac{11}{18}$\n**E.** $\\dfrac{7}{3}$",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": "Graph of $y = 2\\cos(2x) + 3$ over $\\left[0, \\dfrac{\\pi}{2}\\right]$ with three left-endpoint rectangles of equal width $\\dfrac{\\pi}{6}$ shown as approximation"
+    },
+    {
+      "questionNumber": 17,
+      "part": null,
+      "marks": 1,
+      "content": "The turning point of the parabola $y = x^{2} - 2bx + 1$ is closest to the origin when\n\n**A.** $b = 0$\n**B.** $b = -1$ or $b = 1$\n**C.** $b = -\\dfrac{1}{\\sqrt{2}}$ or $b = \\dfrac{1}{\\sqrt{2}}$\n**D.** $b = \\dfrac{1}{2}$ or $b = -\\dfrac{1}{2}$\n**E.** $b = \\dfrac{1}{4}$ or $b = -\\dfrac{1}{4}$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 18,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the functions $f: R^{+} \\to R$, $f(x) = x^{\\frac{p}{q}}$ and $g: R^{+} \\to R$, $g(x) = x^{\\frac{m}{n}}$, where $p$, $q$, $m$ and $n$ are positive integers, and $\\dfrac{p}{q}$ and $\\dfrac{m}{n}$ are fractions in simplest form. If $\\{x: f(x) > g(x)\\} = (0, 1)$ and $\\{x: g(x) > f(x)\\} = (1, \\infty)$, which of the following must be **false**?\n\n**A.** $q > n$ and $p = m$\n**B.** $m > p$ and $q = n$\n**C.** $pn < qm$\n**D.** $f'(c) = g'(c)$ for some $c \\in (0, 1)$\n**E.** $f'(d) = g'(d)$ for some $d \\in (1, \\infty)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 19,
+      "part": null,
+      "marks": 1,
+      "content": "The graphs $f: R \\to R$, $f(x) = \\cos\\left(\\dfrac{\\pi x}{2}\\right)$ and $g: R \\to R$, $g(x) = \\sin(\\pi x)$ are shown in the diagram below. An integral expression that gives the total area of the shaded regions is\n\n**A.** $\\int_{0}^{3}\\left(\\sin(\\pi x) - \\cos\\left(\\dfrac{\\pi x}{2}\\right)\\right)dx$\n**B.** $2\\int_{\\frac{5}{3}}^{3}\\left(\\sin(\\pi x) - \\cos\\left(\\dfrac{\\pi x}{2}\\right)\\right)dx$\n**C.** $\\int_{0}^{\\frac{1}{3}}\\left(\\cos\\left(\\dfrac{\\pi x}{2}\\right) - \\sin(\\pi x)\\right)dx - 2\\int_{\\frac{1}{3}}^{1}\\left(\\cos\\left(\\dfrac{\\pi x}{2}\\right) - \\sin(\\pi x)\\right)dx - \\int_{\\frac{5}{3}}^{3}\\left(\\cos\\left(\\dfrac{\\pi x}{2}\\right) - \\sin(\\pi x)\\right)dx$\n**D.** $2\\int_{1}^{\\frac{5}{3}}\\left(\\cos\\left(\\dfrac{\\pi x}{2}\\right) - \\sin(\\pi x)\\right)dx - 2\\int_{\\frac{5}{3}}^{3}\\left(\\cos\\left(\\dfrac{\\pi x}{2}\\right) - \\sin(\\pi x)\\right)dx$\n**E.** $\\int_{0}^{\\frac{1}{3}}\\left(\\cos\\left(\\dfrac{\\pi x}{2}\\right) - \\sin(\\pi x)\\right)dx + 2\\int_{\\frac{1}{3}}^{1}\\left(\\sin(\\pi x) - \\cos\\left(\\dfrac{\\pi x}{2}\\right)\\right)dx + \\int_{\\frac{5}{3}}^{3}\\left(\\cos\\left(\\dfrac{\\pi x}{2}\\right) - \\sin(\\pi x)\\right)dx$",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": "Graphs of $f(x) = \\cos\\left(\\dfrac{\\pi x}{2}\\right)$ and $g(x) = \\sin(\\pi x)$ shown on the same axes; shaded regions between the curves are indicated"
+    },
+    {
+      "questionNumber": 20,
+      "part": null,
+      "marks": 1,
+      "content": "The differentiable function $f: R \\to R$ is a probability density function. It is known that the median of the probability density function $f$ is at $x = 0$ and $f'(0) = 4$. The transformation $T: R^{2} \\to R^{2}$ maps the graph of $f$ to the graph of $g$, where $g: R \\to R$ is a probability density function with a median at $x = 0$ and $g'(0) = -1$. The transformation $T$ could be given by\n\n**A.** $T\\left(\\begin{bmatrix} x \\\\ y \\end{bmatrix}\\right) = \\begin{bmatrix} -2 & 0 \\\\ 0 & \\dfrac{1}{2} \\end{bmatrix}\\begin{bmatrix} x \\\\ y \\end{bmatrix}$\n**B.** $T\\left(\\begin{bmatrix} x \\\\ y \\end{bmatrix}\\right) = \\begin{bmatrix} 2 & 0 \\\\ 0 & -\\dfrac{1}{2} \\end{bmatrix}\\begin{bmatrix} x \\\\ y \\end{bmatrix}$\n**C.** $T\\left(\\begin{bmatrix} x \\\\ y \\end{bmatrix}\\right) = \\begin{bmatrix} 2 & 0 \\\\ 0 & \\dfrac{1}{2} \\end{bmatrix}\\begin{bmatrix} x \\\\ y \\end{bmatrix}$\n**D.** $T\\left(\\begin{bmatrix} x \\\\ y \\end{bmatrix}\\right) = \\begin{bmatrix} -\\dfrac{1}{2} & 0 \\\\ 0 & 2 \\end{bmatrix}\\begin{bmatrix} x \\\\ y \\end{bmatrix}$\n**E.** $T\\left(\\begin{bmatrix} x \\\\ y \\end{bmatrix}\\right) = \\begin{bmatrix} \\dfrac{1}{2} & 0 \\\\ 0 & -2 \\end{bmatrix}\\begin{bmatrix} x \\\\ y \\end{bmatrix}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "marks": 1,
+      "content": "Consider the quartic $f: R \\to R$, $f(x) = 3x^{4} + 4x^{3} - 12x^{2}$ and part of the graph of $y = f(x)$ below. Find the coordinates of the point $M$, at which the minimum value of the function $f$ occurs.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of $y = f(x) = 3x^{4} + 4x^{3} - 12x^{2}$ showing a local minimum point $M$ below the $x$-axis and the curve passing through the origin"
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "marks": 1,
+      "content": "Consider the quartic $f: R \\to R$, $f(x) = 3x^{4} + 4x^{3} - 12x^{2}$. State the values of $b \\in R$ for which the graph of $y = f(x) + b$ has no $x$-intercepts.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "c",
+      "marks": 1,
+      "content": "Consider the quartic $f: R \\to R$, $f(x) = 3x^{4} + 4x^{3} - 12x^{2}$. Part of the tangent $l$ to $y = f(x)$ at $x = -\\dfrac{1}{3}$ is shown. Find the equation of the tangent $l$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph showing $y = f(x)$ and the tangent line $l$ at $x = -\\dfrac{1}{3}$, with the tangent passing through the origin region"
+    },
+    {
+      "questionNumber": 1,
+      "part": "d",
+      "marks": 2,
+      "content": "Consider the quartic $f: R \\to R$, $f(x) = 3x^{4} + 4x^{3} - 12x^{2}$. The tangent $l$ intersects $y = f(x)$ at $x = -\\dfrac{1}{3}$ and at two other points. State the $x$-values of the two other points of intersection. Express your answers in the form $\\dfrac{a \\pm \\sqrt{b}}{c}$, where $a$, $b$ and $c$ are integers.",
+      "topic": "Algebra",
+      "subtopic": "Polynomials",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "e",
+      "marks": 2,
+      "content": "Consider the quartic $f: R \\to R$, $f(x) = 3x^{4} + 4x^{3} - 12x^{2}$. Find the total area of the regions bounded by the tangent $l$ and $y = f(x)$. Express your answer in the form $\\dfrac{a\\sqrt{b}}{c}$, where $a$, $b$ and $c$ are positive integers.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "f",
+      "marks": 1,
+      "content": "Let $p: R \\to R$, $p(x) = 3x^{4} + 4x^{3} + 6(a-2)x^{2} - 12ax + a^{2}$, $a \\in R$. State the value of $a$ for which $f(x) = p(x)$ for all $x$.",
+      "topic": "Algebra",
+      "subtopic": "Polynomials",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "g",
+      "marks": 1,
+      "content": "Let $p: R \\to R$, $p(x) = 3x^{4} + 4x^{3} + 6(a-2)x^{2} - 12ax + a^{2}$, $a \\in R$. Find all solutions to $p'(x) = 0$, in terms of $a$ where appropriate.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "h.i",
+      "marks": 1,
+      "content": "Let $p: R \\to R$, $p(x) = 3x^{4} + 4x^{3} + 6(a-2)x^{2} - 12ax + a^{2}$, $a \\in R$. Find the values of $a$ for which $p$ has only one stationary point.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "h.ii",
+      "marks": 1,
+      "content": "Let $p: R \\to R$, $p(x) = 3x^{4} + 4x^{3} + 6(a-2)x^{2} - 12ax + a^{2}$, $a \\in R$. Find the minimum value of $p$ when $a = 2$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "h.iii",
+      "marks": 2,
+      "content": "Let $p: R \\to R$, $p(x) = 3x^{4} + 4x^{3} + 6(a-2)x^{2} - 12ax + a^{2}$, $a \\in R$. If $p$ has only one stationary point, find the values of $a$ for which $p(x) = 0$ has no solutions.",
+      "topic": "Algebra",
+      "subtopic": "Polynomials",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "marks": 2,
+      "content": "A drug, $X$, comes in 500 milligram (mg) tablets. The amount, $b$, of drug $X$ in the bloodstream, in milligrams, $t$ hours after one tablet is consumed is given by the function $b(t) = \\dfrac{4500}{7}\\left(e^{\\left(-\\frac{t}{5}\\right)} - e^{\\left(-\\frac{9t}{10}\\right)}\\right)$. Find the time, in hours, it takes for drug $X$ to reach a maximum amount in the bloodstream after one tablet is consumed. Express your answer in the form $a\\log_{e}(c)$, where $a, c \\in R$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "marks": 2,
+      "content": "A drug, $X$, comes in 500 milligram (mg) tablets. The amount, $b$, of drug $X$ in the bloodstream, in milligrams, $t$ hours after one tablet is consumed is given by $b(t) = \\dfrac{4500}{7}\\left(e^{\\left(-\\frac{t}{5}\\right)} - e^{\\left(-\\frac{9t}{10}\\right)}\\right)$. The graph of $y = b(t)$ is shown for $0 \\leq t \\leq 6$. Find the average rate of change of the amount of drug $X$ in the bloodstream, in milligrams per hour, over the interval $[2, 6]$. Give your answer correct to one decimal place.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of $y = b(t)$ for $0 \\leq t \\leq 6$ showing the amount of drug $X$ (mg) against time (hours), with peak around $t = 2$ at approximately 320 mg"
+    },
+    {
+      "questionNumber": 2,
+      "part": "c",
+      "marks": 2,
+      "content": "A drug, $X$, comes in 500 milligram (mg) tablets. The amount, $b$, of drug $X$ in the bloodstream, in milligrams, $t$ hours after one tablet is consumed is given by $b(t) = \\dfrac{4500}{7}\\left(e^{\\left(-\\frac{t}{5}\\right)} - e^{\\left(-\\frac{9t}{10}\\right)}\\right)$. Find the average amount of drug $X$ in the bloodstream, in milligrams, during the first six hours after one tablet is consumed. Give your answer correct to the nearest milligram.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "d.i",
+      "marks": 2,
+      "content": "Six hours after one 500 milligram tablet of drug $X$ is consumed (Tablet 1), a second identical tablet is consumed (Tablet 2). The amount of drug $X$ in the bloodstream from each tablet consumed independently is shown in the graph. On the graph, sketch the total amount of drug $X$ in the bloodstream during the first 12 hours after Tablet 1 is consumed.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Exponential Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph showing amount of drug $X$ (mg) vs time (hours) from 0 to 12, with dashed curves for Tablet 1 and Tablet 2 contributions shown separately; answer space for total curve"
+    },
+    {
+      "questionNumber": 2,
+      "part": "d.ii",
+      "marks": 2,
+      "content": "Six hours after one 500 milligram tablet of drug $X$ is consumed (Tablet 1), a second identical tablet is consumed (Tablet 2). Find the maximum amount of drug $X$ in the bloodstream in the first 12 hours and the time at which this maximum occurs. Give your answers correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "marks": 1,
+      "content": "A horizontal bridge positioned 5 m above level ground is 110 m in length. The bridge also touches the top of three arches. Each arch begins and ends at ground level. The arches are 5 m apart at the base. Arch 1 is modelled by $h_{1}: [5, 35] \\to R$, $h_{1}(x) = 5\\sin\\left(\\dfrac{(x-5)\\pi}{30}\\right)$. Arch 2 is modelled by $h_{2}: [40, 70] \\to R$, $h_{2}(x) = 5\\sin\\left(\\dfrac{(x-40)\\pi}{30}\\right)$. Arch 3 is modelled by $h_{3}: [a, 105] \\to R$, $h_{3}(x) = 5\\sin\\left(\\dfrac{(x-a)\\pi}{30}\\right)$. State the value of $a$, where $a \\in R$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": "Diagram of three arches below a horizontal bridge at $y = 5$, each arch spanning 30 m with 5 m gaps between them, $x$-axis from 0 to 110"
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "marks": 1,
+      "content": "Arch 2 is modelled by $h_{2}: [40, 70] \\to R$, $h_{2}(x) = 5\\sin\\left(\\dfrac{(x-40)\\pi}{30}\\right)$ and Arch 3 is modelled by $h_{3}: [a, 105] \\to R$, $h_{3}(x) = 5\\sin\\left(\\dfrac{(x-a)\\pi}{30}\\right)$. Describe the transformation that maps the graph of $y = h_{2}(x)$ to $y = h_{3}(x)$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "c",
+      "marks": 3,
+      "content": "The area above ground level between the arches and the bridge is filled with stone. The stone is represented by the shaded regions in the diagram. Find the total area of the shaded regions, correct to the nearest square metre.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Diagram showing the three arches below a horizontal bridge at $y = 5$; shaded regions represent the stone between the bridge level and the arches (above the arches) and between the arches and ground (in the gaps)"
+    },
+    {
+      "questionNumber": 3,
+      "part": "d",
+      "marks": 1,
+      "content": "A second bridge has a height of 5 m above the ground at its left-most point and is inclined at a constant angle of elevation of $\\dfrac{\\pi}{90}$ radians. The second bridge also has three arches below it, which are identical to the arches below the first bridge, and spans a horizontal distance of 110 m. State the gradient of the second bridge, correct to three decimal places.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": "Diagram of the inclined second bridge over three arches (Arch 4, 5, 6), with the bridge rising from height 5 m on the left to approximately 9.8 m on the right"
+    },
+    {
+      "questionNumber": 3,
+      "part": "e",
+      "marks": 2,
+      "content": "$P$ is a point on Arch 5. The tangent to Arch 5 at point $P$ has the same gradient as the second bridge. Find the coordinates of $P$, correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "f",
+      "marks": 3,
+      "content": "A supporting rod connects a point $Q$ on the second bridge to point $P$ on Arch 5. The rod follows a straight line and runs perpendicular to the second bridge, as shown in the diagram on page 18. Find the distance $PQ$, in metres, correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "marks": 1,
+      "content": "Doctors are studying the resting heart rate of adults in two neighbouring towns: Mathsland and Statsville. The resting heart rate of adults in Mathsland is known to be normally distributed with a mean of 68 bpm and a standard deviation of 8 bpm. Find the probability that a randomly selected Mathsland adult has a resting heart rate between 60 bpm and 90 bpm. Give your answer correct to three decimal places.",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.i",
+      "marks": 1,
+      "content": "The doctors consider a person to have a slow heart rate if the person's resting heart rate is less than 60 bpm. The probability that a randomly chosen Mathsland adult has a slow heart rate is 0.1587. It is known that 29% of Mathsland adults play sport regularly and 9% of Mathsland adults play sport regularly and have a slow heart rate. Let $S$ be the event that a randomly selected Mathsland adult plays sport regularly and let $H$ be the event that a randomly selected Mathsland adult has a slow heart rate. Find $\\Pr(H|S)$, correct to three decimal places.",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.ii",
+      "marks": 1,
+      "content": "Let $S$ be the event that a randomly selected Mathsland adult plays sport regularly and let $H$ be the event that a randomly selected Mathsland adult has a slow heart rate. The probability that a randomly chosen Mathsland adult has a slow heart rate is 0.1587. Are the events $H$ and $S$ independent? Justify your answer.",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "c.i",
+      "marks": 2,
+      "content": "The probability that a randomly chosen Mathsland adult has a slow heart rate is 0.1587. Find the probability that a random sample of 16 Mathsland adults will contain exactly one person with a slow heart rate. Give your answer correct to three decimal places.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "c.ii",
+      "marks": 2,
+      "content": "For random samples of 16 Mathsland adults, $\\hat{P}$ is the random variable that represents the proportion of people who have a slow heart rate. Find the probability that $\\hat{P}$ is greater than 10%, correct to three decimal places.",
+      "topic": "Statistics",
+      "subtopic": "Sampling",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "c.iii",
+      "marks": 2,
+      "content": "For random samples of $n$ Mathsland adults, $\\hat{P}_{n}$ is the random variable that represents the proportion of people who have a slow heart rate. Find the least value of $n$ for which $\\Pr\\left(\\hat{P}_{n} > \\dfrac{1}{n}\\right) > 0.99$.",
+      "topic": "Statistics",
+      "subtopic": "Sampling",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "d.i",
+      "marks": 1,
+      "content": "The doctors took a large random sample of adults from the population of Statsville and calculated an approximate 95% confidence interval for the proportion of Statsville adults who have a slow heart rate. The confidence interval they obtained was $(0.102, 0.145)$. Determine the sample proportion used in the calculation of this confidence interval.",
+      "topic": "Statistics",
+      "subtopic": "Confidence Intervals",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "d.ii",
+      "marks": 1,
+      "content": "The confidence interval for the proportion of Statsville adults with a slow heart rate was $(0.102, 0.145)$. Explain why this confidence interval suggests that the proportion of adults with a slow heart rate in Statsville could be different from the proportion in Mathsland.",
+      "topic": "Statistics",
+      "subtopic": "Confidence Intervals",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "e",
+      "marks": 2,
+      "content": "The time taken by a randomly selected student to reach the top of a hill has the probability density function $M$ with the rule $M(t) = \\begin{cases} \\dfrac{3}{50}\\left(\\dfrac{t}{50}\\right)^{2} e^{-\\left(\\frac{t}{50}\\right)^{3}} & t \\geq 0 \\\\ 0 & t < 0 \\end{cases}$ where $t$ is given in minutes. Find the expected time, in minutes, for a randomly selected student from Mathsland Secondary College to reach the top of the hill. Give your answer correct to one decimal place.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "f",
+      "marks": 1,
+      "content": "Students who take less than 15 minutes to get to the top of the hill are categorised as 'elite'. The time taken by a randomly selected student from Mathsland Secondary College has the probability density function $M$ defined above. Find the probability that a randomly selected student from Mathsland Secondary College is categorised as elite. Give your answer correct to four decimal places.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "g",
+      "marks": 2,
+      "content": "The Year 12 students at Mathsland Secondary College make up $\\dfrac{1}{7}$ of the total number of students at the school. Of the Year 12 students at Mathsland Secondary College, 5% are categorised as elite. Find the probability that a randomly selected non-Year 12 student at Mathsland Secondary College is categorised as elite. Give your answer correct to four decimal places.",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "marks": 2,
+      "content": "Consider functions of the form $f: R \\to R$, $f(x) = \\dfrac{81x^{2}(a-x)}{4a^{4}}$ and $h: R \\to R$, $h(x) = \\dfrac{9x}{2a^{2}}$, where $a$ is a positive real number. Find the coordinates of the local maximum of $f$ in terms of $a$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "marks": 1,
+      "content": "Consider $f: R \\to R$, $f(x) = \\dfrac{81x^{2}(a-x)}{4a^{4}}$ and $h: R \\to R$, $h(x) = \\dfrac{9x}{2a^{2}}$, where $a$ is a positive real number. Find the $x$-values of all of the points of intersection between the graphs of $f$ and $h$, in terms of $a$ where appropriate.",
+      "topic": "Algebra",
+      "subtopic": "Simultaneous Equations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "c",
+      "marks": 2,
+      "content": "Consider $f: R \\to R$, $f(x) = \\dfrac{81x^{2}(a-x)}{4a^{4}}$ and $h: R \\to R$, $h(x) = \\dfrac{9x}{2a^{2}}$, where $a$ is a positive real number. Determine the total area of the regions bounded by the graphs of $y = f(x)$ and $y = h(x)$.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "d",
+      "marks": 1,
+      "content": "Consider the function $g: \\left[0, \\dfrac{2a}{3}\\right] \\to R$, $g(x) = \\dfrac{81x^{2}(a-x)}{4a^{4}}$, where $a$ is a positive real number. Evaluate $\\dfrac{2a}{3} \\times g\\left(\\dfrac{2a}{3}\\right)$.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "e",
+      "marks": 2,
+      "content": "Consider the function $g: \\left[0, \\dfrac{2a}{3}\\right] \\to R$, $g(x) = \\dfrac{81x^{2}(a-x)}{4a^{4}}$, where $a$ is a positive real number. Find the area bounded by the graph of $g^{-1}$, the $x$-axis and the line $x = g\\left(\\dfrac{2a}{3}\\right)$.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "f",
+      "marks": 1,
+      "content": "Consider the function $g: \\left[0, \\dfrac{2a}{3}\\right] \\to R$, $g(x) = \\dfrac{81x^{2}(a-x)}{4a^{4}}$, where $a$ is a positive real number. Find the value of $a$ for which the graphs of $g$ and $g^{-1}$ have the same endpoints.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "g",
+      "marks": 1,
+      "content": "Consider the function $g: \\left[0, \\dfrac{2a}{3}\\right] \\to R$, $g(x) = \\dfrac{81x^{2}(a-x)}{4a^{4}}$, where $a$ is a positive real number. Find the area enclosed by the graphs of $g$ and $g^{-1}$ when they have the same endpoints.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    }
+  ]
+}

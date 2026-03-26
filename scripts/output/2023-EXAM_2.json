@@ -1,0 +1,586 @@
+{
+  "year": 2023,
+  "examType": "EXAM_2",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": null,
+      "marks": 1,
+      "content": "The amplitude, $A$, and the period, $P$, of the function $f(x) = -\\dfrac{1}{2}\\sin(3x + 2\\pi)$ are\n\n**A.** $A = -\\dfrac{1}{2},\\ P = \\dfrac{\\pi}{3}$\n**B.** $A = -\\dfrac{1}{2},\\ P = \\dfrac{2\\pi}{3}$\n**C.** $A = -\\dfrac{1}{2},\\ P = \\dfrac{3\\pi}{2}$\n**D.** $A = \\dfrac{1}{2},\\ P = \\dfrac{\\pi}{3}$\n**E.** $A = \\dfrac{1}{2},\\ P = \\dfrac{2\\pi}{3}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "marks": 1,
+      "content": "For the parabola with equation $y = ax^{2} + 2bx + c$, where $a, b, c \\in R$, the equation of the axis of symmetry is\n\n**A.** $x = -\\dfrac{b}{a}$\n**B.** $x = -\\dfrac{b}{2a}$\n**C.** $y = c$\n**D.** $x = \\dfrac{b}{a}$\n**E.** $x = \\dfrac{b}{2a}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": null,
+      "marks": 1,
+      "content": "Two functions, $p$ and $q$, are continuous over their domains, which are $[-2, 3)$ and $(-1, 5]$, respectively. The domain of the sum function $p + q$ is\n\n**A.** $[-2, 5]$\n**B.** $[-2, -1) \\cup (3, 5]$\n**C.** $[-2, -1) \\cup (-1, 3) \\cup (3, 5]$\n**D.** $[-1, 3]$\n**E.** $(-1, 3)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the system of simultaneous linear equations below containing the parameter $k$.\n$$kx + 5y = k + 5$$\n$$4x + (k + 1)y = 0$$\nThe value(s) of $k$ for which the system of equations has infinite solutions are\n\n**A.** $k \\in \\{-5, 4\\}$\n**B.** $k \\in \\{-5\\}$\n**C.** $k \\in \\{4\\}$\n**D.** $k \\in R \\setminus \\{-5, 4\\}$\n**E.** $k \\in R \\setminus \\{-5\\}$",
+      "topic": "Algebra",
+      "subtopic": "Simultaneous Equations",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": null,
+      "marks": 1,
+      "content": "Which one of the following functions has a horizontal tangent at $(0, 0)$?\n\n**A.** $y = x^{-\\frac{1}{3}}$\n**B.** $y = x^{\\frac{1}{3}}$\n**C.** $y = x^{\\frac{2}{3}}$\n**D.** $y = x^{\\frac{4}{3}}$\n**E.** $y = x^{\\frac{3}{4}}$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "marks": 1,
+      "content": "Suppose that $\\displaystyle\\int_{3}^{10} f(x)\\,dx = C$ and $\\displaystyle\\int_{7}^{10} f(x)\\,dx = D$. The value of $\\displaystyle\\int_{7}^{3} f(x)\\,dx$ is\n\n**A.** $C + D$\n**B.** $C + D - 3$\n**C.** $C - D$\n**D.** $D - C$\n**E.** $CD - 3$",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f(x) = \\log_e x$, where $x > 0$ and $g(x) = \\sqrt{1 - x}$, where $x < 1$.\n\nThe domain of the derivative of $(f \\circ g)(x)$ is\n\n**A.** $x \\in R$\n**B.** $x \\in (-\\infty, 1]$\n**C.** $x \\in (-\\infty, 1)$\n**D.** $x \\in (0, \\infty)$\n**E.** $x \\in (0, 1)$",
+      "topic": "Calculus",
+      "subtopic": "Chain Rule",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": null,
+      "marks": 1,
+      "content": "A box contains $n$ green balls and $m$ red balls. A ball is selected at random, and its colour is noted. The ball is then replaced in the box.\n\nIn 8 such selections, where $n \\neq m$, what is the probability that a green ball is selected at least once?\n\n**A.** $8\\left(\\dfrac{n}{n+m}\\right)\\left(\\dfrac{m}{n+m}\\right)^{7}$\n**B.** $1 - \\left(\\dfrac{n}{n+m}\\right)^{8}$\n**C.** $1 - \\left(\\dfrac{m}{n+m}\\right)^{8}$\n**D.** $1 - \\left(\\dfrac{n}{n+m}\\right)\\left(\\dfrac{m}{n+m}\\right)^{7}$\n**E.** $1 - 8\\left(\\dfrac{n}{n+m}\\right)\\left(\\dfrac{m}{n+m}\\right)^{7}$",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": null,
+      "marks": 1,
+      "content": "The function $f$ is given by\n$$f(x) = \\begin{cases} \\tan\\!\\left(\\dfrac{x}{2}\\right) & 4 \\leq x < 2\\pi \\\\ \\sin(ax) & 2\\pi \\leq x \\leq 8 \\end{cases}$$\nThe value of $a$ for which $f$ is continuous and smooth at $x = 2\\pi$ is\n\n**A.** $-2$\n**B.** $-\\dfrac{\\pi}{2}$\n**C.** $-\\dfrac{1}{2}$\n**D.** $\\dfrac{1}{2}$\n**E.** $2$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 10,
+      "part": null,
+      "marks": 1,
+      "content": "A continuous random variable $X$ has the following probability density function.\n$$g(x) = \\begin{cases} \\dfrac{x - 1}{20} & 1 \\leq x < 6 \\\\ \\dfrac{9 - x}{12} & 6 \\leq x \\leq 9 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\nThe value of $k$ such that $\\Pr(X < k) = 0.35$ is\n\n**A.** $\\sqrt{14} - 1$\n**B.** $\\sqrt{14} + 1$\n**C.** $\\sqrt{15} - 1$\n**D.** $\\sqrt{15} + 1$\n**E.** $1 - \\sqrt{15}$",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 11,
+      "part": null,
+      "marks": 1,
+      "content": "Two functions, $f$ and $g$, are continuous and differentiable for all $x \\in R$. It is given that $f(-2) = -7$, $g(-2) = 8$ and $f'(-2) = 3$, $g'(-2) = 2$.\n\nThe gradient of the graph $y = f(x) \\times g(x)$ at the point where $x = -2$ is\n\n**A.** $-10$\n**B.** $-6$\n**C.** $0$\n**D.** $6$\n**E.** $10$",
+      "topic": "Calculus",
+      "subtopic": "Product Rule",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 12,
+      "part": null,
+      "marks": 1,
+      "content": "The probability mass function for the discrete random variable $X$ is shown below.\n\n| $X$ | $-1$ | $0$ | $1$ | $2$ |\n|---|---|---|---|---|\n| $\\Pr(X = x)$ | $k^{2}$ | $3k$ | $k$ | $-k^{2} - 4k + 1$ |\n\nThe maximum possible value for the mean of $X$ is:\n\n**A.** $0$\n**B.** $\\dfrac{1}{3}$\n**C.** $\\dfrac{2}{3}$\n**D.** $1$\n**E.** $2$",
+      "topic": "Probability",
+      "subtopic": "Discrete Random Variables",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 13,
+      "part": null,
+      "marks": 1,
+      "content": "The following algorithm applies Newton's method using a **For** loop with 3 iterations.\n\n```\nInputs: f(x), a function of x\n        df(x), the derivative of f(x)\n        x0, an initial estimate\n\nDefine newton(f(x), df(x), x0)\n    For i from 1 to 3\n        If df(x0) = 0 Then\n            Return \"Error: Division by zero\"\n        Else\n            x0 <- x0 - f(x0) ÷ df(x0)\n    EndFor\n    Return x0\n```\n\nThe **Return** value of the function `newton(x^3 + 3x - 3, 3x^2 + 3, 1)` is closest to\n\n**A.** 0.83333\n**B.** 0.81785\n**C.** 0.81773\n**D.** 1\n**E.** 3",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 14,
+      "part": null,
+      "marks": 1,
+      "content": "A polynomial has the equation $y = x(3x - 1)(x + 3)(x + 1)$.\n\nThe number of tangents to this curve that pass through the positive $x$-intercept is\n\n**A.** $0$\n**B.** $1$\n**C.** $2$\n**D.** $3$\n**E.** $4$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 15,
+      "part": null,
+      "marks": 1,
+      "content": "Let $X$ be a normal random variable with mean of 100 and standard deviation of 20. Let $Y$ be a normal random variable with mean of 80 and standard deviation of 10.\n\nWhich of the diagrams below best represents the probability density functions for $X$ and $Y$, plotted on the same set of axes?\n\n**A.** [Diagram A]\n**B.** [Diagram B]\n**C.** [Diagram C]\n**D.** [Diagram D]\n**E.** [Diagram E]",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Five pairs of normal distribution curves (solid for Y, dashed for X) showing different combinations of position and spread."
+    },
+    {
+      "questionNumber": 16,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f(x) = e^{x-1}$.\n\nGiven that the product function $f(x) \\times g(x) = e^{(x-1)^{2}}$, the rule for the function $g$ is\n\n**A.** $g(x) = e^{x-1}$\n**B.** $g(x) = e^{(x-2)(x-1)}$\n**C.** $g(x) = e^{(x+2)(x-1)}$\n**D.** $g(x) = e^{x(x-2)}$\n**E.** $g(x) = e^{x(x-3)}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Exponential Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 17,
+      "part": null,
+      "marks": 1,
+      "content": "A cylinder of height $h$ and radius $r$ is formed from a thin rectangular sheet of metal of length $x$ and width $y$, by cutting along the dashed lines shown below.\n\nThe volume of the cylinder, in terms of $x$ and $y$, is given by\n\n**A.** $\\pi x^{2}y$\n**B.** $\\dfrac{\\pi xy^{2} - 2y^{3}}{4\\pi^{2}}$\n**C.** $\\dfrac{2y^{3} - \\pi xy^{2}}{4\\pi^{2}}$\n**D.** $\\dfrac{\\pi xy - 2y^{2}}{2\\pi}$\n**E.** $\\dfrac{2y^{2} - \\pi xy}{2\\pi}$",
+      "topic": "Algebra",
+      "subtopic": "Polynomials",
+      "difficulty": "HARD",
+      "imageDescription": "Diagram of a rectangular sheet of metal with dashed cut lines, showing two circles on the left and right sides and the rectangular body of the cylinder in the centre, with dimensions x (length) and y (width) labelled."
+    },
+    {
+      "questionNumber": 18,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the function $f: [-a\\pi, a\\pi] \\to R$, $f(x) = \\sin(ax)$, where $a$ is a positive integer.\n\nThe number of local minima in the graph of $y = f(x)$ is always equal to\n\n**A.** $2$\n**B.** $4$\n**C.** $a$\n**D.** $2a$\n**E.** $a^{2}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 19,
+      "part": null,
+      "marks": 1,
+      "content": "Find all values of $k$, such that the equation $x^{2} + (4k + 3)x + 4k^{2} - \\dfrac{9}{4} = 0$ has two real solutions for $x$, one positive and one negative.\n\n**A.** $k > -\\dfrac{3}{4}$\n**B.** $k \\geq -\\dfrac{3}{4}$\n**C.** $k > \\dfrac{3}{4}$\n**D.** $-\\dfrac{3}{4} < k < \\dfrac{3}{4}$\n**E.** $k < -\\dfrac{3}{4}$ or $k > \\dfrac{3}{4}$",
+      "topic": "Algebra",
+      "subtopic": "Quadratics",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 20,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f(x) = \\log_e\\!\\left(x + \\dfrac{1}{\\sqrt{2}}\\right)$.\n\nLet $g(x) = \\sin(x)$ where $x \\in (-\\infty, 5)$.\n\nThe largest interval of $x$ values for which $(f \\circ g)(x)$ and $(g \\circ f)(x)$ both exist is\n\n**A.** $\\left(-\\dfrac{1}{\\sqrt{2}},\\ \\dfrac{5\\pi}{4}\\right)$\n**B.** $\\left[-\\dfrac{1}{\\sqrt{2}},\\ \\dfrac{5\\pi}{4}\\right]$\n**C.** $\\left(-\\dfrac{\\pi}{4},\\ \\dfrac{5\\pi}{4}\\right)$\n**D.** $\\left[-\\dfrac{\\pi}{4},\\ \\dfrac{5\\pi}{4}\\right]$\n**E.** $\\left[-\\dfrac{\\pi}{4},\\ -\\dfrac{1}{\\sqrt{2}}\\right]$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "marks": 1,
+      "content": "Let $f: R \\to R$, $f(x) = x(x - 2)(x + 1)$. Part of the graph of $f$ is shown below.\n\nState the coordinates of all axial intercepts of $f$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "EASY",
+      "imageDescription": "Graph of f(x) = x(x-2)(x+1) showing a cubic with x-intercepts at x = -1, 0, and 2, with a local maximum in the second quadrant and local minimum in the fourth quadrant."
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "marks": 2,
+      "content": "Find the coordinates of the stationary points of $f$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.i",
+      "marks": 1,
+      "content": "Let $g: R \\to R$, $g(x) = x - 2$.\n\nFind the values of $x$ for which $f(x) = g(x)$.",
+      "topic": "Algebra",
+      "subtopic": "Polynomials",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.ii",
+      "marks": 2,
+      "content": "Write down an expression using definite integrals that gives the area of the regions bound by $f$ and $g$.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.iii",
+      "marks": 1,
+      "content": "Hence, find the total area of the regions bound by $f$ and $g$, correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "d",
+      "marks": 4,
+      "content": "Let $h: R \\to R$, $h(x) = (x - a)(x - b)^{2}$, where $h(x) = f(x) + k$ and $a, b, k \\in R$.\n\nFind the possible values of $a$ and $b$.",
+      "topic": "Algebra",
+      "subtopic": "Polynomials",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "marks": 2,
+      "content": "The following diagram represents an observation wheel, with its centre at point $P$. Passengers are seated in pods, which are carried around as the wheel turns. The wheel moves anticlockwise with constant speed and completes one full rotation every 30 minutes. When a pod is at the lowest point of the wheel (point $A$), it is 15 metres above the ground. The wheel has a radius of 60 metres.\n\nConsider the function $h(t) = -60\\cos(bt) + c$ for some $b, c \\in R$, which models the height above the ground of a pod originally situated at point $A$, after time $t$ minutes.\n\nShow that $b = \\dfrac{\\pi}{15}$ and $c = 75$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Diagram of a circular observation wheel with centre P, lowest point A (15 m above ground), radius 60 m, and point B at the rightmost point of the wheel at the same height as centre P."
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "marks": 2,
+      "content": "Find the average height of a pod on the wheel as it travels from point $A$ to point $B$. Give your answer in metres, correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "c",
+      "marks": 1,
+      "content": "Find the average rate of change, in metres per minute, of the height of a pod on the wheel as it travels from point $A$ to point $B$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "d.i",
+      "marks": 1,
+      "content": "After 15 minutes, the wheel stops moving and remains stationary for 5 minutes. After this, it continues moving at double its previous speed for another 7.5 minutes.\n\nThe height above the ground of a pod that was initially at point $A$, after $t$ minutes, can be modelled by the piecewise function $w$:\n$$w(t) = \\begin{cases} h(t) & 0 \\leq t < 15 \\\\ k & 15 \\leq t < 20 \\\\ h(mt + n) & 20 \\leq t \\leq 27.5 \\end{cases}$$\nwhere $k \\geq 0$, $m \\geq 0$ and $n \\in R$.\n\nState the values of $k$ and $m$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "d.ii",
+      "marks": 2,
+      "content": "Find all possible values of $n$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "d.iii",
+      "marks": 3,
+      "content": "Sketch the graph of the piecewise function $w$ on the axes below, showing the coordinates of the endpoints.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "marks": 1,
+      "content": "Consider the function $g: R \\to R$, $g(x) = 2^{x} + 5$.\n\nState the value of $\\displaystyle\\lim_{x \\to -\\infty} g(x)$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Exponential Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "marks": 1,
+      "content": "The derivative, $g'(x)$, can be expressed in the form $g'(x) = k \\times 2^{x}$.\n\nFind the real number $k$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "c.i",
+      "marks": 1,
+      "content": "Let $a$ be a real number. Find, in terms of $a$, the equation of the tangent to $g$ at the point $(a, g(a))$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "c.ii",
+      "marks": 2,
+      "content": "Hence, or otherwise, find the equation of the tangent to $g$ that passes through the origin, correct to three decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "d",
+      "marks": 1,
+      "content": "Let $h: R \\to R$, $h(x) = 2^{x} - x^{2}$.\n\nFind the coordinates of the point of inflection for $h$, correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "e",
+      "marks": 1,
+      "content": "Find the largest interval of $x$ values for which $h$ is strictly decreasing. Give your answer correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "f",
+      "marks": 2,
+      "content": "Apply Newton's method, with an initial estimate of $x_{0} = 0$, to find an approximate $x$-intercept of $h$. Write the estimates $x_{1}$, $x_{2}$ and $x_{3}$ in the table below, correct to three decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "g",
+      "marks": 1,
+      "content": "For the function $h$, explain why a solution to the equation $\\log_e(2) \\times (2^{x}) - 2x = 0$ should not be used as an initial estimate $x_{0}$ in Newton's method.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "h",
+      "marks": 2,
+      "content": "There is a positive real number $n$ for which the function $f(x) = n^{x} - x^{n}$ has a local minimum on the $x$-axis.\n\nFind this value of $n$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "marks": 1,
+      "content": "A manufacturer produces tennis balls. The diameter of the tennis balls is a normally distributed random variable $D$, which has a mean of 6.7 cm and a standard deviation of 0.1 cm.\n\nFind $\\Pr(D > 6.8)$, correct to four decimal places.",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "marks": 1,
+      "content": "Find the minimum diameter of a tennis ball that is larger than 90% of all tennis balls produced. Give your answer in centimetres, correct to two decimal places.",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "c",
+      "marks": 1,
+      "content": "Tennis balls are packed and sold in cylindrical containers. A tennis ball can fit through the opening at the top of the container if its diameter is smaller than 6.95 cm.\n\nFind the probability that a randomly selected tennis ball can fit through the opening at the top of the container. Give your answer correct to four decimal places.",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "d",
+      "marks": 2,
+      "content": "In a random selection of 4 tennis balls, find the probability that at least 3 balls can fit through the opening at the top of the container. Give your answer correct to four decimal places.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "e",
+      "marks": 2,
+      "content": "A tennis ball is classed as grade A if its diameter is between 6.54 cm and 6.86 cm, otherwise it is classed as grade B.\n\nGiven that a tennis ball can fit through the opening at the top of the container, find the probability that it is classed as grade A. Give your answer correct to four decimal places.",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "f",
+      "marks": 2,
+      "content": "The manufacturer would like to improve processes to ensure that more than 99% of all tennis balls produced are classed as grade A.\n\nAssuming that the mean diameter of the tennis balls remains the same, find the required standard deviation of the diameter, in centimetres, correct to two decimal places.",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "g",
+      "marks": 2,
+      "content": "An inspector takes a random sample of 32 tennis balls from the manufacturer and determines a confidence interval for the population proportion of grade A balls produced. The confidence interval is $(0.7382, 0.9493)$, correct to 4 decimal places.\n\nFind the level of confidence that the population proportion of grade A balls is within the interval, as a percentage correct to the nearest integer.",
+      "topic": "Statistics",
+      "subtopic": "Confidence Intervals",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "h",
+      "marks": 1,
+      "content": "A tennis coach uses both grade A and grade B balls. The serving speed, in metres per second, of a grade A ball is a continuous random variable, $V$, with the probability density function\n$$f(v) = \\begin{cases} \\dfrac{1}{6\\pi}\\sin\\!\\left(\\sqrt{\\dfrac{v - 30}{3}}\\right) & 30 \\leq v \\leq 3\\pi^{2} + 30 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\n\nFind the probability that the serving speed of a grade A ball exceeds 50 metres per second. Give your answer correct to four decimal places.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "i",
+      "marks": 1,
+      "content": "Find the exact mean serving speed for grade A balls, in metres per second.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "j",
+      "marks": 2,
+      "content": "The serving speed of a grade B ball is given by a continuous random variable, $W$, with the probability density function $g(w)$.\n\nA transformation maps the graph of $f$ to the graph of $g$, where $g(w) = af\\!\\left(\\dfrac{w}{b}\\right)$.\n\nIf the mean serving speed for a grade B ball is $2\\pi^{2} + 8$ metres per second, find the values of $a$ and $b$.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "marks": 2,
+      "content": "Let $f: R \\to R$, $f(x) = e^{x} + e^{-x}$ and $g: R \\to R$, $g(x) = \\dfrac{1}{2}f(2 - x)$.\n\nComplete a possible sequence of transformations to map $f$ to $g$.\n\n- Dilation of factor $\\dfrac{1}{2}$ from the $x$ axis.\n- \n- ",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "marks": 2,
+      "content": "Two functions $g_{1}$ and $g_{2}$ are created, both with the same rule as $g$ but with distinct domains, such that $g_{1}$ is strictly increasing and $g_{2}$ is strictly decreasing.\n\nGive the domain and range for the inverse of $g_{1}$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "c.i",
+      "marks": 1,
+      "content": "Shown below is the graph of $g$, the inverses of $g_{1}$ and $g_{2}$, and the line $y = x$.\n\nThe intersection points between the graphs of $y = x$, $y = g(x)$ and the inverses of $g_{1}$ and $g_{2}$, are labelled $P$ and $Q$.\n\nFind the coordinates of $P$ and $Q$, correct to two decimal places.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph showing the curve g(x) = (1/2)f(2-x), the inverses of g1 and g2, and the line y = x, with intersection points P and Q labelled."
+    },
+    {
+      "questionNumber": 5,
+      "part": "c.ii",
+      "marks": 2,
+      "content": "Find the area of the region bound by the graphs of $g$, the inverse of $g_{1}$ and the inverse of $g_{2}$. Give your answer correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "d",
+      "marks": 1,
+      "content": "Let $h: R \\to R$, $h(x) = \\dfrac{1}{k}f(k - x)$, where $k \\in (0, \\infty)$.\n\nThe turning point of $h$ always lies on the graph of the function $y = 2x^{n}$, where $n$ is an integer.\n\nFind the value of $n$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "e",
+      "marks": 1,
+      "content": "Let $h_{1}: [k, \\infty) \\to R$, $h_{1}(x) = h(x)$.\n\nThe rule for the inverse of $h_{1}$ is $y = \\log_e\\!\\left(\\dfrac{k}{2}x + \\dfrac{1}{2}\\sqrt{k^{2}x^{2} - 4}\\right) + k$.\n\nWhat is the smallest value of $k$ such that $h$ will intersect with the inverse of $h_{1}$? Give your answer correct to two decimal places.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "f",
+      "marks": 2,
+      "content": "It is possible for the graphs of $h$ and the inverse of $h_{1}$ to intersect twice. This occurs when $k = 5$.\n\nFind the area of the region bound by the graphs of $h$ and the inverse of $h_{1}$, when $k = 5$. Give your answer correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Area Under Curve",
+      "difficulty": "HARD",
+      "imageDescription": null
+    }
+  ]
+}

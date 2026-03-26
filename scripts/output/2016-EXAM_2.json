@@ -1,0 +1,536 @@
+{
+  "year": 2016,
+  "examType": "EXAM_2",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": null,
+      "marks": 1,
+      "content": "The linear function $f: D \\to R$, $f(x) = 5 - x$ has range $[-4, 5)$.\n\nThe domain $D$ is\n\n**A.** $(0, 9]$\n\n**B.** $(0, 1]$\n\n**C.** $[5, -4)$\n\n**D.** $[-9, 0)$\n\n**E.** $[1, 9)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Domain and Range",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f: R \\to R$, $f(x) = 1 - 2\\cos\\!\\left(\\dfrac{\\pi x}{2}\\right)$.\n\nThe period and range of this function are respectively\n\n**A.** $4$ and $[-2, 2]$\n\n**B.** $4$ and $[-1, 3]$\n\n**C.** $1$ and $[-1, 3]$\n\n**D.** $4\\pi$ and $[-1, 3]$\n\n**E.** $4\\pi$ and $[-2, 2]$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": null,
+      "marks": 1,
+      "content": "Part of the graph $y = f(x)$ of the polynomial function $f$ is shown below. The graph passes through $(-3, 0)$, has a local minimum at $(-2, -9)$, passes through $(-\\frac{1}{2}, 0)$, has a local maximum at $\\left(\\frac{1}{3}, \\frac{100}{27}\\right)$, and passes through $(1, 0)$.\n\n$f'(x) < 0$ for\n\n**A.** $x \\in (-2, 0) \\cup \\left(\\dfrac{1}{3}, \\infty\\right)$\n\n**B.** $x \\in \\left(-9, \\dfrac{100}{27}\\right)$\n\n**C.** $x \\in (-\\infty, -2) \\cup \\left(\\dfrac{1}{3}, \\infty\\right)$\n\n**D.** $x \\in \\left(-2, \\dfrac{1}{3}\\right)$\n\n**E.** $x \\in (-\\infty, -2] \\cup (1, \\infty)$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of a polynomial function with x-intercepts at -3, -1/2, and 1; local minimum at (-2, -9); local maximum at (1/3, 100/27)."
+    },
+    {
+      "questionNumber": 4,
+      "part": null,
+      "marks": 1,
+      "content": "The average rate of change of the function $f$ with rule $f(x) = 3x^2 - 2\\sqrt{x+1}$, between $x = 0$ and $x = 3$, is\n\n**A.** $8$\n\n**B.** $25$\n\n**C.** $\\dfrac{53}{9}$\n\n**D.** $\\dfrac{25}{3}$\n\n**E.** $\\dfrac{13}{9}$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": null,
+      "marks": 1,
+      "content": "Which one of the following is the inverse function of $g: [3, \\infty) \\to R$, $g(x) = \\sqrt{2x - 6}$?\n\n**A.** $g^{-1}: [3, \\infty) \\to R$, $g^{-1}(x) = \\dfrac{x^2 + 6}{2}$\n\n**B.** $g^{-1}: [0, \\infty) \\to R$, $g^{-1}(x) = (2x - 6)^2$\n\n**C.** $g^{-1}: [0, \\infty) \\to R$, $g^{-1}(x) = \\sqrt{\\dfrac{x}{2} + 6}$\n\n**D.** $g^{-1}: [0, \\infty) \\to R$, $g^{-1}(x) = \\dfrac{x^2 + 6}{2}$\n\n**E.** $g^{-1}: R \\to R$, $g^{-1}(x) = \\dfrac{x^2 + 6}{2}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the graph of the function defined by $f: [0, 2\\pi] \\to R$, $f(x) = \\sin(2x)$.\n\nThe square of the length of the line segment joining the points on the graph for which $x = \\dfrac{\\pi}{4}$ and $x = \\dfrac{3\\pi}{4}$ is\n\n**A.** $\\dfrac{\\pi^2 + 16}{4}$\n\n**B.** $\\pi + 4$\n\n**C.** $4$\n\n**D.** $\\dfrac{3\\pi^2 + 16\\pi}{4}$\n\n**E.** $\\dfrac{10\\pi^2}{16}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": null,
+      "marks": 1,
+      "content": "The number of pets, $X$, owned by each student in a large school is a random variable with the following discrete probability distribution.\n\n| $x$ | $0$ | $1$ | $2$ | $3$ |\n|---|---|---|---|---|\n| $\\Pr(X = x)$ | $0.5$ | $0.25$ | $0.2$ | $0.05$ |\n\nIf two students are selected at random, the probability that they own the same number of pets is\n\n**A.** $0.3$\n\n**B.** $0.305$\n\n**C.** $0.355$\n\n**D.** $0.405$\n\n**E.** $0.8$",
+      "topic": "Probability",
+      "subtopic": "Discrete Distributions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": null,
+      "marks": 1,
+      "content": "The UV index, $y$, for a summer day in Melbourne is illustrated in the graph below, where $t$ is the number of hours after 6 am. The curve starts at $(0, 0)$, rises to a peak of approximately $10$ near $t = 7$, and returns to $0$ near $t = 14$.\n\nThe graph is most likely to be the graph of\n\n**A.** $y = 5 + 5\\cos\\!\\left(\\dfrac{\\pi t}{7}\\right)$\n\n**B.** $y = 5 - 5\\cos\\!\\left(\\dfrac{\\pi t}{7}\\right)$\n\n**C.** $y = 5 + 5\\cos\\!\\left(\\dfrac{\\pi t}{14}\\right)$\n\n**D.** $y = 5 - 5\\cos\\!\\left(\\dfrac{\\pi t}{14}\\right)$\n\n**E.** $y = 5 + 5\\sin\\!\\left(\\dfrac{\\pi t}{14}\\right)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Bell-shaped curve from t=0 to t=14, peaking at approximately y=10 near t=7, starting and ending at y=0."
+    },
+    {
+      "questionNumber": 9,
+      "part": null,
+      "marks": 1,
+      "content": "Given that $\\dfrac{d(xe^{kx})}{dx} = (kx + 1)e^{kx}$, then $\\displaystyle\\int xe^{kx}\\,dx$ is equal to\n\n**A.** $\\dfrac{xe^{kx}}{kx + 1} + c$\n\n**B.** $\\left(\\dfrac{kx + 1}{k}\\right)e^{kx} + c$\n\n**C.** $\\dfrac{1}{k}\\displaystyle\\int e^{kx}\\,dx$\n\n**D.** $\\dfrac{1}{k}\\left(xe^{kx} - \\displaystyle\\int e^{kx}\\,dx\\right) + c$\n\n**E.** $\\dfrac{1}{k^2}\\left(xe^{kx} - e^{kx}\\right) + c$",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 10,
+      "part": null,
+      "marks": 1,
+      "content": "For the curve $y = x^2 - 5$, the tangent to the curve will be parallel to the line connecting the positive $x$-intercept and the $y$-intercept when $x$ is equal to\n\n**A.** $\\sqrt{5}$\n\n**B.** $5$\n\n**C.** $-5$\n\n**D.** $\\dfrac{\\sqrt{5}}{2}$\n\n**E.** $\\dfrac{1}{\\sqrt{5}}$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 11,
+      "part": null,
+      "marks": 1,
+      "content": "The function $f$ has the property $f(x) - f(y) = (y - x)f(xy)$ for all non-zero real numbers $x$ and $y$.\n\nWhich one of the following is a possible rule for the function?\n\n**A.** $f(x) = x^2$\n\n**B.** $f(x) = x^2 + x^4$\n\n**C.** $f(x) = x\\log_e(x)$\n\n**D.** $f(x) = \\dfrac{1}{x}$\n\n**E.** $f(x) = \\dfrac{1}{x^2}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Algebraic Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 12,
+      "part": null,
+      "marks": 1,
+      "content": "The graph of a function $f$ is obtained from the graph of the function $g$ with rule $g(x) = \\sqrt{2x - 5}$ by a reflection in the $x$-axis followed by a dilation from the $y$-axis by a factor of $\\dfrac{1}{2}$.\n\nWhich one of the following is the rule for the function $f$?\n\n**A.** $f(x) = \\sqrt{5 - 4x}$\n\n**B.** $f(x) = -\\sqrt{x - 5}$\n\n**C.** $f(x) = \\sqrt{x + 5}$\n\n**D.** $f(x) = -\\sqrt{4x - 5}$\n\n**E.** $f(x) = -\\sqrt{4x - 10}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 13,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the graphs of the functions $f$ and $g$ shown below. The function $f$ is an arch-shaped curve defined on $[a, d]$, and $g$ is a lower arch-shaped curve defined on $[b, c]$ where $a < b < c < d$. The shaded region lies between the two curves from $a$ to $d$, including the area under $f$ where $g$ is not defined.\n\nThe area of the shaded region could be represented by\n\n**A.** $\\displaystyle\\int_a^d (f(x) - g(x))\\,dx$\n\n**B.** $\\displaystyle\\int_0^d (f(x) - g(x))\\,dx$\n\n**C.** $\\displaystyle\\int_0^b (f(x) - g(x))\\,dx + \\displaystyle\\int_b^c (f(x) - g(x))\\,dx$\n\n**D.** $\\displaystyle\\int_0^a f(x)\\,dx + \\displaystyle\\int_a^c (f(x) - g(x))\\,dx + \\displaystyle\\int_c^d f(x)\\,dx$\n\n**E.** $\\displaystyle\\int_0^d f(x)\\,dx - \\displaystyle\\int_a^c g(x)\\,dx$",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "HARD",
+      "imageDescription": "Two arch-shaped curves: f defined on [a,d] and g defined on [b,c] with a<b<c<d. The shaded region is between the curves and includes the area under f where g is not present."
+    },
+    {
+      "questionNumber": 14,
+      "part": null,
+      "marks": 1,
+      "content": "A rectangle is formed by using part of the coordinate axes and a point $(u, v)$, where $u > 0$ on the parabola $y = 4 - x^2$.\n\nWhich one of the following is the maximum area of the rectangle?\n\n**A.** $4$\n\n**B.** $\\dfrac{2\\sqrt{3}}{3}$\n\n**C.** $\\dfrac{8\\sqrt{3} - 4}{3}$\n\n**D.** $\\dfrac{8}{3}$\n\n**E.** $\\dfrac{16\\sqrt{3}}{9}$",
+      "topic": "Calculus",
+      "subtopic": "Optimisation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "A rectangle with one corner at the origin, sides along the axes, and opposite corner at (u,v) on the parabola y = 4 - x^2."
+    },
+    {
+      "questionNumber": 15,
+      "part": null,
+      "marks": 1,
+      "content": "A box contains six red marbles and four blue marbles. Two marbles are drawn from the box, without replacement.\n\nThe probability that they are the same colour is\n\n**A.** $\\dfrac{1}{2}$\n\n**B.** $\\dfrac{28}{45}$\n\n**C.** $\\dfrac{7}{15}$\n\n**D.** $\\dfrac{3}{5}$\n\n**E.** $\\dfrac{1}{3}$",
+      "topic": "Probability",
+      "subtopic": "Combinatorics",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 16,
+      "part": null,
+      "marks": 1,
+      "content": "The random variable, $X$, has a normal distribution with mean $12$ and standard deviation $0.25$.\n\nIf the random variable, $Z$, has the standard normal distribution, then the probability that $X$ is greater than $12.5$ is equal to\n\n**A.** $\\Pr(Z < -4)$\n\n**B.** $\\Pr(Z < -1.5)$\n\n**C.** $\\Pr(Z < 1)$\n\n**D.** $\\Pr(Z \\geq 1.5)$\n\n**E.** $\\Pr(Z > 2)$",
+      "topic": "Statistics",
+      "subtopic": "Normal Distribution",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 17,
+      "part": null,
+      "marks": 1,
+      "content": "Inside a container there are one million coloured building blocks. It is known that $20\\%$ of the blocks are red. A sample of $16$ blocks is taken from the container. For samples of $16$ blocks, $\\hat{P}$ is the random variable of the distribution of sample proportions of red blocks. (Do not use a normal approximation.)\n\n$\\Pr\\!\\left(\\hat{P} \\geq \\dfrac{3}{16}\\right)$ is closest to\n\n**A.** $0.6482$\n\n**B.** $0.8593$\n\n**C.** $0.7543$\n\n**D.** $0.6542$\n\n**E.** $0.3211$",
+      "topic": "Statistics",
+      "subtopic": "Sample Proportions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 18,
+      "part": null,
+      "marks": 1,
+      "content": "The continuous random variable, $X$, has a probability density function given by\n\n$$f(x) = \\begin{cases} \\dfrac{1}{4}\\cos\\!\\left(\\dfrac{x}{2}\\right) & 3\\pi \\leq x \\leq 5\\pi \\\\ 0 & \\text{elsewhere} \\end{cases}$$\n\nThe value of $a$ such that $\\Pr(X < a) = \\dfrac{\\sqrt{3} + 2}{4}$ is\n\n**A.** $\\dfrac{19\\pi}{6}$\n\n**B.** $\\dfrac{14\\pi}{3}$\n\n**C.** $\\dfrac{10\\pi}{3}$\n\n**D.** $\\dfrac{29\\pi}{6}$\n\n**E.** $\\dfrac{17\\pi}{3}$",
+      "topic": "Statistics",
+      "subtopic": "Continuous Distributions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 19,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the discrete probability distribution with random variable $X$ shown in the table below.\n\n| $x$ | $-1$ | $0$ | $b$ | $2b$ | $4$ |\n|---|---|---|---|---|---|\n| $\\Pr(X = x)$ | $a$ | $b$ | $b$ | $2b$ | $0.2$ |\n\nThe smallest and largest possible values of $E(X)$ are respectively\n\n**A.** $-0.8$ and $1$\n\n**B.** $-0.8$ and $1.6$\n\n**C.** $0$ and $2.4$\n\n**D.** $0.2125$ and $1$\n\n**E.** $0$ and $1$",
+      "topic": "Probability",
+      "subtopic": "Discrete Distributions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 20,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the transformation $T$, defined as\n\n$$T: R^2 \\to R^2,\\quad T\\!\\left(\\begin{bmatrix}x\\\\y\\end{bmatrix}\\right) = \\begin{bmatrix}-1 & 0\\\\0 & 3\\end{bmatrix}\\begin{bmatrix}x\\\\y\\end{bmatrix} + \\begin{bmatrix}0\\\\5\\end{bmatrix}$$\n\nThe transformation $T$ maps the graph of $y = f(x)$ onto the graph of $y = g(x)$.\n\nIf $\\displaystyle\\int_0^3 f(x)\\,dx = 5$, then $\\displaystyle\\int_{-3}^0 g(x)\\,dx$ is equal to\n\n**A.** $0$\n\n**B.** $15$\n\n**C.** $20$\n\n**D.** $25$\n\n**E.** $30$",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "marks": 2,
+      "content": "Let $f:[0, 8\\pi] \\to R$, where $f(x) = 2\\cos\\!\\left(\\dfrac{x}{2}\\right) + \\pi$.\n\nFind the period and range of $f$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "marks": 1,
+      "content": "State the rule for the derivative function $f'$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "c",
+      "marks": 1,
+      "content": "Find the equation of the tangent to the graph of $f$ at $x = \\pi$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "d",
+      "marks": 2,
+      "content": "Find the equations of the tangents to the graph of $f:[0, 8\\pi] \\to R$, $f(x) = 2\\cos\\!\\left(\\dfrac{x}{2}\\right) + \\pi$ that have a gradient of $1$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "e",
+      "marks": 3,
+      "content": "The rule of $f'$ can be obtained from the rule of $f$ under a transformation $T$, such that\n\n$$T: R^2 \\to R^2,\\quad T\\!\\left(\\begin{bmatrix}x\\\\y\\end{bmatrix}\\right) = \\begin{bmatrix}1 & 0\\\\0 & a\\end{bmatrix}\\begin{bmatrix}x\\\\y\\end{bmatrix} + \\begin{bmatrix}-\\pi\\\\b\\end{bmatrix}$$\n\nFind the value of $a$ and the value of $b$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "f",
+      "marks": 2,
+      "content": "Find the values of $x$, $0 \\leq x \\leq 8\\pi$, such that $f(x) = 2f'(x) + \\pi$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Trigonometric Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "a.i",
+      "marks": 1,
+      "content": "Consider the function $f(x) = -\\dfrac{1}{3}(x+2)(x-1)^2$.\n\nGiven that $g'(x) = f(x)$ and $g(0) = 1$, show that $g(x) = -\\dfrac{x^4}{12} + \\dfrac{x^2}{2} - \\dfrac{2x}{3} + 1$.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "a.ii",
+      "marks": 1,
+      "content": "Find the values of $x$ for which the graph of $y = g(x)$ has a stationary point.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "b.i",
+      "marks": 1,
+      "content": "The diagram below shows part of the graph of $y = g(x)$, the tangent to the graph at $x = 2$ and a straight line drawn perpendicular to the tangent to the graph at $x = 2$. The equation of the tangent at the point $A$ with coordinates $(2,\\, g(2))$ is $y = 3 - \\dfrac{4x}{3}$. The tangent cuts the $y$-axis at $B$. The line perpendicular to the tangent cuts the $y$-axis at $C$.\n\nFind the coordinates of $B$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": "Graph of y=g(x) showing a tangent line at point A(2, g(2)) cutting the y-axis at B, and a perpendicular line through A cutting the y-axis at C."
+    },
+    {
+      "questionNumber": 2,
+      "part": "b.ii",
+      "marks": 2,
+      "content": "Find the equation of the line that passes through $A$ and $C$ and, hence, find the coordinates of $C$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "b.iii",
+      "marks": 2,
+      "content": "Find the area of triangle $ABC$.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "c.i",
+      "marks": 2,
+      "content": "The tangent at $D$ is parallel to the tangent at $A$. It intersects the line passing through $A$ and $C$ at $E$.\n\nFind the coordinates of $D$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph showing tangent at D parallel to the tangent at A, intersecting line AC at point E."
+    },
+    {
+      "questionNumber": 2,
+      "part": "c.ii",
+      "marks": 3,
+      "content": "Find the length of $AE$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "marks": 2,
+      "content": "A school has a class set of $22$ new laptops kept in a recharging trolley. Provided each laptop is correctly plugged into the trolley after use, its battery recharges.\n\nOn a particular day, a class of $22$ students uses the laptops. All laptop batteries are fully charged at the start of the lesson. Each student uses and returns exactly one laptop. The probability that a student does **not** correctly plug their laptop into the trolley at the end of the lesson is $10\\%$. The correctness of any student's plugging-in is independent of any other student's correctness.\n\nDetermine the probability that at least one of the laptops is **not** correctly plugged into the trolley at the end of the lesson. Give your answer correct to four decimal places.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "marks": 2,
+      "content": "A teacher observes that at least one of the returned laptops is not correctly plugged into the trolley.\n\nGiven this, find the probability that fewer than five laptops are **not** correctly plugged in. Give your answer correct to four decimal places.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "c",
+      "marks": 2,
+      "content": "The time for which a laptop will work without recharging (the battery life) is normally distributed, with a mean of three hours and $10$ minutes and standard deviation of six minutes. Suppose that the laptops remain out of the recharging trolley for three hours.\n\nFor any one laptop, find the probability that it will stop working by the end of these three hours. Give your answer correct to four decimal places.",
+      "topic": "Statistics",
+      "subtopic": "Normal Distribution",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "d",
+      "marks": 3,
+      "content": "A supplier of laptops decides to take a sample of $100$ new laptops from a number of different schools. For samples of size $100$ from the population of laptops with a mean battery life of three hours and $10$ minutes and standard deviation of six minutes, $\\hat{P}$ is the random variable of the distribution of sample proportions of laptops with a battery life of less than three hours.\n\nFind the probability that $\\Pr(\\hat{P} \\geq 0.06 \\mid \\hat{P} \\geq 0.05)$. Give your answer correct to three decimal places. Do not use a normal approximation.",
+      "topic": "Statistics",
+      "subtopic": "Sample Proportions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "e",
+      "marks": 2,
+      "content": "It is known that when laptops have been used regularly in a school for six months, their battery life is still normally distributed but the mean battery life drops to three hours. It is also known that only $12\\%$ of such laptops work for more than three hours and $10$ minutes.\n\nFind the standard deviation for the normal distribution that applies to the battery life of laptops that have been used regularly in a school for six months, correct to four decimal places.",
+      "topic": "Statistics",
+      "subtopic": "Normal Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "f",
+      "marks": 1,
+      "content": "The laptop supplier collects a sample of $100$ laptops that have been used for six months from a number of different schools and tests their battery life. The laptop supplier wishes to estimate the proportion of such laptops with a battery life of less than three hours.\n\nSuppose the supplier tests the battery life of the laptops one at a time.\n\nFind the probability that the first laptop found to have a battery life of less than three hours is the third one.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "g",
+      "marks": 1,
+      "content": "The laptop supplier finds that, in a particular sample of $100$ laptops, six of them have a battery life of less than three hours.\n\nDetermine the $95\\%$ confidence interval for the supplier's estimate of the proportion of interest. Give values correct to two decimal places.",
+      "topic": "Statistics",
+      "subtopic": "Confidence Intervals",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "h.i",
+      "marks": 1,
+      "content": "The supplier also provides laptops to businesses. The probability density function for battery life, $x$ (in minutes), of a laptop after six months of use in a business is\n\n$$f(x) = \\begin{cases} \\dfrac{(210 - x)\\,e^{\\frac{x-210}{20}}}{400} & 0 \\leq x \\leq 210 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\n\nFind the **mean** battery life, in minutes, of a laptop with six months of business use, correct to two decimal places.",
+      "topic": "Statistics",
+      "subtopic": "Continuous Distributions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "h.ii",
+      "marks": 2,
+      "content": "Find the **median** battery life, in minutes, of a laptop with six months of business use, correct to two decimal places.",
+      "topic": "Statistics",
+      "subtopic": "Continuous Distributions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "marks": 2,
+      "content": "Express $\\dfrac{2x+1}{x+2}$ in the form $a + \\dfrac{b}{x+2}$, where $a$ and $b$ are non-zero integers.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Rational Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.i",
+      "marks": 2,
+      "content": "Let $f: R\\setminus\\{-2\\} \\to R$, $f(x) = \\dfrac{2x+1}{x+2}$.\n\nFind the rule and domain of $f^{-1}$, the inverse function of $f$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.ii",
+      "marks": 1,
+      "content": "Part of the graphs of $f$ and $y = x$ are shown in the diagram below. The shaded region is enclosed between the graph of $f$ and the line $y = x$.\n\nFind the area of the shaded region.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graphs of f(x)=(2x+1)/(x+2) and y=x, intersecting at (-1,-1) and (1,1), with a shaded region between them."
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.iii",
+      "marks": 1,
+      "content": "Part of the graphs of $f$ and $f^{-1}$ are shown in the diagram below. The shaded region is enclosed between the graphs of $f$ and $f^{-1}$.\n\nFind the area of the shaded region.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graphs of f and its inverse f^{-1}, symmetric about y=x, with a shaded region enclosed between them."
+    },
+    {
+      "questionNumber": 4,
+      "part": "c",
+      "marks": 3,
+      "content": "Part of the graph of $f$ is shown in the diagram below. The point $P(c, d)$ is on the graph of $f$.\n\nFind the exact values of $c$ and $d$ such that the distance of this point to the origin is a minimum, and find this minimum distance.",
+      "topic": "Calculus",
+      "subtopic": "Optimisation",
+      "difficulty": "HARD",
+      "imageDescription": "Graph of f(x)=(2x+1)/(x+2) with a point P(c,d) marked on the curve near x=0."
+    },
+    {
+      "questionNumber": 4,
+      "part": "d",
+      "marks": 2,
+      "content": "Let $g: (-k, \\infty) \\to R$, $g(x) = \\dfrac{kx + 1}{x + k}$, where $k > 1$.\n\nShow that $x_1 < x_2$ implies that $g(x_1) < g(x_2)$, where $x_1 \\in (-k, \\infty)$ and $x_2 \\in (-k, \\infty)$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Rational Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.i",
+      "marks": 2,
+      "content": "Let $X$ be the point of intersection of the graphs of $y = g(x)$ and $y = -x$.\n\nFind the coordinates of $X$ in terms of $k$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Rational Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.ii",
+      "marks": 2,
+      "content": "Find the value of $k$ for which the coordinates of $X$ are $\\left(-\\dfrac{1}{2},\\, \\dfrac{1}{2}\\right)$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Rational Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.iii",
+      "marks": 2,
+      "content": "Let $Z(-1, -1)$, $Y(1, 1)$ and $X$ be the vertices of the triangle $XYZ$. Let $s(k)$ be the square of the area of triangle $XYZ$.\n\nFind the values of $k$ such that $s(k) \\geq 1$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Rational Functions",
+      "difficulty": "HARD",
+      "imageDescription": "Graph of y=g(x) with vertices X (on y=-x), Y(1,1) and Z(-1,-1) forming triangle XYZ."
+    },
+    {
+      "questionNumber": 4,
+      "part": "f.i",
+      "marks": 2,
+      "content": "The graph of $g$ and the line $y = x$ enclose a region of the plane. Let $A(k)$ be the rule of the function $A$ that gives the area of this enclosed region. The domain of $A$ is $(1, \\infty)$.\n\nGive the rule for $A(k)$.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "HARD",
+      "imageDescription": "Graph of g(x)=(kx+1)/(x+k) and the line y=x, enclosing a region between their intersection points at x=-1 and x=1."
+    },
+    {
+      "questionNumber": 4,
+      "part": "f.ii",
+      "marks": 2,
+      "content": "Show that $0 < A(k) < 2$ for all $k > 1$.",
+      "topic": "Calculus",
+      "subtopic": "Integration",
+      "difficulty": "HARD",
+      "imageDescription": null
+    }
+  ]
+}

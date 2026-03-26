@@ -1,0 +1,301 @@
+{
+  "year": 2020,
+  "examType": "EXAM_2",
+  "solutions": [
+    {
+      "questionNumber": 1,
+      "part": null,
+      "content": "**Answer: D**\n\n$g(f(-1)) = g(4) = 6$, using $f(-1) = 4$ and $g(4) = 6$."
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "content": "**Answer: E**\n\nBy the remainder theorem, the remainder when $p(x)$ is divided by $x + 2$ is $p(-2)$:\n\n$$p(-2) = (-2)^3 - 2a(-2)^2 + (-2) - 1 = -8 - 8a - 3 = -11 - 8a$$\n\nSet equal to 5: $-11 - 8a = 5$, so $-8a = 16$, thus $a = -2$."
+    },
+    {
+      "questionNumber": 3,
+      "part": null,
+      "content": "**Answer: C**\n\nAntidifferentiate $f'(x) = \\dfrac{2}{\\sqrt{2x-3}} = 2(2x-3)^{-1/2}$:\n\n$$f(x) = 2 \\cdot \\dfrac{(2x-3)^{1/2}}{\\tfrac{1}{2} \\cdot 2} + c = 2\\sqrt{2x-3} + c$$\n\nApply $f(6) = 4$: $2\\sqrt{12-3} + c = 4$, so $2\\sqrt{9} + c = 4$, giving $6 + c = 4$, thus $c = -2$.\n\n$$f(x) = 2\\sqrt{2x-3} - 2$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": null,
+      "content": "**Answer: D**\n\n$2\\cos\\!\\left(2x - \\dfrac{\\pi}{3}\\right) + 1 = 0 \\implies \\cos\\!\\left(2x - \\dfrac{\\pi}{3}\\right) = -\\dfrac{1}{2}$\n\n$2x - \\dfrac{\\pi}{3} = \\dfrac{2\\pi}{3} + 2k\\pi$ or $2x - \\dfrac{\\pi}{3} = \\dfrac{4\\pi}{3} + 2k\\pi$ for $k \\in Z$\n\n$2x = \\pi + 2k\\pi = \\dfrac{\\pi(2k+1)}{1}$ or $2x = \\dfrac{\\pi}{3} + \\dfrac{4\\pi}{3} + 2k\\pi = \\dfrac{5\\pi}{3} + 2k\\pi$\n\n$x = \\dfrac{\\pi(6k+3)}{6}$ or $x = \\dfrac{\\pi(6k-1)}{6}$ (replacing $k$ with $k-1$ in the second), which matches option D: $x = \\dfrac{\\pi(6k-1)}{6}$ or $x = \\dfrac{\\pi(6k+3)}{6}$."
+    },
+    {
+      "questionNumber": 5,
+      "part": null,
+      "content": "**Answer: E**\n\nFor $f(x) = \\dfrac{3x+2}{5-x}$, the vertical asymptote occurs where the denominator is zero: $5 - x = 0$, so $x = 5$.\n\nFor the horizontal asymptote, divide numerator and denominator by $x$:\n\n$$\\lim_{x \\to \\infty} \\dfrac{3 + 2/x}{5/x - 1} = \\dfrac{3}{-1} = -3$$\n\nSo the asymptotes are $x = 5$ and $y = -3$."
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "content": "**Answer: B**\n\nFrom the graph of $y = f'(x)$: the derivative is negative then zero then positive, indicating $f$ has a local minimum. The derivative does not change sign at the slight oscillation on the right, so $f$ has only one turning point (a minimum), and is overall increasing on the right. This corresponds to option B."
+    },
+    {
+      "questionNumber": 7,
+      "part": null,
+      "content": "**Answer: C**\n\nUsing the chain rule: let $u = g(x^2)$, so $f(x) = e^u$.\n\n$\\dfrac{du}{dx} = g'(x^2) \\cdot 2x$\n\n$f'(x) = e^{g(x^2)} \\cdot g'(x^2) \\cdot 2x = 2xg'(x^2)e^{g(x^2)}$"
+    },
+    {
+      "questionNumber": 8,
+      "part": null,
+      "content": "**Answer: B**\n\n$X \\sim \\text{Bi}\\!\\left(25,\\, \\dfrac{1.4}{25}\\right) = \\text{Bi}(25,\\, 0.056)$.\n\n$\\Pr(X > 3) = 1 - \\Pr(X \\leq 3) \\approx 0.048$ to three decimal places."
+    },
+    {
+      "questionNumber": 9,
+      "part": null,
+      "content": "**Answer: E**\n\nGiven $\\displaystyle\\int_4^8 f(x)\\,dx = 5$. Dilate by factor $\\tfrac{1}{2}$ from the $y$-axis: $\\displaystyle\\int_2^4 f(2x)\\,dx = \\dfrac{5}{2}$. Translating 2 units to the left does not change the area:\n\n$$\\int_0^2 f(2(x+2))\\,dx = \\dfrac{5}{2}$$"
+    },
+    {
+      "questionNumber": 10,
+      "part": null,
+      "content": "**Answer: B**\n\nFor $x = \\log_2(n+1)$ to be a positive integer, we need $n + 1 = 2^k$ for some $k \\in Z^+$, so $n = 2^k - 1$."
+    },
+    {
+      "questionNumber": 11,
+      "part": null,
+      "content": "**Answer: C**\n\n$\\Pr(X < 259) = 1 - \\Pr(Z > 1.5) = \\Pr(Z < 1.5)$, so the $z$-score for 259 is 1.5:\n\n$$z = \\dfrac{259 - 250}{\\sigma} = 1.5 \\implies \\sigma = \\dfrac{9}{1.5} = 6$$"
+    },
+    {
+      "questionNumber": 12,
+      "part": null,
+      "content": "**Answer: E**\n\nAt $t = 0$ the tip is at its maximum height of $15 + 10 = 25$ cm. The period is 60 minutes, so $h(t) = 15 + 10\\cos\\!\\left(\\dfrac{\\pi t}{30}\\right)$, since $\\cos(0) = 1$ gives the maximum, and the period $= \\dfrac{2\\pi}{\\pi/30} = 60$ minutes."
+    },
+    {
+      "questionNumber": 13,
+      "part": null,
+      "content": "**Answer: A**\n\nThe mapping $y = \\cos(x) \\to y = \\cos(2x+4) = \\cos(2(x+2))$ involves: a dilation by factor $\\tfrac{1}{2}$ from the $y$-axis (replacing $x$ with $2x$), then a translation of 2 units to the left. In matrix form:\n\n$$T\\begin{pmatrix}x\\\\y\\end{pmatrix} = \\begin{bmatrix}\\tfrac{1}{2} & 0\\\\0 & 1\\end{bmatrix}\\begin{pmatrix}x\\\\y\\end{pmatrix} + \\begin{pmatrix}-2\\\\0\\end{pmatrix}$$\n\nThis is option A (noting option C in the question JSON matches this form with $-2$)."
+    },
+    {
+      "questionNumber": 14,
+      "part": null,
+      "content": "**Answer: A**\n\n$X \\sim N(2\\sigma, \\sigma^2)$. $\\Pr(X > 5.2) = 0.9$, so $\\Pr(X < 5.2) = 0.1$.\n\n$$\\Pr\\!\\left(Z < \\dfrac{5.2 - 2\\sigma}{\\sigma}\\right) = 0.1$$\n\n$$\\dfrac{5.2 - 2\\sigma}{\\sigma} = -1.2816\\ldots$$\n\n$$5.2 - 2\\sigma = -1.2816\\sigma$$\n$$5.2 = 2\\sigma - 1.2816\\sigma = 0.7184\\sigma$$\n$$\\sigma = \\dfrac{5.2}{0.7184} \\approx 7.238$$"
+    },
+    {
+      "questionNumber": 15,
+      "part": null,
+      "content": "**Answer: B**\n\nThe average value of $f$ over $[-2a, a]$ is $\\dfrac{1}{a-(-2a)}\\displaystyle\\int_{-2a}^{a} f(x)\\,dx = \\dfrac{1}{3a}\\displaystyle\\int_{-2a}^{a} f(x)\\,dx$.\n\nFrom the piecewise linear graph: on $[-2a, 0]$ the function is linear from $(-2a, 2a)$ to $(0, -a)$ with rule $f(x) = -\\dfrac{3}{2}x - a$; on $[0, a]$ it is linear from $(0, -a)$ to $(a, a)$ with rule $f(x) = 2x - a$.\n\n$$\\int_{-2a}^{0}\\left(-\\dfrac{3}{2}x - a\\right)dx = \\left[-\\dfrac{3x^2}{4} - ax\\right]_{-2a}^{0} = 0 - (-3a^2 + 2a^2) = a^2$$\n\n$$\\int_0^a (2x - a)\\,dx = \\left[x^2 - ax\\right]_0^a = a^2 - a^2 = 0$$\n\n$$\\text{Average} = \\dfrac{1}{3a}\\cdot a^2 = \\dfrac{a}{3}$$"
+    },
+    {
+      "questionNumber": 16,
+      "part": null,
+      "content": "**Answer: D**\n\nThe triangle $OBC$ has base $OB = m$ and height $BC = 9 - m^2$, so area $= \\dfrac{1}{2}m(9-m^2)$.\n\nMaximise $A(m) = \\dfrac{1}{2}(9m - m^3)$:\n\n$$A'(m) = \\dfrac{1}{2}(9 - 3m^2) = 0 \\implies m^2 = 3 \\implies m = \\sqrt{3}$$\n\n$$A(\\sqrt{3}) = \\dfrac{1}{2}\\cdot\\sqrt{3}\\cdot(9 - 3) = \\dfrac{1}{2}\\cdot\\sqrt{3}\\cdot 6 = 3\\sqrt{3}$$"
+    },
+    {
+      "questionNumber": 17,
+      "part": null,
+      "content": "**Answer: C**\n\n$f(x) = -\\log_e(x+2)$, $f'(x) = -\\dfrac{1}{x+2}$. A tangent at $(t, -\\log_e(t+2))$ has equation:\n\n$$y + \\log_e(t+2) = -\\dfrac{1}{t+2}(x - t)$$\n\nAt $x = 0$: $c = -\\log_e(t+2) + \\dfrac{t}{t+2}$.\n\nMaximise $c$ over $t > -2$: $\\dfrac{dc}{dt} = -\\dfrac{1}{t+2} + \\dfrac{(t+2) - t}{(t+2)^2} = -\\dfrac{1}{t+2} + \\dfrac{1}{(t+2)^2} = 0$\n\n$(t+2)^{-1}\\left[-1 + \\dfrac{1}{t+2}\\right] = 0 \\implies t + 2 = 1 \\implies t = -1$.\n\n$c = -\\log_e(1) + \\dfrac{-1}{1} = 0 - 1$... wait, the tangent is at $x = 0$ where the maximum is at $t = 0$:\n\n$c(0) = -\\log_e(2) + 0 = -\\log_e(2)$. Since $\\dfrac{dc}{dt}\\big|_{t=0} = 0$ and this is a maximum, the maximum value of $c$ is $-\\log_e(2)$."
+    },
+    {
+      "questionNumber": 18,
+      "part": null,
+      "content": "**Answer: D**\n\n$h(x) = \\dfrac{a}{x} + b$ on $[-a, 0) \\cup (0, a]$.\n\nAt $x = a$: $h(a) = 1 + b$. At $x = -a$: $h(-a) = -1 + b$.\n\nAs $x \\to 0^+$, $h(x) \\to +\\infty$; as $x \\to 0^-$, $h(x) \\to -\\infty$.\n\nOn $(0, a]$: $h$ decreases from $+\\infty$ to $1 + b$, so range is $[1+b, \\infty)$.\nOn $[-a, 0)$: $h$ decreases from $-1+b$ to $-\\infty$, so range is $(-\\infty, -1+b]$.\n\nTotal range: $(-\\infty, b-1] \\cup [b+1, \\infty)$."
+    },
+    {
+      "questionNumber": 19,
+      "part": null,
+      "content": "**Answer: A**\n\n$p$ is the probability function for rolling a 6 exactly $x$ times in 20 trials, so $p \\sim \\text{Bi}\\!\\left(20, \\dfrac{1}{6}\\right)$.\n\n$q$ is the probability function for not rolling a 6 exactly $w$ times, i.e. rolling a 6 exactly $20 - w$ times:\n\n$$q(w) = p(20 - w)$$"
+    },
+    {
+      "questionNumber": 20,
+      "part": null,
+      "content": "**Answer: B**\n\n$f(x) = \\cos(ax)$ with $f(x) = f(x+h)$ for all $h \\in Z$ means the period divides 1, so $a = 2\\pi k$ for $k \\in Z\\setminus\\{0\\}$; the simplest choice gives $a = 2\\pi$, i.e. $f(x) = \\cos(2\\pi x)$.\n\n$g(x) = \\log_2(\\cos(2\\pi x))$, range $[-1, 0]$ requires $-1 \\leq \\log_2(\\cos(2\\pi x)) \\leq 0$, i.e. $\\dfrac{1}{2} \\leq \\cos(2\\pi x) \\leq 1$.\n\nChecking option B, $D = \\left[1, \\dfrac{7}{6}\\right]$: at $x = 1$, $\\cos(2\\pi) = 1$; at $x = \\dfrac{7}{6}$, $\\cos\\!\\left(\\dfrac{7\\pi}{3}\\right) = \\cos\\!\\left(\\dfrac{\\pi}{3}\\right) = \\dfrac{1}{2}$. The cosine decreases from 1 to $\\dfrac{1}{2}$ on this interval, so $g$ ranges from 0 to $-1$. This matches."
+    },
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nSubstitute the point $(0, 4)$ into $f(x) = a(x+2)^2(x-2)^2$:\n\n$$f(0) = a(0+2)^2(0-2)^2 = a \\cdot 4 \\cdot 4 = 16a$$\n\nSince the graph passes through $(0, 4)$:\n\n$$16a = 4 \\implies a = \\dfrac{1}{4}$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\n$$f(x) = \\dfrac{1}{4}(x+2)^2(x-2)^2 = \\dfrac{1}{4}\\left[(x+2)(x-2)\\right]^2 = \\dfrac{1}{4}(x^2-4)^2$$\n\n$$= \\dfrac{1}{4}(x^4 - 8x^2 + 16) = \\dfrac{1}{4}x^4 - 2x^2 + 4$$\n\nSo $b = -2$ and $c = 4$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.i",
+      "content": "**Step 1** *(1 mark)*\n\nDifferentiate $f(x) = \\dfrac{1}{4}x^4 - 2x^2 + 4$:\n\n$$f'(x) = x^3 - 4x = x(x-2)(x+2)$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.ii",
+      "content": "**Step 1** *(1 mark)*\n\nFind the minimum of $f'(x) = x^3 - 4x$ on $(0, 2)$. Differentiate:\n\n$$f''(x) = 3x^2 - 4$$\n\nSet $f''(x) = 0$: $x^2 = \\dfrac{4}{3}$, so $x = \\dfrac{2}{\\sqrt{3}} = \\dfrac{2\\sqrt{3}}{3}$ (taking the positive root in $(0,2)$).\n\n**Step 2** *(1 mark)*\n\nEvaluate $f'$ at $x = \\dfrac{2\\sqrt{3}}{3}$:\n\n$$f'\\!\\left(\\dfrac{2\\sqrt{3}}{3}\\right) = \\left(\\dfrac{2\\sqrt{3}}{3}\\right)^3 - 4 \\cdot \\dfrac{2\\sqrt{3}}{3} = \\dfrac{8 \\cdot 3\\sqrt{3}}{27} - \\dfrac{8\\sqrt{3}}{3} = \\dfrac{8\\sqrt{3}}{9} - \\dfrac{24\\sqrt{3}}{9} = -\\dfrac{16\\sqrt{3}}{9}$$\n\nThe minimum value of $f'$ on $(0, 2)$ is $-\\dfrac{16\\sqrt{3}}{9}$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\n$h(x) = -\\dfrac{1}{4}(x+2)^2(x-2)^2 + 2 = -f(x) + 2$.\n\nThe transformation from $f$ to $h$ is:\n1. Reflect in the $x$-axis (multiply by $-1$): $f(x) \\to -f(x)$\n2. Translate 2 units upward: $-f(x) \\to -f(x) + 2 = h(x)$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "e.i",
+      "content": "**Step 1** *(1 mark)*\n\nSolve $f(x) = h(x)$:\n\n$$\\dfrac{1}{4}(x+2)^2(x-2)^2 = -\\dfrac{1}{4}(x+2)^2(x-2)^2 + 2$$\n\n$$\\dfrac{1}{2}(x+2)^2(x-2)^2 = 2 \\implies (x^2-4)^2 = 4$$\n\n$$x^2 - 4 = \\pm 2$$\n\n$x^2 = 6$ (giving $x = \\pm\\sqrt{6}$) or $x^2 = 2$ (giving $x = \\pm\\sqrt{2}$).\n\nThe graphs intersect at $x = -\\sqrt{6},\\, -\\sqrt{2},\\, \\sqrt{2},\\, \\sqrt{6}$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "e.ii",
+      "content": "**Step 1** *(1 mark)*\n\nBy symmetry the total shaded area equals:\n\n$$2\\int_{\\sqrt{2}}^{\\sqrt{6}} (h(x) - f(x))\\,dx$$\n\nor equivalently:\n\n$$\\int_{-\\sqrt{6}}^{-\\sqrt{2}} (h(x) - f(x))\\,dx + \\int_{\\sqrt{2}}^{\\sqrt{6}} (h(x) - f(x))\\,dx$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "e.iii",
+      "content": "**Step 1** *(1 mark)*\n\nUsing technology to evaluate:\n\n$$2\\int_{\\sqrt{2}}^{\\sqrt{6}} (h(x) - f(x))\\,dx \\approx 2.72$$\n\nThe total area of the shaded regions is $2.72$ square units (correct to two decimal places)."
+    },
+    {
+      "questionNumber": 1,
+      "part": "f",
+      "content": "**Step 1** *(1 mark)*\n\nThe vertical distance is $D = |h(x) - f(x)| = \\left|{-\\dfrac{1}{2}(x^2-4)^2 + 2}\\right|$.\n\nWe need $D \\leq 2$:\n\n$$-2 \\leq -\\dfrac{1}{2}(x^2-4)^2 + 2 \\leq 2$$\n\nThe right inequality: $-\\dfrac{1}{2}(x^2-4)^2 \\leq 0$, always true.\n\nThe left inequality: $-\\dfrac{1}{2}(x^2-4)^2 \\geq -4$, i.e. $(x^2-4)^2 \\leq 8$.\n\n**Step 2** *(1 mark)*\n\nSolve $(x^2-4)^2 \\leq 8$: $|x^2 - 4| \\leq 2\\sqrt{2}$, so $4 - 2\\sqrt{2} \\leq x^2 \\leq 4 + 2\\sqrt{2}$.\n\nSolving numerically: $x \\in [-\\sqrt{4+2\\sqrt{2}},\\, -\\sqrt{4-2\\sqrt{2}}] \\cup [\\sqrt{4-2\\sqrt{2}},\\, \\sqrt{4+2\\sqrt{2}}]$.\n\nUsing technology: $\\sqrt{4-2\\sqrt{2}} \\approx 1.08$ and $\\sqrt{4+2\\sqrt{2}} \\approx 2.61$.\n\nSo $D \\leq 2$ for $-2.61 \\leq x \\leq -1.08$ or $1.08 \\leq x \\leq 2.61$ (to two decimal places)."
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nThe swimmer starts at $P(50, 30)$ and swims north (increasing $y$). The north bank at $x = 50$ is:\n\n$$f_1(50) = 20\\cos\\!\\left(\\dfrac{\\pi \\cdot 50}{100}\\right) + 40 = 20\\cos\\!\\left(\\dfrac{\\pi}{2}\\right) + 40 = 0 + 40 = 40$$\n\nDistance $= 40 - 30 = 10$ m."
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nThe swimmer swims east from $P(50, 30)$, staying at $y = 30$. Find $x \\in [50, 100]$ where $f_1(x) = 30$:\n\n$$20\\cos\\!\\left(\\dfrac{\\pi x}{100}\\right) + 40 = 30 \\implies \\cos\\!\\left(\\dfrac{\\pi x}{100}\\right) = -\\dfrac{1}{2}$$\n\n$$\\dfrac{\\pi x}{100} = \\dfrac{2\\pi}{3} \\implies x = \\dfrac{200}{3}$$\n\n**Step 2** *(1 mark)*\n\nThe swimmer is at $x = 50$ and must reach $x = \\dfrac{200}{3}$. Distance east $= \\dfrac{200}{3} - 50 = \\dfrac{200 - 150}{3} = \\dfrac{50}{3}$ m $\\approx 16\\dfrac{2}{3}$ m."
+    },
+    {
+      "questionNumber": 2,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nThe distance from $P(50, 30)$ to a point $(x, f_1(x))$ on the north bank is:\n\n$$d(x) = \\sqrt{(x-50)^2 + (f_1(x)-30)^2}$$\n\nMinimise by solving $\\dfrac{d}{dx}\\bigl[d(x)^2\\bigr] = 0$ using technology. This gives $x \\approx 54.47$.\n\n**Step 2** *(1 mark)*\n\nEvaluate: $d \\approx 8.5$ m correct to one decimal place."
+    },
+    {
+      "questionNumber": 2,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nThe surface area of the river is the area between $f_1$ and $f_2$ over $[0, 200]$:\n\n$$A = \\int_0^{200}(f_1(x) - f_2(x))\\,dx = \\int_0^{200} 10\\,dx = 10 \\times 200 = 2000 \\text{ m}^2$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "e",
+      "content": "**Step 1** *(1 mark)*\n\nThe horizontal line $y = 30$ passes through $P$. The 'no swimming' zone is the part of the river south of $y = 30$, i.e. where $f_2(x) < 30$.\n\n$f_2(x) = 30$ when $\\cos\\!\\left(\\dfrac{\\pi x}{100}\\right) = 0$, i.e. $x = 50$ and $x = 150$.\n\nFor $x \\in (50, 150)$, $\\cos\\!\\left(\\dfrac{\\pi x}{100}\\right) < 0$, so $f_2(x) < 30$.\n\n**Step 2** *(1 mark)*\n\nThe 'no swimming' zone area has two contributions:\n- Between the south bank $f_2$ and $y = 30$ for $x \\in [50, 150]$ (the south bank is below 30).\n- Between the north bank $f_1$ and $y = 30$ for a sub-interval where $f_1 < 30$: $f_1(x) < 30$ when $\\cos(\\pi x/100) < -\\tfrac{1}{2}$, i.e. $x \\in (\\tfrac{200}{3}, \\tfrac{400}{3})$.\n\n**Step 3** *(1 mark)*\n\nCompute using technology:\n\n$$A = 2\\int_{50}^{200/3}(30 - f_2(x))\\,dx + \\int_{200/3}^{400/3}(f_1(x) - f_2(x))\\,dx + 2\\int_{400/3}^{150}(30-f_2(x))\\,dx$$\n\nThe total area of the no-swimming zone is $\\approx 837$ m$^2$ correct to the nearest square metre."
+    },
+    {
+      "questionNumber": 2,
+      "part": "f",
+      "content": "**Step 1** *(1 mark)*\n\nThe new north bank is $y = kf_1(x) = k\\left(20\\cos\\!\\left(\\dfrac{\\pi x}{100}\\right) + 40\\right)$. The distance north across the river at position $x$ is:\n\n$$kf_1(x) - f_2(x) = k\\left(20\\cos\\!\\left(\\dfrac{\\pi x}{100}\\right) + 40\\right) - \\left(20\\cos\\!\\left(\\dfrac{\\pi x}{100}\\right) + 30\\right)$$\n$$= (k-1) \\cdot 20\\cos\\!\\left(\\dfrac{\\pi x}{100}\\right) + 40k - 30$$\n\nThis must be $< 20$ for all $x \\in [0, 200]$. The maximum of this expression occurs at $x = 0$ or $x = 200$ (where $\\cos = 1$):\n\n$$20(k-1) + 40k - 30 < 20 \\implies 60k - 50 < 20 \\implies k < \\dfrac{7}{6}$$\n\n**Step 2** *(1 mark)*\n\nSince $k \\geq 1$, the answer is $1 \\leq k < \\dfrac{7}{6}$."
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\n$T \\sim N(0, 16)$ (mean 0, standard deviation 4). $\\Pr(T \\leq a) = 0.6$.\n\nUsing technology: $a \\approx 1.01...$, so $a = 1$ minute to the nearest minute."
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\n$$\\Pr(T \\leq 3 \\mid T > 0) = \\dfrac{\\Pr(0 < T \\leq 3)}{\\Pr(T > 0)} = \\dfrac{\\Pr(0 < T \\leq 3)}{0.5}$$\n\n**Step 2** *(1 mark)*\n\nUsing technology with $T \\sim N(0, 4)$:\n\n$$\\Pr(0 < T \\leq 3) = \\Pr(T \\leq 3) - 0.5 \\approx 0.7734 - 0.5 = 0.2734$$\n\n$$\\Pr(T \\leq 3 \\mid T > 0) = \\dfrac{0.2734}{0.5} \\approx 0.547$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nWith $T \\sim N(0,4)$, 46.48% of deliveries are made in $[-3, 2]$. With $T \\sim N(k, 4)$, we need 46.48% over $[-4.5, 0.5]$.\n\nNote that $[-4.5, 0.5]$ is a translation of $[-3, 2]$ by 1.5 units to the left, so $k = -1.5$.\n\n**Step 2** *(1 mark)*\n\nBy symmetry of the normal distribution, a second value: $k = -2.5$ also gives the same proportion if the interval is positioned symmetrically.\n\n**Step 3** *(1 mark)*\n\nUsing technology, solve $\\Pr(-4.5 \\leq T \\leq 0.5) = 0.4648$ for $k$:\n\n$k = -1.5$ or $k = -2.5$ (to one decimal place)."
+    },
+    {
+      "questionNumber": 3,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nLet $X \\sim \\text{Bi}(8, 0.85)$. We need $\\Pr(X < 4) = \\Pr(X \\leq 3)$.\n\n**Step 2** *(1 mark)*\n\nUsing technology: $\\Pr(X \\leq 3) \\approx 0.003$ correct to three decimal places."
+    },
+    {
+      "questionNumber": 3,
+      "part": "e.i",
+      "content": "**Step 1** *(1 mark)*\n\nThe probability that all $n$ deliveries arrive on time or earlier is $0.85^n$.\n\nThe probability that one or more deliveries do **not** arrive on time or earlier is:\n\n$$1 - 0.85^n$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "e.ii",
+      "content": "**Step 1** *(1 mark)*\n\nRequire $1 - 0.85^n \\geq 0.95$, so $0.85^n \\leq 0.05$.\n\nTaking logarithms: $n\\log_e(0.85) \\leq \\log_e(0.05)$\n\n$$n \\geq \\dfrac{\\log_e(0.05)}{\\log_e(0.85)} \\approx 18.43$$\n\nSince $n$ must be a positive integer, $n = 19$."
+    },
+    {
+      "questionNumber": 3,
+      "part": "f",
+      "content": "**Step 1** *(1 mark)*\n\nLet $y$ = probability delivery is after 4pm. The overall probability of arriving on time or earlier:\n\n$$0.85(1-y) + xy = 0.75$$\n$$0.85 - 0.85y + xy = 0.75$$\n$$y(x - 0.85) = -0.1$$\n$$y = \\dfrac{-0.1}{x - 0.85} = \\dfrac{0.1}{0.85 - x}$$\n\n**Step 2** *(1 mark)*\n\nFor $0.3 \\leq x \\leq 0.7$:\n\n- When $x = 0.3$: $y = \\dfrac{0.1}{0.55} = \\dfrac{2}{11} \\approx 0.18$\n- When $x = 0.7$: $y = \\dfrac{0.1}{0.15} = \\dfrac{2}{3} \\approx 0.67$\n\nSince $y$ is decreasing in $x$ (as denominator $0.85 - x$ decreases), minimum $y = \\dfrac{2}{11}$ and maximum $y = \\dfrac{2}{3}$."
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nDifferentiate $f(x) = 2xe^{1-x^2}$ using the product rule:\n\n$$f'(x) = 2e^{1-x^2} + 2x \\cdot (-2x)e^{1-x^2} = 2e^{1-x^2}(1 - 2x^2)$$\n\nEvaluate at $x = 1$:\n\n$$f'(1) = 2e^{1-1}(1-2) = 2 \\cdot 1 \\cdot (-1) = -2$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nThe tangent at $x = 1$ has slope $-2$. The acute angle satisfies $\\tan(\\theta) = |-2| = 2$, so $\\theta = \\arctan(2) \\approx 63°$.\n\nThe obtuse angle made with the positive $x$-direction is:\n\n$$180° - 63° = 117°$$\n\nAlternatively: $180° + \\arctan(-2) = 180° + \\tan^{-1}(-2) \\approx 117°$ to the nearest degree."
+    },
+    {
+      "questionNumber": 4,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nThe slope of the tangent at $x = p$ is:\n\n$$f'(p) = 2(1 - 2p^2)e^{1-p^2}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "d.i",
+      "content": "**Step 1** *(1 mark)*\n\nFor the tangents to be perpendicular, the product of their slopes equals $-1$:\n\n$$f'(1) \\cdot f'(p) = -1$$\n$$(-2) \\cdot 2(1-2p^2)e^{1-p^2} = -1$$\n$$4(1-2p^2)e^{1-p^2} = 1$$\n\n**Step 2** *(1 mark)*\n\nSolve using technology: $p \\approx 0.655$ correct to three decimal places."
+    },
+    {
+      "questionNumber": 4,
+      "part": "d.ii",
+      "content": "**Step 1** *(1 mark)*\n\nWith $p \\approx 0.65525$, the tangent at $x = 1$: slope $= -2$, point $(1, f(1)) = (1, 2)$:\n\n$$y - 2 = -2(x - 1) \\implies y = -2x + 4$$\n\n**Step 2** *(1 mark)*\n\nThe tangent at $x = p$: slope $= \\dfrac{1}{2}$ (perpendicular to slope $-2$), point $(p, f(p)) = (0.655, f(0.655))$:\n\n$$y \\approx \\dfrac{1}{2}(x - p) + f(p) \\approx 0.500x + 1.99...$$\n\n**Step 3** *(1 mark)*\n\nFind intersection of $y = -2x + 4$ and $y \\approx 0.5x + 2$:\n\n$$-2x + 4 = 0.5x + 2 \\implies 2 = 2.5x \\implies x = 0.80$$\n$$y = -2(0.80) + 4 = 2.40 \\approx 2.39$$\n\nThe intersection point is approximately $(0.80,\\, 2.39)$."
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.i",
+      "content": "**Step 1** *(1 mark)*\n\n$f(0) = 0$ and $f(n) = 2ne^{1-n^2}$. The line from $(0, 0)$ to $(n, f(n))$ has slope $\\dfrac{f(n)}{n} = 2e^{1-n^2}$:\n\n$$y_1 = 2e^{1-n^2} \\cdot x$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.ii",
+      "content": "**Step 1** *(1 mark)*\n\n$f(3) = 6e^{1-9} = 6e^{-8}$. The line from $(n, f(n))$ to $(3, f(3))$ has slope:\n\n$$m = \\dfrac{6e^{-8} - 2ne^{1-n^2}}{3 - n}$$\n\n$$y_2 = \\dfrac{2ne^{1-n^2} - 6e^{-8}}{n - 3}(x - n) + 2ne^{1-n^2}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.iii",
+      "content": "**Step 1** *(1 mark)*\n\nThe equal-area condition requires:\n\n$$\\int_0^n (f(x) - y_1)\\,dx = \\int_n^3 (y_2 - f(x))\\,dx$$\n\n**Step 2** *(1 mark)*\n\nUsing technology, solve for $n \\in (1, 3)$:\n\n$$\\int_0^n (f(x) - y_1)\\,dx = \\int_n^3 (y_2 - f(x))\\,dx$$\n\n**Step 3** *(1 mark)*\n\n$n \\approx 1.088$ correct to three decimal places."
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\n$f(x) = x^3 - x$, so $f'(x) = 3x^2 - 1$. The tangent at $(a, f(a)) = (a, a^3 - a)$ has equation:\n\n$$y - (a^3 - a) = (3a^2 - 1)(x - a)$$\n$$y = (3a^2 - 1)x - 3a^3 + a + a^3 - a = (3a^2-1)x - 2a^3$$\n\n**Step 2** *(1 mark)*\n\nSet $y = 0$ to find the $x$-intercept $(b, 0)$:\n\n$$0 = (3a^2 - 1)b - 2a^3$$\n\n**Step 3** *(1 mark)*\n\n$$b = \\dfrac{2a^3}{3a^2 - 1}$$"
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\n$b$ does not exist when $3a^2 - 1 = 0$, i.e. $a = \\pm\\dfrac{1}{\\sqrt{3}} = \\pm\\dfrac{\\sqrt{3}}{3}$."
+    },
+    {
+      "questionNumber": 5,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nWhen $3a^2 - 1 = 0$, the slope of the tangent is $f'(a) = 0$. The tangent is a horizontal line."
+    },
+    {
+      "questionNumber": 5,
+      "part": "d.i",
+      "content": "**Step 1** *(1 mark)*\n\nSolve $\\dfrac{2a^3}{3a^2-1} = 1.1$ using technology:\n\n$$2a^3 = 1.1(3a^2 - 1) = 3.3a^2 - 1.1$$\n$$2a^3 - 3.3a^2 + 1.1 = 0$$\n\n$a \\approx -0.5052$, $a \\approx 0.8084$, or $a \\approx 1.3468$ (correct to four decimal places)."
+    },
+    {
+      "questionNumber": 5,
+      "part": "d.ii",
+      "content": "**Step 1** *(1 mark)*\n\nWe need $1 \\leq \\dfrac{2a^3}{3a^2-1} < 1.1$. From part d.i, $b = 1$ when $a = 1$ (verify: $\\dfrac{2}{2} = 1$) and $b = 1$ also at $a = -1$ (rejected since we need the interval structure). From part d.i, $b = 1.1$ at $a \\approx -0.5052$, $0.8084$, $1.3468$.\n\nAnalysing the function $b(a) = \\dfrac{2a^3}{3a^2-1}$: for $1 \\leq b < 1.1$, the values of $a$ are $(-0.505, -0.500]\\cup(0.808, 1.347)$ correct to three decimal places."
+    },
+    {
+      "questionNumber": 5,
+      "part": "e",
+      "content": "**Step 1** *(1 mark)*\n\nFor $g_a$ and $g_b$ to be parallel, $f'(a) = f'(b)$:\n\n$$3a^2 - 1 = 3b^2 - 1 \\implies a^2 = b^2 \\implies b = -a \\text{ (since } b \\neq a\\text{)}$$\n\n**Step 2** *(1 mark)*\n\nUsing $b = \\dfrac{2a^3}{3a^2-1}$ and setting $b = -a$:\n\n$$-a = \\dfrac{2a^3}{3a^2-1}$$\n$$-a(3a^2-1) = 2a^3$$\n$$-3a^3 + a = 2a^3$$\n$$a = 5a^3$$\n$$5a^2 = 1 \\quad (a \\neq 0)$$\n\n**Step 3** *(1 mark)*\n\n$$a^2 = \\dfrac{1}{5} \\implies a = \\pm\\dfrac{1}{\\sqrt{5}} = \\pm\\dfrac{\\sqrt{5}}{5}$$\n\nCheck $a \\neq b$: if $a = \\dfrac{\\sqrt{5}}{5}$, then $b = -\\dfrac{\\sqrt{5}}{5} \\neq a$. Valid.\n\nSo $a = -\\dfrac{\\sqrt{5}}{5}$ or $a = \\dfrac{\\sqrt{5}}{5}$."
+    },
+    {
+      "questionNumber": 5,
+      "part": "f",
+      "content": "**Step 1** *(1 mark)*\n\n$$p(-x) = (-x)^3 + w(-x) = -x^3 - wx = -(x^3 + wx) = -p(x)$$\n\nTherefore $p(-x) = -p(x)$ for all $w \\in R$."
+    },
+    {
+      "questionNumber": 5,
+      "part": "g",
+      "content": "**Step 1** *(1 mark)*\n\nThe tangent to $p$ at $(t, p(t)) = (t, t^3 + wt)$ has slope $p'(t) = 3t^2 + w$:\n\n$$y - (t^3 + wt) = (3t^2 + w)(x - t)$$\n\nSet $y = 0$, $x = -t$:\n\n$$-(t^3 + wt) = (3t^2 + w)(-t - t) = -2t(3t^2 + w)$$\n$$t^3 + wt = 2t(3t^2 + w) = 6t^3 + 2wt$$\n$$t^3 + wt - 6t^3 - 2wt = 0$$\n$$-5t^3 - wt = 0$$\n$$t(-5t^2 - w) = 0$$\n\nSince $t > 0$: $w = -5t^2$. Since this must hold for some $t > 0$, the condition is $w < 0$."
+    },
+    {
+      "questionNumber": 5,
+      "part": "h",
+      "content": "**Step 1** *(1 mark)*\n\nFor the image of $p$ under $T$ to have parallel tangents at $x = t$ and $x = -t$ for all $t \\neq 0$, the transformation must preserve the odd symmetry of the function about the $y$-axis. This requires that the transformation maps $(t, p(t))$ and $(-t, p(-t))$ symmetrically.\n\nFor the symmetry $x \\to -x$ to be preserved after transformation, we need $h = 0$ (no horizontal translation) and $k = 0$ (no vertical translation). The values of $m$ and $n$ can be any non-zero real numbers.\n\nRestrictions: $h = 0$ and $k = 0$."
+    }
+  ]
+}

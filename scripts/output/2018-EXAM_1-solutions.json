@@ -1,0 +1,111 @@
+{
+  "year": 2018,
+  "examType": "EXAM_1",
+  "solutions": [
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nApply the chain rule. Let $u = -3x^3 + x^2 - 64$, so $y = u^3$.\n\n$$\\dfrac{dy}{dx} = 3u^2 \\cdot \\dfrac{du}{dx} = 3(-3x^3 + x^2 - 64)^2 \\cdot (-9x^2 + 2x)$$\n\n$$\\dfrac{dy}{dx} = 3(-9x^2 + 2x)(-3x^3 + x^2 - 64)^2$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nApply the quotient rule with $u = e^x$ and $v = \\cos(x)$:\n\n$$f'(x) = \\dfrac{e^x \\cos(x) + e^x \\sin(x)}{\\cos^2(x)}$$\n\n**Step 2** *(1 mark)*\n\nEvaluate at $x = \\pi$. Since $\\cos(\\pi) = -1$ and $\\sin(\\pi) = 0$:\n\n$$f'(\\pi) = \\dfrac{e^{\\pi}(-1) + e^{\\pi}(0)}{(-1)^2} = \\dfrac{-e^{\\pi}}{1} = -e^{\\pi}$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nAntidifferentiate $f'(x) = \\dfrac{1}{2} - \\dfrac{1}{2x-2}$:\n\n$$f(x) = \\dfrac{x}{2} - \\dfrac{1}{2}\\log_e(2x-2) + c$$\n\n**Step 2** *(1 mark)*\n\nApply the condition $f(2) = 0$:\n\n$$0 = \\dfrac{2}{2} - \\dfrac{1}{2}\\log_e(2) + c$$\n\n$$c = -1 + \\dfrac{1}{2}\\log_e(2)$$\n\n**Step 3** *(1 mark)*\n\nSubstitute $c$ back:\n\n$$f(x) = \\dfrac{x}{2} - \\dfrac{1}{2}\\log_e(2x-2) - 1 + \\dfrac{1}{2}\\log_e(2)$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nSolve $2\\cos(x) + 1 = 0$:\n\n$$\\cos(x) = -\\dfrac{1}{2}$$\n\n**Step 2** *(1 mark)*\n\nThe reference angle is $\\dfrac{\\pi}{3}$. Since $\\cos(x) < 0$, solutions are in the second and third quadrants:\n\n$$x = \\dfrac{2\\pi}{3} \\quad \\text{or} \\quad x = \\dfrac{4\\pi}{3}$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nIdentify key features of $f(x) = 2\\cos(x) + 1$ on $[0, 2\\pi]$:\n- Amplitude $= 2$, equilibrium at $y = 1$\n- Endpoints: $(0, 3)$ and $(2\\pi, 3)$\n- $x$-intercepts (from part a): $x = \\dfrac{2\\pi}{3}$ and $x = \\dfrac{4\\pi}{3}$\n- Local minimum at $(\\pi, -1)$\n\n**Step 2** *(2 marks)*\n\nSketch a cosine curve starting at $(0, 3)$, decreasing through $\\left(\\dfrac{2\\pi}{3}, 0\\right)$, reaching a minimum at $(\\pi, -1)$, increasing through $\\left(\\dfrac{4\\pi}{3}, 0\\right)$, and ending at $(2\\pi, 3)$. Label the endpoints $(0, 3)$ and $(2\\pi, 3)$ and the local minimum $(\\pi, -1)$."
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nSince the normal distribution is symmetric about its mean $\\mu = 6$:\n\n$$\\Pr(X > 6) = \\dfrac{1}{2}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nThe variance is $4$, so the standard deviation is $\\sigma = 2$. Standardise $X = 7$:\n\n$$\\Pr(X > 7) = \\Pr\\!\\left(Z > \\dfrac{7-6}{2}\\right) = \\Pr\\!\\left(Z > \\dfrac{1}{2}\\right)$$\n\nBy symmetry of the standard normal:\n\n$$\\Pr\\!\\left(Z > \\dfrac{1}{2}\\right) = \\Pr\\!\\left(Z < -\\dfrac{1}{2}\\right)$$\n\nThus $b = -\\dfrac{1}{2}$."
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nLet $y = \\dfrac{1}{(x-2)^2}$ and swap $x$ and $y$ to find the inverse:\n\n$$x = \\dfrac{1}{(y-2)^2}$$\n\n$(y-2)^2 = \\dfrac{1}{x}$, so $y - 2 = \\dfrac{1}{\\sqrt{x}}$ (taking the positive root since $f: (2, \\infty) \\to R$ means $y > 2$).\n\n**Step 2** *(1 mark)*\n\n$$f^{-1}(x) = \\dfrac{1}{\\sqrt{x}} + 2$$\n\n**Step 3** *(1 mark)*\n\nThe domain of $f^{-1}$ equals the range of $f$. Since $f: (2, \\infty) \\to R$ and $f(x) = \\dfrac{1}{(x-2)^2} > 0$ for all $x > 2$, and $f(x) \\to 0^+$ as $x \\to \\infty$ and $f(x) \\to +\\infty$ as $x \\to 2^+$, the range of $f$ is $(0, \\infty) = R^+$.\n\nDomain of $f^{-1}$ is $(0, \\infty)$."
+    },
+    {
+      "questionNumber": 6,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nUsing the law of total probability. Box 1 has 4 black stones; Box 2 has 2 black and 2 white stones. Each box is chosen with probability $\\dfrac{1}{2}$:\n\n$$\\Pr(\\text{Black}) = \\Pr(\\text{Box 1}) \\times \\Pr(\\text{Black}|\\text{Box 1}) + \\Pr(\\text{Box 2}) \\times \\Pr(\\text{Black}|\\text{Box 2})$$\n\n**Step 2** *(1 mark)*\n\n$$\\Pr(\\text{Black}) = \\dfrac{1}{2} \\times 1 + \\dfrac{1}{2} \\times \\dfrac{2}{4} = \\dfrac{1}{2} + \\dfrac{1}{4} = \\dfrac{3}{4}$$"
+    },
+    {
+      "questionNumber": 6,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nApply Bayes' theorem:\n\n$$\\Pr(\\text{Box 1}|\\text{Black}) = \\dfrac{\\Pr(\\text{Box 1}) \\times \\Pr(\\text{Black}|\\text{Box 1})}{\\Pr(\\text{Black})}$$\n\n**Step 2** *(1 mark)*\n\n$$\\Pr(\\text{Box 1}|\\text{Black}) = \\dfrac{\\dfrac{1}{2} \\times 1}{\\dfrac{3}{4}} = \\dfrac{\\dfrac{1}{2}}{\\dfrac{3}{4}} = \\dfrac{1}{2} \\div \\dfrac{3}{4} = \\dfrac{2}{3}$$"
+    },
+    {
+      "questionNumber": 7,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nThe line perpendicular to $y = 2x - 4$ passing through the origin has gradient $-\\dfrac{1}{2}$, giving $y = -\\dfrac{x}{2}$.\n\n**Step 2** *(1 mark)*\n\nFind the intersection of $y = 2x - 4$ and $y = -\\dfrac{x}{2}$:\n\n$$-\\dfrac{x}{2} = 2x - 4 \\implies -x = 4x - 8 \\implies 5x = 8 \\implies x = \\dfrac{8}{5}$$\n\n**Step 3** *(1 mark)*\n\n$$y = -\\dfrac{1}{2} \\times \\dfrac{8}{5} = -\\dfrac{4}{5}$$\n\nThe coordinates of $P$ are $\\left(\\dfrac{8}{5}, -\\dfrac{4}{5}\\right)$."
+    },
+    {
+      "questionNumber": 7,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nApply the distance formula from $O(0,0)$ to $P\\left(\\dfrac{8}{5}, -\\dfrac{4}{5}\\right)$:\n\n$$OP = \\sqrt{\\left(\\dfrac{8}{5}\\right)^2 + \\left(-\\dfrac{4}{5}\\right)^2} = \\sqrt{\\dfrac{64}{25} + \\dfrac{16}{25}} = \\sqrt{\\dfrac{80}{25}} = \\dfrac{\\sqrt{80}}{5}$$\n\n**Step 2** *(1 mark)*\n\n$$OP = \\dfrac{4\\sqrt{5}}{5}$$\n\nIn the form $\\dfrac{a\\sqrt{b}}{b}$: $a = 4$, $b = 5$, giving $OP = \\dfrac{4\\sqrt{5}}{5}$."
+    },
+    {
+      "questionNumber": 8,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nApply the product rule to $f(x) = x^2 e^{kx}$:\n\n$$f'(x) = 2x \\cdot e^{kx} + x^2 \\cdot ke^{kx} = 2xe^{kx} + kx^2 e^{kx}$$\n\nFactor out $xe^{kx}$:\n\n$$f'(x) = xe^{kx}(2 + kx) = xe^{kx}(kx + 2) \\quad \\checkmark$$"
+    },
+    {
+      "questionNumber": 8,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nSet $f(x) = f'(x)$:\n\n$$x^2 e^{kx} = xe^{kx}(kx + 2)$$\n\nSince $e^{kx} \\neq 0$, divide both sides by $e^{kx}$:\n\n$$x^2 = x(kx + 2)$$\n\n$$x^2 - x(kx + 2) = 0$$\n\n$$x^2 - kx^2 - 2x = 0$$\n\n$$x\\bigl(x(1-k) - 2\\bigr) = 0$$\n\n**Step 2** *(1 mark)*\n\nSolutions: $x = 0$ or $x = \\dfrac{2}{1-k}$.\n\nFor exactly one intersection, the second solution must equal 0 or be undefined. When $k = 1$, the expression $\\dfrac{2}{1-k}$ is undefined, so $x = 0$ is the only solution.\n\nThus $k = 1$."
+    },
+    {
+      "questionNumber": 8,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nFrom the diagram, $f(x) \\geq 0$ and $g(x) \\leq 0$ for $x \\geq 0$. The area of the region bounded by $y = f(x)$, $y = g(x)$ and $x = 2$ is:\n\n$$A = \\int_0^2 \\bigl(f(x) - g(x)\\bigr)\\,dx = \\int_0^2 \\left(x^2 e^{kx} + \\dfrac{2xe^{kx}}{k}\\right)dx$$"
+    },
+    {
+      "questionNumber": 8,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nSet the integral equal to $\\dfrac{16}{k}$:\n\n$$\\int_0^2 \\left(x^2 e^{kx} + \\dfrac{2xe^{kx}}{k}\\right)dx = \\dfrac{16}{k}$$\n\nFactor out $\\dfrac{1}{k}$:\n\n$$\\dfrac{1}{k}\\int_0^2 \\bigl(kx^2 e^{kx} + 2xe^{kx}\\bigr)dx = \\dfrac{16}{k}$$\n\n**Step 2** *(1 mark)*\n\nFrom part a., $f'(x) = xe^{kx}(kx+2) = kx^2 e^{kx} + 2xe^{kx}$, so the integrand is $f'(x) = \\dfrac{d}{dx}\\bigl(x^2 e^{kx}\\bigr)$:\n\n$$\\dfrac{1}{k}\\Bigl[x^2 e^{kx}\\Bigr]_0^2 = \\dfrac{16}{k}$$\n\n$$\\dfrac{1}{k}\\bigl(4e^{2k} - 0\\bigr) = \\dfrac{16}{k}$$\n\n**Step 3** *(1 mark)*\n\n$$\\dfrac{4e^{2k}}{k} = \\dfrac{16}{k}$$\n\n$$4e^{2k} = 16$$\n\n$$e^{2k} = 4$$\n\n$$2k = \\log_e(4)$$\n\n$$k = \\dfrac{1}{2}\\log_e(4) = \\log_e(2)$$"
+    },
+    {
+      "questionNumber": 9,
+      "part": "a.i",
+      "content": "**Step 1** *(1 mark)*\n\nUsing the given antiderivative $\\int x\\sin(x)\\,dx = \\sin(x) - x\\cos(x) + c$:\n\n$$\\int_{n\\pi}^{(n+1)\\pi} x\\sin(x)\\,dx = \\Bigl[\\sin(x) - x\\cos(x)\\Bigr]_{n\\pi}^{(n+1)\\pi}$$\n\n**Step 2** *(1 mark)*\n\nEvaluate. When $n$ is even (or zero), $n\\pi$ is an even multiple of $\\pi$:\n- $\\sin(n\\pi) = 0$, $\\cos(n\\pi) = 1$\n- $\\sin((n+1)\\pi) = 0$, $\\cos((n+1)\\pi) = -1$ (since $n+1$ is odd)\n\n$$= \\bigl[0 - (n+1)\\pi(-1)\\bigr] - \\bigl[0 - n\\pi(1)\\bigr]$$\n\n$$= (n+1)\\pi + n\\pi = (2n+1)\\pi$$"
+    },
+    {
+      "questionNumber": 9,
+      "part": "a.ii",
+      "content": "**Step 1** *(1 mark)*\n\nWhen $n$ is a positive odd integer, $\\cos(n\\pi) = -1$ and $\\cos((n+1)\\pi) = 1$:\n\n$$\\Bigl[\\sin(x) - x\\cos(x)\\Bigr]_{n\\pi}^{(n+1)\\pi} = \\bigl[0 - (n+1)\\pi(1)\\bigr] - \\bigl[0 - n\\pi(-1)\\bigr]$$\n\n$$= -(n+1)\\pi - n\\pi = -(2n+1)\\pi$$"
+    },
+    {
+      "questionNumber": 9,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nDifferentiate $y = x\\sin(x)$ using the product rule:\n\n$$\\dfrac{dy}{dx} = \\sin(x) + x\\cos(x)$$\n\nAt $x = -\\dfrac{5\\pi}{2}$:\n\n$$\\dfrac{dy}{dx} = \\sin\\!\\left(-\\dfrac{5\\pi}{2}\\right) + \\left(-\\dfrac{5\\pi}{2}\\right)\\cos\\!\\left(-\\dfrac{5\\pi}{2}\\right) = -1 + \\left(-\\dfrac{5\\pi}{2}\\right)(0) = -1$$\n\n**Step 2** *(1 mark)*\n\nUse point-gradient form with point $\\left(-\\dfrac{5\\pi}{2}, \\dfrac{5\\pi}{2}\\right)$ and gradient $-1$:\n\n$$y - \\dfrac{5\\pi}{2} = -1\\left(x + \\dfrac{5\\pi}{2}\\right)$$\n\n$$y = -x - \\dfrac{5\\pi}{2} + \\dfrac{5\\pi}{2} = -x$$\n\nThe equation of the tangent is $y = -x$."
+    },
+    {
+      "questionNumber": 9,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nThe translation $T$ maps $(x, y) \\mapsto (x + a, y)$. Under this translation, $x \\mapsto x - a$ in the function rule, so $y = x\\sin(x)$ becomes $y = (x-a)\\sin(x-a)$.\n\nFor this to equal $(3\\pi - x)\\sin(x)$, write $(3\\pi - x) = -(x - 3\\pi)$, noting that $\\sin(x - 3\\pi) = \\sin(x)\\cos(3\\pi) - \\cos(x)\\sin(3\\pi) = -\\sin(x)$.\n\nThen $(x - 3\\pi)\\sin(x - 3\\pi) = (x-3\\pi)(-\\sin(x)) = (3\\pi - x)\\sin(x)$. ✓\n\nThus $a = 3\\pi$."
+    },
+    {
+      "questionNumber": 9,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nThe tangent to $f$ at $\\left(\\dfrac{\\pi}{2}, \\dfrac{5\\pi}{2}\\right)$ has gradient $1$ (from part b., $g = -f$, so the tangent to $f$ has gradient $+1$, noting $f = (3\\pi-x)\\sin(x)$ is a reflection and translation of $y = x\\sin(x)$).\n\nBy symmetry, the tangent line $l_1$ has gradient $1$ and the tangent line $l_2$ has gradient $-1$. Together they form a triangle with base $6\\pi$ (from $x = 0$ to $x = 3\\pi$, width $3\\pi$ each side) and height $3\\pi$.\n\n**Step 2** *(1 mark)*\n\nArea of the large triangle formed by $l_1$ and $l_2$:\n$$\\dfrac{1}{2} \\times (3\\pi + 3\\pi) \\times 3\\pi = \\dfrac{1}{2} \\times 6\\pi \\times 3\\pi = 9\\pi^2$$\n\nArea of 6 unshaded regions beneath the curves (using results from part a.i):\n$$2(5\\pi + 3\\pi + \\pi) = 2 \\times 9\\pi = 18\\pi$$\n\nShaded area $= 9\\pi^2 - 18\\pi$ square units."
+    }
+  ]
+}

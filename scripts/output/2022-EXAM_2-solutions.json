@@ -1,0 +1,296 @@
+{
+  "year": 2022,
+  "examType": "EXAM_2",
+  "solutions": [
+    {
+      "questionNumber": 1,
+      "part": null,
+      "content": "**Answer: B**\n\nThe period of $f(x) = 3\\cos(2x + \\pi)$ is $\\dfrac{2\\pi}{2} = \\pi$."
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "content": "**Answer: A**\n\nAs $x \\to \\pm\\infty$, $\\dfrac{1}{(x+3)^2} \\to 0$, so the horizontal asymptote is $y = 4$."
+    },
+    {
+      "questionNumber": 3,
+      "part": null,
+      "content": "**Answer: E**\n\n$\\dfrac{d}{dx}\\left(e^{3x}\\right) = 3e^{3x}$. At $x = 0$: gradient $= 3e^0 = 3$."
+    },
+    {
+      "questionNumber": 4,
+      "part": null,
+      "content": "**Answer: D**\n\n$f(x) = \\tan\\!\\left(\\dfrac{x}{3}\\right)$ has a vertical asymptote where $\\dfrac{x}{3} = \\dfrac{\\pi}{2}$, i.e. at $x = \\dfrac{3\\pi}{2} \\approx 4.71$, which lies inside $[0, 5]$. So $f$ is not continuous on $[0, 5]$."
+    },
+    {
+      "questionNumber": 5,
+      "part": null,
+      "content": "**Answer: C**\n\nFor $f(x) = x^2 + 3x - 10$ to be one-to-one on $(-\\infty, a]$, we need $a$ at most the $x$-coordinate of the vertex. The vertex occurs at $x = -\\dfrac{3}{2} = -1.5$. The largest such value is $a = -1.5$."
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "content": "**Answer: C**\n\nFor $f(x) = x^2$, $x < 0$: the inverse is found by swapping $x$ and $y$, giving $x = y^2$ with $y < 0$, so $f^{-1}(x) = -\\sqrt{x}$, $x > 0$. Option C states $g(x) = \\sqrt{x}$, $x > 0$, which is not the correct inverse. Therefore C is the pair that are **not** inverses."
+    },
+    {
+      "questionNumber": 7,
+      "part": null,
+      "content": "**Answer: E**\n\nFrom the graph of $y = f(x)$, the function increases then has a local maximum, decreases through an inflection, reaches a local minimum, then increases. So $f'(x)$ starts positive, crosses zero (local max), becomes negative, has a local minimum, then returns positive — consistent with option E."
+    },
+    {
+      "questionNumber": 8,
+      "part": null,
+      "content": "**Answer: E**\n\n$\\int_a^b f(x)\\,dx = \\int_0^b f(x)\\,dx - \\int_0^a f(x)\\,dx = 10 - (-4) = 14$."
+    },
+    {
+      "questionNumber": 9,
+      "part": null,
+      "content": "**Answer: D**\n\nA point on $f$ is $(x, \\sqrt{2x+1})$. The squared distance from the origin is $d^2 = x^2 + (2x+1) = x^2 + 2x + 1 = (x+1)^2$, so $d = x + 1$ (since $x \\ge 0$ means $x + 1 > 0$)."
+    },
+    {
+      "questionNumber": 10,
+      "part": null,
+      "content": "**Answer: D**\n\nWith $\\hat{p} = 0.55$ and $n = 1000$, an approximate 95% CI is:\n\n$$\\hat{p} \\pm 1.96\\sqrt{\\dfrac{\\hat{p}(1-\\hat{p})}{n}} = 0.55 \\pm 1.96\\sqrt{\\dfrac{0.55 \\times 0.45}{1000}}$$\n\n$$= 0.55 \\pm 1.96 \\times 0.01572 \\approx 0.55 \\pm 0.0308$$\n\nAs percentages: $(51.9\\%, 58.1\\%)$."
+    },
+    {
+      "questionNumber": 11,
+      "part": null,
+      "content": "**Answer: C**\n\nFrom $\\dfrac{d}{dx}(x\\sin x) = \\sin x + x\\cos x$, we get $x\\cos x = \\dfrac{d}{dx}(x\\sin x) - \\sin x$.\n\nIntegrating: $\\int x\\cos x\\,dx = x\\sin x - \\int \\sin x\\,dx + c$.\n\nSo $\\dfrac{1}{k}\\int x\\cos x\\,dx = \\dfrac{1}{k}\\left(x\\sin(x) - \\int \\sin(x)\\,dx\\right) + c$."
+    },
+    {
+      "questionNumber": 12,
+      "part": null,
+      "content": "**Answer: A**\n\nTotal pens: $3 + x$. $\\Pr(\\text{one of each colour}) = \\Pr(\\text{R then B}) + \\Pr(\\text{B then R})$:\n\n$$= \\dfrac{3}{3+x} \\cdot \\dfrac{x}{2+x} + \\dfrac{x}{3+x} \\cdot \\dfrac{3}{2+x} = \\dfrac{6x}{(3+x)(2+x)}$$"
+    },
+    {
+      "questionNumber": 13,
+      "part": null,
+      "content": "**Answer: C**\n\nRequire $\\dfrac{x+a}{x-a} > 0$ (both positive or both negative). This holds when $x > a$ or $x < -a$, i.e. $x \\in R \\setminus [-a, a]$."
+    },
+    {
+      "questionNumber": 14,
+      "part": null,
+      "content": "**Answer: B**\n\nUsing technology, $E(X) = \\int_0^\\infty x \\cdot \\dfrac{2}{9}xe^{-x^2/9}\\,dx \\approx 2.659$."
+    },
+    {
+      "questionNumber": 15,
+      "part": null,
+      "content": "**Answer: E**\n\nRequire $x^2 - 2x - 3 \\ge 0$, i.e. $(x-3)(x+1) \\ge 0$. This holds when $x \\le -1$ or $x \\ge 3$, giving $(-\\infty, -1] \\cup [3, \\infty)$."
+    },
+    {
+      "questionNumber": 16,
+      "part": null,
+      "content": "**Answer: B**\n\n$f'(x) = x^2 + 2mx + n$. Turning points at $x = -3$ and $x = 1$ means $f'(x) = (x+3)(x-1) = x^2 + 2x - 3$, so $m = 1$, $n = -3$.\n\nUsing point $(3, 4)$: $f(3) = 9 + 9 - 9 + p = 9 + p = 4$ gives $p = -5$.\n\nSo $m = 1$, $n = -3$, $p = -5$."
+    },
+    {
+      "questionNumber": 17,
+      "part": null,
+      "content": "**Answer: A**\n\nThe average rate of change is positive ($g(b) > g(a)$) but the instantaneous rate of change at the midpoint is negative ($g'\\!\\left(\\dfrac{a+b}{2}\\right) < 0$). This means $g$ rises overall but falls at the midpoint — impossible for a strictly monotone function. The function must be many-to-one (it goes up, comes back down, then up again, or similar)."
+    },
+    {
+      "questionNumber": 18,
+      "part": null,
+      "content": "**Answer: B**\n\n$X \\sim \\text{Bi}(20, 0.88)$. Since all options $a < 16$, $\\Pr(X \\ge 16 \\mid X \\ge a) = \\dfrac{\\Pr(X \\ge 16)}{\\Pr(X \\ge a)}$.\n\nUsing technology, $\\Pr(X \\ge 16) \\approx 0.8244$. Testing $a = 12$: $\\Pr(X \\ge 12) \\approx 0.8984$, giving ratio $\\approx 0.9175$. So $a = 12$."
+    },
+    {
+      "questionNumber": 19,
+      "part": null,
+      "content": "**Answer: D**\n\n$V(x) = x(b - 2x)(a - 2x)$. Setting $V'(x) = 0$ and solving gives $x = \\dfrac{a + b \\pm \\sqrt{a^2 - ab + b^2}}{6}$. The maximum volume occurs at the smaller $x$ value:\n\n$$x = \\dfrac{a + b - \\sqrt{a^2 - ab + b^2}}{6}$$"
+    },
+    {
+      "questionNumber": 20,
+      "part": null,
+      "content": "**Answer: A**\n\n$X \\sim N(42°, 8°^2)$. Require $d = 50\\sin(2\\theta) \\ge 40$, i.e. $\\sin(2\\theta) \\ge 0.8$, i.e. $2\\theta \\in [26.565°, 153.435°]$, i.e. $\\theta \\in [26.565°, 63.434°]$.\n\n$\\Pr(26.565° \\le \\theta \\le 63.434°) \\approx 0.969$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nThe function is $f(x) = \\dfrac{x^2}{12}$, a parabola with vertex at the origin. The axis of symmetry is:\n\n$$x = 0$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nDifferentiate $f(x) = \\dfrac{x^2}{12}$:\n\n$$f'(x) = \\dfrac{x}{6}$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nThe tangent at $M$ has gradient $-2$. Set $f'(x) = -2$:\n\n$$\\dfrac{x}{6} = -2 \\implies x = -12$$\n\nFind the $y$-coordinate: $f(-12) = \\dfrac{(-12)^2}{12} = \\dfrac{144}{12} = 12$.\n\nSo $M = (-12, 12)$.\n\n**Step 2** *(1 mark)*\n\nEquation of tangent through $(-12, 12)$ with gradient $-2$:\n\n$$y - 12 = -2(x + 12) \\implies y = -2x - 12$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "d.i",
+      "content": "**Step 1** *(1 mark)*\n\nThe perpendicular to the tangent at $M = (-12, 12)$ has gradient $\\dfrac{1}{2}$ (negative reciprocal of $-2$):\n\n$$y - 12 = \\dfrac{1}{2}(x + 12) \\implies y = \\dfrac{x}{2} + 18$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "d.ii",
+      "content": "**Step 1** *(1 mark)*\n\nFind point $N$ where the perpendicular $y = \\dfrac{x}{2} + 18$ meets $f(x) = \\dfrac{x^2}{12}$:\n\n$$\\dfrac{x^2}{12} = \\dfrac{x}{2} + 18 \\implies x^2 = 6x + 216 \\implies x^2 - 6x - 216 = 0$$\n\n$$(x - 18)(x + 12) = 0 \\implies x = 18 \\text{ or } x = -12$$\n\nSo $N = (18, 27)$.\n\n**Step 2** *(1 mark)*\n\nArea enclosed between the perpendicular line and the curve from $x = -12$ to $x = 18$:\n\n$$\\text{Area} = \\int_{-12}^{18} \\left(\\dfrac{x}{2} + 18 - \\dfrac{x^2}{12}\\right)dx = \\left[\\dfrac{x^2}{4} + 18x - \\dfrac{x^3}{36}\\right]_{-12}^{18}$$\n\n$$= \\left(81 + 324 - 162\\right) - \\left(36 - 216 + 48\\right) = 243 - (-132) = 375$$\n\nArea $= 375$ square units."
+    },
+    {
+      "questionNumber": 1,
+      "part": "e",
+      "content": "**Step 1** *(1 mark)*\n\nFor $g(x) = \\dfrac{x^2}{4a^2}$, the derivative is $g'(x) = \\dfrac{x}{2a^2}$. At $x = -b$: gradient of tangent $= \\dfrac{-b}{2a^2}$, so gradient of perpendicular $= \\dfrac{2a^2}{b}$.\n\nPoint on curve at $x = -b$: $g(-b) = \\dfrac{b^2}{4a^2}$, so the point is $\\left(-b,\\ \\dfrac{b^2}{4a^2}\\right)$.\n\n**Step 2** *(1 mark)*\n\nEquation of perpendicular at $x = -b$:\n\n$$y_n = \\dfrac{2a^2}{b}x + \\dfrac{b^2}{4a^2} + \\dfrac{2a^2}{b} \\cdot b = \\dfrac{2a^2}{b}x + \\dfrac{b^2}{4a^2} + 2a^2$$\n\nFind the other intersection point $N$ of the perpendicular with $g(x)$. Setting $\\dfrac{x^2}{4a^2} = \\dfrac{2a^2}{b}x + \\dfrac{b^2}{4a^2} + 2a^2$ and using that $x = -b$ is one solution, the other solution is $x = \\dfrac{8a^4 + b^2}{b}$.\n\n**Step 3** *(1 mark)*\n\nThe area enclosed by the perpendicular and the curve is:\n\n$$A(b) = \\int_{-b}^{\\frac{8a^4+b^2}{b}} \\left(y_n - g(x)\\right)dx = \\dfrac{64a^{12} + 48a^8b^2 + 12a^4b^4 + b^6}{3a^2b^3}$$\n\n**Step 4** *(1 mark)*\n\nMinimise $A(b)$ with respect to $b$. Setting $\\dfrac{dA}{db} = 0$ and solving gives $b = 2a^2$."
+    },
+    {
+      "questionNumber": 2,
+      "part": "a.i",
+      "content": "**Step 1** *(1 mark)*\n\nThe rabbit population is $r(t) = 1700\\sin\\!\\left(\\dfrac{\\pi t}{80}\\right) + 2500$.\n\nAt $t = 0$: $r(0) = 1700\\sin(0) + 2500 = 2500$.\n\nThe initial population of rabbits is **2500**."
+    },
+    {
+      "questionNumber": 2,
+      "part": "a.ii",
+      "content": "**Step 1** *(1 mark)*\n\nThe amplitude of $r(t) = 1700\\sin\\!\\left(\\dfrac{\\pi t}{80}\\right) + 2500$ is 1700 and the midline is 2500.\n\nMinimum population: $2500 - 1700 = 800$\n\nMaximum population: $2500 + 1700 = 4200$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "a.iii",
+      "content": "**Step 1** *(1 mark)*\n\nThe period of $r(t)$ is $\\dfrac{2\\pi}{\\pi/80} = 160$ weeks.\n\nThe number of weeks between maximum populations of rabbits is **160 weeks**."
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nThe fox population model is $f(t) = a\\sin(b(t - 60)) + 1600$. The amplitude $a$ is half the difference between maximum and minimum:\n\n$$a = \\dfrac{2500 - 700}{2} = \\dfrac{1800}{2} = 900$$\n\n**Step 2** *(1 mark)*\n\nThe period equals $\\dfrac{2\\pi}{b}$. From the graph the period is the same as for rabbits: 160 weeks.\n\n$$\\dfrac{2\\pi}{b} = 160 \\implies b = \\dfrac{2\\pi}{160} = \\dfrac{\\pi}{80}$$\n\nTherefore $a = 900$ and $b = \\dfrac{\\pi}{80}$, as required."
+    },
+    {
+      "questionNumber": 2,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nThe combined population is:\n\n$$p(t) = f(t) + r(t) = 900\\sin\\!\\left(\\dfrac{\\pi}{80}(t-60)\\right) + 1600 + 1700\\sin\\!\\left(\\dfrac{\\pi t}{80}\\right) + 2500$$\n\nUsing technology to find the maximum of $p(t)$, the maximum combined population is approximately **5339** (to the nearest whole number)."
+    },
+    {
+      "questionNumber": 2,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nBoth $f(t)$ and $r(t)$ have period 160 weeks, so the combined population $p(t)$ also has period 160 weeks.\n\nThe number of weeks between maximum combined populations is **160 weeks**."
+    },
+    {
+      "questionNumber": 2,
+      "part": "e",
+      "content": "**Step 1** *(1 mark)*\n\nUnder the transformation $Q$, a point $(t, y)$ on $y = \\sin(t)$ maps to:\n\n$$t' = \\dfrac{90}{\\pi}t + 60, \\quad y' = 900y + 1600$$\n\nSolving for $t$: $t = \\dfrac{\\pi(t' - 60)}{90}$, so the transformed fox population is:\n\n$$f(t) = 900\\sin\\!\\left(\\dfrac{\\pi(t - 60)}{90}\\right) + 1600$$\n\n**Step 2** *(1 mark)*\n\nNote that the period of this transformed fox model is $\\dfrac{2\\pi}{\\pi/90} = 180$ weeks.\n\n**Step 3** *(1 mark)*\n\nThe average combined population over the first 300 weeks is:\n\n$$\\dfrac{1}{300}\\int_0^{300}\\left(900\\sin\\!\\left(\\dfrac{\\pi(t-60)}{90}\\right) + 1600 + 1700\\sin\\!\\left(\\dfrac{\\pi t}{80}\\right) + 2500\\right)dt$$\n\n**Step 4** *(1 mark)*\n\nUsing technology to evaluate the integral:\n\n$$\\dfrac{1}{300}\\int_0^{300}\\left(f(t) + r(t)\\right)dt \\approx 4142$$\n\nThe average combined population is **4142** (to the nearest whole number)."
+    },
+    {
+      "questionNumber": 2,
+      "part": "f",
+      "content": "**Step 1** *(1 mark)*\n\nThe model is $s(t) = 1700e^{-0.003t}\\sin\\!\\left(\\dfrac{\\pi t}{80}\\right) + 2500$. The first two maxima occur where $\\dfrac{ds}{dt} = 0$ and $s$ is at a maximum.\n\nUsing technology, the first maximum occurs at approximately $t_1 \\approx 38.058$ weeks and the second at $t_2 \\approx 198.058$ weeks.\n\n**Step 2** *(1 mark)*\n\nAverage rate of change:\n\n$$\\dfrac{s(t_2) - s(t_1)}{t_2 - t_1} = \\dfrac{s(198.058\\ldots) - s(38.058\\ldots)}{198.058\\ldots - 38.058\\ldots} \\approx -3.6$$\n\nThe average rate of change is **$-3.6$** rabbits per week (to one decimal place)."
+    },
+    {
+      "questionNumber": 2,
+      "part": "g",
+      "content": "**Step 1** *(1 mark)*\n\nThe rate of change of the rabbit population is at its greatest positive value when $\\dfrac{d^2s}{dt^2} = 0$ and $\\dfrac{ds}{dt}$ is transitioning from increasing to decreasing (i.e. $\\dfrac{d^2s}{dt^2}$ changes from positive to negative).\n\n**Step 2** *(1 mark)*\n\nUsing technology to solve $\\dfrac{d^2s}{dt^2} = 0$ for $t > 40$, the first solution gives $t \\approx 156$ weeks.\n\nThe time when the rate of change is at its greatest positive value is $t = $ **156 weeks** (to the nearest whole number)."
+    },
+    {
+      "questionNumber": 2,
+      "part": "h",
+      "content": "**Step 1** *(1 mark)*\n\nAs $t \\to \\infty$, $e^{-0.003t} \\to 0$, so $s(t) = 1700e^{-0.003t}\\sin\\!\\left(\\dfrac{\\pi t}{80}\\right) + 2500 \\to 2500$.\n\nThe rabbit population approaches **2500**."
+    },
+    {
+      "questionNumber": 3,
+      "part": "a.i",
+      "content": "**Step 1** *(1 mark)*\n\n$X \\sim \\text{Bi}\\!\\left(5, \\dfrac{1}{2}\\right)$.\n\n$$\\Pr(X = 5) = \\binom{5}{5}\\left(\\dfrac{1}{2}\\right)^5 = \\dfrac{1}{32} = 0.03125$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "a.ii",
+      "content": "**Step 1** *(1 mark)*\n\n$$\\Pr(X \\ge 2) = 1 - \\Pr(X = 0) - \\Pr(X = 1)$$\n\n$$= 1 - \\dfrac{1}{32} - \\dfrac{5}{32} = 1 - \\dfrac{6}{32} = \\dfrac{26}{32} = \\dfrac{13}{16} = 0.8125$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "a.iii",
+      "content": "**Step 1** *(1 mark)*\n\n$$\\Pr(X \\ge 2 \\mid X < 5) = \\dfrac{\\Pr(X \\ge 2 \\cap X < 5)}{\\Pr(X < 5)} = \\dfrac{\\Pr(2 \\le X \\le 4)}{\\Pr(X \\le 4)}$$\n\n**Step 2** *(1 mark)*\n\n$$\\Pr(X \\le 4) = 1 - \\Pr(X = 5) = 1 - \\dfrac{1}{32} = \\dfrac{31}{32}$$\n\n$$\\Pr(2 \\le X \\le 4) = \\dfrac{13}{16} - \\dfrac{1}{32} = \\dfrac{26}{32} - \\dfrac{1}{32} = \\dfrac{25}{32}$$\n\n$$\\Pr(X \\ge 2 \\mid X < 5) = \\dfrac{25/32}{31/32} = \\dfrac{25}{31} \\approx 0.806$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "a.iv",
+      "content": "**Step 1** *(1 mark)*\n\n$X \\sim \\text{Bi}\\!\\left(5, \\dfrac{1}{2}\\right)$.\n\n$$E(X) = np = 5 \\times \\dfrac{1}{2} = \\dfrac{5}{2} = 2.5$$\n\n**Step 2** *(1 mark)*\n\n$$\\text{sd}(X) = \\sqrt{np(1-p)} = \\sqrt{5 \\times \\dfrac{1}{2} \\times \\dfrac{1}{2}} = \\sqrt{\\dfrac{5}{4}} = \\dfrac{\\sqrt{5}}{2}$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "b.i",
+      "content": "**Step 1** *(1 mark)*\n\nSince $f(h)$ is a probability density function, the total area under it must equal 1:\n\n$$\\int_{1.5}^{3} f(h)\\,dh = 1$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "b.ii",
+      "content": "**Step 1** *(1 mark)*\n\nSet up three equations using the given conditions. From $\\int_{1.5}^{3} f(h)\\,dh = 1$:\n\n$$\\left[\\dfrac{ah^3}{3} + \\dfrac{bh^2}{2} + ch\\right]_{1.5}^{3} = 1$$\n\n$$\\dfrac{63a}{8} + \\dfrac{27b}{8} + \\dfrac{3c}{2} = 1 \\quad \\cdots (1)$$\n\nFrom $\\Pr(H \\le 2) = 0.35$, i.e. $\\int_{1.5}^{2} f(h)\\,dh = 0.35$:\n\n$$\\left[\\dfrac{ah^3}{3} + \\dfrac{bh^2}{2} + ch\\right]_{1.5}^{2} = 0.35 \\quad \\cdots (2)$$\n\nFrom $\\Pr(H \\ge 2.5) = 0.25$, i.e. $\\int_{2.5}^{3} f(h)\\,dh = 0.25$:\n\n$$\\left[\\dfrac{ah^3}{3} + \\dfrac{bh^2}{2} + ch\\right]_{2.5}^{3} = 0.25 \\quad \\cdots (3)$$\n\n**Step 2** *(1 mark)*\n\nSolving the system of equations (1), (2) and (3) using technology:\n\n$$a = -0.8 = -\\dfrac{4}{5}, \\quad b = 3.4 = \\dfrac{17}{5}, \\quad c = -2.78\\overline{3} = -\\dfrac{167}{60}$$\n\n**Step 3** *(1 mark)*\n\n$$a = -\\dfrac{4}{5}, \\quad b = \\dfrac{17}{5}, \\quad c = -\\dfrac{167}{60}$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "b.iii",
+      "content": "**Step 1** *(1 mark)*\n\nThe minimum distance between coin and ceiling is $D = 3 - H$. The pdf $g(d) = f(rd + s)$ transforms $H$ to $D$. Since $D = 3 - H$, we have $H = 3 - D$, so $f(h) = f(3 - d)$. Matching $g(d) = f(rd + s)$ gives $rd + s = 3 - d$, so:\n\n$$r = -1, \\quad s = 3$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "c.i",
+      "content": "**Step 1** *(1 mark)*\n\n$\\hat{P}$ is **discrete**, because the number of heads in 25 flips can only take the values $0, 1, 2, \\ldots, 25$, giving a countable set of possible proportions $\\dfrac{0}{25}, \\dfrac{1}{25}, \\ldots, \\dfrac{25}{25}$. The sample space is finite and countable."
+    },
+    {
+      "questionNumber": 3,
+      "part": "c.ii",
+      "content": "**Step 1** *(1 mark)*\n\nWith $\\hat{p} = 0.4$ and $n = 25$, an approximate 95% confidence interval for $p$ is:\n\n$$\\hat{p} \\pm 1.96\\sqrt{\\dfrac{\\hat{p}(1-\\hat{p})}{n}} = 0.4 \\pm 1.96\\sqrt{\\dfrac{0.4 \\times 0.6}{25}} = 0.4 \\pm 1.96 \\times 0.09798$$\n\n$$= 0.4 \\pm 0.192 \\approx (0.208,\\ 0.592)$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "c.iii",
+      "content": "**Step 1** *(1 mark)*\n\nThe width of the 95% CI is proportional to $\\dfrac{1}{\\sqrt{n}}$. To halve the width, $n$ must be multiplied by 4.\n\n$$n_{\\text{new}} = 4 \\times 25 = 100 \\text{ coin flips}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nThe domain is $\\left(-\\dfrac{1}{2}, \\dfrac{1}{2}\\right)$. As $x \\to \\dfrac{1}{2}^-$, $\\log_e\\!\\left(x + \\dfrac{1}{2}\\right) \\to \\log_e(1) = 0$ and $\\log_e\\!\\left(\\dfrac{1}{2} - x\\right) \\to -\\infty$, so $f(x) \\to +\\infty$.\n\nAs $x \\to -\\dfrac{1}{2}^+$, $f(x) \\to -\\infty$. The function is strictly increasing on its domain.\n\nThe range of $f(x)$ is $R$ (all real numbers)."
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.i",
+      "content": "**Step 1** *(1 mark)*\n\nDifferentiate $f(x) = \\log_e\\!\\left(x + \\dfrac{1}{2}\\right) - \\log_e\\!\\left(\\dfrac{1}{2} - x\\right)$:\n\n$$f'(x) = \\dfrac{1}{x + \\dfrac{1}{2}} + \\dfrac{1}{\\dfrac{1}{2} - x} = \\dfrac{2}{2x+1} + \\dfrac{2}{1-2x}$$\n\n$$= \\dfrac{2(1-2x) + 2(2x+1)}{(2x+1)(1-2x)} = \\dfrac{4}{1 - 4x^2}$$\n\n**Step 2** *(1 mark)*\n\nAt $x = 0$: $f'(0) = \\dfrac{4}{1 - 0} = 4$."
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.ii",
+      "content": "**Step 1** *(1 mark)*\n\nSince $f'(x) = \\dfrac{4}{1 - 4x^2} > 0$ for all $x$ in the domain (as $1 - 4x^2 > 0$ when $-\\dfrac{1}{2} < x < \\dfrac{1}{2}$), $f$ is strictly increasing on its entire domain.\n\nThe maximal domain over which $f$ is strictly increasing is $\\left(-\\dfrac{1}{2}, \\dfrac{1}{2}\\right)$."
+    },
+    {
+      "questionNumber": 4,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nCompute $f(x) + f(-x)$:\n\n$$f(x) + f(-x) = \\left[\\log_e\\!\\left(x + \\dfrac{1}{2}\\right) - \\log_e\\!\\left(\\dfrac{1}{2} - x\\right)\\right] + \\left[\\log_e\\!\\left(-x + \\dfrac{1}{2}\\right) - \\log_e\\!\\left(\\dfrac{1}{2} + x\\right)\\right]$$\n\n$$= \\log_e\\!\\left(x + \\dfrac{1}{2}\\right) - \\log_e\\!\\left(\\dfrac{1}{2} - x\\right) + \\log_e\\!\\left(\\dfrac{1}{2} - x\\right) - \\log_e\\!\\left(x + \\dfrac{1}{2}\\right) = 0$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nThe domain of $f^{-1}$ is the range of $f$, which is $R$.\n\nTo find the rule: let $y = f(x)$, swap $x$ and $y$, and solve for $y$.\n\n$$x = \\log_e\\!\\left(y + \\dfrac{1}{2}\\right) - \\log_e\\!\\left(\\dfrac{1}{2} - y\\right) = \\log_e\\!\\left(\\dfrac{y + \\frac{1}{2}}{\\frac{1}{2} - y}\\right)$$\n\n**Step 2** *(1 mark)*\n\n$$e^x = \\dfrac{y + \\frac{1}{2}}{\\frac{1}{2} - y}$$\n\n$$e^x\\!\\left(\\dfrac{1}{2} - y\\right) = y + \\dfrac{1}{2}$$\n\n$$\\dfrac{e^x}{2} - ye^x = y + \\dfrac{1}{2}$$\n\n$$\\dfrac{e^x - 1}{2} = y(e^x + 1)$$\n\n**Step 3** *(1 mark)*\n\n$$y = \\dfrac{e^x - 1}{2(e^x + 1)}$$\n\nSo $f^{-1}: R \\to R$, $f^{-1}(x) = \\dfrac{e^x - 1}{2(e^x + 1)}$."
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.i",
+      "content": "**Step 1** *(1 mark)*\n\nThe area $A(k)$ between $h$ and $h^{-1}$ is zero when $h = h^{-1}$, which occurs when $h$ is its own inverse, i.e. when $k = 1$ (at $k = 1$, $h(x) = f(x)$ and $h^{-1}(x) = f^{-1}(x)$, and these intersect only on the line $y = x$, giving zero enclosed area).\n\nFor $A(k) > 0$, the graphs of $h$ and $h^{-1}$ must enclose a region. Since $h^{-1}(x)$ has the line $y = x$ as a reflection axis and $h$ becomes steeper as $k$ increases, $A(k) > 0$ when $k > 4$ (based on the geometry: when $k > 4$ the curves enclose area above and below the line $y = x$).\n\n$$k > 4$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.ii",
+      "content": "This question has been redacted following the findings of the Independent Review into the VCAA's Examination-Setting Policies, Processes and Procedures for the VCE."
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\n$g(x) = f(\\sin(2x))$. At $x = \\dfrac{\\pi}{6}$:\n\n$$\\sin\\!\\left(2 \\cdot \\dfrac{\\pi}{6}\\right) = \\sin\\!\\left(\\dfrac{\\pi}{3}\\right) = \\dfrac{\\sqrt{3}}{2}$$\n\nFrom the table, $f\\!\\left(\\dfrac{\\sqrt{3}}{2}\\right) = 3$.\n\n$$g\\!\\left(\\dfrac{\\pi}{6}\\right) = f\\!\\left(\\dfrac{\\sqrt{3}}{2}\\right) = 3$$"
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nAt $x = \\dfrac{\\pi}{6}$:\n\n$$g'\\!\\left(\\dfrac{\\pi}{6}\\right) = 2\\cos\\!\\left(\\dfrac{\\pi}{3}\\right) \\cdot f'\\!\\left(\\sin\\!\\left(\\dfrac{\\pi}{3}\\right)\\right) = 2 \\times \\dfrac{1}{2} \\times f'\\!\\left(\\dfrac{\\sqrt{3}}{2}\\right) = 1 \\times \\dfrac{1}{9} = \\dfrac{1}{9}$$\n\nTherefore $g'\\!\\left(\\dfrac{\\pi}{6}\\right) = \\dfrac{1}{9}$, as required."
+    },
+    {
+      "questionNumber": 5,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nThe tangent passes through $\\left(\\dfrac{\\pi}{6}, 3\\right)$ with gradient $\\dfrac{1}{9}$:\n\n$$y - 3 = \\dfrac{1}{9}\\left(x - \\dfrac{\\pi}{6}\\right)$$\n\n**Step 2** *(1 mark)*\n\n$$y = \\dfrac{x}{9} - \\dfrac{\\pi}{54} + 3 = \\dfrac{x}{9} + \\dfrac{162 - \\pi}{54}$$"
+    },
+    {
+      "questionNumber": 5,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nThe average value of $g'(x)$ over $\\left[\\dfrac{\\pi}{8}, \\dfrac{\\pi}{6}\\right]$ is:\n\n$$\\dfrac{1}{\\dfrac{\\pi}{6} - \\dfrac{\\pi}{8}} \\int_{\\pi/8}^{\\pi/6} g'(x)\\,dx = \\dfrac{1}{\\dfrac{\\pi}{24}} \\left[g(x)\\right]_{\\pi/8}^{\\pi/6}$$\n\n**Step 2** *(1 mark)*\n\n$$= \\dfrac{24}{\\pi}\\left(g\\!\\left(\\dfrac{\\pi}{6}\\right) - g\\!\\left(\\dfrac{\\pi}{8}\\right)\\right)$$\n\nAt $x = \\dfrac{\\pi}{8}$: $\\sin\\!\\left(\\dfrac{\\pi}{4}\\right) = \\dfrac{\\sqrt{2}}{2}$, so $g\\!\\left(\\dfrac{\\pi}{8}\\right) = f\\!\\left(\\dfrac{\\sqrt{2}}{2}\\right) = 5$.\n\n$$= \\dfrac{24}{\\pi}(3 - 5) = -\\dfrac{48}{\\pi}$$"
+    },
+    {
+      "questionNumber": 5,
+      "part": "e",
+      "content": "**Step 1** *(1 mark)*\n\n$g'(x) = 2\\cos(2x) \\cdot f'(\\sin(2x)) = 0$ requires either $\\cos(2x) = 0$ or $f'(\\sin(2x)) = 0$.\n\n**Step 2** *(1 mark)*\n\nCase 1: $2\\cos(2x) = 0 \\implies \\cos(2x) = 0$.\n\nFor $x \\in [0, \\pi]$: $2x \\in [0, 2\\pi]$, so $2x = \\dfrac{\\pi}{2}$ or $2x = \\dfrac{3\\pi}{2}$.\n\n$$x = \\dfrac{\\pi}{4} \\quad \\text{and} \\quad x = \\dfrac{3\\pi}{4}$$\n\n**Step 3** *(1 mark)*\n\nCase 2: $f'(\\sin(2x)) = 0 \\implies \\sin(2x) = \\dfrac{\\sqrt{2}}{2}$ (from the table, $f'\\!\\left(\\dfrac{\\sqrt{2}}{2}\\right) = 0$).\n\nFor $x \\in [0, \\pi]$: $2x \\in [0, 2\\pi]$, so $2x = \\dfrac{\\pi}{4}$ or $2x = \\dfrac{3\\pi}{4}$.\n\n$$x = \\dfrac{\\pi}{8} \\quad \\text{and} \\quad x = \\dfrac{3\\pi}{8}$$\n\nThe four solutions are $x = \\dfrac{\\pi}{8},\\ \\dfrac{\\pi}{4},\\ \\dfrac{3\\pi}{8},\\ \\dfrac{3\\pi}{4}$."
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "year": 2019,
+  "examType": "EXAM_1",
+  "solutions": [
+    {
+      "questionNumber": 1,
+      "part": "a.i",
+      "content": "**Step 1** *(1 mark)*\n\nApply the chain rule to $f(x) = \\dfrac{1}{3x-1} = (3x-1)^{-1}$:\n\n$$f'(x) = -1 \\cdot (3x-1)^{-2} \\cdot 3 = \\dfrac{-3}{(3x-1)^2}$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "a.ii",
+      "content": "**Step 1** *(1 mark)*\n\nAn antiderivative of $f(x) = \\dfrac{1}{3x-1}$ is found using the standard form $\\int \\dfrac{1}{ax+b}\\,dx = \\dfrac{1}{a}\\log_e|ax+b| + c$:\n\n$$F(x) = \\dfrac{1}{3}\\log_e(3x-1)$$\n\n(Since the domain is $x > \\dfrac{1}{3}$, we have $3x - 1 > 0$, so the absolute value is not needed.)\n\nEquivalently: $F(x) = \\dfrac{1}{3}\\log_e\\!\\left(x - \\dfrac{1}{3}\\right)$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nApply the quotient rule to $g(x) = \\dfrac{\\sin(\\pi x)}{x+1}$, with $u = \\sin(\\pi x)$ and $v = x+1$:\n\n$$g'(x) = \\dfrac{u'v - uv'}{v^2} = \\dfrac{(x+1) \\cdot \\pi\\cos(\\pi x) - \\sin(\\pi x) \\cdot 1}{(x+1)^2}$$\n\n**Step 2** *(1 mark)*\n\nEvaluate at $x = 1$. Note that $\\sin(\\pi) = 0$ and $\\cos(\\pi) = -1$:\n\n$$g'(1) = \\dfrac{(1+1) \\cdot \\pi\\cos(\\pi) - \\sin(\\pi) \\cdot 1}{(1+1)^2} = \\dfrac{2 \\cdot \\pi \\cdot (-1) - 0}{4} = \\dfrac{-2\\pi}{4} = -\\dfrac{\\pi}{2}$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nLet $y = f(x) = \\dfrac{1}{3x-1}$. Swap $x$ and $y$ to find the inverse:\n\n$$x = \\dfrac{1}{3y-1}$$\n\n**Step 2** *(1 mark)*\n\nSolve for $y$:\n\n$$x(3y-1) = 1$$\n$$3xy - x = 1$$\n$$3xy = 1 + x$$\n$$y = \\dfrac{1+x}{3x}$$\n\nThus $f^{-1}(x) = \\dfrac{1+x}{3x}$, which can also be written as $f^{-1}(x) = \\dfrac{1}{3x} + \\dfrac{1}{3}$."
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nThe domain of $f^{-1}$ equals the range of $f$.\n\nSince $f(x) = \\dfrac{1}{3x-1}$ has a vertical asymptote at $x = \\dfrac{1}{3}$ and a horizontal asymptote at $y = 0$, the range of $f$ is $R \\setminus \\{0\\}$.\n\nTherefore, the domain of $f^{-1}$ is $R \\setminus \\{0\\}$."
+    },
+    {
+      "questionNumber": 2,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nThe transformation $T$ is a translation: $(x, y) \\mapsto (x+c,\\, y+d)$.\n\nApplying $T$ to $f$ gives $g(x) = f(x - c) + d$.\n\nFor $g = f^{-1}$, we need $f(x-c) + d = f^{-1}(x) = \\dfrac{1}{3x} + \\dfrac{1}{3}$.\n\nNote that $f(x) = \\dfrac{1}{3x-1}$ and $f^{-1}(x) = \\dfrac{1}{3x} + \\dfrac{1}{3}$.\n\nCompute $f\\!\\left(x - \\left(-\\dfrac{1}{3}\\right)\\right) + \\dfrac{1}{3} = f\\!\\left(x + \\dfrac{1}{3}\\right) + \\dfrac{1}{3} = \\dfrac{1}{3\\left(x+\\frac{1}{3}\\right)-1} + \\dfrac{1}{3} = \\dfrac{1}{3x} + \\dfrac{1}{3} = f^{-1}(x)$ ✓\n\nTherefore $c = -\\dfrac{1}{3}$ and $d = \\dfrac{1}{3}$."
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nLet $B$ = event of selecting the biased coin, $H$ = event of tossing a head.\n\nUsing the law of total probability:\n\n$$\\Pr(H) = \\Pr(B') \\cdot \\Pr(H \\mid B') + \\Pr(B) \\cdot \\Pr(H \\mid B)$$\n\n**Step 2** *(1 mark)*\n\n$$\\Pr(H) = \\dfrac{2}{3} \\times \\dfrac{1}{2} + \\dfrac{1}{3} \\times \\dfrac{1}{3} = \\dfrac{1}{3} + \\dfrac{1}{9} = \\dfrac{3}{9} + \\dfrac{1}{9} = \\dfrac{4}{9}$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nUsing Bayes' theorem, find $\\Pr(B' \\mid H)$ — the probability she selected an unbiased coin given she tossed a head:\n\n$$\\Pr(B' \\mid H) = \\dfrac{\\Pr(B' \\cap H)}{\\Pr(H)} = \\dfrac{\\dfrac{2}{3} \\times \\dfrac{1}{2}}{\\dfrac{4}{9}} = \\dfrac{\\dfrac{1}{3}}{\\dfrac{4}{9}} = \\dfrac{1}{3} \\times \\dfrac{9}{4} = \\dfrac{3}{4}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nRearrange the equation $1 - \\cos\\!\\left(\\dfrac{x}{2}\\right) = \\cos\\!\\left(\\dfrac{x}{2}\\right)$:\n\n$$1 = 2\\cos\\!\\left(\\dfrac{x}{2}\\right) \\implies \\cos\\!\\left(\\dfrac{x}{2}\\right) = \\dfrac{1}{2}$$\n\n**Step 2** *(1 mark)*\n\nFor $x \\in [-2\\pi, \\pi]$, we have $\\dfrac{x}{2} \\in [-\\pi, \\dfrac{\\pi}{2}]$.\n\nSolve $\\cos\\!\\left(\\dfrac{x}{2}\\right) = \\dfrac{1}{2}$: the reference angle is $\\dfrac{\\pi}{3}$.\n\nWithin $[-\\pi, \\dfrac{\\pi}{2}]$: $\\dfrac{x}{2} = \\dfrac{\\pi}{3}$ or $\\dfrac{x}{2} = -\\dfrac{\\pi}{3}$.\n\nTherefore $x = \\dfrac{2\\pi}{3}$ or $x = -\\dfrac{2\\pi}{3}$."
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nSince $g(x) = 1 - f(x) = 1 - \\cos\\!\\left(\\dfrac{x}{2}\\right)$, the graph of $g$ is a vertical reflection of $f$ in the $x$-axis, then translated up by 1.\n\nKey features of $g$:\n- Endpoints: $g(-2\\pi) = 1 - \\cos(-\\pi) = 1 - (-1) = 2$, so $(-2\\pi, 2)$; and $g(\\pi) = 1 - \\cos\\!\\left(\\dfrac{\\pi}{2}\\right) = 1 - 0 = 1$, so $(\\pi, 1)$.\n- $g(-2\\pi) = 2$ (endpoint), $g(\\pi) = 1$ (endpoint).\n\n**Step 2** *(1 mark)*\n\nIntersections of $f$ and $g$ occur where $f(x) = g(x)$, i.e. where $\\cos\\!\\left(\\dfrac{x}{2}\\right) = 1 - \\cos\\!\\left(\\dfrac{x}{2}\\right)$, which from part (a) gives $x = \\pm\\dfrac{2\\pi}{3}$.\n\nAt $x = -\\dfrac{2\\pi}{3}$: $f\\!\\left(-\\dfrac{2\\pi}{3}\\right) = \\cos\\!\\left(-\\dfrac{\\pi}{3}\\right) = \\dfrac{1}{2}$, so intersection at $\\left(-\\dfrac{2\\pi}{3}, \\dfrac{1}{2}\\right)$.\n\nAt $x = \\dfrac{2\\pi}{3}$: $f\\!\\left(\\dfrac{2\\pi}{3}\\right) = \\cos\\!\\left(\\dfrac{\\pi}{3}\\right) = \\dfrac{1}{2}$, so intersection at $\\left(\\dfrac{2\\pi}{3}, \\dfrac{1}{2}\\right)$.\n\nThe graph of $g$ passes through: $(-2\\pi, 2)$, $\\left(-\\dfrac{2\\pi}{3}, \\dfrac{1}{2}\\right)$, $(0, 0)$ (minimum), $\\left(\\dfrac{2\\pi}{3}, \\dfrac{1}{2}\\right)$, $(\\pi, 1)$, forming a cosine-like shape reflected and translated."
+    },
+    {
+      "questionNumber": 5,
+      "part": "a.i",
+      "content": "**Step 1** *(1 mark)*\n\nSubstitute $x = -1$ into $f(x) = \\dfrac{2}{(x-1)^2} + 1$:\n\n$$f(-1) = \\dfrac{2}{(-1-1)^2} + 1 = \\dfrac{2}{(-2)^2} + 1 = \\dfrac{2}{4} + 1 = \\dfrac{1}{2} + 1 = \\dfrac{3}{2}$$"
+    },
+    {
+      "questionNumber": 5,
+      "part": "a.ii",
+      "content": "**Step 1** *(1 mark)*\n\nIdentify the key features of $f(x) = \\dfrac{2}{(x-1)^2} + 1$:\n\n- Vertical asymptote: $x = 1$\n- Horizontal asymptote: $y = 1$\n- The function is a truncus (symmetric about the vertical asymptote $x = 1$), with branches above $y = 1$ on both sides\n- $y$-intercept: $f(0) = \\dfrac{2}{1} + 1 = 3$, so $(0, 3)$\n- From part (a.i): $f(-1) = \\dfrac{3}{2}$, so $(-1, \\dfrac{3}{2})$\n\n**Step 2** *(1 mark)*\n\nSketch the truncus shape with:\n- Vertical asymptote labelled $x = 1$\n- Horizontal asymptote labelled $y = 1$\n- Both branches curving upward away from $y = 1$ on either side of $x = 1$\n- Passing through $(0, 3)$ on the left branch"
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nSet up the definite integral for the area from $x = -1$ to $x = 0$:\n\n$$\\text{Area} = \\int_{-1}^{0} \\left(\\dfrac{2}{(x-1)^2} + 1\\right) dx$$\n\nThe antiderivative of $\\dfrac{2}{(x-1)^2} = 2(x-1)^{-2}$ is $\\dfrac{-2}{x-1}$, and the antiderivative of $1$ is $x$.\n\n**Step 2** *(1 mark)*\n\n$$\\text{Area} = \\left[\\dfrac{-2}{x-1} + x\\right]_{-1}^{0}$$\n\n$$= \\left(\\dfrac{-2}{0-1} + 0\\right) - \\left(\\dfrac{-2}{-1-1} + (-1)\\right)$$\n\n$$= \\left(\\dfrac{-2}{-1}\\right) - \\left(\\dfrac{-2}{-2} - 1\\right)$$\n\n$$= 2 - (1 - 1) = 2 - 0 = 2$$\n\nThe area is $2$ square units."
+    },
+    {
+      "questionNumber": 6,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nThe proportion of faulty pegs in the sample is:\n\n$$\\hat{p} = \\dfrac{8}{41}$$"
+    },
+    {
+      "questionNumber": 6,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nLet $X$ = number of faulty pegs in a box of 12. Since the actual proportion is $\\dfrac{1}{6}$:\n\n$$X \\sim \\text{Bi}\\!\\left(12, \\dfrac{1}{6}\\right)$$\n\n$\\Pr\\!\\left(\\hat{P} < \\dfrac{1}{6}\\right)$ means fewer than 2 faulty pegs (since $\\dfrac{1}{6}$ of 12 = 2), so $\\Pr(X < 2) = \\Pr(X = 0) + \\Pr(X = 1)$.\n\n**Step 2** *(1 mark)*\n\n$$\\Pr(X = 0) = \\left(\\dfrac{5}{6}\\right)^{12}, \\quad \\Pr(X = 1) = 12 \\left(\\dfrac{5}{6}\\right)^{11}\\!\\left(\\dfrac{1}{6}\\right)$$\n\n$$\\Pr(X < 2) = \\left(\\dfrac{5}{6}\\right)^{12} + 12 \\cdot \\dfrac{1}{6} \\cdot \\left(\\dfrac{5}{6}\\right)^{11} = \\left(\\dfrac{5}{6}\\right)^{11}\\!\\left[\\dfrac{5}{6} + 2\\right] = \\left(\\dfrac{5}{6}\\right)^{11} \\cdot \\dfrac{17}{6}$$\n\n$$= \\dfrac{17}{6}\\left(\\dfrac{5}{6}\\right)^{11}$$\n\nSo $a = \\dfrac{17}{6}$, $b = \\dfrac{5}{6}$, $n = 11$."
+    },
+    {
+      "questionNumber": 7,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\n$P = (x, \\sqrt{1-x^2})$ is a point on the curve and $B = (x, 0)$ is directly below $P$.\n\nThe length $PB$ is the vertical distance from $B$ to $P$:\n\n$$PB = \\sqrt{1-x^2} - 0 = \\sqrt{1-x^2}$$"
+    },
+    {
+      "questionNumber": 7,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nTriangle $ABP$ has base $AB = x - (-1) = x + 1$ and height $PB = \\sqrt{1-x^2}$.\n\nArea: $A(x) = \\dfrac{1}{2}(x+1)\\sqrt{1-x^2}$, where $x \\in (-1, 1)$.\n\n**Step 2** *(1 mark)*\n\nDifferentiate using the product rule:\n\n$$A'(x) = \\dfrac{1}{2}\\left(\\sqrt{1-x^2} + (x+1) \\cdot \\dfrac{-2x}{2\\sqrt{1-x^2}}\\right) = \\dfrac{1}{2}\\left(\\sqrt{1-x^2} - \\dfrac{x(x+1)}{\\sqrt{1-x^2}}\\right)$$\n\n$$= \\dfrac{1}{2} \\cdot \\dfrac{(1-x^2) - x(x+1)}{\\sqrt{1-x^2}} = \\dfrac{1-x^2 - x^2 - x}{2\\sqrt{1-x^2}} = \\dfrac{1 - x - 2x^2}{2\\sqrt{1-x^2}}$$\n\n**Step 3** *(1 mark)*\n\nSet $A'(x) = 0$: solve $1 - x - 2x^2 = 0$, i.e. $2x^2 + x - 1 = 0$.\n\nFactorise: $(2x - 1)(x + 1) = 0$, giving $x = \\dfrac{1}{2}$ or $x = -1$.\n\nSince $x \\in (-1, 1)$, the critical point is $x = \\dfrac{1}{2}$.\n\nMaximum area:\n$$A\\!\\left(\\dfrac{1}{2}\\right) = \\dfrac{1}{2}\\left(\\dfrac{1}{2}+1\\right)\\sqrt{1-\\dfrac{1}{4}} = \\dfrac{1}{2} \\cdot \\dfrac{3}{2} \\cdot \\sqrt{\\dfrac{3}{4}} = \\dfrac{3}{4} \\cdot \\dfrac{\\sqrt{3}}{2} = \\dfrac{3\\sqrt{3}}{8}$$"
+    },
+    {
+      "questionNumber": 8,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nFrom the graph, the degree-4 polynomial touches the $x$-axis at $x = 0$ (double root) and crosses at $x = -1$ and $x = 1$ (simple roots, but the graph shows local maxima at $\\left(\\pm\\dfrac{1}{\\sqrt{2}}, 1\\right)$ and the polynomial is negative between the roots and positive outside).\n\nThe graph touches at the origin (double root) and from the shape, the rule is $f(x) = -4x^2(x^2 - 1) = -4x^2(x-1)(x+1)$.\n\nThis can be verified: $f\\!\\left(\\dfrac{1}{\\sqrt{2}}\\right) = -4 \\cdot \\dfrac{1}{2} \\cdot \\left(\\dfrac{1}{2} - 1\\right) = -2 \\cdot \\left(-\\dfrac{1}{2}\\right) = 1$ ✓\n\n$$f(x) = -4x^2(x^2-1)$$"
+    },
+    {
+      "questionNumber": 8,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nFor $h(x) = \\log_e(g(x)) - \\log_e(x^3 + x^2) = \\log_e\\!\\left(\\dfrac{g(x)}{x^3+x^2}\\right)$ to be defined, we need:\n\n1. $g(x) > 0$: From the graph, $g(x) = -4x^2(x^2-1) > 0$ when $x^2 < 1$, i.e. $x \\in (-1, 0) \\cup (0, 1)$ (excluding $x = 0$ where $g = 0$).\n\n2. $x^3 + x^2 = x^2(x+1) > 0$: requires $x + 1 > 0$ (since $x^2 \\geq 0$, and $x^2 = 0$ only at $x = 0$), so $x > -1$ and $x \\neq 0$.\n\nThe maximal domain is the intersection: $D = (-1, 0) \\cup (0, 1)$."
+    },
+    {
+      "questionNumber": 8,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nSimplify $h(x)$ on $D = (-1,0)\\cup(0,1)$:\n\n$$h(x) = \\log_e(g(x)) - \\log_e(x^3+x^2) = \\log_e\\!\\left(\\dfrac{-4x^2(x^2-1)}{x^2(x+1)}\\right) = \\log_e\\!\\left(\\dfrac{-4(x^2-1)}{x+1}\\right)$$\n\n$$= \\log_e\\!\\left(\\dfrac{-4(x-1)(x+1)}{x+1}\\right) = \\log_e(-4(x-1)) = \\log_e(4(1-x))$$\n\n**Step 2** *(1 mark)*\n\nOn $D = (-1, 0) \\cup (0, 1)$:\n\n- As $x \\to -1^+$: $4(1-x) \\to 4(1-(-1)) = 8$, so $h(x) \\to \\log_e(8)$ (not attained, approached from below as $x \\nearrow -1$... actually $h(x) \\to \\log_e 8$ as $x \\to -1^+$).\n- As $x \\to 0^-$: $h(x) \\to \\log_e(4)$; as $x \\to 0^+$: $h(x) \\to \\log_e(4)$ (excluded from domain).\n- As $x \\to 1^-$: $4(1-x) \\to 0^+$, so $h(x) \\to -\\infty$.\n- At $x = -1$: excluded; $h(-1^+) \\to \\log_e 8$.\n\nOn $(-1, 0)$: $x \\in (-1,0)$, so $1-x \\in (1,2)$, giving $4(1-x) \\in (4,8)$, so $h(x) \\in (\\log_e 4, \\log_e 8)$.\n\nOn $(0, 1)$: $x \\in (0,1)$, so $1-x \\in (0,1)$, giving $4(1-x) \\in (0,4)$, so $h(x) \\in (-\\infty, \\log_e 4)$.\n\nCombined range: $(-\\infty, \\log_e 4) \\cup (\\log_e 4, \\log_e 8)$."
+    },
+    {
+      "questionNumber": 9,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\n$g(f(x)) = g(3 + 2x - x^2) = e^{3+2x-x^2}$"
+    },
+    {
+      "questionNumber": 9,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nLet $h(x) = g(f(x)) = e^{3+2x-x^2}$. Apply the chain rule:\n\n$$h'(x) = (2 - 2x)e^{3+2x-x^2}$$\n\n**Step 2** *(1 mark)*\n\n$h'(x) < 0$ when $(2 - 2x) < 0$ (since $e^{3+2x-x^2} > 0$ always):\n\n$$2 - 2x < 0 \\implies x > 1$$\n\nThe required set of values is $x \\in (1, \\infty)$."
+    },
+    {
+      "questionNumber": 9,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\n$f(g(x)) = f(e^x) = 3 + 2e^x - (e^x)^2 = 3 + 2e^x - e^{2x}$"
+    },
+    {
+      "questionNumber": 9,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nSolve $f(g(x)) = 0$: $3 + 2e^x - e^{2x} = 0$.\n\nLet $u = e^x$: $-u^2 + 2u + 3 = 0 \\implies u^2 - 2u - 3 = 0 \\implies (u-3)(u+1) = 0$.\n\nSo $e^x = 3$ or $e^x = -1$.\n\n**Step 2** *(1 mark)*\n\nSince $e^x > 0$, we discard $e^x = -1$.\n\nFrom $e^x = 3$: $x = \\log_e(3)$."
+    },
+    {
+      "questionNumber": 9,
+      "part": "e",
+      "content": "**Step 1** *(1 mark)*\n\nFind the derivative of $f(g(x)) = 3 + 2e^x - e^{2x}$:\n\n$$\\dfrac{d}{dx}[f(g(x))] = 2e^x - 2e^{2x} = 2e^x(1 - e^x)$$\n\nSet equal to zero: $2e^x(1 - e^x) = 0$. Since $e^x > 0$, we need $1 - e^x = 0 \\implies e^x = 1 \\implies x = 0$.\n\n**Step 2** *(1 mark)*\n\nFind the $y$-coordinate: $f(g(0)) = 3 + 2e^0 - e^0 = 3 + 2(1) - (1)^2 = 3 + 2 - 1 = 4$.\n\nThe stationary point is at $(0, 4)$."
+    },
+    {
+      "questionNumber": 9,
+      "part": "f",
+      "content": "**Step 1** *(1 mark)*\n\n$g(f(x)) + f(g(x)) = 0$ means $e^{3+2x-x^2} + 3 + 2e^x - e^{2x} = 0$.\n\nNote that $g(f(x)) = e^{3+2x-x^2} > 0$ always, and $f(g(x)) = 3 + 2e^x - e^{2x}$ has a maximum of 4 at $x = 0$ and tends to $-\\infty$ as $x \\to \\infty$.\n\nFor the sum to equal zero, $f(g(x))$ must equal $-g(f(x)) < 0$, which requires $f(g(x)) < 0$, i.e. $x > \\log_e(3)$. In this region, $g(f(x))$ is extremely small (as $3+2x-x^2 \\to -\\infty$) and $f(g(x))$ is very negative, so there is exactly one crossing.\n\nThe equation $g(f(x)) + f(g(x)) = 0$ has exactly **1** solution."
+    }
+  ]
+}
