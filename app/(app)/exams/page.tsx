@@ -109,12 +109,13 @@ export default function ExamsPage() {
             </div>
           </div>
           <p className="text-sm text-gray-500 mb-5">
-            Short answer questions with no calculator permitted. Tests analytical and algebraic skills.
+            9 short answer questions with no calculator permitted. Tests analytical and algebraic skills.
           </p>
           <div className="flex flex-wrap gap-2 mb-5">
             <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">Short answer</span>
             <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">40 marks</span>
             <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">No calculator</span>
+            <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">1 hour</span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-400">{exam1s.length} papers · 2016 – 2023</span>
@@ -137,12 +138,14 @@ export default function ExamsPage() {
             </div>
           </div>
           <p className="text-sm text-gray-500 mb-5">
-            Multiple choice and extended response questions with CAS calculator permitted.
+            20 multiple choice and 5 extended response questions with CAS calculator permitted.
           </p>
           <div className="flex flex-wrap gap-2 mb-5">
             <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">Multiple choice</span>
+            <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">Extended response</span>
             <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">80 marks</span>
             <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">CAS calculator</span>
+            <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">2 hours</span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-400">{exam2s.length} papers · 2016 – 2023</span>
