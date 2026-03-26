@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import {
   ChevronRight,
+  CalendarDays,
   Shuffle,
   TrendingUp,
   RefreshCw,
@@ -67,10 +68,10 @@ const topicThemes: Record<number, { bg: string; iconBg: string; iconColor: strin
   4: { bg: "from-emerald-50 to-white", iconBg: "bg-emerald-100", iconColor: "text-emerald-600", accent: "text-emerald-700", freqColor: "bg-emerald-100 text-emerald-700" },
 };
 
-function freqLabel(yearCount: number): { tag: string; title: string } {
-  if (yearCount >= 6) return { tag: "High", title: "Appears frequently — tested most years" };
-  if (yearCount >= 3) return { tag: "Medium", title: "Appears occasionally — tested some years" };
-  return { tag: "Low", title: "Appears rarely — tested infrequently" };
+function freqLabel(yearCount: number): { tag: string; dots: number; title: string } {
+  if (yearCount >= 6) return { tag: "Every year", dots: 3, title: `Appeared in ${yearCount} of 8 years — very common exam topic` };
+  if (yearCount >= 3) return { tag: "Most years", dots: 2, title: `Appeared in ${yearCount} of 8 years — common exam topic` };
+  return { tag: "Rare", dots: 1, title: `Appeared in ${yearCount} of 8 years — infrequent exam topic` };
 }
 
 export default async function TopicsPage() {
@@ -132,7 +133,7 @@ export default async function TopicsPage() {
                     const medium = qs.filter((q) => q.difficulty === "MEDIUM").length;
                     const hard = qs.filter((q) => q.difficulty === "HARD").length;
                     const years = Array.from(new Set(qs.map((q) => q.exam.year))).sort();
-                    const { tag: freq, title: freqTitle } = freqLabel(years.length);
+                    const { tag: freq, dots, title: freqTitle } = freqLabel(years.length);
                     const Icon = getSubtopicIcon(sub.name);
 
                     return (
@@ -147,10 +148,19 @@ export default async function TopicsPage() {
                               <Icon className={`h-4 w-4 ${theme.iconColor}`} />
                             </span>
                             <span
-                              className={`rounded-full px-2 py-0.5 text-xs font-semibold ${theme.freqColor}`}
+                              className="flex items-center gap-1 rounded-md border border-gray-200 bg-white px-1.5 py-0.5 text-xs font-medium text-gray-500 whitespace-nowrap"
                               title={freqTitle}
                             >
+                              <CalendarDays className="h-3 w-3 text-gray-400" />
                               {freq}
+                              <span className="flex gap-0.5 ml-0.5">
+                                {[1, 2, 3].map((d) => (
+                                  <span
+                                    key={d}
+                                    className={`h-1.5 w-1.5 rounded-full ${d <= dots ? "bg-gray-500" : "bg-gray-200"}`}
+                                  />
+                                ))}
+                              </span>
                             </span>
                           </div>
 
