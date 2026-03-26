@@ -122,16 +122,64 @@ function freqLabel(yearCount: number): { tag: string; dots: number; title: strin
   return { tag: "Rare", dots: 1, title: `Appeared in ${yearCount} of 8 years — infrequent exam topic` };
 }
 
+// A Section B question with parts a/b/c counts as 1 group (1 question).
+// An MCQ (part=null) is always its own standalone group.
+// This helper returns the number of displayable groups, matching the detail page count.
+type QuestionRow = {
+  examId: string;
+  questionNumber: number;
+  part: string | null;
+  difficulty: "EASY" | "MEDIUM" | "HARD";
+  exam: { year: number };
+};
+
+function computeGroupStats(questions: QuestionRow[]) {
+  // MCQs: each is its own group
+  const mcqs = questions.filter((q) => q.part === null);
+
+  // Section B: deduplicate by (examId, questionNumber), keep first part's difficulty
+  const sectionBMap = new Map<string, "EASY" | "MEDIUM" | "HARD">();
+  for (const q of questions.filter((q) => q.part !== null)) {
+    const key = `${q.examId}-${q.questionNumber}`;
+    if (!sectionBMap.has(key)) sectionBMap.set(key, q.difficulty);
+  }
+
+  const difficulties = [
+    ...mcqs.map((q) => q.difficulty),
+    ...Array.from(sectionBMap.values()),
+  ];
+
+  return {
+    total: difficulties.length,
+    easy: difficulties.filter((d) => d === "EASY").length,
+    medium: difficulties.filter((d) => d === "MEDIUM").length,
+    hard: difficulties.filter((d) => d === "HARD").length,
+    years: Array.from(new Set(questions.map((q) => q.exam.year))).sort(),
+  };
+}
+
 export default async function TopicsPage() {
   const topics = await prisma.topic.findMany({
     orderBy: { order: "asc" },
     include: {
-      _count: { select: { questions: true } },
+      // Fetch topic-level questions for the header group count
+      questions: {
+        select: {
+          examId: true,
+          questionNumber: true,
+          part: true,
+          difficulty: true,
+          exam: { select: { year: true } },
+        },
+      },
       subtopics: {
         orderBy: { name: "asc" },
         include: {
           questions: {
             select: {
+              examId: true,
+              questionNumber: true,
+              part: true,
               difficulty: true,
               exam: { select: { year: true } },
             },
@@ -142,45 +190,41 @@ export default async function TopicsPage() {
   });
 
   return (
-    <div className="max-w-4xl">
-      <h1 className="text-2xl font-bold text-gray-900 mb-2">Topics</h1>
-      <p className="text-gray-500 mb-8">
+    <div>
+      <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Topics</h1>
+      <p className="text-gray-500 lg:text-base mb-8">
         Browse past exam questions organised by VCE Mathematical Methods syllabus topic.
       </p>
 
-      <div className="space-y-6">
+      <div className="space-y-6 lg:space-y-8">
         {topics.map((topic) => {
           const theme = topicThemes[topic.order] ?? topicThemes[1];
+          const topicStats = computeGroupStats(topic.questions);
 
           return (
             <div key={topic.id} className="rounded-2xl bg-white border border-gray-100 shadow-sm overflow-hidden">
               {/* Topic header */}
               <Link
                 href={`/topics/${topic.slug}`}
-                className={`flex items-center justify-between px-6 py-5 bg-gradient-to-r ${theme.bg} hover:brightness-[0.98] transition-all`}
+                className={`flex items-center justify-between px-6 py-5 lg:px-8 lg:py-6 bg-gradient-to-r ${theme.bg} hover:brightness-[0.98] transition-all`}
               >
-                <div>
-                  <h2 className="font-bold text-gray-900 text-lg">{topic.name}</h2>
+                <div className="flex-1 min-w-0 pr-4">
+                  <h2 className="font-bold text-gray-900 text-lg lg:text-xl">{topic.name}</h2>
                   {topic.description && (
-                    <p className="text-sm text-gray-500 mt-0.5 max-w-xl">{topic.description}</p>
+                    <p className="text-sm lg:text-base text-gray-500 mt-1">{topic.description}</p>
                   )}
-                  <p className={`text-sm font-semibold mt-1 ${theme.accent}`}>
-                    {topic._count.questions} questions
+                  <p className={`text-sm lg:text-base font-semibold mt-1.5 ${theme.accent}`}>
+                    {topicStats.total} questions
                   </p>
                 </div>
-                <ChevronRight className="h-5 w-5 text-gray-300 shrink-0" />
+                <ChevronRight className="h-5 w-5 lg:h-6 lg:w-6 text-gray-300 shrink-0" />
               </Link>
 
-              {/* Subtopic card grid */}
+              {/* Subtopic card grid — more columns on wider screens */}
               {topic.subtopics.length > 0 && (
-                <div className="p-4 border-t border-gray-100 grid grid-cols-2 md:grid-cols-3 gap-3">
+                <div className="p-4 lg:p-6 border-t border-gray-100 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 lg:gap-4">
                   {topic.subtopics.map((sub) => {
-                    const qs = sub.questions;
-                    const total = qs.length;
-                    const easy = qs.filter((q) => q.difficulty === "EASY").length;
-                    const medium = qs.filter((q) => q.difficulty === "MEDIUM").length;
-                    const hard = qs.filter((q) => q.difficulty === "HARD").length;
-                    const years = Array.from(new Set(qs.map((q) => q.exam.year))).sort();
+                    const { total, easy, medium, hard, years } = computeGroupStats(sub.questions);
                     const { tag: freq, dots, title: freqTitle } = freqLabel(years.length);
                     const Icon = getSubtopicIcon(sub.name);
 
@@ -188,12 +232,12 @@ export default async function TopicsPage() {
                       <div key={sub.id} className="group relative">
                         <Link
                           href={`/topics/${topic.slug}?subtopic=${sub.slug}`}
-                          className="flex flex-col gap-3 rounded-xl border border-gray-100 bg-gray-50 hover:border-gray-200 hover:bg-white hover:shadow-sm transition-all p-3.5 h-full"
+                          className="flex flex-col gap-3 lg:gap-4 rounded-xl border border-gray-100 bg-gray-50 hover:border-gray-200 hover:bg-white hover:shadow-sm transition-all p-3.5 lg:p-5 h-full"
                         >
                           {/* Top row: icon + freq badge */}
-                          <div className="flex items-start justify-between">
-                            <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${theme.iconBg}`}>
-                              <Icon className={`h-4 w-4 ${theme.iconColor}`} />
+                          <div className="flex items-start justify-between gap-2">
+                            <span className={`flex h-9 w-9 lg:h-11 lg:w-11 items-center justify-center rounded-lg lg:rounded-xl shrink-0 ${theme.iconBg}`}>
+                              <Icon className={`h-4 w-4 lg:h-5 lg:w-5 ${theme.iconColor}`} />
                             </span>
                             <span
                               className="flex items-center gap-1 rounded-md border border-gray-200 bg-white px-1.5 py-0.5 text-xs font-medium text-gray-500 whitespace-nowrap"
@@ -214,13 +258,13 @@ export default async function TopicsPage() {
 
                           {/* Name + count */}
                           <div>
-                            <p className="text-sm font-semibold text-gray-800 leading-snug">{sub.name}</p>
-                            <p className="text-xs text-gray-400 mt-0.5">{total} question{total !== 1 ? "s" : ""}</p>
+                            <p className="text-sm lg:text-base font-semibold text-gray-800 leading-snug">{sub.name}</p>
+                            <p className="text-xs lg:text-sm text-gray-400 mt-0.5">{total} question{total !== 1 ? "s" : ""}</p>
                           </div>
 
                           {/* Difficulty bar */}
                           {total > 0 && (
-                            <div className="flex h-1.5 w-full rounded-full overflow-hidden gap-px">
+                            <div className="flex h-1.5 lg:h-2 w-full rounded-full overflow-hidden gap-px mt-auto">
                               {easy > 0 && (
                                 <div
                                   className="bg-green-400 rounded-full"
@@ -247,8 +291,8 @@ export default async function TopicsPage() {
                         </Link>
 
                         {/* Description tooltip on hover */}
-                        <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-150 w-56">
-                          <div className="rounded-lg bg-gray-900 text-white text-xs px-3 py-2.5 shadow-lg">
+                        <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-150 w-60 lg:w-72">
+                          <div className="rounded-lg bg-gray-900 text-white text-xs lg:text-sm px-3 py-2.5 shadow-lg">
                             <p className="font-semibold mb-1">{sub.name}</p>
                             <p className="text-gray-300 leading-relaxed">{getSubtopicDescription(sub.name)}</p>
                             <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900" />

@@ -1,0 +1,112 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import TopicDistributionControl, { type Topic } from "@/components/TopicDistributionControl";
+import DifficultyDistributionControl, { type DiffDist } from "@/components/DifficultyDistributionControl";
+
+interface Props {
+  topics: Topic[];
+}
+
+export default function Exam2ABSetupForm({ topics }: Props) {
+  const router = useRouter();
+  const [distA, setDistA] = useState<number[]>([25, 25, 25, 25]);
+  const [distB, setDistB] = useState<number[]>([25, 25, 25, 25]);
+  const [diffDist, setDiffDist] = useState<DiffDist>([50, 30, 20]);
+
+  const totalA = distA.reduce((a, b) => a + b, 0);
+  const totalB = distB.reduce((a, b) => a + b, 0);
+  const diffTotal = diffDist[0] + diffDist[1] + diffDist[2];
+  const isValid = totalA === 100 && totalB === 100 && diffTotal === 100;
+
+  function handleStart() {
+    if (!isValid) return;
+    const url = `/practice/session?mode=exam2ab&version=exam&countA=20&countB=5&dist=${distA.join(",")}&distB=${distB.join(",")}&diff=${diffDist.join(",")}`;
+    router.push(url);
+  }
+
+  return (
+    <div className="space-y-8 lg:space-y-10">
+      {/* Back link */}
+      <Link
+        href="/practice"
+        className="inline-flex items-center gap-1.5 text-sm lg:text-base font-medium text-brand-600 hover:text-brand-700 transition-colors"
+      >
+        ← Practice
+      </Link>
+
+      {/* Heading */}
+      <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Exam 2A &amp; 2B Practice</h1>
+
+      {/* Info banner */}
+      <div className="rounded-xl border border-gray-200 bg-gray-50 px-5 lg:px-6 py-4 lg:py-5 text-sm lg:text-base text-gray-600 flex items-start gap-3">
+        <div className="shrink-0 mt-0.5">
+          <svg className="h-4 w-4 lg:h-5 lg:w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <span>
+          20 multiple choice questions · 4–5 extended response questions · CAS Calculator allowed
+        </span>
+      </div>
+
+      {/* Section A distribution */}
+      <div className="space-y-3 lg:space-y-4">
+        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 uppercase tracking-widest">
+          Section A — Multiple Choice Distribution
+        </h2>
+        <TopicDistributionControl
+          topics={topics}
+          distribution={distA}
+          onChange={setDistA}
+        />
+      </div>
+
+      {/* Section B distribution */}
+      <div className="space-y-3 lg:space-y-4">
+        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 uppercase tracking-widest">
+          Section B — Extended Response Distribution
+        </h2>
+        <TopicDistributionControl
+          topics={topics}
+          distribution={distB}
+          onChange={setDistB}
+        />
+      </div>
+
+      {/* Difficulty distribution */}
+      <div className="space-y-3 lg:space-y-4">
+        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 uppercase tracking-widest">
+          Difficulty Distribution
+        </h2>
+        <DifficultyDistributionControl
+          distribution={diffDist}
+          onChange={setDiffDist}
+        />
+      </div>
+
+      {/* Validation errors */}
+      {!isValid && (
+        <p className="text-sm lg:text-base font-medium text-red-600">
+          All distributions must add up to 100% before you can start.
+        </p>
+      )}
+
+      {/* Start button */}
+      <button
+        type="button"
+        onClick={handleStart}
+        disabled={!isValid}
+        className={cn(
+          "rounded-xl bg-brand-600 px-8 lg:px-10 py-3 lg:py-4 text-base lg:text-lg font-semibold text-white hover:bg-brand-700 transition-colors",
+          !isValid && "opacity-50 cursor-not-allowed"
+        )}
+      >
+        Start Practice →
+      </button>
+    </div>
+  );
+}

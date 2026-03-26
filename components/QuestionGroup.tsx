@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type React from "react";
-import { CheckCircle, XCircle, BookmarkIcon } from "lucide-react";
+import { CheckCircle, XCircle, BookmarkIcon, BookOpen, CalendarDays } from "lucide-react";
 import { cn } from "@/lib/utils";
 import MathContent from "@/components/MathContent";
 import SolutionModal from "@/components/SolutionModal";
@@ -39,8 +39,15 @@ function QuestionVisual({ imageUrl }: { imageUrl?: string | null }) {
 interface QuestionGroupProps {
   year: number;
   examType: "EXAM_1" | "EXAM_2";
+  /** Precise section label — "Exam 1", "Exam 2A" (MCQ) or "Exam 2B" (Extended) */
+  sectionLabel?: "Exam 1" | "Exam 2A" | "Exam 2B";
+  /** Sequential position within the current topic/view (1-based) */
+  questionIndex?: number;
+  /** Highest frequency tier among this question's subtopics */
+  frequency?: "rare" | "normal" | "often";
   topic: string;
   subtopics?: string[];
+  calculatorAllowed?: boolean;
   parts: QuestionPart[];
 }
 
@@ -172,7 +179,13 @@ function PartContent({ content, imageUrl }: { content: string; imageUrl?: string
   );
 }
 
-export default function QuestionGroup({ year, examType, topic, subtopics, parts }: QuestionGroupProps) {
+const FREQ_LABEL: Record<"rare" | "normal" | "often", string> = {
+  rare: "Rare",
+  normal: "Most years",
+  often: "Every year",
+};
+
+export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts }: QuestionGroupProps) {
   const [showSolution, setShowSolution] = useState(false);
   const [statuses, setStatuses] = useState<Record<string, AttemptStatus>>(
     Object.fromEntries(parts.map((p) => [p.id, p.initialStatus ?? null]))
@@ -184,7 +197,11 @@ export default function QuestionGroup({ year, examType, topic, subtopics, parts 
   const hasParts = parts.length > 1 || parts.some((p) => p.part !== null);
   const hasSolution = parts.some((p) => p.solution);
   const overallDifficulty = parts[0].difficulty;
-  const questionLabel = `Q${questionNumber} (${year} Exam ${examType === "EXAM_1" ? "1" : "2"})`;
+
+  // Derived section label — falls back gracefully when prop is not supplied
+  const derivedSectionLabel = sectionLabel ?? (examType === "EXAM_1" ? "Exam 1" : "Exam 2");
+  const referenceTag = `${year} · ${derivedSectionLabel} · Q${questionNumber}`;
+  const questionLabel = `${referenceTag}`;
 
   // Extract shared preamble from first part if present
   const { preamble, question: firstPartQuestion } = parsePreamble(parts[0].content);
@@ -203,62 +220,117 @@ export default function QuestionGroup({ year, examType, topic, subtopics, parts 
   return (
     <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
       {/* Card header */}
-      <div className="flex items-start justify-between gap-4 px-5 pt-5 pb-3">
-        <div>
+      <div className="flex items-start justify-between gap-4 px-5 pt-5 pb-3 lg:px-7 lg:pt-6 lg:pb-4">
+        <div className="flex-1">
+          {/* Row 1: "Question N — M marks" · difficulty · frequency */}
           <div className="flex flex-wrap items-center gap-2 mb-2">
-            <span className="text-sm font-semibold text-gray-400 uppercase tracking-wide">
-              {year} · {examType === "EXAM_1" ? "Exam 1" : "Exam 2"} · Q{questionNumber}
-            </span>
-            <span className={cn("rounded-full px-3 py-1 text-sm font-medium", difficultyStyles[overallDifficulty])}>
+            {questionIndex !== undefined ? (
+              <span className="text-lg lg:text-xl font-bold text-gray-900">
+                Question {questionIndex}
+                <span className="text-gray-400 font-normal mx-1.5">—</span>
+                {totalMarks} {totalMarks === 1 ? "mark" : "marks"}
+              </span>
+            ) : (
+              <span className="text-lg lg:text-xl font-bold text-gray-900">
+                {totalMarks} {totalMarks === 1 ? "mark" : "marks"}
+              </span>
+            )}
+            <span className={cn("rounded-full px-3 py-1 text-sm lg:text-base font-medium", difficultyStyles[overallDifficulty])}>
               {difficultyLabel[overallDifficulty]}
             </span>
+            {frequency && (
+              <span className="flex items-center gap-1 rounded-md border border-gray-200 bg-white px-2 py-0.5 text-xs lg:text-sm font-medium text-gray-500 whitespace-nowrap">
+                <CalendarDays className="h-3 w-3 lg:h-3.5 lg:w-3.5 text-gray-400" />
+                {FREQ_LABEL[frequency]}
+              </span>
+            )}
           </div>
-          <div className="flex flex-wrap gap-2">
-            <span className="rounded-full bg-brand-50 text-brand-700 px-3 py-1 text-sm font-medium">{topic}</span>
+          {/* Row 2: Topic · subtopics · calculator */}
+          <div className="flex flex-wrap gap-2 items-center">
+            <span className="rounded-full bg-brand-50 text-brand-700 px-3 py-1 text-sm lg:text-base font-medium">{topic}</span>
             {subtopics?.map((s) => (
-              <span key={s} className="rounded-full bg-gray-100 text-gray-600 px-3 py-1 text-sm font-medium">{s}</span>
+              <span key={s} className="rounded-full bg-gray-100 text-gray-600 px-3 py-1 text-sm lg:text-base font-medium">{s}</span>
             ))}
-            <span className="rounded-full bg-gray-100 text-gray-600 px-3 py-1 text-sm font-medium">
-              {totalMarks} {totalMarks === 1 ? "mark" : "marks"}
-            </span>
+            {calculatorAllowed !== undefined && (
+              <span className={cn(
+                "rounded-full px-3 py-1 text-sm lg:text-base font-medium",
+                calculatorAllowed
+                  ? "bg-blue-50 text-blue-700"
+                  : "bg-orange-50 text-orange-700"
+              )}>
+                {calculatorAllowed ? "Calculator" : "Non-calculator"}
+              </span>
+            )}
           </div>
+        </div>
+        {/* Icon row: BookOpen (reference) · Check · X · Bookmark */}
+        <div className="flex items-center gap-0.5 shrink-0 mt-1">
+          {/* BookOpen — hover tooltip shows reference */}
+          <div className="group relative cursor-default p-1 lg:p-1.5">
+            <BookOpen className="h-4 w-4 lg:h-5 lg:w-5 text-gray-400 group-hover:text-gray-600 transition-colors" />
+            <div className="pointer-events-none absolute top-full right-0 mt-1.5 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+              <div className="rounded-lg bg-gray-900 text-white text-xs lg:text-sm px-3 py-1.5 shadow-lg whitespace-nowrap font-mono">
+                {referenceTag}
+              </div>
+              <div className="absolute bottom-full right-3 border-4 border-transparent border-b-gray-900" />
+            </div>
+          </div>
+          {/* For MCQs: status buttons live here in the header */}
+          {!hasParts && (
+            <>
+              <button onClick={() => toggleStatus(parts[0].id, "CORRECT")} title="Mark correct"
+                className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[parts[0].id] === "CORRECT" ? "bg-green-100 text-green-600" : "text-gray-400 hover:text-green-500")}>
+                <CheckCircle className="h-4 w-4 lg:h-5 lg:w-5" />
+              </button>
+              <button onClick={() => toggleStatus(parts[0].id, "INCORRECT")} title="Mark incorrect"
+                className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[parts[0].id] === "INCORRECT" ? "bg-red-100 text-red-600" : "text-gray-400 hover:text-red-500")}>
+                <XCircle className="h-4 w-4 lg:h-5 lg:w-5" />
+              </button>
+              <button onClick={() => toggleStatus(parts[0].id, "NEEDS_REVIEW")} title="Needs review"
+                className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[parts[0].id] === "NEEDS_REVIEW" ? "bg-yellow-100 text-yellow-600" : "text-gray-400 hover:text-yellow-500")}>
+                <BookmarkIcon className="h-4 w-4 lg:h-5 lg:w-5" />
+              </button>
+            </>
+          )}
         </div>
       </div>
 
       {/* Shared preamble (above all parts) */}
       {preamble && (
-        <div className="px-5 pb-2">
+        <div className="px-5 lg:px-7 pb-2">
           <PartContent content={preamble} imageUrl={parts[0].imageUrl} />
         </div>
       )}
 
       {/* Question body — all parts */}
-      <div className="px-5 pb-4 space-y-4">
+      <div className="px-5 lg:px-7 pb-4 lg:pb-6 space-y-4 lg:space-y-5">
         {renderedParts.map((p, i) => (
           <div key={p.id}>
-            {/* Part label row */}
-            <div className="flex items-center justify-between mb-1">
-              <div className="flex items-center gap-2">
-                {hasParts && p.part && (
-                  <span className="text-base font-bold text-gray-800">({p.part.toLowerCase()})</span>
-                )}
-                <span className="text-sm text-gray-400">{p.marks} {p.marks === 1 ? "mark" : "marks"}</span>
+            {/* Part label row — only for multi-part Section B questions */}
+            {hasParts && (
+              <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center gap-2">
+                  {p.part && (
+                    <span className="text-base lg:text-lg font-bold text-gray-800">({p.part.toLowerCase()})</span>
+                  )}
+                  <span className="text-sm lg:text-base text-gray-400">{p.marks} {p.marks === 1 ? "mark" : "marks"}</span>
+                </div>
+                <div className="flex items-center gap-0.5">
+                  <button onClick={() => toggleStatus(p.id, "CORRECT")} title="Mark correct"
+                    className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[p.id] === "CORRECT" ? "bg-green-100 text-green-600" : "text-gray-400 hover:text-green-500")}>
+                    <CheckCircle className="h-4 w-4 lg:h-5 lg:w-5" />
+                  </button>
+                  <button onClick={() => toggleStatus(p.id, "INCORRECT")} title="Mark incorrect"
+                    className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[p.id] === "INCORRECT" ? "bg-red-100 text-red-600" : "text-gray-400 hover:text-red-500")}>
+                    <XCircle className="h-4 w-4 lg:h-5 lg:w-5" />
+                  </button>
+                  <button onClick={() => toggleStatus(p.id, "NEEDS_REVIEW")} title="Needs review"
+                    className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[p.id] === "NEEDS_REVIEW" ? "bg-yellow-100 text-yellow-600" : "text-gray-400 hover:text-yellow-500")}>
+                    <BookmarkIcon className="h-4 w-4 lg:h-5 lg:w-5" />
+                  </button>
+                </div>
               </div>
-              <div className="flex items-center gap-1">
-                <button onClick={() => toggleStatus(p.id, "CORRECT")} title="Mark correct"
-                  className={cn("rounded-lg p-1 transition-colors", statuses[p.id] === "CORRECT" ? "bg-green-100 text-green-600" : "text-gray-200 hover:text-green-400")}>
-                  <CheckCircle className="h-4 w-4" />
-                </button>
-                <button onClick={() => toggleStatus(p.id, "INCORRECT")} title="Mark incorrect"
-                  className={cn("rounded-lg p-1 transition-colors", statuses[p.id] === "INCORRECT" ? "bg-red-100 text-red-600" : "text-gray-200 hover:text-red-400")}>
-                  <XCircle className="h-4 w-4" />
-                </button>
-                <button onClick={() => toggleStatus(p.id, "NEEDS_REVIEW")} title="Needs review"
-                  className={cn("rounded-lg p-1 transition-colors", statuses[p.id] === "NEEDS_REVIEW" ? "bg-yellow-100 text-yellow-600" : "text-gray-200 hover:text-yellow-400")}>
-                  <BookmarkIcon className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
+            )}
 
             {/* Part content — interactive for MCQ, standard otherwise */}
             {(() => {
@@ -297,10 +369,10 @@ export default function QuestionGroup({ year, examType, topic, subtopics, parts 
 
       {/* Single solution button at the bottom */}
       {hasSolution && (
-        <div className="px-5 pb-5 pt-1 border-t border-gray-50">
+        <div className="px-5 lg:px-7 pb-5 lg:pb-6 pt-1 border-t border-gray-50">
           <button
             onClick={() => setShowSolution(true)}
-            className="rounded-xl px-6 py-2.5 text-base font-semibold bg-brand-600 text-white hover:bg-brand-700 transition-colors"
+            className="rounded-xl px-6 lg:px-8 py-2.5 lg:py-3 text-base lg:text-lg font-semibold bg-brand-600 text-white hover:bg-brand-700 transition-colors"
           >
             Show Solution
           </button>

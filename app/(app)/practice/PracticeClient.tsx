@@ -60,10 +60,10 @@ export default function PracticeClient({ topics, years }: Props) {
     return (
       <div>
         <div className="flex items-center justify-between mb-6">
-          <p className="text-sm text-gray-500">{questions.length} questions</p>
+          <p className="text-sm lg:text-base text-gray-500">{questions.length} questions</p>
           <button
             onClick={reset}
-            className="text-sm text-brand-600 font-medium hover:underline"
+            className="text-sm lg:text-base text-brand-600 font-medium hover:underline"
           >
             ← New practice set
           </button>
@@ -91,16 +91,16 @@ export default function PracticeClient({ topics, years }: Props) {
   }
 
   return (
-    <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-6 space-y-6">
+    <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-6 lg:p-8 space-y-6 lg:space-y-8">
       {/* Topics */}
       <div>
-        <h3 className="text-sm font-semibold text-gray-700 mb-3">Topics (leave blank for all)</h3>
+        <h3 className="text-sm lg:text-base font-semibold text-gray-700 mb-3">Topics (leave blank for all)</h3>
         <div className="flex flex-wrap gap-2">
           {topics.map((t) => (
             <button
               key={t.id}
               onClick={() => toggleTopic(t.id)}
-              className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+              className={`rounded-full px-3 lg:px-4 py-1.5 lg:py-2 text-xs lg:text-sm font-medium transition-colors ${
                 selectedTopics.includes(t.id)
                   ? "bg-brand-600 text-white"
                   : "bg-gray-100 text-gray-600 hover:bg-brand-50 hover:text-brand-700"
@@ -114,13 +114,13 @@ export default function PracticeClient({ topics, years }: Props) {
 
       {/* Difficulty */}
       <div>
-        <h3 className="text-sm font-semibold text-gray-700 mb-3">Difficulty</h3>
+        <h3 className="text-sm lg:text-base font-semibold text-gray-700 mb-3">Difficulty</h3>
         <div className="flex gap-2">
           {["ALL", "EASY", "MEDIUM", "HARD"].map((d) => (
             <button
               key={d}
               onClick={() => setDifficulty(d)}
-              className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+              className={`rounded-full px-3 lg:px-4 py-1.5 lg:py-2 text-xs lg:text-sm font-medium transition-colors ${
                 difficulty === d
                   ? "bg-brand-600 text-white"
                   : "bg-gray-100 text-gray-600 hover:bg-brand-50 hover:text-brand-700"
@@ -134,7 +134,7 @@ export default function PracticeClient({ topics, years }: Props) {
 
       {/* Question count */}
       <div>
-        <h3 className="text-sm font-semibold text-gray-700 mb-3">
+        <h3 className="text-sm lg:text-base font-semibold text-gray-700 mb-3">
           Number of questions: <span className="text-brand-600">{count}</span>
         </h3>
         <input
@@ -146,7 +146,7 @@ export default function PracticeClient({ topics, years }: Props) {
           onChange={(e) => setCount(Number(e.target.value))}
           className="w-full accent-brand-600"
         />
-        <div className="flex justify-between text-xs text-gray-400 mt-1">
+        <div className="flex justify-between text-xs lg:text-sm text-gray-400 mt-1">
           <span>5</span><span>40</span>
         </div>
       </div>
@@ -154,7 +154,7 @@ export default function PracticeClient({ topics, years }: Props) {
       <button
         onClick={startPractice}
         disabled={loading}
-        className="w-full rounded-xl bg-brand-600 py-3 text-sm font-semibold text-white hover:bg-brand-700 transition-colors disabled:opacity-60"
+        className="w-full rounded-xl bg-brand-600 py-3 lg:py-4 text-sm lg:text-base font-semibold text-white hover:bg-brand-700 transition-colors disabled:opacity-60"
       >
         {loading ? "Loading…" : "Start practice →"}
       </button>

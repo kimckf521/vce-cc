@@ -15,7 +15,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Navbar isAdmin={isAdmin} />
-      <main className="flex-1 ml-60 p-8">{children}</main>
+      <main className="flex-1 ml-60 lg:ml-72 p-8 lg:p-10 xl:p-12">{children}</main>
     </div>
   );
 }
