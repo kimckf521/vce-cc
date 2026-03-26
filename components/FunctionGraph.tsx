@@ -220,7 +220,9 @@ export default function FunctionGraph({
           const cy = toSvgY(pt.y);
 
           // Use absolute graph coords if provided, else fall back to anchor+offset
-          let lx: number, ly: number, textAnchor: "start" | "end" | "middle" | "inherit";
+          let lx: number;
+          let ly: number;
+          let textAnchor: "start" | "end" | "middle" | "inherit";
           if (pt.labelX !== undefined && pt.labelY !== undefined) {
             lx = toSvgX(pt.labelX);
             ly = toSvgY(pt.labelY);
@@ -297,7 +299,7 @@ export default function FunctionGraph({
             <g key={`ic${i}`}>
               <circle cx={cx} cy={cy} r={3} fill="#1a1a1a" />
               {pt.label && (
-                <text x={lx} y={ly} fontSize="11" fill="#374151" textAnchor={textAnchor}>{pt.label}</text>
+                <text x={lx} y={ly} fontSize="11" fill="#374151" textAnchor={textAnchor as "start" | "end" | "middle" | "inherit"}>{pt.label}</text>
               )}
             </g>
           );
