@@ -68,6 +68,54 @@ const topicThemes: Record<number, { bg: string; iconBg: string; iconColor: strin
   4: { bg: "from-emerald-50 to-white", iconBg: "bg-emerald-100", iconColor: "text-emerald-600", accent: "text-emerald-700", freqColor: "bg-emerald-100 text-emerald-700" },
 };
 
+const SUBTOPIC_DESCRIPTIONS: Record<string, string> = {
+  // Algebra, Number, and Structure
+  "Algebraic Functions": "Piecewise, hybrid, and absolute value functions — defining rules and sketching their graphs.",
+  "Domain and Range": "Finding maximal domains and ranges, and restricting domains for inverse functions.",
+  "Exponential Functions": "Functions of the form a·bˣ — graphs, transformations, and key features.",
+  "Inverse Functions": "Finding and verifying inverse functions including domain and range relationships.",
+  "Logarithmic Functions": "Logarithmic functions and their transformations, focusing on log\u2091 (natural log).",
+  "Polynomial Functions": "Polynomials up to degree 4 — factorising, key features, and graph sketching.",
+  "Rational Functions": "Functions of the form 1/xⁿ — asymptotes, transformations, and sketching.",
+  "Transformations": "Dilations, reflections, and translations applied to function graphs.",
+  "Trigonometric Functions": "Circular functions sin, cos, and tan — amplitude, period, phase, and graphs.",
+  // Functions, Relations, and Graphs
+  "Exponential Equations": "Solving equations with exponential expressions using logarithm laws.",
+  "Logarithmic Equations": "Solving logarithmic equations analytically and graphically.",
+  "Polynomials": "Polynomial equations — factor theorem, remainder theorem, and solving techniques.",
+  "Quadratics": "Solving quadratic equations by factoring, completing the square, or the quadratic formula.",
+  "Simultaneous Equations": "Solving systems of linear and non-linear equations using substitution or elimination.",
+  // Calculus
+  "Antidifferentiation": "Finding antiderivatives of polynomial, exponential, and trigonometric functions.",
+  "Area Under Curve": "Calculating exact areas bounded by curves using definite integrals.",
+  "Areas Under Curves": "Estimating areas using numerical methods including the trapezium rule.",
+  "Chain Rule": "Differentiating composite functions f(g(x)) using the chain rule.",
+  "Definite Integrals": "Evaluating definite integrals and applying the fundamental theorem of calculus.",
+  "Differentiation": "Finding derivatives from first principles and standard rules; rates of change.",
+  "Fundamental Theorem": "Connecting differentiation and integration via the fundamental theorem of calculus.",
+  "Integration": "Integration techniques and calculating signed areas between curves.",
+  "Optimisation": "Using derivatives to find maximum and minimum values in applied problems.",
+  "Product Rule": "Differentiating products of two functions: d/dx[u·v] = u'v + uv'.",
+  "Quotient Rule": "Differentiating quotients of two functions: d/dx[u/v] = (u'v − uv')/v².",
+  // Data Analysis, Probability, and Statistics
+  "Binomial Distribution": "Discrete distribution for repeated independent trials — mean, variance, and probabilities.",
+  "Combinatorics": "Counting methods including permutations and combinations for probability problems.",
+  "Conditional Probability": "Probability given prior information — Pr(A|B) and independence testing.",
+  "Confidence Intervals": "Constructing and interpreting confidence intervals for a population proportion.",
+  "Continuous Distributions": "Probability density functions for general continuous random variables.",
+  "Continuous Random Variables": "Working with PDFs and CDFs — calculating probabilities and expected values.",
+  "Discrete Distributions": "Probability distributions for discrete random variables using tables and rules.",
+  "Discrete Random Variables": "Expected value, variance, and probability for discrete random variables.",
+  "Normal Distribution": "Standard and general normal distributions — z-scores and probability calculations.",
+  "Probability Rules": "Addition, multiplication, and complement rules for calculating probabilities.",
+  "Sample Proportions": "Distribution of sample proportions and the central limit theorem.",
+  "Sampling": "Simulating sampling distributions to understand statistical inference.",
+};
+
+function getSubtopicDescription(name: string): string {
+  return SUBTOPIC_DESCRIPTIONS[name] ?? "Practice questions for this topic area.";
+}
+
 function freqLabel(yearCount: number): { tag: string; dots: number; title: string } {
   if (yearCount >= 6) return { tag: "Every year", dots: 3, title: `Appeared in ${yearCount} of 8 years — very common exam topic` };
   if (yearCount >= 3) return { tag: "Most years", dots: 2, title: `Appeared in ${yearCount} of 8 years — common exam topic` };
@@ -198,16 +246,14 @@ export default async function TopicsPage() {
                           )}
                         </Link>
 
-                        {/* Year tooltip on hover */}
-                        {years.length > 0 && (
-                          <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
-                            <div className="rounded-lg bg-gray-900 text-white text-xs px-3 py-2 whitespace-nowrap shadow-lg">
-                              <p className="font-semibold mb-0.5">Appeared in</p>
-                              <p className="text-gray-300">{years.join(", ")}</p>
-                              <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900" />
-                            </div>
+                        {/* Description tooltip on hover */}
+                        <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-150 w-56">
+                          <div className="rounded-lg bg-gray-900 text-white text-xs px-3 py-2.5 shadow-lg">
+                            <p className="font-semibold mb-1">{sub.name}</p>
+                            <p className="text-gray-300 leading-relaxed">{getSubtopicDescription(sub.name)}</p>
+                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900" />
                           </div>
-                        )}
+                        </div>
                       </div>
                     );
                   })}
