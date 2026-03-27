@@ -290,11 +290,11 @@ export default async function TopicsPage() {
                         </Link>
 
                         {/* Description tooltip on hover */}
-                        <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-150 w-60 lg:w-72">
+                        <div className="pointer-events-none absolute bottom-full left-0 mb-2 z-10 opacity-0 lg:group-hover:opacity-100 transition-opacity duration-150 w-60 lg:w-72">
                           <div className="rounded-lg bg-gray-900 text-white text-xs lg:text-sm px-3 py-2.5 shadow-lg">
                             <p className="font-semibold mb-1">{sub.name}</p>
                             <p className="text-gray-300 leading-relaxed">{getSubtopicDescription(sub.name)}</p>
-                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900" />
+                            <div className="absolute top-full left-6 border-4 border-transparent border-t-gray-900" />
                           </div>
                         </div>
                       </div>
