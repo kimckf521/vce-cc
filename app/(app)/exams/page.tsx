@@ -109,7 +109,7 @@ export default function ExamsPage() {
             </div>
           </div>
           <p className="text-sm lg:text-base text-gray-500 mb-5">
-            9 short answer questions with no calculator permitted. Tests analytical and algebraic skills.
+            8–9 short answer questions with no calculator permitted. Tests analytical and algebraic skills.
           </p>
           <div className="flex flex-wrap gap-2 mb-5">
             <span className="rounded-full bg-gray-100 px-3 py-1 text-xs lg:text-sm font-medium text-gray-600">Short answer</span>
@@ -138,7 +138,7 @@ export default function ExamsPage() {
             </div>
           </div>
           <p className="text-sm lg:text-base text-gray-500 mb-5">
-            20 multiple choice and 5 extended response questions with CAS calculator permitted.
+            20 multiple choice and 4–5 extended response questions with CAS calculator permitted.
           </p>
           <div className="flex flex-wrap gap-2 mb-5">
             <span className="rounded-full bg-gray-100 px-3 py-1 text-xs lg:text-sm font-medium text-gray-600">Multiple choice</span>
