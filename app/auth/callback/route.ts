@@ -11,7 +11,13 @@ export async function GET(request: Request) {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error && data.user) {
-      // Upsert user into our Prisma DB
+      // Password reset flow — redirect to set new password
+      const type = searchParams.get("type");
+      if (type === "recovery") {
+        return NextResponse.redirect(`${origin}/reset-password`);
+      }
+
+      // Normal signup confirmation — upsert user into our Prisma DB
       await prisma.user.upsert({
         where: { id: data.user.id },
         update: {},
