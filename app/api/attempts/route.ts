@@ -20,3 +20,20 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ attempt });
 }
+
+export async function DELETE(req: NextRequest) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const { questionId } = await req.json();
+  if (!questionId) {
+    return NextResponse.json({ error: "Missing questionId" }, { status: 400 });
+  }
+
+  await prisma.attempt.deleteMany({
+    where: { userId: user.id, questionId },
+  });
+
+  return NextResponse.json({ ok: true });
+}

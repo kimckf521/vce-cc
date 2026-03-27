@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BookOpen, BarChart2, FileText, LogOut, LayoutDashboard, UserCircle } from "lucide-react";
+import { BookOpen, BarChart2, FileText, LogOut, LayoutDashboard, UserCircle, ShieldCheck } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
@@ -52,6 +52,25 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
             {label}
           </Link>
         ))}
+
+        {/* Admin link — only for admins */}
+        {isAdmin && (
+          <>
+            <div className="my-2 border-t border-gray-100" />
+            <Link
+              href="/admin"
+              className={cn(
+                "flex items-center gap-3 rounded-xl px-4 py-3 text-base font-medium transition-colors",
+                pathname === "/admin" || pathname.startsWith("/admin/")
+                  ? "bg-violet-50 text-violet-700"
+                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+              )}
+            >
+              <ShieldCheck className="h-5 w-5 flex-shrink-0" />
+              Admin
+            </Link>
+          </>
+        )}
       </nav>
 
       {/* Sign out */}

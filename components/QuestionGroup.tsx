@@ -213,8 +213,27 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
     .filter((p) => p.solution)
     .map((p) => ({ part: p.part, content: p.solution!.content, imageUrl: p.solution!.imageUrl, videoUrl: p.solution!.videoUrl }));
 
-  function toggleStatus(id: string, s: AttemptStatus) {
-    setStatuses((prev) => ({ ...prev, [id]: prev[id] === s ? null : s }));
+  async function toggleStatus(id: string, s: AttemptStatus) {
+    const next: AttemptStatus = statuses[id] === s ? null : s;
+    setStatuses((prev) => ({ ...prev, [id]: next }));
+
+    try {
+      if (next === null) {
+        await fetch("/api/attempts", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ questionId: id }),
+        });
+      } else {
+        await fetch("/api/attempts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ questionId: id, status: next }),
+        });
+      }
+    } catch {
+      // silently ignore network errors — UI already updated optimistically
+    }
   }
 
   return (

@@ -13,8 +13,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   // Auth disabled for testing
   // if (!user) redirect("/login");
-  // const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-  const isAdmin = true; // treat as admin during testing
+  const dbUser = user ? await prisma.user.findUnique({ where: { id: user.id } }) : null;
+  const isAdmin = dbUser?.role === "ADMIN";
 
   return (
     <div className="flex min-h-screen bg-gray-50">
