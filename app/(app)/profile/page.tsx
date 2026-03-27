@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { CheckCircle, XCircle, BookmarkIcon, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import EditDisplayName from "@/components/EditDisplayName";
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -231,11 +232,8 @@ export default async function ProfilePage() {
         <div className="rounded-2xl border border-gray-100 bg-white shadow-sm divide-y divide-gray-100">
 
           {/* Name row */}
-          <div className="flex items-center justify-between px-5 lg:px-7 py-4 lg:py-5">
-            <div>
-              <p className="text-xs lg:text-sm font-semibold text-gray-400 uppercase tracking-wide mb-0.5">Display name</p>
-              <p className="text-sm lg:text-base font-medium text-gray-900">{displayName}</p>
-            </div>
+          <div className="flex items-center px-5 lg:px-7 py-4 lg:py-5">
+            <EditDisplayName initialName={displayName} />
           </div>
 
           {/* Email row */}
