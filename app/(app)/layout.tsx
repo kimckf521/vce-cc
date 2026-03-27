@@ -11,9 +11,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  // Auth disabled for testing
-  // if (!user) redirect("/login");
-  const dbUser = user ? await prisma.user.findUnique({ where: { id: user.id } }) : null;
+  if (!user) redirect("/login");
+  const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
   const isAdmin = dbUser?.role === "ADMIN";
 
   return (

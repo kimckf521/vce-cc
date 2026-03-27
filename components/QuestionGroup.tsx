@@ -193,6 +193,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
     Object.fromEntries(parts.map((p) => [p.id, p.initialStatus ?? null]))
   );
   const [mcqSelections, setMcqSelections] = useState<Record<string, string | null>>({});
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const questionNumber = parts[0].questionNumber;
   const totalMarks = parts.reduce((sum, p) => sum + p.marks, 0);
@@ -216,25 +217,37 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
     .map((p) => ({ part: p.part, content: p.solution!.content, imageUrl: p.solution!.imageUrl, videoUrl: p.solution!.videoUrl }));
 
   async function toggleStatus(id: string, s: AttemptStatus) {
-    const next: AttemptStatus = statuses[id] === s ? null : s;
-    setStatuses((prev) => ({ ...prev, [id]: next }));
+    const prev = statuses[id];
+    const next: AttemptStatus = prev === s ? null : s;
+    setStatuses((cur) => ({ ...cur, [id]: next }));
+    setSaveError(null);
 
     try {
-      if (next === null) {
-        await fetch("/api/attempts", {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ questionId: id }),
-        });
-      } else {
-        await fetch("/api/attempts", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ questionId: id, status: next }),
-        });
+      const res = next === null
+        ? await fetch("/api/attempts", {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ questionId: id }),
+          })
+        : await fetch("/api/attempts", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ questionId: id, status: next }),
+          });
+
+      if (!res.ok) {
+        // Revert optimistic update on failure
+        setStatuses((cur) => ({ ...cur, [id]: prev }));
+        if (res.status === 401) {
+          setSaveError("Please log in to save your progress.");
+        } else {
+          setSaveError("Failed to save. Please try again.");
+        }
       }
     } catch {
-      // silently ignore network errors — UI already updated optimistically
+      // Network error — revert
+      setStatuses((cur) => ({ ...cur, [id]: prev }));
+      setSaveError("Network error. Please check your connection.");
     }
   }
 
@@ -387,6 +400,14 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
           </div>
         ))}
       </div>
+
+      {/* Save error message */}
+      {saveError && (
+        <div className="mx-5 lg:mx-7 mb-3 rounded-lg bg-red-50 border border-red-200 px-4 py-2.5 text-sm text-red-700 flex items-center justify-between gap-3">
+          <span>{saveError}</span>
+          <button onClick={() => setSaveError(null)} className="text-red-400 hover:text-red-600 text-lg leading-none">×</button>
+        </div>
+      )}
 
       {/* Single solution button at the bottom */}
       {hasSolution && showSolutionButton && (

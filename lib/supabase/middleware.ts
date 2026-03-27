@@ -36,16 +36,15 @@ export async function updateSession(request: NextRequest) {
     url.pathname.startsWith("/practice") ||
     url.pathname.startsWith("/admin");
 
-  // Auth disabled for testing
-  // if (!user && isProtected) {
-  //   url.pathname = "/login";
-  //   return NextResponse.redirect(url);
-  // }
+  if (!user && isProtected) {
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
 
-  // if (user && isAuthPage) {
-  //   url.pathname = "/dashboard";
-  //   return NextResponse.redirect(url);
-  // }
+  if (user && isAuthPage) {
+    url.pathname = "/dashboard";
+    return NextResponse.redirect(url);
+  }
 
   return supabaseResponse;
 }
