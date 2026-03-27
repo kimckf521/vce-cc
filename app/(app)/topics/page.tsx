@@ -247,7 +247,7 @@ export default async function TopicsPage() {
                               title={freqTitle}
                             >
                               <CalendarDays className="h-3 w-3 text-gray-400 shrink-0" />
-                              <span className="hidden sm:inline">{freq}</span>
+                              <span className="hidden sm:inline lg:hidden xl:inline">{freq}</span>
                               <span className="flex gap-0.5 sm:ml-0.5">
                                 {[1, 2, 3].map((d) => (
                                   <span
