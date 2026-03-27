@@ -1,12 +1,6 @@
-export const dynamic = "force-dynamic";
-
-import { prisma } from "@/lib/prisma";
+import { TOPICS } from "@/lib/topics-config";
 import PracticeSetupForm from "@/components/PracticeSetupForm";
 
-export default async function Exam2APage() {
-  const topics = await prisma.topic.findMany({
-    orderBy: { order: "asc" },
-    select: { id: true, name: true, slug: true },
-  });
-  return <PracticeSetupForm mode="exam2a" topics={topics} title="Exam 2A Practice" />;
+export default function Exam2APage() {
+  return <PracticeSetupForm mode="exam2a" topics={[...TOPICS]} title="Exam 2A Practice" />;
 }
