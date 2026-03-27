@@ -17,15 +17,16 @@ function computeGroupCount(questions: { examId: string; questionNumber: number; 
 export default async function DashboardPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return null;
 
   const [dbUser, attempts, topics] = await Promise.all([
-    prisma.user.findUnique({ where: { id: user.id } }),
-    prisma.attempt.groupBy({
-      by: ["status"],
-      where: { userId: user.id },
-      _count: true,
-    }),
+    user ? prisma.user.findUnique({ where: { id: user.id } }) : null,
+    user
+      ? prisma.attempt.groupBy({
+          by: ["status"],
+          where: { userId: user.id },
+          _count: true,
+        })
+      : [],
     prisma.topic.findMany({
       orderBy: { order: "asc" },
       include: {
@@ -57,7 +58,7 @@ export default async function DashboardPage() {
     <div>
       <div className="mb-8">
         <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
-          Welcome back{dbUser?.name ? `, ${dbUser.name}` : ""}
+          Welcome back{dbUser?.name ? `, ${dbUser.name}` : "!"}
         </h1>
         <p className="mt-1 text-gray-500 lg:text-base">
           {totalAttempted} of {totalQuestions} questions attempted
