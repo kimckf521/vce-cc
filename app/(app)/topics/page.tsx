@@ -244,7 +244,6 @@ export default async function TopicsPage() {
                             {/* Frequency badge: dots-only on mobile, full label on sm+ */}
                             <span
                               className="flex items-center gap-0.5 sm:gap-1 rounded-md border border-gray-200 bg-white px-1 sm:px-1.5 py-0.5 text-xs font-medium text-gray-500 shrink-0"
-                              title={freqTitle}
                             >
                               <CalendarDays className="h-3 w-3 text-gray-400 shrink-0" />
                               <span className="hidden sm:inline lg:hidden xl:inline">{freq}</span>
@@ -272,21 +271,18 @@ export default async function TopicsPage() {
                                 <div
                                   className="bg-green-400 rounded-full"
                                   style={{ width: `${(easy / total) * 100}%` }}
-                                  title={`Easy: ${easy}`}
                                 />
                               )}
                               {medium > 0 && (
                                 <div
                                   className="bg-yellow-400 rounded-full"
                                   style={{ width: `${(medium / total) * 100}%` }}
-                                  title={`Medium: ${medium}`}
                                 />
                               )}
                               {hard > 0 && (
                                 <div
                                   className="bg-red-400 rounded-full"
                                   style={{ width: `${(hard / total) * 100}%` }}
-                                  title={`Hard: ${hard}`}
                                 />
                               )}
                             </div>
