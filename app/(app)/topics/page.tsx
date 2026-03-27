@@ -224,7 +224,7 @@ export default async function TopicsPage() {
 
               {/* Subtopic card grid — more columns on wider screens */}
               {topic.subtopics.length > 0 && (
-                <div className="p-4 lg:p-6 border-t border-gray-100 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 lg:gap-4">
+                <div className="p-3 sm:p-4 lg:p-6 border-t border-gray-100 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3 lg:gap-4">
                   {topic.subtopics.map((sub) => {
                     const { total, easy, medium, hard, years } = computeGroupStats(sub.questions);
                     const { tag: freq, dots, title: freqTitle } = freqLabel(years.length);
@@ -234,24 +234,25 @@ export default async function TopicsPage() {
                       <div key={sub.id} className="group relative">
                         <Link
                           href={`/topics/${topic.slug}?subtopic=${sub.slug}`}
-                          className="flex flex-col gap-3 lg:gap-4 rounded-xl border border-gray-100 bg-gray-50 hover:border-gray-200 hover:bg-white hover:shadow-sm transition-all p-3.5 lg:p-5 h-full"
+                          className="flex flex-col gap-2.5 sm:gap-3 lg:gap-4 rounded-xl border border-gray-100 bg-gray-50 hover:border-gray-200 hover:bg-white hover:shadow-sm transition-all p-3 sm:p-3.5 lg:p-5 h-full"
                         >
                           {/* Top row: icon + freq badge */}
-                          <div className="flex items-start justify-between gap-2">
-                            <span className={`flex h-9 w-9 lg:h-11 lg:w-11 items-center justify-center rounded-lg lg:rounded-xl shrink-0 ${theme.iconBg}`}>
-                              <Icon className={`h-4 w-4 lg:h-5 lg:w-5 ${theme.iconColor}`} />
+                          <div className="flex items-start justify-between gap-1.5">
+                            <span className={`flex h-8 w-8 sm:h-9 sm:w-9 lg:h-11 lg:w-11 items-center justify-center rounded-lg lg:rounded-xl shrink-0 ${theme.iconBg}`}>
+                              <Icon className={`h-3.5 w-3.5 sm:h-4 sm:w-4 lg:h-5 lg:w-5 ${theme.iconColor}`} />
                             </span>
+                            {/* Frequency badge: dots-only on mobile, full label on sm+ */}
                             <span
-                              className="flex items-center gap-1 rounded-md border border-gray-200 bg-white px-1.5 py-0.5 text-xs font-medium text-gray-500 whitespace-nowrap"
+                              className="flex items-center gap-0.5 sm:gap-1 rounded-md border border-gray-200 bg-white px-1 sm:px-1.5 py-0.5 text-xs font-medium text-gray-500 shrink-0"
                               title={freqTitle}
                             >
-                              <CalendarDays className="h-3 w-3 text-gray-400" />
-                              {freq}
-                              <span className="flex gap-0.5 ml-0.5">
+                              <CalendarDays className="h-3 w-3 text-gray-400 shrink-0" />
+                              <span className="hidden sm:inline">{freq}</span>
+                              <span className="flex gap-0.5 sm:ml-0.5">
                                 {[1, 2, 3].map((d) => (
                                   <span
                                     key={d}
-                                    className={`h-1.5 w-1.5 rounded-full ${d <= dots ? "bg-gray-500" : "bg-gray-200"}`}
+                                    className={`h-1.5 w-1.5 rounded-full shrink-0 ${d <= dots ? "bg-gray-500" : "bg-gray-200"}`}
                                   />
                                 ))}
                               </span>
@@ -260,13 +261,13 @@ export default async function TopicsPage() {
 
                           {/* Name + count */}
                           <div>
-                            <p className="text-sm lg:text-base font-semibold text-gray-800 leading-snug">{sub.name}</p>
+                            <p className="text-xs sm:text-sm lg:text-base font-semibold text-gray-800 leading-snug">{sub.name}</p>
                             <p className="text-xs lg:text-sm text-gray-400 mt-0.5">{total} question{total !== 1 ? "s" : ""}</p>
                           </div>
 
                           {/* Difficulty bar */}
                           {total > 0 && (
-                            <div className="flex h-1.5 lg:h-2 w-full rounded-full overflow-hidden gap-px mt-auto">
+                            <div className="flex h-1 sm:h-1.5 lg:h-2 w-full rounded-full overflow-hidden gap-px mt-auto">
                               {easy > 0 && (
                                 <div
                                   className="bg-green-400 rounded-full"
