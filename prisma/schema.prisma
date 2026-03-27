@@ -25,8 +25,8 @@ model Subtopic {
   slug      String
   order     Int        @default(0)
   topicId   String
-  questions Question[]
   topic     Topic      @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  questions Question[] @relation("QuestionToSubtopic")
 
   @@unique([topicId, slug])
 }
@@ -57,9 +57,9 @@ model Question {
   updatedAt      DateTime   @updatedAt
   attempts       Attempt[]
   exam           Exam       @relation(fields: [examId], references: [id], onDelete: Cascade)
-  subtopics      Subtopic[]
   topic          Topic      @relation(fields: [topicId], references: [id])
   solution       Solution?
+  subtopics      Subtopic[] @relation("QuestionToSubtopic")
 }
 
 model Solution {
