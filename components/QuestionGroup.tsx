@@ -49,6 +49,8 @@ interface QuestionGroupProps {
   subtopics?: string[];
   calculatorAllowed?: boolean;
   parts: QuestionPart[];
+  /** Whether to show the "Show Solution" button. Defaults to true. */
+  showSolutionButton?: boolean;
 }
 
 const difficultyStyles = {
@@ -185,7 +187,7 @@ const FREQ_LABEL: Record<"rare" | "normal" | "often", string> = {
   often: "Every year",
 };
 
-export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts }: QuestionGroupProps) {
+export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts, showSolutionButton = true }: QuestionGroupProps) {
   const [showSolution, setShowSolution] = useState(false);
   const [statuses, setStatuses] = useState<Record<string, AttemptStatus>>(
     Object.fromEntries(parts.map((p) => [p.id, p.initialStatus ?? null]))
@@ -387,7 +389,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
       </div>
 
       {/* Single solution button at the bottom */}
-      {hasSolution && (
+      {hasSolution && showSolutionButton && (
         <div className="px-5 lg:px-7 pb-5 lg:pb-6 pt-1 border-t border-gray-50">
           <button
             onClick={() => setShowSolution(true)}

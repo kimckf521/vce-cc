@@ -49,6 +49,7 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
   const [count, setCount] = useState<number>(cfg.freedomDefault);
   const [distribution, setDistribution] = useState<number[]>([25, 25, 25, 25]);
   const [diffDist, setDiffDist] = useState<DiffDist>([50, 30, 20]);
+  const [showSolutions, setShowSolutions] = useState(false);
 
   const topicTotal = distribution.reduce((a, b) => a + b, 0);
   const diffTotal = diffDist[0] + diffDist[1] + diffDist[2];
@@ -58,7 +59,7 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
 
   function handleStart() {
     if (!isValid) return;
-    const url = `/practice/session?mode=${mode}&version=${version}&count=${finalCount}&dist=${distribution.join(",")}&diff=${diffDist.join(",")}`;
+    const url = `/practice/session?mode=${mode}&version=${version}&count=${finalCount}&dist=${distribution.join(",")}&diff=${diffDist.join(",")}&solutions=${showSolutions ? "1" : "0"}`;
     router.push(url);
   }
 
@@ -158,6 +159,27 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
           distribution={diffDist}
           onChange={setDiffDist}
         />
+      </div>
+
+      {/* Show solutions toggle */}
+      <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-5 lg:px-6 py-4 lg:py-5">
+        <div>
+          <p className="text-sm lg:text-base font-semibold text-gray-800">Show solutions as I go</p>
+          <p className="text-xs lg:text-sm text-gray-500 mt-0.5">Display a solution button on each question</p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setShowSolutions((v) => !v)}
+          className={cn(
+            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200",
+            showSolutions ? "bg-brand-600" : "bg-gray-200"
+          )}
+        >
+          <span className={cn(
+            "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200",
+            showSolutions ? "translate-x-5" : "translate-x-0"
+          )} />
+        </button>
       </div>
 
       {/* Error message */}

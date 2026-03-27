@@ -14,6 +14,7 @@ interface PageProps {
     dist?: string;
     distB?: string;
     diff?: string;
+    solutions?: string;
   }>;
 }
 
@@ -195,6 +196,7 @@ export default async function SessionPage({ searchParams }: PageProps) {
   }
 
   const version = params.version ?? "exam";
+  const showSolutionButton = params.solutions === "1";
 
   // Parse dist
   function parseDist(raw: string | undefined): number[] {
@@ -290,6 +292,7 @@ export default async function SessionPage({ searchParams }: PageProps) {
                 subtopics={group.subtopics}
                 calculatorAllowed={true}
                 parts={group.parts}
+                showSolutionButton={showSolutionButton}
               />
             ))}
           </div>
@@ -312,6 +315,7 @@ export default async function SessionPage({ searchParams }: PageProps) {
                 subtopics={group.subtopics}
                 calculatorAllowed={true}
                 parts={group.parts}
+                showSolutionButton={showSolutionButton}
               />
             ))}
           </div>
@@ -386,6 +390,7 @@ export default async function SessionPage({ searchParams }: PageProps) {
             subtopics={group.subtopics}
             calculatorAllowed={calculatorAllowed}
             parts={group.parts}
+            showSolutionButton={showSolutionButton}
           />
         ))}
       </div>
