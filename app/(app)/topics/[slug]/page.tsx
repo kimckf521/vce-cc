@@ -83,12 +83,20 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
   if (examValues.includes("EXAM_2_B"))
     examOrConditions.push({ exam: { examType: "EXAM_2" }, part: { not: null } });
 
-  const include = {
-    exam: true,
-    topic: true,
-    subtopics: true,
-    solution: true,
-    attempts: user ? ({ where: { userId: user.id } } as const) : (false as const),
+  const select = {
+    id: true,
+    questionNumber: true,
+    part: true,
+    marks: true,
+    content: true,
+    imageUrl: true,
+    difficulty: true,
+    examId: true,
+    exam: { select: { year: true, examType: true } },
+    topic: { select: { name: true } },
+    subtopics: { select: { name: true } },
+    solution: { select: { content: true, imageUrl: true, videoUrl: true } },
+    attempts: user ? ({ where: { userId: user.id }, select: { status: true } } as const) : (false as const),
   };
 
   // Fetch matching questions for this topic
@@ -101,7 +109,7 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
       }),
       ...(examOrConditions.length > 0 && { OR: examOrConditions }),
     },
-    include,
+    select,
     orderBy: [{ exam: { year: "desc" } }, { questionNumber: "asc" }],
   });
 
@@ -121,7 +129,7 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
               part: { not: null }, // never mix with MCQs
             })),
           },
-          include,
+          select,
           orderBy: [
             { exam: { year: "desc" } },
             { questionNumber: "asc" },

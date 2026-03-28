@@ -41,23 +41,27 @@ export default async function AdminUsersPage() {
   const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
   if (dbUser?.role !== "ADMIN") redirect("/dashboard");
 
-  const [users, totalQuestions] = await Promise.all([
+  const [users, totalQuestions, attemptStats] = await Promise.all([
     prisma.user.findMany({
       orderBy: { createdAt: "desc" },
-      include: {
-        attempts: {
-          select: { status: true },
-        },
-      },
+      select: { id: true, email: true, name: true, role: true, createdAt: true },
     }),
     prisma.question.count(),
+    prisma.attempt.groupBy({
+      by: ["userId", "status"],
+      _count: true,
+    }),
   ]);
 
+  // Build a map: userId → { CORRECT: n, INCORRECT: n, ... }
+  const statsMap = new Map<string, Record<string, number>>();
+  for (const row of attemptStats) {
+    if (!statsMap.has(row.userId)) statsMap.set(row.userId, {});
+    statsMap.get(row.userId)![row.status] = row._count;
+  }
+
   const usersWithStats = users.map((u) => {
-    const counts: Record<string, number> = {};
-    for (const a of u.attempts) {
-      counts[a.status] = (counts[a.status] ?? 0) + 1;
-    }
+    const counts = statsMap.get(u.id) ?? {};
     const correct = counts["CORRECT"] ?? 0;
     const incorrect = counts["INCORRECT"] ?? 0;
     const needsReview = counts["NEEDS_REVIEW"] ?? 0;

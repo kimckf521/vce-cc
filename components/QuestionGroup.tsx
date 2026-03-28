@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import type React from "react";
+import dynamic from "next/dynamic";
 import { CheckCircle, XCircle, BookmarkIcon, BookOpen, CalendarDays } from "lucide-react";
 import { cn } from "@/lib/utils";
 import MathContent from "@/components/MathContent";
-import SolutionModal from "@/components/SolutionModal";
-import CartesianGrid from "@/components/CartesianGrid";
-import FunctionGraph from "@/components/FunctionGraph";
+
+const SolutionModal = dynamic(() => import("@/components/SolutionModal"), { ssr: false });
+const CartesianGrid = dynamic(() => import("@/components/CartesianGrid"), { ssr: false });
+const FunctionGraph = dynamic(() => import("@/components/FunctionGraph"), { ssr: false });
 
 type AttemptStatus = "ATTEMPTED" | "CORRECT" | "INCORRECT" | "NEEDS_REVIEW" | null;
 

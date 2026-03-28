@@ -25,12 +25,19 @@ export default async function ExamPage({ params }: PageProps) {
   // Fetch all questions for this exam ordered by question number then part
   const questions = await prisma.question.findMany({
     where: { examId: id },
-    include: {
-      exam: true,
-      topic: true,
-      subtopics: true,
-      solution: true,
-      attempts: user ? { where: { userId: user.id } } : false,
+    select: {
+      id: true,
+      questionNumber: true,
+      part: true,
+      marks: true,
+      content: true,
+      imageUrl: true,
+      difficulty: true,
+      exam: { select: { year: true, examType: true } },
+      topic: { select: { name: true } },
+      subtopics: { select: { name: true } },
+      solution: { select: { content: true, imageUrl: true, videoUrl: true } },
+      attempts: user ? { where: { userId: user.id }, select: { status: true } } : false,
     },
     orderBy: [{ questionNumber: "asc" }, { part: "asc" }],
   });
