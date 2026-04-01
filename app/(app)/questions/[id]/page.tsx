@@ -40,7 +40,7 @@ export default async function QuestionPage({ params }: PageProps) {
   if (!question) notFound();
 
   // For multi-part questions (part !== null), fetch all sibling parts
-  let parts;
+  let parts: typeof question[];
   if (question.part !== null) {
     const siblings = await prisma.question.findMany({
       where: { examId: question.examId, questionNumber: question.questionNumber },
@@ -52,6 +52,7 @@ export default async function QuestionPage({ params }: PageProps) {
         content: true,
         imageUrl: true,
         difficulty: true,
+        examId: true,
         exam: { select: { year: true, examType: true } },
         topic: { select: { name: true } },
         subtopics: { select: { name: true } },
