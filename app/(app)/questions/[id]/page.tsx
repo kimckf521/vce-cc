@@ -11,57 +11,55 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
+const questionSelect = (userId?: string) => ({
+  id: true,
+  questionNumber: true,
+  part: true,
+  marks: true,
+  content: true,
+  imageUrl: true,
+  difficulty: true,
+  examId: true,
+  exam: { select: { year: true, examType: true } },
+  topic: { select: { name: true } },
+  subtopics: { select: { name: true } },
+  solution: { select: { content: true, imageUrl: true, videoUrl: true } },
+  attempts: userId
+    ? ({ where: { userId }, select: { status: true } } as const)
+    : (false as const),
+} as const);
+
 export default async function QuestionPage({ params }: PageProps) {
   const { id } = await params;
 
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  // Parallel: fetch question metadata (lightweight) + auth
+  const [questionMeta, supabaseResult] = await Promise.all([
+    prisma.question.findUnique({
+      where: { id },
+      select: { id: true, questionNumber: true, part: true, examId: true },
+    }),
+    createClient().then((s) => s.auth.getUser()),
+  ]);
+  if (!questionMeta) notFound();
 
-  // Fetch the target question
-  const question = await prisma.question.findUnique({
-    where: { id },
-    select: {
-      id: true,
-      questionNumber: true,
-      part: true,
-      marks: true,
-      content: true,
-      imageUrl: true,
-      difficulty: true,
-      examId: true,
-      exam: { select: { year: true, examType: true } },
-      topic: { select: { name: true } },
-      subtopics: { select: { name: true } },
-      solution: { select: { content: true, imageUrl: true, videoUrl: true } },
-      attempts: user ? { where: { userId: user.id }, select: { status: true } } : false,
-    },
-  });
+  const user = supabaseResult.data.user;
+  const select = questionSelect(user?.id);
+
+  // Fetch full question data + sibling parts in parallel if multi-part
+  const isSectionB = questionMeta.part !== null;
+  const question = isSectionB
+    ? await prisma.question.findUnique({ where: { id }, select })
+    : await prisma.question.findUnique({ where: { id }, select });
 
   if (!question) notFound();
 
-  // For multi-part questions (part !== null), fetch all sibling parts
-  let parts: typeof question[];
-  if (question.part !== null) {
-    const siblings = await prisma.question.findMany({
-      where: { examId: question.examId, questionNumber: question.questionNumber },
-      select: {
-        id: true,
-        questionNumber: true,
-        part: true,
-        marks: true,
-        content: true,
-        imageUrl: true,
-        difficulty: true,
-        examId: true,
-        exam: { select: { year: true, examType: true } },
-        topic: { select: { name: true } },
-        subtopics: { select: { name: true } },
-        solution: { select: { content: true, imageUrl: true, videoUrl: true } },
-        attempts: user ? { where: { userId: user.id }, select: { status: true } } : false,
-      },
+  let parts: (typeof question)[];
+  if (isSectionB) {
+    parts = await prisma.question.findMany({
+      where: { examId: questionMeta.examId, questionNumber: questionMeta.questionNumber },
+      select,
       orderBy: { part: "asc" },
     });
-    parts = siblings;
   } else {
     parts = [question];
   }

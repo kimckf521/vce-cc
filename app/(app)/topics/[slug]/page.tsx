@@ -54,11 +54,6 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
 
   const user = supabaseResult.data.user;
 
-  const dbUser = user
-    ? await prisma.user.findUnique({ where: { id: user.id }, select: { role: true } })
-    : null;
-  const isAdmin = dbUser?.role === "ADMIN";
-
   const yearCountMap = new Map(subtopicYearCounts.map((r) => [r.subtopicId, Number(r.yearCount)]));
   const subtopicInfos: SubtopicInfo[] = topic.subtopics.map((sub) => {
     const yearCount = yearCountMap.get(sub.id) ?? 0;
@@ -69,12 +64,14 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
 
   const filters: TopicQuestionFilters = { subtopic, exam, difficulty, frequency };
 
-  const allGroups = await fetchQuestionGroups(
-    topic.id,
-    subtopicInfos,
-    filters,
-    user?.id
-  );
+  // Parallel: admin check + question groups fetch
+  const [dbUser, allGroups] = await Promise.all([
+    user
+      ? prisma.user.findUnique({ where: { id: user.id }, select: { role: true } })
+      : null,
+    fetchQuestionGroups(topic.id, subtopicInfos, filters, user?.id),
+  ]);
+  const isAdmin = dbUser?.role === "ADMIN";
 
   const initialGroups = allGroups.slice(0, INITIAL_BATCH);
   const hasMore = allGroups.length > INITIAL_BATCH;

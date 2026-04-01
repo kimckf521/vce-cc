@@ -8,4 +8,6 @@ export const prisma =
     log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
   });
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+// Cache the Prisma client in ALL environments to avoid cold-start reconnections
+// on Vercel serverless functions (each invocation reuses warm Lambda memory)
+globalForPrisma.prisma = prisma;

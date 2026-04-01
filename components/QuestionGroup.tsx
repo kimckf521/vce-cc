@@ -35,7 +35,8 @@ function QuestionVisual({ imageUrl }: { imageUrl?: string | null }) {
     const cfg = JSON.parse(imageUrl.slice(9));
     return <FunctionGraph {...cfg} />;
   }
-  return <img src={imageUrl} alt="Question diagram" className="my-4 max-w-full rounded-lg border border-gray-100" />;
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={imageUrl} alt="Question diagram" loading="lazy" decoding="async" className="my-4 max-w-full rounded-lg border border-gray-100" />;
 }
 
 interface QuestionGroupProps {

@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
@@ -12,6 +10,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) redirect("/login");
+
+  // Admin check runs after auth — fast single-field lookup
   const dbUser = await prisma.user.findUnique({ where: { id: user.id }, select: { role: true } });
   const isAdmin = dbUser?.role === "ADMIN";
 

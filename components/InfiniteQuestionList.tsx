@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import QuestionGroup from "@/components/QuestionGroup";
+import dynamic from "next/dynamic";
 import type { QuestionGroupData, TopicQuestionFilters } from "@/lib/question-groups";
 import { loadMoreGroups } from "@/app/(app)/topics/[slug]/actions";
+
+const QuestionGroup = dynamic(() => import("@/components/QuestionGroup"), { ssr: false });
 
 // Sentinel is placed after the 4th question in each loaded batch,
 // so the next batch prefetches while the user still has content to scroll.
@@ -60,13 +62,15 @@ export default function InfiniteQuestionList({
     const sentinel = sentinelRef.current;
     if (!sentinel) return;
 
+    // Use smaller prefetch margin on mobile to save bandwidth
+    const isMobile = window.innerWidth < 768;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
           loadMore();
         }
       },
-      { rootMargin: "200px" }
+      { rootMargin: isMobile ? "100px" : "200px" }
     );
 
     observer.observe(sentinel);

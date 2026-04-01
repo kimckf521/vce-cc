@@ -8,11 +8,26 @@ const nextConfig = {
         hostname: "*.supabase.co",
       },
     ],
+    // Serve modern formats for smaller image sizes
+    formats: ["image/avif", "image/webp"],
   },
   experimental: {
-    // Tree-shake lucide-react (60+ icons imported) — massive bundle size reduction
-    optimizePackageImports: ["lucide-react"],
+    // Tree-shake heavy packages for smaller bundles on mobile
+    optimizePackageImports: ["lucide-react", "react-markdown", "katex"],
   },
+  // Compress responses for faster transfers
+  compress: true,
+  // Power HTTP headers for caching static assets on Vercel CDN
+  headers: async () => [
+    {
+      source: "/:path*",
+      headers: [
+        { key: "X-DNS-Prefetch-Control", value: "on" },
+      ],
+    },
+  ],
+  // Reduce serverless function size by excluding dev-only modules
+  serverExternalPackages: [],
 };
 
 export default nextConfig;

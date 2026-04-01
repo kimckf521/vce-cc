@@ -14,13 +14,14 @@ interface PageProps {
 export default async function ExamPage({ params }: PageProps) {
   const { id } = await params;
 
-  const exam = await prisma.exam.findUnique({
-    where: { id },
-  });
+  // Parallel: fetch exam metadata + auth at the same time
+  const [exam, supabaseResult] = await Promise.all([
+    prisma.exam.findUnique({ where: { id } }),
+    createClient().then((s) => s.auth.getUser()),
+  ]);
   if (!exam) notFound();
 
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = supabaseResult.data.user;
 
   // Fetch all questions for this exam ordered by question number then part
   const questions = await prisma.question.findMany({

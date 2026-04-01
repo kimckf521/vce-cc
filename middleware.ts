@@ -6,7 +6,19 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
+  // Only run middleware on routes that need auth checks — skip API routes,
+  // static assets, and the landing page to eliminate unnecessary overhead.
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/dashboard/:path*",
+    "/topics/:path*",
+    "/exams/:path*",
+    "/practice/:path*",
+    "/search/:path*",
+    "/questions/:path*",
+    "/history/:path*",
+    "/profile/:path*",
+    "/admin/:path*",
+    "/login",
+    "/signup",
   ],
 };
