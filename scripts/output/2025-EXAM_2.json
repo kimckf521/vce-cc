@@ -1,0 +1,556 @@
+{
+  "year": 2025,
+  "examType": "EXAM_2",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": null,
+      "marks": 1,
+      "content": "A function that has a range of $[6, 12]$ is\n\nA. $f: R \\to R,\\, f(x) = 6 + 3\\cos(9x)$\n\nB. $f: R \\to R,\\, f(x) = 6 + 6\\cos(3x)$\n\nC. $f: R \\to R,\\, f(x) = 9 - 3\\cos(6x)$\n\nD. $f: R \\to R,\\, f(x) = 9 - 6\\cos(3x)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Circular Functions (sin/cos/tan)",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "marks": 1,
+      "content": "All asymptotes of the graph of $y = 2\\tan\\left(\\pi\\left(x + \\dfrac{1}{2}\\right)\\right)$ are given by\n\nA. $x = k,\\, k \\in \\mathbb{Z}$\n\nB. $x = 2k,\\, k \\in \\mathbb{Z}$\n\nC. $x = 2k + 1,\\, k \\in \\mathbb{Z}$\n\nD. $x = \\dfrac{4k+1}{2},\\, k \\in \\mathbb{Z}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Circular Functions (sin/cos/tan)",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": null,
+      "marks": 1,
+      "content": "The graph of $y = f(x)$ is shown below.\n\nWhich one of the following options best represents the graph of $y = f(-x) + 2$?\n\nA. Graph A\nB. Graph B\nC. Graph C\nD. Graph D",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": "The graph of y = f(x) shows a curve passing through the region from x = -4 to x = 4, with y-values between approximately -1 and 2. It has a wave-like shape with a local maximum near x = -2 at y ≈ 1, dips to about y ≈ -1 near x = 0, then rises to about y ≈ 2 near x = 3. Four options A, B, C, D show transformed versions: A and B have the same y-range as original, C and D are shifted up by 2 units. A and C appear reflected in the y-axis, B and D appear as the original."
+    },
+    {
+      "questionNumber": 4,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the system of equations below containing the parameter $k$, where $k \\in R$.\n$$kx + 3y = k^2$$\n$$2x + (2k+1)y = 6 - 2k$$\n\nFind the value(s) of $k$ for which this system has no real solutions.\n\nA. $k = -2$ only\n\nB. $k = \\dfrac{3}{2}$ only\n\nC. $k = -2$ or $\\dfrac{3}{2}$\n\nD. $k \\in R \\setminus \\left\\{-2, \\dfrac{3}{2}\\right\\}$",
+      "topic": "Algebra",
+      "subtopic": "Simultaneous Equations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": null,
+      "marks": 1,
+      "content": "Which of the following sets represents a function that has an inverse function?\n\nA. $\\{(1, 3), (2, 0), (2, 1)\\}$\n\nB. $\\{(-1, 3), (2, 2), (3, 1)\\}$\n\nC. $\\{(-1, 3), (0, 1), (1, 3)\\}$\n\nD. $\\{(1, 0), (2, 3), (1, 3)\\}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "marks": 1,
+      "content": "The trapezium rule is used, with two trapeziums, to estimate the area bounded by the graph of $y = f(x)$, the $x$-axis and the lines $x = 0$ and $x = 1$.\n\nFor which function will the trapezium rule estimate be **larger** than the exact area?\n\nA. $f(x) = 3 - e^x$\n\nB. $f(x) = x^3 + 1$\n\nC. $f(x) = 3\\sin(x) + 1$\n\nD. $f(x) = \\log_e(x + 3)$",
+      "topic": "Calculus",
+      "subtopic": "Definite Integrals",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the algorithm below.\n\n```\nn ← 17\nk ← 5\nwhile n > k\n    n ← n - k\n    print n\nend while\n```\n\nIn order, the values printed by the algorithm are\n\nA. 12\n\nB. 12, 7\n\nC. 12, 7, 2\n\nD. 12, 7, 2, −3",
+      "topic": "Algebra",
+      "subtopic": "Inequalities",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": null,
+      "marks": 1,
+      "content": "A random sample of $n$ Victorian households is taken to estimate the proportion of all Victorian households that have vegetable gardens. The approximate 95% confidence interval calculated using this sample is $(0.248, 0.552)$, correct to three decimal places.\n\nThe number of households, $n$, in the sample is\n\nA. 10\n\nB. 28\n\nC. 40\n\nD. 49",
+      "topic": "Statistics",
+      "subtopic": "Confidence Intervals",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": null,
+      "marks": 1,
+      "content": "One day, at a particular school, $m$ students walked to school and the remaining $n$ students travelled to school using a different form of transport.\n\nOf the $m$ students who walked, 20% took at least 30 minutes to get to school.\n\nOf the $n$ students who used a different form of transport, 40% took at least 30 minutes to get to school.\n\nGiven that a randomly selected student took at least 30 minutes to get to school, the probability that they walked to school is given by\n\nA. $\\dfrac{m}{m + 2n}$\n\nB. $\\dfrac{2n}{m + 2n}$\n\nC. $\\dfrac{m}{5(m + n)}$\n\nD. $\\dfrac{1}{3}$",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 10,
+      "part": null,
+      "marks": 1,
+      "content": "Consider $f: R \\to R,\\, f(x) = 2x^2 + x - 1$ and $g: R \\to R,\\, g(x) = \\sin(x)$.\n\nThe inequality $(f \\circ g)(x) > 0$ is satisfied when\n\nA. $\\sin(x) \\leq -1$\n\nB. $-1 < \\sin(x) < 0$\n\nC. $\\dfrac{1}{2} < \\sin(x) \\leq 1$\n\nD. $0 < \\sin(x) < \\dfrac{1}{2}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Circular Functions (sin/cos/tan)",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 11,
+      "part": null,
+      "marks": 1,
+      "content": "The chart below shows the daily price of a stock market share over a 30-day period.\n\nOver which of the following time intervals did the daily price undergo the greatest average rate of change?\n\nA. day 3 to day 10\n\nB. day 3 to day 17\n\nC. day 14 to day 21\n\nD. day 14 to day 28",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": "A line chart showing share price ($) on the y-axis (ranging from 34 to 40) versus day on the x-axis (0 to 30). The price starts around 35.5 at day 0, drops to about 35 at day 3-5, fluctuates between 35-36.5 from day 5-15, then jumps to about 37.5 around day 17-18, dips slightly, then rises to peak near 39.5-40 around day 27, ending near 39 at day 30."
+    },
+    {
+      "questionNumber": 12,
+      "part": null,
+      "marks": 1,
+      "content": "For a normal random variable $X$, it is known that $\\Pr(X > 200) = 0.325$ and $\\Pr(180 < X < 200) = 0.589$.\n\nThe mean and standard deviation of $X$ are closest to\n\nA. 190 and 10\n\nB. 190 and 11\n\nC. 195 and 10\n\nD. 195 and 11",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 13,
+      "part": null,
+      "marks": 1,
+      "content": "The graphs of $y = f(x)$ and $y = g(x)$ are sketched on the same set of axes below.\n\nWhich of the following could be the graph of $y = (g \\circ f)(x)$?\n\nA. Graph A\nB. Graph B\nC. Graph C\nD. Graph D",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "HARD",
+      "imageDescription": "The original graph shows y = f(x) as a line with positive slope passing through the origin, and y = g(x) as a cubic-like curve that oscillates, crossing the x-axis at the origin and having a local max and local min. Four options A-D show different wave-like curves. Option A shows oscillations crossing the x-axis symmetrically. Option B shows a curve with oscillations that goes negative on the right. Option C shows oscillations all above the x-axis on the right and below on the left. Option D shows oscillations all above the x-axis."
+    },
+    {
+      "questionNumber": 14,
+      "part": null,
+      "marks": 1,
+      "content": "Let $f$ be the probability density function for a continuous random variable $X$, where\n$$f(x) = \\begin{cases} k\\sin(x) & 0 \\leq x < \\dfrac{\\pi}{4} \\\\ k\\cos(x) & \\dfrac{\\pi}{4} \\leq x \\leq \\dfrac{\\pi}{2} \\\\ 0 & \\text{otherwise} \\end{cases}$$\nand $k$ is a positive real number.\n\nThe value of $k$ is\n\nA. $\\dfrac{1}{\\sqrt{2}}$\n\nB. $\\dfrac{1}{2 - \\sqrt{2}}$\n\nC. $\\sqrt{2} + 2$\n\nD. $2 - \\sqrt{2}$",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 15,
+      "part": null,
+      "marks": 1,
+      "content": "The graph of $y = g(x)$ passes through the point $(1, 3)$.\n\nThe graph of $y = 1 - g(2x - 3)$ must pass through the point\n\nA. $(-1, -2)$\n\nB. $(2, -2)$\n\nC. $(-1, 2)$\n\nD. $(2, 2)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 16,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the function $h(x) = a\\log_e(bx)$, where $a, b \\in R \\setminus \\{0\\}$.\n\nGiven that its derivative $h'(x)$ has range $(0, \\infty)$, which of the following **must** be true?\n\nA. $a > 0$ only\n\nB. $a > 0$ and $b < 0$\n\nC. $a > 0$ and $b > 0$\n\nD. $ab > 0$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 17,
+      "part": null,
+      "marks": 1,
+      "content": "Given that $f: R \\to R$ satisfies $\\displaystyle\\int_1^2 f(x)\\,dx > \\int_1^3 f(x)\\,dx$, the graph of $y = f(x)$ could be\n\nA. Graph A\nB. Graph B\nC. Graph C\nD. Graph D",
+      "topic": "Calculus",
+      "subtopic": "Definite Integrals",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Four graphs are shown, each on axes with x from 0 to 4 and y-axis. Graph A: a U-shaped curve (concave up) with minimum between x=1 and x=2, entirely above x-axis. Graph B: a piecewise function with a horizontal segment at positive y from about x=0 to x=2.5, then rising steeply, with an open circle at x=2 below the x-axis. Graph C: a curve rising steeply near x=1, with an open circle above, then a horizontal segment at moderate y from x=2 to x=4. Graph D: a curve that goes below x-axis between approximately x=1 and x=3, with a local minimum."
+    },
+    {
+      "questionNumber": 18,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the following graphs, which represent probability mass functions.\n\nI, II, III, IV are shown.\n\nWhich pair of these probability mass functions has the same mean?\n\nA. I and II\n\nB. I and IV\n\nC. II and III\n\nD. II and IV",
+      "topic": "Probability",
+      "subtopic": "Discrete Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Four probability mass function graphs (I, II, III, IV), each showing p(x) vs x for x = 1,2,3,4,5. Graph I: p(1)≈0.1, p(2)≈0.4, p(3)≈0.4, p(4)≈0.1, p(5)≈0.05 (approximately). Graph II: p(1)≈0.1, p(2)≈0.1, p(3)≈0.2, p(4)≈0.3, p(5)≈0.4 (approximately). Graph III: p(1)≈0.5, p(2)≈0.1, p(3)≈0.25, p(4)≈0.1, p(5)≈0.1 (approximately). Graph IV: p(1)≈0.2, p(2)≈0.2, p(3)≈0.2, p(4)≈0.2, p(5)≈0.05 (approximately)."
+    },
+    {
+      "questionNumber": 19,
+      "part": null,
+      "marks": 1,
+      "content": "Let $A$ be a point on the line $y = x + c$ and $B$ be a point on the curve $y = \\log_e(x - 1)$.\n\nIf $A$ and $B$ are placed such that the line segment $AB$ has the minimum possible length, and this length is $\\sqrt{2}$, the value of $c$ must be\n\nA. $\\sqrt{2} - 2$\n\nB. $\\sqrt{2}$\n\nC. $1$\n\nD. $0$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 20,
+      "part": null,
+      "marks": 1,
+      "content": "Let $a > 1$, and consider the functions $f$ and $g$ defined below.\n$$f: R \\to R,\\, f(x) = a^x$$\n$$g: R \\to R,\\, g(x) = a^{2x+2}$$\n\nWhich one of the following sequences of transformations, when applied to $f(x)$, does **not** produce $g(x)$?\n\nA. dilation by a factor of $\\dfrac{1}{2}$ from the $y$-axis, then translation by 1 unit in the negative direction of the $x$-axis\n\nB. dilation by a factor of $\\dfrac{1}{2}$ from the $y$-axis, then dilation by a factor of $a^2$ from the $x$-axis\n\nC. dilation by a factor of $a$ from the $x$-axis, then dilation by a factor of $\\dfrac{1}{2}$ from the $y$-axis, then translation by 1 unit in the positive direction of the $x$-axis\n\nD. dilation by a factor of $a^3$ from the $x$-axis, then translation by 1 unit in the positive direction of the $x$-axis, then dilation by a factor of $\\dfrac{1}{2}$ from the $y$-axis",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "marks": 2,
+      "content": "Let $g: R \\to R$ be defined by $g(x) = 4x^3 - 3x^4$.\n\nFind the coordinates of both stationary points of $g$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "marks": 2,
+      "content": "Sketch the graph of $y = g(x)$ on the axes below, labelling the stationary points and axial intercepts with their coordinates.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Blank set of axes provided with x-axis from -2 to 2 and y-axis from -2 to 2."
+    },
+    {
+      "questionNumber": 1,
+      "part": "c",
+      "marks": 2,
+      "content": "Complete the following gradient table with appropriate values of $x$ and $g'(x)$ to show that $g$ has a stationary point of inflection.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "A table with two rows: x and g'(x), with three empty columns to be filled in."
+    },
+    {
+      "questionNumber": 1,
+      "part": "d",
+      "marks": 2,
+      "content": "Find the average value of $g$ between $x = 0$ and $x = 2$.",
+      "topic": "Calculus",
+      "subtopic": "Definite Integrals",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "e",
+      "marks": 3,
+      "content": "Let $h$ be the result after applying a sequence of transformations to $g$, such that $h$ has a stationary point of inflection at $(1, 0)$ and a local maximum at $(-1, 1)$.\n\nWrite down a possible sequence of three transformations to map from $g$ to $h$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "f",
+      "marks": 2,
+      "content": "Let $X \\sim \\text{Bi}(4, p)$ be a binomial random variable.\n\nShow that $\\Pr(X \\geq 3) = g(p)$ for all $p \\in [0, 1]$.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "marks": 3,
+      "content": "Let $f: R \\to R,\\, f(x) = \\dfrac{x}{2} + 7$ and $g: R \\to R,\\, g(x) = Ae^{kx}$ where $A, k \\in R$.\n\nThe graphs of $y = f(x)$ and $y = g(x)$ intersect at the points $(-12, 1)$ and $(2, 8)$.\n\nWrite down two simultaneous equations in terms of $A$ and $k$.\n\nSolve them, using algebra, to show that $A = 2^{\\frac{18}{7}}$ and $k = \\dfrac{3}{14}\\log_e(2)$.",
+      "topic": "Algebra",
+      "subtopic": "Exponential Equations",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph showing y = f(x) as a straight line and y = g(x) as an exponential curve intersecting at (-12, 1) and (2, 8)."
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "marks": 1,
+      "content": "Find the value of $b$, where $b \\in R$, such that $g(x)$ can be expressed in the form $g(x) = A \\times 2^{bx}$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Exponential Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "c",
+      "marks": 2,
+      "content": "Use a definite integral to evaluate the area bounded by the graphs of $y = f(x)$ and $y = g(x)$, where $x \\in [-12, 2]$.\n\nGive the area correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Areas Under Curves",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "d.i",
+      "marks": 1,
+      "content": "Let $h(x) = f(x) - g(x)$.\n\nWrite down an expression for the derivative of $h(x)$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "d.ii",
+      "marks": 1,
+      "content": "Find the maximum value of $h(x)$, where $x \\in [-12, 2]$.\n\nGive your answer correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "e",
+      "marks": 2,
+      "content": "Let $g^{-1}$ be the inverse of $g$.\n\nFind the points where the graph of $y = g^{-1}(x)$ intersects with the graph of $y = 2(x - 7)$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "f.i",
+      "marks": 2,
+      "content": "Let $F$ be an anti-derivative of $f$ that passes through $(0, c)$, where $c \\in R$.\n\nShow that it is **not** possible for the graph of $y = F(x)$ to pass through both $(-12, 1)$ and $(2, 8)$.",
+      "topic": "Calculus",
+      "subtopic": "Antiderivatives",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "f.ii",
+      "marks": 2,
+      "content": "The graph of $y = F(x)$ can be dilated by a factor of $m$ from the $x$-axis such that its image passes through both $(-12, 1)$ and $(2, 8)$.\n\nFind the values of $m$ and $c$.",
+      "topic": "Calculus",
+      "subtopic": "Antiderivatives",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a.i",
+      "marks": 1,
+      "content": "The time taken for a driver to travel to work each day, in minutes, is modelled by a continuous random variable $T$ with probability density function\n$$f(t) = \\begin{cases} \\dfrac{1}{1215000}(t-29)(59-t)^3 & 29 \\leq t \\leq 59 \\\\ 0 & \\text{otherwise} \\end{cases}$$\n\nFind the mean time taken, in minutes, for the driver to travel to work each day.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a.ii",
+      "marks": 2,
+      "content": "Find the standard deviation of the time taken, in minutes, for the driver to travel to work each day.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b.i",
+      "marks": 1,
+      "content": "The driver allows $k$ minutes to travel to work each day. If the journey takes longer than $k$ minutes, the driver will be late. Whether the driver is late on a particular day is independent of whether they are late on any other day.\n\nIf $k = 47$, write a definite integral to show that the probability of the driver being late is 0.08704",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b.ii",
+      "marks": 2,
+      "content": "If $k = 47$, find the probability that the driver will be late on at least one day in a five-day working week.\n\nGive your answer correct to four decimal places.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b.iii",
+      "marks": 2,
+      "content": "For $k = 47$, let $\\hat{P}$ be the proportion of days the driver is late in any five-day working week. Find $\\Pr(0.4 \\leq \\hat{P} \\leq 0.6)$ correct to four decimal places.",
+      "topic": "Statistics",
+      "subtopic": "Sample Proportions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b.iv",
+      "marks": 2,
+      "content": "Find the **integer** $k$ such that the probability, correct to one decimal place, of the driver being late at least once in any five-day working week is 0.2",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "c.i",
+      "marks": 1,
+      "content": "At a given traffic light, the wait time is modelled by a normal distribution with a mean of 2.5 minutes and a standard deviation of $\\sigma$ minutes.\n\nIf $\\sigma = 0.6$, find the probability that the wait time will be less than 3.5 minutes.\n\nGive your answer correct to two decimal places.",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "c.ii",
+      "marks": 1,
+      "content": "Find the value of $\\sigma$ such that there is a 2% chance of a wait time longer than 3.5 minutes.\n\nGive your answer correct to two decimal places.",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "d",
+      "marks": 2,
+      "content": "The driver passes through three traffic lights ($A$, $B$ and $C$) on their journey to work. The probability of each traffic light being red is shown in the table below.\n\n| Traffic light | A | B | C |\n|---|---|---|---|\n| Probability that the traffic light is red | 0.2 | 0.3 | 0.1 |\n\nLet $Y$ be the random variable representing the number of traffic lights that are red on the driver's journey to work. Assume that each traffic light being red is independent of any other traffic light being red.\n\nComplete the following table for the probability distribution of $Y$.\n\n| $y$ | 0 | 1 | 2 | 3 |\n|---|---|---|---|---|\n| $\\Pr(Y = y)$ | | | | |",
+      "topic": "Probability",
+      "subtopic": "Discrete Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "marks": 1,
+      "content": "Consider the function $f: \\left[0, \\dfrac{5\\pi}{2}\\right] \\to R$, $f(x) = \\sin(x) + 1$.\n\nEvaluate $f\\left(\\dfrac{2\\pi}{3}\\right)$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Circular Functions (sin/cos/tan)",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "marks": 1,
+      "content": "Find the exact values of $x$ for which $f(x) = \\dfrac{3}{2}$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Circular Functions (sin/cos/tan)",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "c",
+      "marks": 2,
+      "content": "There exist real numbers $a$ and $k$ in the interval $\\left(0, \\dfrac{5\\pi}{2}\\right]$, such that $f(x + k) = f(x)$ for all $x \\in [0, a]$.\n\nFind the value of $k$ and the largest possible value of $a$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Circular Functions (sin/cos/tan)",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "d",
+      "marks": 1,
+      "content": "Consider the tangent to the graph of $y = f(x)$ at the point $A$ where $x = \\dfrac{2\\pi}{3}$.\n\nFind the equation of the tangent to the graph of $y = f(x)$ at the point where $x = \\dfrac{2\\pi}{3}$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": "Graph of y = f(x) = sin(x) + 1 shown on axes from 0 to 2π, with point A marked at x = 2π/3. A dashed tangent line is drawn at point A."
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.i",
+      "marks": 1,
+      "content": "Apply two iterations of Newton's method to $f$ with $x_0 = \\dfrac{2\\pi}{3}$.\n\nWrite down $x_2$, correct to one decimal place.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.ii",
+      "marks": 1,
+      "content": "On the axes in part d, draw the tangent to the graph of $y = f(x)$ at the point where $x = x_1$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Same graph as part d, student must draw a tangent line at x = x₁ on the provided axes."
+    },
+    {
+      "questionNumber": 4,
+      "part": "f.i",
+      "marks": 2,
+      "content": "Now consider the line $y = t(x)$, which is the tangent to the graph of $y = f(x)$ at the point $(p, f(p))$, where $p \\in \\left(0, \\dfrac{5\\pi}{2}\\right]$.\n\nShow that $t(x) = \\cos(p)(x - p) + \\sin(p) + 1$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph showing y = f(x) = sin(x) + 1 with a tangent line y = t(x) drawn at a general point (p, f(p))."
+    },
+    {
+      "questionNumber": 4,
+      "part": "f.ii",
+      "marks": 2,
+      "content": "Determine the minimum and maximum possible values for the $y$-intercept of $y = t(x)$, for $p \\in \\left(0, \\dfrac{5\\pi}{2}\\right]$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "f.iii",
+      "marks": 2,
+      "content": "Determine the values of $p$ for which $y = t(x)$ has a unique $x$-intercept that is equal to the $x$-intercept of $y = f(x)$.\n\nGive your answers correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "g.i",
+      "marks": 2,
+      "content": "Let $g: \\left[0, \\dfrac{5\\pi}{2}\\right] \\to R$, $g(x) = ax^3 + bx^2 + cx + d$ be a polynomial function, where $a, b, c, d \\in R$.\n\nSuppose $g(0) = f(0)$ and $g'(0) = f'(0)$.\n\nShow that $c = 1$ and $d = 1$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "g.ii",
+      "marks": 2,
+      "content": "If $g(2\\pi) = f(2\\pi)$ and $g'(2\\pi) = f'(2\\pi)$, determine the area bounded by the graphs of $y = f(x)$ and $y = g(x)$, for $x \\in [0, 2\\pi]$.\n\nGive your answer correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Areas Under Curves",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "g.iii",
+      "marks": 2,
+      "content": "Let $a = 0$, $c = 1$, $d = 1$.\n\nFind $b$ and $r$, such that $g(r) = f(r)$ and $g'(r) = f'(r)$, where $b \\in R$ and $r \\in \\left(0, \\dfrac{5\\pi}{2}\\right)$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    }
+  ]
+}

@@ -56,7 +56,7 @@ export default async function ExamPage({ params }: PageProps) {
     }, {} as Record<number, typeof questions>);
   const sectionBGroups = Object.values(sectionBMap);
 
-  const isTwoSection = sectionA.length > 0 && sectionBGroups.length > 0;
+  const isTwoSection = exam.examType === "EXAM_2" && sectionA.length > 0 && sectionBGroups.length > 0;
   const title = `${exam.year} Mathematical Methods — Exam ${exam.examType === "EXAM_1" ? "1" : "2"}`;
 
   function toGroupParts(group: typeof questions) {

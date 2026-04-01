@@ -25,6 +25,9 @@ export default async function ExamsPage() {
   const exam1s = examList.filter((e) => e.examType === "EXAM_1").sort((a, b) => a.year - b.year);
   const exam2s = examList.filter((e) => e.examType === "EXAM_2").sort((a, b) => a.year - b.year);
 
+  const exam1Range = exam1s.length > 0 ? `${exam1s[0].year} – ${exam1s[exam1s.length - 1].year}` : "";
+  const exam2Range = exam2s.length > 0 ? `${exam2s[0].year} – ${exam2s[exam2s.length - 1].year}` : "";
+
   return (
     <div>
       <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Past Papers</h1>
@@ -46,7 +49,7 @@ export default async function ExamsPage() {
               </p>
             </div>
           </div>
-          <p className="text-gray-500 lg:text-base mb-5">{exam1s.length} papers · 2016 – 2023</p>
+          <p className="text-gray-500 lg:text-base mb-5">{exam1s.length} papers · {exam1Range}</p>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-3 lg:gap-4">
             {exam1s.map((exam) => (
@@ -78,7 +81,7 @@ export default async function ExamsPage() {
               </p>
             </div>
           </div>
-          <p className="text-gray-500 lg:text-base mb-5">{exam2s.length} papers · 2016 – 2023</p>
+          <p className="text-gray-500 lg:text-base mb-5">{exam2s.length} papers · {exam2Range}</p>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-3 lg:gap-4">
             {exam2s.map((exam) => (

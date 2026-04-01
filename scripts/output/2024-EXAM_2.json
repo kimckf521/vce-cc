@@ -1,0 +1,636 @@
+{
+  "year": 2024,
+  "examType": "EXAM_2",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": null,
+      "marks": 1,
+      "content": "The asymptote(s) of the graph of $y = \\log_e(x + 1) - 3$ are\n\n**A.** $x = -1$ only\n\n**B.** $x = 1$ only\n\n**C.** $y = -3$ only\n\n**D.** $x = -1$ and $y = -3$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Logarithmic Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "marks": 1,
+      "content": "A function $g : R \\to R$ has the derivative $g'(x) = x^3 - x$.\nGiven that $g(0) = 5$, the value of $g(2)$ is\n\n**A.** 2\n\n**B.** 3\n\n**C.** 5\n\n**D.** 7",
+      "topic": "Calculus",
+      "subtopic": "Antiderivatives",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": null,
+      "marks": 1,
+      "content": "A discrete random variable $X$ is defined using the probability distribution below, where $k$ is a positive real number.\n\n| $x$ | 0 | 1 | 2 | 3 | 4 |\n|---|---|---|---|---|---|\n| $\\Pr(X = x)$ | $2k$ | $3k$ | $5k$ | $3k$ | $2k$ |\n\nFind $\\Pr(X < 4 \\mid X > 1)$.\n\n**A.** $\\dfrac{13}{15}$\n\n**B.** $\\dfrac{11}{13}$\n\n**C.** $\\dfrac{4}{5}$\n\n**D.** $\\dfrac{8}{15}$",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": null,
+      "marks": 1,
+      "content": "If $\\displaystyle\\int_a^b f(x)\\,dx = -5$ and $\\displaystyle\\int_a^c f(x)\\,dx = 3$, where $a < b < c$, then $\\displaystyle\\int_b^c 2f(x)\\,dx$ is equal to\n\n**A.** $-16$\n\n**B.** $16$\n\n**C.** $-4$\n\n**D.** $4$",
+      "topic": "Calculus",
+      "subtopic": "Definite Integrals",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the functions $f: (1, \\infty) \\to R$, $f(x) = x^2 - 4x$ and $g: R \\to R$, $g(x) = e^{-x}$.\n\nThe range of the composite function $g(f(x))$ is\n\n**A.** $(0, e^3)$\n\n**B.** $(0, e^3]$\n\n**C.** $(0, e^4)$\n\n**D.** $(0, e^4]$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Exponential Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the function $f(x) = \\dfrac{2x+1}{3-x}$ with domain $x \\in R \\setminus \\{3\\}$.\n\nThe inverse of $f$ is\n\n**A.** $f^{-1}(x) = \\dfrac{3x-1}{x+2}$ with domain $x \\in R \\setminus \\{3\\}$\n\n**B.** $f^{-1}(x) = 3 - \\dfrac{7}{x+2}$ with domain $x \\in R \\setminus \\{-2\\}$\n\n**C.** $f^{-1}(x) = 3 + \\dfrac{5}{x+2}$ with domain $x \\in R \\setminus \\{-2\\}$\n\n**D.** $f^{-1}(x) = \\dfrac{1-3x}{x+2}$ with domain $x \\in R \\setminus \\{-2\\}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": null,
+      "marks": 1,
+      "content": "A fair six-sided die is repeatedly rolled. What is the minimum number of rolls required so that the probability of rolling a six at least once is greater than 0.95?\n\n**A.** 15\n\n**B.** 16\n\n**C.** 17\n\n**D.** 18",
+      "topic": "Probability",
+      "subtopic": "Probability Rules",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": null,
+      "marks": 1,
+      "content": "Some values of the functions $f: R \\to R$ and $g: R \\to R$ are shown below.\n\n| $x$ | 1 | 2 | 3 |\n|---|---|---|---|\n| $f(x)$ | 0 | 4 | 5 |\n| $g(x)$ | 3 | 4 | $-5$ |\n\nThe graph of the function $h(x) = f(x) - g(x)$ must have an $x$-intercept at\n\n**A.** $(2, 0)$\n\n**B.** $(3, 0)$\n\n**C.** $(4, 0)$\n\n**D.** $(5, 0)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": null,
+      "marks": 1,
+      "content": "At a Year 12 formal, 45% of the students travelled to the event in a hired limousine, while the remaining 55% were driven to the event by a parent.\n\nOf the students who travelled in a hired limousine, 30% had a professional photo taken.\n\nOf the students who were driven by a parent, 60% had a professional photo taken.\n\nGiven that a student had a professional photo taken, what is the probability that the student travelled to the event in a hired limousine?\n\n**A.** $\\dfrac{1}{8}$\n\n**B.** $\\dfrac{27}{200}$\n\n**C.** $\\dfrac{9}{31}$\n\n**D.** $\\dfrac{22}{31}$",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 10,
+      "part": null,
+      "marks": 1,
+      "content": "Suppose a function $f: [0, 5] \\to R$ and its derivative $f': [0, 5] \\to R$ are defined and continuous on their domains. If $f'(2) < 0$ and $f'(4) > 0$, which one of these statements must be true?\n\n**A.** $f$ is strictly decreasing on $[0, 2]$.\n\n**B.** $f$ does not have an inverse function.\n\n**C.** $f$ is positive on $[4, 5]$.\n\n**D.** $f$ has a local minimum at $x = 3$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 11,
+      "part": null,
+      "marks": 1,
+      "content": "Twelve students sit in a classroom, with seven students in the first row and the other five students in the second row. Three students are chosen randomly from the class.\n\nThe probability that exactly two of the three students chosen are in the first row is\n\n**A.** $\\dfrac{7}{44}$\n\n**B.** $\\dfrac{21}{44}$\n\n**C.** $\\dfrac{5}{22}$\n\n**D.** $\\dfrac{245}{576}$",
+      "topic": "Probability",
+      "subtopic": "Probability Rules",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 12,
+      "part": null,
+      "marks": 1,
+      "content": "The graph of $y = f(x)$ is shown below.\n\nWhich of the following options best represents the graph of $y = f(2x + 1)$?\n\n**A.** Option A\n\n**B.** Option B\n\n**C.** Option C\n\n**D.** Option D",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": "The graph of y = f(x) shows a curve that starts from the left near y = 1, dips slightly below, passes through approximately (0, 1), rises to a local maximum around (2, 3), then has a local minimum, and rises again. Four options (A, B, C, D) show different transformed versions of this graph with horizontal compression by factor 1/2 and horizontal translation."
+    },
+    {
+      "questionNumber": 13,
+      "part": null,
+      "marks": 1,
+      "content": "The function $f: (0, \\infty) \\to R$, $f(x) = \\dfrac{x}{2} + \\dfrac{2}{x}$ is mapped to the function $g$ with the following sequence of transformations:\n\n1. dilation by a factor of 3 from the $y$-axis\n2. translation by 1 unit in the negative direction of the $y$-axis.\n\nThe function $g$ has a local minimum at the point with the coordinates\n\n**A.** $(6, 1)$\n\n**B.** $\\left(\\dfrac{2}{3}, 1\\right)$\n\n**C.** $(2, 5)$\n\n**D.** $\\left(2, -\\dfrac{1}{3}\\right)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 14,
+      "part": null,
+      "marks": 1,
+      "content": "Let $h$ be the probability density function for a continuous random variable $X$, where\n\n$$h(x) = \\begin{cases} \\dfrac{x}{6} + k & -3 \\le x < 0 \\\\ -\\dfrac{x}{2} + k & 0 \\le x \\le 1 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\n\nand $k$ is a positive real number.\n\nThe value of $\\Pr(X < 0.5)$ is\n\n**A.** $\\dfrac{1}{2}$\n\n**B.** $\\dfrac{15}{16}$\n\n**C.** $\\dfrac{3}{16}$\n\n**D.** $\\dfrac{49}{48}$",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 15,
+      "part": null,
+      "marks": 1,
+      "content": "The points of inflection of the graph of $y = 2 - \\tan\\left(\\pi\\left(x - \\dfrac{1}{4}\\right)\\right)$ are\n\n**A.** $\\left(k + \\dfrac{1}{4}, 2\\right), k \\in Z$\n\n**B.** $\\left(k - \\dfrac{1}{4}, 2\\right), k \\in Z$\n\n**C.** $\\left(k + \\dfrac{1}{4}, -2\\right), k \\in Z$\n\n**D.** $\\left(k - \\dfrac{3}{4}, -2\\right), k \\in Z$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Circular Functions (sin/cos/tan)",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 16,
+      "part": null,
+      "marks": 1,
+      "content": "Suppose that a differentiable function $f: R \\to R$ and its derivative $f': R \\to R$ satisfy $f(4) = 25$ and $f'(4) = 15$.\n\nDetermine the gradient of the tangent line to the graph of $y = \\sqrt{f(x)}$ at $x = 4$.\n\n**A.** $\\sqrt{15}$\n\n**B.** $\\dfrac{1}{10}$\n\n**C.** $\\dfrac{15}{2}$\n\n**D.** $\\dfrac{3}{2}$",
+      "topic": "Calculus",
+      "subtopic": "Chain Rule",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 17,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the algorithm below, which prints the roots of the cubic polynomial $f(x) = x^3 - 2x^2 - 9x + 18$.\n\n```\ndefine f(x)\n    return (x^3 - 2x^2 - 9x + 18)\nc ← f(0)\nif c < 0 then\n    c ← (-c)\nend if\nwhile c > 0\n    if f(c) = 0 then\n        print c\n    end if\n    if f(-c) = 0 then\n        print -c\n    end if\n    c ← c - 1\nend while\n```\n\nIn order, the algorithm prints the values\n\n**A.** $-3, 3, 2$\n\n**B.** $-3, 2, 3$\n\n**C.** $3, 2, -3$\n\n**D.** $3, -3, 2$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 18,
+      "part": null,
+      "marks": 1,
+      "content": "Find the value of $x$ which maximises the area of the trapezium below.\n\n**A.** $10$\n\n**B.** $5\\sqrt{2}$\n\n**C.** $7$\n\n**D.** $\\sqrt{10}$",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": "A trapezium with parallel sides of length x (top) and 3x (bottom, consisting of x + x + x). The two non-parallel sides each have length 10. Dashed lines show the heights from the top vertices to the base."
+    },
+    {
+      "questionNumber": 19,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the normal random variable $X$ that satisfies $\\Pr(X < 10) = 0.2$ and $\\Pr(X > 18) = 0.2$.\n\nThe value of $\\Pr(X < 12)$ is closest to\n\n**A.** $0.134$\n\n**B.** $0.297$\n\n**C.** $0.337$\n\n**D.** $0.365$",
+      "topic": "Probability",
+      "subtopic": "Normal Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 20,
+      "part": null,
+      "marks": 1,
+      "content": "The function $f: R \\to R$ has an average value $k$ on the interval $[0, 2]$ and satisfies $f(x) = f(x + 2)$ for all $x \\in R$. The value of the definite integral $\\displaystyle\\int_2^6 f(x)\\,dx$ is\n\n**A.** $2k$\n\n**B.** $3k$\n\n**C.** $4k$\n\n**D.** $6k$",
+      "topic": "Calculus",
+      "subtopic": "Definite Integrals",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "marks": 1,
+      "content": "Consider the function $f: R \\to R$, $f(x) = (x+1)(x+a)(x-2)(x-2a)$ where $a \\in R$.\n\nState, in terms of $a$ where required, the values of $x$ for which $f(x) = 0$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "b.i",
+      "marks": 2,
+      "content": "Find the values of $a$ for which the graph of $y = f(x)$ has exactly three $x$-intercepts.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "b.ii",
+      "marks": 1,
+      "content": "Find the values of $a$ for which the graph of $y = f(x)$ has exactly four $x$-intercepts.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.i",
+      "marks": 1,
+      "content": "Let $g$ be the function $g: R \\to R$, $g(x) = (x+1)^2(x-2)^2$, which is the function $f$ where $a = 1$.\n\nFind $g'(x)$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.ii",
+      "marks": 1,
+      "content": "Find the coordinates of the local maximum of $g$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.iii",
+      "marks": 1,
+      "content": "Find the values of $x$ for which $g'(x) > 0$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "c.iv",
+      "marks": 2,
+      "content": "Consider the two tangent lines to the graph of $y = g(x)$ at the points where $x = \\dfrac{-\\sqrt{3}+1}{2}$ and $x = \\dfrac{\\sqrt{3}+1}{2}$.\n\nDetermine the coordinates of the point of intersection of these two tangent lines.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "d.i",
+      "marks": 1,
+      "content": "Let $g$ remain as the function $g: R \\to R$, $g(x) = (x+1)^2(x-2)^2$, which is the function $f$ where $a = 1$.\n\nLet $h$ be the function $h: R \\to R$, $h(x) = (x+1)(x-1)(x+2)(x-2)$, which is the function $f$ where $a = -1$.\n\nUsing translations only, describe a sequence of transformations of $h$, for which its image would have a local maximum at the same coordinates as that of $g$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "d.ii",
+      "marks": 2,
+      "content": "Using a dilation and translations, describe a different sequence of transformations of $h$, for which its image would have both local minimums at the same coordinates as that of $g$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "marks": 2,
+      "content": "A model for the temperature in a room, in degrees Celsius, is given by\n\n$$f(t) = \\begin{cases} 12 + 30t & 0 \\le t \\le \\dfrac{1}{3} \\\\ 22 & t > \\dfrac{1}{3} \\end{cases}$$\n\nwhere $t$ represents time in hours after a heater is switched on.\n\nExpress the derivative $f'(t)$ as a hybrid function.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "marks": 1,
+      "content": "Find the average rate of change in temperature predicted by the model between $t = 0$ and $t = \\dfrac{1}{2}$.\n\nGive your answer in degrees Celsius per hour.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "c.i",
+      "marks": 1,
+      "content": "Another model for the temperature in the room is given by $g(t) = 22 - 10e^{-6t}$, $t \\ge 0$.\n\nFind the derivative $g'(t)$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "c.ii",
+      "marks": 1,
+      "content": "Find the value of $t$ for which $g'(t) = 10$.\n\nGive your answer correct to three decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "d",
+      "marks": 1,
+      "content": "Find the time $t \\in (0, 1)$ when the temperatures predicted by the models $f$ and $g$ are equal.\n\nGive your answer correct to two decimal places.",
+      "topic": "Algebra",
+      "subtopic": "Exponential Equations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "e",
+      "marks": 1,
+      "content": "Find the time $t \\in (0, 1)$ when the difference between the temperatures predicted by the two models is the greatest.\n\nGive your answer correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "f.i",
+      "marks": 1,
+      "content": "The amount of power, in kilowatts, used by the heater $t$ hours after it is switched on, can be modelled by the continuous function $p$, whose graph is shown below.\n\n$$p(t) = \\begin{cases} 1.5 & 0 \\le t \\le 0.4 \\\\ 0.3 + Ae^{-10t} & t > 0.4 \\end{cases}$$\n\nThe amount of energy used by the heater, in kilowatt hours, can be estimated by evaluating the area between the graph of $y = p(t)$ and the $t$-axis.\n\nGiven that $p(t)$ is continuous for $t \\ge 0$, show that $A = 1.2e^4$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Exponential Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph showing y = p(t) in kilowatts vs t in hours. The function is constant at 1.5 for 0 ≤ t ≤ 0.4, then decreases exponentially for t > 0.4, approaching 0.3 as t increases."
+    },
+    {
+      "questionNumber": 2,
+      "part": "f.ii",
+      "marks": 1,
+      "content": "Find how long it takes, after the heater is switched on, until the heater has used 0.5 kilowatt hours of energy.\n\nGive your answer in hours.",
+      "topic": "Calculus",
+      "subtopic": "Definite Integrals",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": "f.iii",
+      "marks": 2,
+      "content": "Find how long it takes, after the heater is switched on, until the heater has used 1 kilowatt hour of energy.\n\nGive your answer in hours, correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Definite Integrals",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a.i",
+      "marks": 3,
+      "content": "The points shown on the chart represent monthly online sales in Australia. The variable $y$ represents sales in millions of dollars. The variable $t$ represents the month when the sales were made, where $t = 1$ corresponds to January 2021, $t = 2$ corresponds to February 2021 and so on.\n\nA cubic polynomial $p: (0, 12] \\to R$, $p(t) = at^3 + bt^2 + ct + d$ can be used to model monthly online sales in 2021.\n\nThe graph of $y = p(t)$ is shown as a dashed curve on the set of axes above. It has a local minimum at $(2, 2500)$ and a local maximum at $(11, 4400)$.\n\nFind, correct to two decimal places, the values of $a$, $b$, $c$ and $d$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "HARD",
+      "imageDescription": "Scatter plot showing monthly online sales data from months 1-36, with y-axis in millions of dollars (1000-7000) and t-axis in months. A dashed cubic curve is fitted to the first 12 months of data, with local minimum at (2, 2500) and local maximum at (11, 4400)."
+    },
+    {
+      "questionNumber": 3,
+      "part": "a.ii",
+      "marks": 2,
+      "content": "Let $q: (12, 24] \\to R$, $q(t) = p(t - h) + k$ be a cubic function obtained by translating $p$, which can be used to model monthly online sales in 2022.\n\nFind the values of $h$ and $k$ such that the graph of $y = q(t)$ has a local maximum at $(23, 4750)$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b.i",
+      "marks": 2,
+      "content": "Another function $f$ can be used to model monthly online sales, where\n\n$$f: (0, 36] \\to R, \\quad f(t) = 3000 + 30t + 700\\cos\\left(\\dfrac{\\pi t}{6}\\right) + 400\\cos\\left(\\dfrac{\\pi t}{3}\\right)$$\n\nPart of the graph of $f$ is shown on the axes below.\n\nComplete the graph of $f$ on the set of axes above until December 2023, that is, for $t \\in (24, 36]$.\n\nLabel the endpoint at $t = 36$ with its coordinates.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Circular Functions (sin/cos/tan)",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph showing the function f(t) plotted for approximately t ∈ (0, 24] alongside scatter plot data points. The y-axis shows sales in millions of dollars, and the t-axis shows months. Students need to extend the graph to t = 36."
+    },
+    {
+      "questionNumber": 3,
+      "part": "b.ii",
+      "marks": 1,
+      "content": "The function $f$ predicts that every 12 months, monthly online sales increase by $n$ million dollars.\n\nFind the value of $n$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Circular Functions (sin/cos/tan)",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b.iii",
+      "marks": 1,
+      "content": "Find the derivative $f'(t)$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b.iv",
+      "marks": 2,
+      "content": "Hence, find the maximum instantaneous rate of change for the function $f$, correct to the nearest million dollars per month, and the values of $t$ in the interval $(0, 36]$ when this maximum rate occurs, correct to one decimal place.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "marks": 1,
+      "content": "At an airport, luggage is weighed before it is checked in. The mass of each piece of luggage, in kilograms, is modelled by a continuous random variable $X$, whose probability density function is\n\n$$f(x) = \\begin{cases} \\dfrac{1}{67500}x^2(30-x) & 0 \\le x \\le 30 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\n\nA piece of luggage is labelled as heavy if its mass exceeds 23 kg.\n\nWrite a definite integral which gives the probability that a piece of luggage is labelled as heavy.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.i",
+      "marks": 1,
+      "content": "Find the mean of $X$.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.ii",
+      "marks": 2,
+      "content": "Find the standard deviation of $X$.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.iii",
+      "marks": 2,
+      "content": "Given that the mass of a piece of luggage is more than the mean, find the probability that it is labelled as heavy, correct to three decimal places.",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "c.i",
+      "marks": 1,
+      "content": "Of the travellers flying from the airport:\n• 10% do not check in any luggage\n• 40% check in exactly one piece of luggage\n• 50% check in exactly two pieces of luggage.\n\nAssume that the mass of each piece of luggage is independent of the number of pieces checked in by each traveller.\n\nUse the value of 0.234 for the probability that a piece of luggage is labelled as heavy.\n\nLet $W$ be the discrete random variable that represents the number of pieces of luggage labelled as **heavy** checked in by each traveller.\n\nShow that $\\Pr(W = 2) = 0.027$, correct to three decimal places.",
+      "topic": "Probability",
+      "subtopic": "Discrete Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "c.ii",
+      "marks": 2,
+      "content": "Complete the table below for the probability distribution $W$, correct to three decimal places.\n\n| $w$ | 0 | 1 | 2 |\n|---|---|---|---|\n| $\\Pr(W = w)$ | | | 0.027 |",
+      "topic": "Probability",
+      "subtopic": "Discrete Random Variables",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "d.i",
+      "marks": 2,
+      "content": "On a particular day, a random sample of 35 pieces of luggage was selected at the airport.\n\nLet $\\hat{P}$ be the random variable that represents the proportion of luggage labelled as heavy in random samples of 35.\n\nFind $\\Pr(\\hat{P} > 0.2)$, correct to three decimal places.",
+      "topic": "Statistics",
+      "subtopic": "Sample Proportions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "d.ii",
+      "marks": 2,
+      "content": "Determine the probability that $\\hat{P}$ lies within one standard deviation of its mean, correct to three decimal places. Do **not** use a normal approximation.",
+      "topic": "Statistics",
+      "subtopic": "Sample Proportions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.i",
+      "marks": 1,
+      "content": "In one random sample of 50 pieces of luggage, 10 are labelled as heavy.\n\nUse this sample to find an approximate 90% confidence interval for $p$, the population proportion of luggage labelled as heavy, correct to three decimal places.",
+      "topic": "Statistics",
+      "subtopic": "Confidence Intervals",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "e.ii",
+      "marks": 1,
+      "content": "A second random sample of 50 pieces of luggage is selected. Using this sample, the approximate 90% confidence interval for $p$, the population proportion of luggage labelled as heavy, is **wider** than the one obtained above in **part e.i**.\n\nState the minimum and maximum possible number of pieces of luggage labelled as heavy in the second sample.",
+      "topic": "Statistics",
+      "subtopic": "Confidence Intervals",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "a.i",
+      "marks": 1,
+      "content": "The graph below shows the compositions $g \\circ f$ and $f \\circ g$, where $f(x) = \\sin(x)$ and $g(x) = \\sin(2x)$.\n\nThe graph of $y = (g \\circ f)(x)$ has a local maximum whose $x$-value lies in the interval $\\left[0, \\dfrac{\\pi}{2}\\right]$.\n\nFind the coordinates of this local maximum, correct to one decimal place.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph showing two curves: y = (g ∘ f)(x) shown as a dashed curve and y = (f ∘ g)(x) shown as a solid curve, plotted over [0, 2π]. Both curves oscillate between approximately -1 and 1, with the dashed curve having larger amplitude oscillations."
+    },
+    {
+      "questionNumber": 5,
+      "part": "a.ii",
+      "marks": 1,
+      "content": "State the range of $g \\circ f$ where $x \\in [0, 2\\pi]$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Circular Functions (sin/cos/tan)",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "b.i",
+      "marks": 1,
+      "content": "Find the derivative of $f \\circ g$.",
+      "topic": "Calculus",
+      "subtopic": "Chain Rule",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "b.ii",
+      "marks": 2,
+      "content": "Show that the equation $\\cos(\\sin(2x)) = 0$ has no real solutions.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Circular Functions (sin/cos/tan)",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "b.iii",
+      "marks": 1,
+      "content": "Find the $x$-values of the stationary points of $f \\circ g$ where $x \\in [0, 2\\pi]$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "b.iv",
+      "marks": 1,
+      "content": "Find the range of $f \\circ g$ where $x \\in [0, 2\\pi]$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Circular Functions (sin/cos/tan)",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "c.i",
+      "marks": 1,
+      "content": "Write a single definite integral that gives the area bounded by the graphs of $y = (f \\circ g)(x)$ and $y = (g \\circ f)(x)$ in the interval $[0, 2\\pi]$.",
+      "topic": "Calculus",
+      "subtopic": "Areas Under Curves",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "c.ii",
+      "marks": 1,
+      "content": "Hence, state the area bounded by the graphs of $y = (f \\circ g)(x)$ and $y = (g \\circ f)(x)$ in the interval $[0, 2\\pi]$, correct to two decimal places.",
+      "topic": "Calculus",
+      "subtopic": "Areas Under Curves",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "d",
+      "marks": 2,
+      "content": "Let $f_1: (0, 2\\pi) \\to R$, $f_1(x) = \\sin(x)$.\n\nFind all values of $x$ in the interval $(0, 2\\pi)$ for which the composition $f_1 \\circ g$ is defined.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Circular Functions (sin/cos/tan)",
+      "difficulty": "HARD",
+      "imageDescription": null
+    }
+  ]
+}

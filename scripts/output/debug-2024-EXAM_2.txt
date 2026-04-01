@@ -1,0 +1,178 @@
+```json
+{
+  "year": 2024,
+  "examType": "EXAM_2",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": null,
+      "marks": 1,
+      "content": "The asymptote(s) of the graph of $y = \\log_e(x + 1) - 3$ are\n\n**A.** $x = -1$ only\n\n**B.** $x = 1$ only\n\n**C.** $y = -3$ only\n\n**D.** $x = -1$ and $y = -3$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Logarithmic Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "marks": 1,
+      "content": "A function $g : R \\to R$ has the derivative $g'(x) = x^3 - x$.\n\nGiven that $g(0) = 5$, the value of $g(2)$ is\n\n**A.** 2\n\n**B.** 3\n\n**C.** 5\n\n**D.** 7",
+      "topic": "Calculus",
+      "subtopic": "Antiderivatives",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": null,
+      "marks": 1,
+      "content": "A discrete random variable $X$ is defined using the probability distribution below, where $k$ is a positive real number.\n\n| $x$ | 0 | 1 | 2 | 3 | 4 |\n|---|---|---|---|---|---|\n| $\\Pr(X = x)$ | $2k$ | $3k$ | $5k$ | $3k$ | $2k$ |\n\nFind $\\Pr(X < 4 \\mid X > 1)$.\n\n**A.** $\\dfrac{13}{15}$\n\n**B.** $\\dfrac{11}{13}$\n\n**C.** $\\dfrac{4}{5}$\n\n**D.** $\\dfrac{8}{15}$",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": null,
+      "marks": 1,
+      "content": "If $\\int_a^b f(x)\\,dx = -5$ and $\\int_a^c f(x)\\,dx = 3$, where $a < b < c$, then $\\int_b^c 2f(x)\\,dx$ is equal to\n\n**A.** $-16$\n\n**B.** $16$\n\n**C.** $-4$\n\n**D.** $4$",
+      "topic": "Calculus",
+      "subtopic": "Definite Integrals",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the functions $f: (1, \\infty) \\to R$, $f(x) = x^2 - 4x$ and $g: R \\to R$, $g(x) = e^{-x}$.\n\nThe range of the composite function $g(f(x))$ is\n\n**A.** $(0, e^3)$\n\n**B.** $(0, e^3]$\n\n**C.** $(0, e^4)$\n\n**D.** $(0, e^4]$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the function $f(x) = \\dfrac{2x+1}{3-x}$ with domain $x \\in R \\setminus \\{3\\}$.\n\nThe inverse of $f$ is\n\n**A.** $f^{-1}(x) = \\dfrac{3x-1}{x+2}$ with domain $x \\in R \\setminus \\{3\\}$\n\n**B.** $f^{-1}(x) = 3 - \\dfrac{7}{x+2}$ with domain $x \\in R \\setminus \\{-2\\}$\n\n**C.** $f^{-1}(x) = 3 + \\dfrac{5}{x+2}$ with domain $x \\in R \\setminus \\{-2\\}$\n\n**D.** $f^{-1}(x) = \\dfrac{1-3x}{x+2}$ with domain $x \\in R \\setminus \\{-2\\}$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": null,
+      "marks": 1,
+      "content": "A fair six-sided die is repeatedly rolled. What is the minimum number of rolls required so that the probability of rolling a six at least once is greater than 0.95?\n\n**A.** 15\n\n**B.** 16\n\n**C.** 17\n\n**D.** 18",
+      "topic": "Probability",
+      "subtopic": "Probability Rules",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": null,
+      "marks": 1,
+      "content": "Some values of the functions $f: R \\to R$ and $g: R \\to R$ are shown below.\n\n| $x$ | 1 | 2 | 3 |\n|---|---|---|---|\n| $f(x)$ | 0 | 4 | 5 |\n| $g(x)$ | 3 | 4 | $-5$ |\n\nThe graph of the function $h(x) = f(x) - g(x)$ must have an $x$-intercept at\n\n**A.** $(2, 0)$\n\n**B.** $(3, 0)$\n\n**C.** $(4, 0)$\n\n**D.** $(5, 0)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": null,
+      "marks": 1,
+      "content": "At a Year 12 formal, 45% of the students travelled to the event in a hired limousine, while the remaining 55% were driven to the event by a parent.\n\nOf the students who travelled in a hired limousine, 30% had a professional photo taken.\n\nOf the students who were driven by a parent, 60% had a professional photo taken.\n\nGiven that a student had a professional photo taken, what is the probability that the student travelled to the event in a hired limousine?\n\n**A.** $\\dfrac{1}{8}$\n\n**B.** $\\dfrac{27}{200}$\n\n**C.** $\\dfrac{9}{31}$\n\n**D.** $\\dfrac{22}{31}$",
+      "topic": "Probability",
+      "subtopic": "Conditional Probability",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 10,
+      "part": null,
+      "marks": 1,
+      "content": "Suppose a function $f: [0, 5] \\to R$ and its derivative $f': [0, 5] \\to R$ are defined and continuous on their domains. If $f'(2) < 0$ and $f'(4) > 0$, which one of these statements must be true?\n\n**A.** $f$ is strictly decreasing on $[0, 2]$.\n\n**B.** $f$ does not have an inverse function.\n\n**C.** $f$ is positive on $[4, 5]$.\n\n**D.** $f$ has a local minimum at $x = 3$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 11,
+      "part": null,
+      "marks": 1,
+      "content": "Twelve students sit in a classroom, with seven students in the first row and the other five students in the second row. Three students are chosen randomly from the class.\n\nThe probability that exactly two of the three students chosen are in the first row is\n\n**A.** $\\dfrac{7}{44}$\n\n**B.** $\\dfrac{21}{44}$\n\n**C.** $\\dfrac{5}{22}$\n\n**D.** $\\dfrac{245}{576}$",
+      "topic": "Probability",
+      "subtopic": "Probability Rules",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 12,
+      "part": null,
+      "marks": 1,
+      "content": "The graph of $y = f(x)$ is shown below.\n\nWhich of the following options best represents the graph of $y = f(2x + 1)$?",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": "The graph of y = f(x) shows a curve that passes through approximately (-2, 1), rises to a local maximum near (0, 1), dips to a local minimum near (1, 1), then rises to a peak around (3, 3), before declining. Four options A, B, C, D show different horizontally compressed and shifted versions of this graph."
+    },
+    {
+      "questionNumber": 13,
+      "part": null,
+      "marks": 1,
+      "content": "The function $f: (0, \\infty) \\to R$, $f(x) = \\dfrac{x}{2} + \\dfrac{2}{x}$ is mapped to the function $g$ with the following sequence of transformations:\n\n1. dilation by a factor of 3 from the $y$-axis\n2. translation by 1 unit in the negative direction of the $y$-axis.\n\nThe function $g$ has a local minimum at the point with the coordinates\n\n**A.** $(6, 1)$\n\n**B.** $\\left(\\dfrac{2}{3}, 1\\right)$\n\n**C.** $(2, 5)$\n\n**D.** $\\left(2, -\\dfrac{1}{3}\\right)$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 14,
+      "part": null,
+      "marks": 1,
+      "content": "Let $h$ be the probability density function for a continuous random variable $X$, where\n\n$$h(x) = \\begin{cases} \\dfrac{x}{6} + k & -3 \\leq x < 0 \\\\ -\\dfrac{x}{2} + k & 0 \\leq x \\leq 1 \\\\ 0 & \\text{elsewhere} \\end{cases}$$\n\nand $k$ is a positive real number.\n\nThe value of $\\Pr(X < 0.5)$ is\n\n**A.** $\\dfrac{1}{2}$\n\n**B.** $\\dfrac{15}{16}$\n\n**C.** $\\dfrac{3}{16}$\n\n**D.** $\\dfrac{49}{48}$",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 15,
+      "part": null,
+      "marks": 1,
+      "content": "The points of inflection of the graph of $y = 2 - \\tan\\left(\\pi\\left(x - \\dfrac{1}{4}\\right)\\right)$ are\n\n**A.** $\\left(k + \\dfrac{1}{4},\\, 2\\right),\\, k \\in Z$\n\n**B.** $\\left(k - \\dfrac{1}{4},\\, 2\\right),\\, k \\in Z$\n\n**C.** $\\left(k + \\dfrac{1}{4},\\, -2\\right),\\, k \\in Z$\n\n**D.** $\\left(k - \\dfrac{3}{4},\\, -2\\right),\\, k \\in Z$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Circular Functions (sin/cos/tan)",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 16,
+      "part": null,
+      "marks": 1,
+      "content": "Suppose that a differentiable function $f: R \\to R$ and its derivative $f': R \\to R$ satisfy $f(4) = 25$ and $f'(4) = 15$.\n\nDetermine the gradient of the tangent line to the graph of $y = \\sqrt{f(x)}$ at $x = 4$.\n\n**A.** $\\sqrt{15}$\n\n**B.** $\\dfrac{1}{10}$\n\n**C.** $\\dfrac{15}{2}$\n\n**D.** $\\dfrac{3}{2}$",
+      "topic": "Calculus",
+      "subtopic": "Chain Rule",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 17,
+      "part": null,
+      "marks": 1,
+      "content": "Consider the algorithm below, which prints the roots of the cubic polynomial $f(x) = x^3 - 2x^2 - 9x + 18$.\n\n```\ndefine f(x)\n    return (x^3 - 2x^2 - 9x + 18)\nc ← f(0)\nif c < 0 then\n    c ← (-c)\nend if\nwhile c > 0\n    if f(c) = 0 then\n        print c\n    end if\n    if f(-c) = 0 then\n        print -c\n    end if\n    c ← c - 1\nend while\n```\n\nIn order, the algorithm prints the values\n\n**A.** $-3, 3, 2$\n\n**B.** $-3, 2, 3$\n\n**C.** $3, 2, -3$\n\n**D.** $3, -3, 2$",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 18,
+      "part": null,

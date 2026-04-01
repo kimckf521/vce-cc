@@ -17,6 +17,7 @@ export default function Exam2ABSetupForm({ topics }: Props) {
   const [distB, setDistB] = useState<number[]>([25, 25, 25, 25]);
   const [diffDist, setDiffDist] = useState<DiffDist>([50, 30, 20]);
   const [showSolutions, setShowSolutions] = useState(false);
+  const [timerEnabled, setTimerEnabled] = useState(true);
 
   const totalA = distA.reduce((a, b) => a + b, 0);
   const totalB = distB.reduce((a, b) => a + b, 0);
@@ -25,7 +26,9 @@ export default function Exam2ABSetupForm({ topics }: Props) {
 
   function handleStart() {
     if (!isValid) return;
-    const url = `/practice/session?mode=exam2ab&version=exam&countA=20&countB=5&dist=${distA.join(",")}&distB=${distB.join(",")}&diff=${diffDist.join(",")}&solutions=${showSolutions ? "1" : "0"}`;
+    const timerParam = timerEnabled ? "&timer=1" : "";
+    const countB = Math.random() < 0.5 ? 4 : 5;
+    const url = `/practice/session?mode=exam2ab&version=exam&countA=20&countB=${countB}&dist=${distA.join(",")}&distB=${distB.join(",")}&diff=${diffDist.join(",")}&solutions=${showSolutions ? "1" : "0"}${timerParam}`;
     router.push(url);
   }
 
@@ -106,6 +109,27 @@ export default function Exam2ABSetupForm({ topics }: Props) {
           <span className={cn(
             "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200",
             showSolutions ? "translate-x-5" : "translate-x-0"
+          )} />
+        </button>
+      </div>
+
+      {/* Timer toggle */}
+      <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-5 lg:px-6 py-4 lg:py-5">
+        <div>
+          <p className="text-sm lg:text-base font-semibold text-gray-800">Exam timer</p>
+          <p className="text-xs lg:text-sm text-gray-500 mt-0.5">15 min reading time + 2 hour writing time</p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setTimerEnabled((v) => !v)}
+          className={cn(
+            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200",
+            timerEnabled ? "bg-brand-600" : "bg-gray-200"
+          )}
+        >
+          <span className={cn(
+            "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200",
+            timerEnabled ? "translate-x-5" : "translate-x-0"
           )} />
         </button>
       </div>

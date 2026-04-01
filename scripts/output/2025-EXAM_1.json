@@ -1,0 +1,236 @@
+{
+  "year": 2025,
+  "examType": "EXAM_1",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "marks": 1,
+      "content": "Let $y = x^2 \\cos(x)$.\n\nFind $\\dfrac{dy}{dx}$.",
+      "topic": "Calculus",
+      "subtopic": "Product Rule",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "marks": 2,
+      "content": "Let $f(x) = 6\\sqrt{x+1} + 5$.\n\nFind the gradient of the tangent to $y = f(x)$ at $x = 8$.",
+      "topic": "Calculus",
+      "subtopic": "Chain Rule",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "marks": 2,
+      "content": "Let $g(x)$ be a function defined for $x > -\\dfrac{3}{2}$ so that $g'(x) = \\dfrac{1}{2x+3}$ and $g(1) = 0$.\n\nFind $g(x)$.",
+      "topic": "Calculus",
+      "subtopic": "Antiderivatives",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "marks": 1,
+      "content": "Let $f: [0, 2\\pi] \\to R$, $f(x) = 2\\cos(2x) + 1$.\n\nState the range of $f$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Circular Functions (sin/cos/tan)",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "marks": 3,
+      "content": "Let $f: [0, 2\\pi] \\to R$, $f(x) = 2\\cos(2x) + 1$.\n\nSolve $f(x) = 0$ for $x$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Circular Functions (sin/cos/tan)",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "c",
+      "marks": 2,
+      "content": "Let $f: [0, 2\\pi] \\to R$, $f(x) = 2\\cos(2x) + 1$.\n\nSketch the graph of $y = f(x)$ for $x \\in \\left[\\dfrac{\\pi}{2}, \\dfrac{3\\pi}{2}\\right]$ on the axes below.\n\nLabel the endpoints with their coordinates.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Circular Functions (sin/cos/tan)",
+      "difficulty": "MEDIUM",
+      "imageDescription": "A set of axes with x-axis marked at π/2, π, 3π/2, 2π and y-axis marked from -2 to 3, with gridlines."
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "marks": 2,
+      "content": "The probability distribution for the discrete random variable $X$ is given in the table below, where $k$ is a positive real number.\n\n| $x$ | 0 | 1 | 2 | 3 |\n|---|---|---|---|---|\n| $\\Pr(X = x)$ | $\\dfrac{4}{k}$ | $\\dfrac{2k}{75}$ | $\\dfrac{k}{75}$ | $\\dfrac{2}{k}$ |\n\nShow that $k = 10$ or $k = 15$.",
+      "topic": "Probability",
+      "subtopic": "Discrete Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.i",
+      "marks": 1,
+      "content": "Let $k = 15$.\n\nFind $\\Pr(X > 1)$.",
+      "topic": "Probability",
+      "subtopic": "Discrete Random Variables",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.ii",
+      "marks": 1,
+      "content": "Let $k = 15$.\n\nFind $E(X)$.",
+      "topic": "Probability",
+      "subtopic": "Expected Value",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "marks": 2,
+      "content": "Solve $e^{2x} - 8e^x + 7 = 0$ for $x$.",
+      "topic": "Algebra",
+      "subtopic": "Exponential Equations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "marks": 2,
+      "content": "Let $g(x) = e^{2x} - 8e^x + 7$, where $x \\in R$.\n\nThe function $g(x)$ has exactly one stationary point, a local minimum.\n\nFind the largest value of $a$ such that when $g$ is restricted to the domain $(-\\infty, a]$ it has an inverse function.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Inverse Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "a",
+      "marks": 1,
+      "content": "Consider the binomial random variable $X \\sim \\text{Bi}\\left(6, \\dfrac{1}{4}\\right)$.\n\nFind $\\text{var}(X)$.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": "b",
+      "marks": 2,
+      "content": "Consider the binomial random variable $X \\sim \\text{Bi}\\left(6, \\dfrac{1}{4}\\right)$.\n\nDetermine $\\Pr(X \\geq 5)$.\n\nGive your answer in the form $\\dfrac{a}{2^b}$, where $a, b \\in \\mathbb{Z}$.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "a",
+      "marks": 1,
+      "content": "Let $f: R \\to R$, $f(x) = x^3 - x^2 - 16x - 20$.\n\nVerify that $x = 5$ is a solution of $f(x) = 0$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "b",
+      "marks": 2,
+      "content": "Let $f: R \\to R$, $f(x) = x^3 - x^2 - 16x - 20$.\n\nExpress $f(x)$ in the form $(x + d)^2(x - 5)$, where $d \\in R$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "c",
+      "marks": 1,
+      "content": "Consider the graph of $y = f(x)$, as shown below.\n\nComplete the coordinate pairs of all axial intercepts of $y = f(x)$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "EASY",
+      "imageDescription": "A graph of a cubic function y = f(x) showing two x-intercepts (one to the left of the origin, one to the right) and one y-intercept below the x-axis. The curve goes from bottom-left, crosses the x-axis, has a local maximum, dips below the x-axis again, then rises through the second x-intercept and continues upward. Blank coordinate pairs are shown at the two x-intercepts (__, 0) and (__, 0), and at the y-intercept (0, __)."
+    },
+    {
+      "questionNumber": 7,
+      "part": "d.i",
+      "marks": 1,
+      "content": "Let $g: R \\to R$, $g(x) = x + 2$.\n\nState the coordinates of the stationary point of inflection for the graph of $y = f(x)g(x)$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "d.ii",
+      "marks": 1,
+      "content": "Let $g: R \\to R$, $g(x) = x + 2$.\n\nWrite down the values of $x$ for which $f(x)g(x) \\geq 0$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "a",
+      "marks": 3,
+      "content": "Consider\n$$f(x) = \\begin{cases} \\dfrac{3}{8}(4 - 3x) & 0 \\leq x \\leq \\dfrac{4}{3} \\\\ 0 & \\text{otherwise} \\end{cases}$$\n\nThe continuous random variable $X$ has probability density function $f(x)$.\n\nFind $k$ such that $\\Pr(X > k) = \\dfrac{9}{16}$.",
+      "topic": "Probability",
+      "subtopic": "Continuous Random Variables",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "b",
+      "marks": 2,
+      "content": "Consider\n$$f(x) = \\begin{cases} \\dfrac{3}{8}(4 - 3x) & 0 \\leq x \\leq \\dfrac{4}{3} \\\\ 0 & \\text{otherwise} \\end{cases}$$\n\nThe function $h(x)$ is a transformation of $f(x)$ such that\n$$h(x) = mf(x) + n$$\nwhere $m$ and $n$ are real numbers.\n\nFind $\\displaystyle\\int_0^{\\frac{4}{3}} h(x)\\, dx$ in terms of $m$ and $n$.",
+      "topic": "Calculus",
+      "subtopic": "Definite Integrals",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": "a",
+      "marks": 3,
+      "content": "Consider the functions\n$$f: R \\setminus \\{1\\} \\to R, \\quad f(x) = \\dfrac{w^2}{(x-1)^2}$$\nand\n$$g: R \\to R, \\quad g(x) = (x - w)^2$$\nwhere $w \\in R$.\n\nIf $w = -3$, find the four solutions to $f(x) = g(x)$.",
+      "topic": "Algebra",
+      "subtopic": "Simultaneous Equations",
+      "difficulty": "HARD",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": "b.i",
+      "marks": 2,
+      "content": "Consider the functions\n$$f: R \\setminus \\{1\\} \\to R, \\quad f(x) = \\dfrac{w^2}{(x-1)^2}$$\nand\n$$g: R \\to R, \\quad g(x) = (x - w)^2$$\nwhere $w \\in R$.\n\nConsider the case where $w > 0$.\n\nFind, in terms of $w$, the coordinates of the minimum point of the graph of $y = (x-1)(x-w)$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Quadratic Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 9,
+      "part": "b.ii",
+      "marks": 2,
+      "content": "Consider the functions\n$$f: R \\setminus \\{1\\} \\to R, \\quad f(x) = \\dfrac{w^2}{(x-1)^2}$$\nand\n$$g: R \\to R, \\quad g(x) = (x - w)^2$$\nwhere $w \\in R$.\n\nConsider the case where $w > 0$.\n\nHence, or otherwise, find the positive values of $w$ for which $f(x) = g(x)$ has exactly three solutions.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Polynomial Functions",
+      "difficulty": "HARD",
+      "imageDescription": null
+    }
+  ]
+}

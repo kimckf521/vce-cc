@@ -58,7 +58,7 @@ export default function LoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 lg:py-3.5 text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 lg:py-3.5 text-sm lg:text-base text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
               placeholder="you@example.com"
             />
           </div>
@@ -75,7 +75,7 @@ export default function LoginPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-xl border border-gray-200 px-4 py-3 lg:py-3.5 pr-12 text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
+                className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 lg:py-3.5 pr-12 text-sm lg:text-base text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
                 placeholder="••••••••"
               />
               <button
@@ -87,10 +87,20 @@ export default function LoginPage() {
               </button>
             </div>
           </div>
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="remember"
+              className="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500 cursor-pointer"
+            />
+            <label htmlFor="remember" className="text-sm lg:text-base text-gray-600 cursor-pointer select-none">
+              Remember me
+            </label>
+          </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-brand-600 py-3 lg:py-3.5 text-sm lg:text-base font-semibold text-white hover:bg-brand-700 transition-colors disabled:opacity-60 mt-2"
+            className="w-full rounded-xl bg-brand-600 py-3 lg:py-3.5 text-sm lg:text-base font-semibold text-white hover:bg-brand-700 transition-colors disabled:opacity-60"
           >
             {loading ? "Signing in…" : "Sign in"}
           </button>

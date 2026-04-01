@@ -79,8 +79,7 @@ async function extractSolutionsFromPDF(
 
   const response = await client.messages.create({
     model: "claude-opus-4-6",
-    max_tokens: 8000,
-    thinking: { type: "adaptive" },
+    max_tokens: 16000,
     system: SYSTEM_PROMPT,
     messages: [
       {

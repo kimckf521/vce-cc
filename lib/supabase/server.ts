@@ -17,8 +17,12 @@ export async function createClient() {
             cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(name, value, options)
             );
-          } catch {
-            // Server component — cookies can be read but not set
+          } catch (error) {
+            // Server Component context — cookies are read-only.
+            // This is expected during SSR; log unexpected failures in other contexts.
+            if (process.env.NODE_ENV === "development") {
+              console.warn("[Supabase] Failed to set cookies (expected in Server Components):", error);
+            }
           }
         },
       },

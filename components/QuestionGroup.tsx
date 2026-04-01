@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import type React from "react";
 import dynamic from "next/dynamic";
 import { CheckCircle, XCircle, BookmarkIcon, BookOpen, CalendarDays } from "lucide-react";
@@ -53,6 +53,14 @@ interface QuestionGroupProps {
   parts: QuestionPart[];
   /** Whether to show the "Show Solution" button. Defaults to true. */
   showSolutionButton?: boolean;
+  /** Exam mode: hide instant MCQ feedback, hide status buttons */
+  examMode?: boolean;
+  /** Reveal correct/incorrect answers (after exam submit) */
+  revealAnswers?: boolean;
+  /** Callback when an MCQ option is selected in exam mode */
+  onMcqSelect?: (questionId: string, letter: string) => void;
+  /** Whether the current user is an admin (enables solution editing) */
+  isAdmin?: boolean;
 }
 
 const difficultyStyles = {
@@ -87,9 +95,10 @@ function parseMCQContent(content: string): { body: string; options: { letter: st
 }
 
 // Extract correct answer letter from solution content
-function parseMCQAnswer(solutionContent?: string | null): string | null {
+export function parseMCQAnswer(solutionContent?: string | null): string | null {
   if (!solutionContent) return null;
-  const m = solutionContent.match(/\*\*Answer:\s*([A-E])\*\*/);
+  // Match both "**Answer: X**" and "answer is **X**" formats
+  const m = solutionContent.match(/\*\*Answer:\s*([A-E])\*\*/) ?? solutionContent.match(/answer is \*\*([A-E])\*\*/i);
   return m ? m[1] : null;
 }
 
@@ -99,13 +108,21 @@ function InteractiveMCQOptions({
   correctAnswer,
   selectedOption,
   onSelect,
+  examMode,
+  revealAnswers,
 }: {
   options: { letter: string; text: string }[];
   correctAnswer: string | null;
   selectedOption: string | null;
   onSelect: (letter: string) => void;
+  /** In exam mode, don't reveal correct/incorrect on selection */
+  examMode?: boolean;
+  /** Force reveal correct/incorrect (used after exam submit) */
+  revealAnswers?: boolean;
 }) {
   const hasAnswered = selectedOption !== null;
+  // In exam mode: only reveal after explicit revealAnswers flag
+  const showFeedback = revealAnswers || (!examMode && hasAnswered);
 
   return (
     <div className="mt-3 space-y-2">
@@ -117,7 +134,7 @@ function InteractiveMCQOptions({
         let badgeStyle = "border-gray-300 text-gray-500";
         let icon: React.ReactNode = null;
 
-        if (hasAnswered) {
+        if (showFeedback) {
           if (isCorrect) {
             wrapperStyle = "border-green-200 bg-green-50";
             badgeStyle = "border-green-500 bg-green-500 text-white";
@@ -129,18 +146,25 @@ function InteractiveMCQOptions({
           } else {
             wrapperStyle = "border-gray-100 bg-gray-50 opacity-50";
           }
+        } else if (examMode && isSelected) {
+          // Exam mode: just highlight selected option in brand color
+          wrapperStyle = "border-brand-300 bg-brand-50";
+          badgeStyle = "border-brand-500 bg-brand-500 text-white";
         }
+
+        // In exam mode before reveal, allow changing answer
+        const canSelect = examMode ? !revealAnswers : !hasAnswered;
 
         return (
           <button
             key={letter}
-            onClick={() => !hasAnswered && onSelect(letter)}
-            disabled={hasAnswered}
+            onClick={() => canSelect && onSelect(letter)}
+            disabled={!canSelect}
             className={cn(
               "w-full flex items-start gap-3 rounded-xl border px-4 py-2.5 text-left transition-colors",
               wrapperStyle,
-              !hasAnswered && "cursor-pointer",
-              hasAnswered && "cursor-default"
+              canSelect && "cursor-pointer",
+              !canSelect && "cursor-default"
             )}
           >
             <span className={cn(
@@ -189,13 +213,14 @@ const FREQ_LABEL: Record<"rare" | "normal" | "often", string> = {
   often: "Every year",
 };
 
-export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts, showSolutionButton = true }: QuestionGroupProps) {
+export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts, showSolutionButton = true, examMode, revealAnswers, onMcqSelect, isAdmin }: QuestionGroupProps) {
   const [showSolution, setShowSolution] = useState(false);
   const [statuses, setStatuses] = useState<Record<string, AttemptStatus>>(
     Object.fromEntries(parts.map((p) => [p.id, p.initialStatus ?? null]))
   );
   const [mcqSelections, setMcqSelections] = useState<Record<string, string | null>>({});
   const [saveError, setSaveError] = useState<string | null>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const questionNumber = parts[0].questionNumber;
   const totalMarks = parts.reduce((sum, p) => sum + p.marks, 0);
@@ -216,7 +241,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
 
   const combinedSolutions = parts
     .filter((p) => p.solution)
-    .map((p) => ({ part: p.part, content: p.solution!.content, imageUrl: p.solution!.imageUrl, videoUrl: p.solution!.videoUrl }));
+    .map((p) => ({ questionId: p.id, part: p.part, content: p.solution!.content, imageUrl: p.solution!.imageUrl, videoUrl: p.solution!.videoUrl }));
 
   async function toggleStatus(id: string, s: AttemptStatus) {
     const prev = statuses[id];
@@ -253,8 +278,57 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
     }
   }
 
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (examMode) return;
+      const tag = (e.target as HTMLElement).tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+
+      const firstPartId = parts[0]?.id;
+      if (!firstPartId) return;
+
+      switch (e.key) {
+        case "c":
+          toggleStatus(firstPartId, "CORRECT");
+          break;
+        case "x":
+          toggleStatus(firstPartId, "INCORRECT");
+          break;
+        case "r":
+          toggleStatus(firstPartId, "NEEDS_REVIEW");
+          break;
+        case "s":
+          if (hasSolution) setShowSolution(true);
+          break;
+        case "j":
+        case "ArrowDown": {
+          e.preventDefault();
+          const next = cardRef.current?.parentElement?.nextElementSibling?.querySelector<HTMLElement>("[tabindex]");
+          next?.focus();
+          next?.scrollIntoView({ behavior: "smooth", block: "center" });
+          break;
+        }
+        case "k":
+        case "ArrowUp": {
+          e.preventDefault();
+          const prev = cardRef.current?.parentElement?.previousElementSibling?.querySelector<HTMLElement>("[tabindex]");
+          prev?.focus();
+          prev?.scrollIntoView({ behavior: "smooth", block: "center" });
+          break;
+        }
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [examMode, parts, hasSolution]
+  );
+
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
+    <div
+      ref={cardRef}
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+      className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden focus:outline-none focus:ring-2 focus:ring-brand-300"
+    >
       {/* Card header */}
       <div className="flex items-start justify-between gap-4 px-5 pt-5 pb-3 lg:px-7 lg:pt-6 lg:pb-4">
         <div className="flex-1">
@@ -311,8 +385,8 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
               <div className="absolute bottom-full right-3 border-4 border-transparent border-b-gray-900" />
             </div>
           </div>
-          {/* For MCQs: status buttons live here in the header */}
-          {!hasParts && (
+          {/* For MCQs: status buttons live here in the header (hidden in exam mode) */}
+          {!hasParts && !examMode && (
             <>
               <button onClick={() => toggleStatus(parts[0].id, "CORRECT")} title="Mark correct"
                 className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[parts[0].id] === "CORRECT" ? "bg-green-100 text-green-600" : "text-gray-400 hover:text-green-500")}>
@@ -351,6 +425,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
                   )}
                   <span className="text-sm lg:text-base text-gray-400">{p.marks} {p.marks === 1 ? "mark" : "marks"}</span>
                 </div>
+                {!examMode && (
                 <div className="flex items-center gap-0.5">
                   <button onClick={() => toggleStatus(p.id, "CORRECT")} title="Mark correct"
                     className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[p.id] === "CORRECT" ? "bg-green-100 text-green-600" : "text-gray-400 hover:text-green-500")}>
@@ -365,6 +440,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
                     <BookmarkIcon className="h-4 w-4 lg:h-5 lg:w-5" />
                   </button>
                 </div>
+                )}
               </div>
             )}
 
@@ -380,9 +456,14 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
                       options={mcqParsed.options}
                       correctAnswer={parseMCQAnswer(p.solution?.content)}
                       selectedOption={mcqSelections[p.id] ?? null}
-                      onSelect={(letter) => setMcqSelections((prev) => ({ ...prev, [p.id]: letter }))}
+                      onSelect={(letter) => {
+                        setMcqSelections((prev) => ({ ...prev, [p.id]: letter }));
+                        onMcqSelect?.(p.id, letter);
+                      }}
+                      examMode={examMode}
+                      revealAnswers={revealAnswers}
                     />
-                    {mcqSelections[p.id] !== undefined && mcqSelections[p.id] !== null && (
+                    {!examMode && mcqSelections[p.id] !== undefined && mcqSelections[p.id] !== null && (
                       <button
                         onClick={() => setMcqSelections((prev) => ({ ...prev, [p.id]: null }))}
                         className="mt-2 text-sm text-gray-400 hover:text-gray-600 underline underline-offset-2"
@@ -429,6 +510,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
           questionLabel={questionLabel}
           solutions={combinedSolutions}
           onClose={() => setShowSolution(false)}
+          isAdmin={isAdmin}
         />
       )}
     </div>

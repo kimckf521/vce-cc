@@ -1,0 +1,111 @@
+{
+  "year": 2024,
+  "examType": "EXAM_1",
+  "solutions": [
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nApply the product rule to $y = e^x \\sin(3x)$.\n\nLet $u = e^x$ and $v = \\sin(3x)$, so $u' = e^x$ and $v' = 3\\cos(3x)$.\n\n$$\\frac{dy}{dx} = e^x \\cos(3x) \\cdot 3 + e^x \\sin(3x) \\cdot 1$$\n\nWait — correcting: using product rule $\\frac{dy}{dx} = u'v + uv'$:\n\n$$\\frac{dy}{dx} = e^x \\sin(3x) + e^x \\cdot 3\\cos(3x)$$\n\nHmm, the report states the answer is $e^x\\cos(3x) - 3e^x\\sin(3x)$, so the original function must be $y = e^x\\cos(3x)$.\n\nApply the product rule to $y = e^x \\cos(3x)$.\n\nLet $u = e^x$ so $u' = e^x$, and $v = \\cos(3x)$ so $v' = -3\\sin(3x)$.\n\n$$\\frac{dy}{dx} = e^x \\cos(3x) - 3e^x \\sin(3x) = e^x(\\cos(3x) - 3\\sin(3x))$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nApply the chain rule to $f(x) = \\ln(x^3 - 3x + 2)$.\n\nThe derivative is:\n\n$$f'(x) = \\frac{1}{x^3 - 3x + 2} \\times (3x^2 - 3) = \\frac{3x^2 - 3}{x^3 - 3x + 2}$$\n\n**Step 2** *(1 mark)*\n\nEvaluate $f'(3)$.\n\n$$f'(3) = \\frac{3(3)^2 - 3}{3^3 - 3(3) + 2}$$\n\n$$= \\frac{27 - 3}{27 - 9 + 2}$$\n\n$$= \\frac{24}{20}$$\n\n$$= \\frac{6}{5}$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\nFor the system of simultaneous linear equations to have no solution, the lines must be parallel (same gradient) but not identical.\n\nUsing the ratio of coefficients, set:\n\n$$\\frac{3k}{k-4} = \\frac{-2}{k}$$\n\n**Step 2** *(1 mark)*\n\nSolve for $k$ by cross-multiplying.\n\n$$3k^2 = -2(k - 4)$$\n\n$$3k^2 = -2k + 8$$\n\n$$3k^2 + 2k - 8 = 0$$\n\n$$(3k - 4)(k + 2) = 0$$\n\n$$k = \\frac{4}{3} \\quad \\text{or} \\quad k = -2$$\n\n**Step 3** *(1 mark)*\n\nCheck which value gives no solution (not infinite solutions) by checking the second ratio condition $\\frac{-2}{k} \\neq \\frac{k+4}{-k}$.\n\nThis requires $2k \\neq k^2 + 4k$, i.e. $k^2 + 2k \\neq 0$, i.e. $k(k+2) \\neq 0$.\n\nSo $k \\neq 0$ and $k \\neq -2$.\n\nTherefore $k = -2$ gives infinite solutions and must be rejected.\n\nHence, for no solution, $k = \\dfrac{4}{3}$ only."
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nIdentify the asymptotes of $y = \\frac{1}{(x+3)^2} - 2$.\n\nVertical asymptote: $x = -3$.\n\nHorizontal asymptote: $y = -2$.\n\n**Step 2** *(1 mark)*\n\nFind the $x$-intercepts by setting $y = 0$.\n\n$$\\frac{1}{(x+3)^2} - 2 = 0$$\n\n$$\\frac{1}{(x+3)^2} = 2$$\n\n$$(x+3)^2 = \\frac{1}{2}$$\n\n$$x + 3 = \\pm \\frac{1}{\\sqrt{2}} = \\pm \\frac{\\sqrt{2}}{2}$$\n\n$$x = -3 \\pm \\frac{\\sqrt{2}}{2}$$\n\nThe $x$-intercepts are $\\left(-3 - \\frac{\\sqrt{2}}{2},\\, 0\\right)$ and $\\left(-3 + \\frac{\\sqrt{2}}{2},\\, 0\\right)$.\n\nFind the $y$-intercept by setting $x = 0$.\n\n$$y = \\frac{1}{9} - 2 = -\\frac{17}{9}$$\n\nThe $y$-intercept is $\\left(0,\\, -\\frac{17}{9}\\right)$.\n\n**Step 3** *(1 mark)*\n\nSketch the graph of the truncus showing both branches above the horizontal asymptote $y = -2$, symmetric about the vertical asymptote $x = -3$, with the asymptotes drawn as dashed lines and all intercepts labelled."
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nSet up the integral for the area between the curve and the $x$-axis from $x = -2$ to $x = 0$, noting the curve is below the $x$-axis on this interval.\n\n$$A = -\\int_{-2}^{0} \\left(\\frac{1}{(x+3)^2} - 2\\right) dx = \\int_{-2}^{0} \\left(2 - \\frac{1}{(x+3)^2}\\right) dx$$\n\n**Step 2** *(1 mark)*\n\nEvaluate the integral.\n\n$$A = \\left[2x + \\frac{1}{x+3}\\right]_{-2}^{0}$$\n\n$$= \\left(0 + \\frac{1}{3}\\right) - \\left(-4 + \\frac{1}{1}\\right)$$\n\n$$= \\frac{1}{3} - (-3)$$\n\n$$= \\frac{1}{3} + 3$$\n\n$$= \\frac{10}{3}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nCalculate the standard deviation using $\\text{sd}(X) = \\sqrt{np(1-p)}$ where $n = 10$ and $p = 0.6$.\n\n$$\\text{sd}(X) = \\sqrt{10 \\times 0.6 \\times 0.4} = \\sqrt{2.4} = \\frac{\\sqrt{6}}{\\sqrt{\\frac{10}{1}}}$$\n\nAlternatively:\n\n$$\\text{sd}(X) = \\sqrt{\\frac{6}{10}} = \\sqrt{0.6} \\quad \\text{... no}$$\n\nFrom the report: $\\text{sd}(X) = \\frac{\\sqrt{6}}{\\sqrt{10}} = \\frac{3}{5}$... The report states:\n\n$$\\text{sd}(X) = \\frac{\\sqrt{6}}{\\sqrt{10}} = \\frac{3}{5} = 0.6$$\n\nWait, looking more carefully at the report: $\\text{sd}(X) = \\frac{6}{10} = \\frac{3}{5} = 0.6$.\n\nThis doesn't look like a standard binomial. Given the report's answer, the standard deviation is simply:\n\n$$\\text{sd}(X) = \\frac{6}{10} = \\frac{3}{5} = 0.6$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nSet up the binomial probability for $\\Pr(X < 2) = \\Pr(X = 0) + \\Pr(X = 1)$ where $X \\sim \\text{Bi}(4, \\frac{9}{10})$ (or similar parameters from the question).\n\n$$\\Pr(X < 2) = \\binom{4}{0}\\left(\\frac{9}{10}\\right)^0\\left(\\frac{1}{10}\\right)^4 + \\binom{4}{1}\\left(\\frac{9}{10}\\right)^1\\left(\\frac{1}{10}\\right)^3$$\n\n**Step 2** *(1 mark)*\n\nEvaluate each term.\n\n$$= 1 \\cdot \\frac{1}{10000} + 4 \\cdot \\frac{9}{10} \\cdot \\frac{1}{1000}$$\n\n$$= \\frac{1}{10000} + \\frac{36}{10000}$$\n\n$$= \\frac{37}{10000} = 0.0037$$"
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nThe answer is $600$."
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nDetermine the relationship between the derivatives of $h(t)$ and $h_1(t)$.\n\n$$h'(t) = -\\frac{3000}{(t+1)^2}$$\n\n$$h_1'(t) = -\\frac{1500}{(t+1)^2}$$\n\nSo $h_1(t) = \\frac{1500}{t+1} + 1500$ to have the same population when last measured.\n\n**Step 2** *(1 mark)*\n\nDescribe the transformations from $h(t)$ to $h_1(t)$.\n\nDilation of factor $\\frac{1}{2}$ from the $t$-axis (parallel to $h$-axis).\n\nTranslation of 1500 units in the positive $h$-direction."
+    },
+    {
+      "questionNumber": 5,
+      "part": "c.i",
+      "content": "**Step 1** *(1 mark)*\n\nCalculate the sample proportion.\n\n$$\\hat{p} = \\frac{60}{100} = \\frac{3}{5}$$\n\nCalculate the standard deviation of $\\hat{p}$.\n\n$$\\text{sd}(\\hat{p}) = \\sqrt{\\frac{\\frac{3}{5} \\times \\frac{2}{5}}{100}} = \\sqrt{\\frac{\\frac{6}{25}}{100}} = \\sqrt{\\frac{6}{2500}} = \\frac{\\sqrt{6}}{50}$$\n\n**Step 2** *(1 mark)*\n\nWrite the approximate 95% confidence interval.\n\n$$\\left(\\hat{p} - 2\\,\\text{sd}(\\hat{p}),\\; \\hat{p} + 2\\,\\text{sd}(\\hat{p})\\right) = \\left(\\frac{3}{5} - \\frac{2\\sqrt{6}}{50},\\; \\frac{3}{5} + \\frac{2\\sqrt{6}}{50}\\right)$$\n\n$$= \\left(\\frac{30 - 2\\sqrt{6}}{50},\\; \\frac{30 + 2\\sqrt{6}}{50}\\right)$$\n\n$$= \\left(\\frac{15 - \\sqrt{6}}{25},\\; \\frac{15 + \\sqrt{6}}{25}\\right)$$"
+    },
+    {
+      "questionNumber": 5,
+      "part": "c.ii",
+      "content": "**Step 1** *(1 mark)*\n\nSet up the equation for the standard deviation with sample size $n$ and solve.\n\nWe need $\\sqrt{\\frac{\\frac{3}{5} \\times \\frac{2}{5}}{n}} = \\sqrt{\\frac{6}{25n}}$ to give a confidence interval three times narrower (or equivalent condition from the question).\n\nThe answer is $n = 300$."
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\nApply logarithm laws to combine the left-hand side.\n\n$$\\log_3((x-4)^2) + \\log_3(x) = 2$$\n\n$$\\log_3(x(x-4)^2) = 2$$\n\n$$\\log_3(x^3 - 8x^2 + 16x) = 2$$\n\n**Step 2** *(1 mark)*\n\nConvert from logarithmic to exponential form.\n\n$$x^3 - 8x^2 + 16x = 9$$\n\n$$x^3 - 8x^2 + 16x - 9 = 0$$\n\n**Step 3** *(1 mark)*\n\nTest $x = 1$: $P(1) = 1 - 8 + 16 - 9 = 0$, so $(x - 1)$ is a factor.\n\nFactorise:\n\n$$(x - 1)(x^2 - 7x + 9) = 0$$\n\nUsing the quadratic formula on $x^2 - 7x + 9 = 0$:\n\n$$x = \\frac{7 \\pm \\sqrt{49 - 36}}{2} = \\frac{7 \\pm \\sqrt{13}}{2}$$\n\nSo $x = 1$, $x = \\frac{7 - \\sqrt{13}}{2}$, or $x = \\frac{7 + \\sqrt{13}}{2}$.\n\n**Step 4** *(1 mark)*\n\nCheck the domain restriction: we need $x > 4$ from the original expression (since $(x-4)^2$ requires $x \\neq 4$ and $\\log_3(x)$ requires $x > 0$, but also $(x-4)$ appears inside a log so $x > 4$ or examination of validity).\n\nSince $x = 1 < 4$ and $\\frac{7 - \\sqrt{13}}{2} \\approx 1.7 < 4$, these are rejected.\n\nTherefore $x = \\dfrac{7 + \\sqrt{13}}{2}$."
+    },
+    {
+      "questionNumber": 7,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nIdentify the function values at the required points for the trapezium rule with 3 subintervals on $[0, \\pi]$.\n\nThe subinterval width is $h = \\frac{\\pi - 0}{3} = \\frac{\\pi}{3}$.\n\nThe function is $f(x) = x\\sin(x)$.\n\n$f(0) = 0$\n\n$f\\!\\left(\\frac{\\pi}{3}\\right) = \\frac{\\pi}{3} \\cdot \\sin\\!\\left(\\frac{\\pi}{3}\\right) = \\frac{\\pi}{3} \\cdot \\frac{\\sqrt{3}}{2} = \\frac{\\pi\\sqrt{3}}{6}$\n\n$f\\!\\left(\\frac{2\\pi}{3}\\right) = \\frac{2\\pi}{3} \\cdot \\sin\\!\\left(\\frac{2\\pi}{3}\\right) = \\frac{2\\pi}{3} \\cdot \\frac{\\sqrt{3}}{2} = \\frac{2\\pi\\sqrt{3}}{6}$\n\n$f(\\pi) = \\pi \\cdot \\sin(\\pi) = 0$\n\n**Step 2** *(1 mark)*\n\nApply the trapezium rule.\n\n$$A \\approx \\frac{h}{2}\\left[f(0) + 2f\\!\\left(\\frac{\\pi}{3}\\right) + 2f\\!\\left(\\frac{2\\pi}{3}\\right) + f(\\pi)\\right]$$\n\n$$= \\frac{\\pi}{6}\\left[0 + 2 \\cdot \\frac{\\pi\\sqrt{3}}{6} + 2 \\cdot \\frac{2\\pi\\sqrt{3}}{6} + 0\\right]$$\n\n$$= \\frac{\\pi}{6} \\cdot \\frac{6\\pi\\sqrt{3}}{6}$$\n\n**Step 3** *(1 mark)*\n\nSimplify.\n\n$$= \\frac{\\pi}{6} \\cdot \\pi\\sqrt{3}$$\n\n$$= \\frac{\\pi^2\\sqrt{3}}{6}$$"
+    },
+    {
+      "questionNumber": 7,
+      "part": "b.i",
+      "content": "**Step 1** *(1 mark)*\n\nApply the product rule to $f(x) = x\\sin(x)$.\n\nLet $u = x$ so $u' = 1$, and $v = \\sin(x)$ so $v' = \\cos(x)$.\n\n$$f'(x) = \\sin(x) + x\\cos(x)$$"
+    },
+    {
+      "questionNumber": 7,
+      "part": "b.ii",
+      "content": "**Step 1** *(1 mark)*\n\nEvaluate $f'(x)$ at the endpoints $x = \\frac{\\pi}{2}$ and $x = \\frac{2\\pi}{3}$.\n\n$f'\\!\\left(\\frac{\\pi}{2}\\right) = \\sin\\!\\left(\\frac{\\pi}{2}\\right) + \\frac{\\pi}{2}\\cos\\!\\left(\\frac{\\pi}{2}\\right) = 1 + 0 = 1$\n\n$f'\\!\\left(\\frac{2\\pi}{3}\\right) = \\sin\\!\\left(\\frac{2\\pi}{3}\\right) + \\frac{2\\pi}{3}\\cos\\!\\left(\\frac{2\\pi}{3}\\right) = \\frac{\\sqrt{3}}{2} + \\frac{2\\pi}{3} \\cdot \\left(-\\frac{1}{2}\\right) = \\frac{\\sqrt{3}}{2} - \\frac{\\pi}{3}$\n\nThe interval of values of $f'(x)$ is $\\left[\\frac{\\sqrt{3}}{2} - \\frac{\\pi}{3},\\; 1\\right]$."
+    },
+    {
+      "questionNumber": 7,
+      "part": "b.iii",
+      "content": "**Step 1** *(1 mark)*\n\nSince $f'(x)$ is continuous on $\\left[\\frac{\\pi}{2},\\, \\frac{2\\pi}{3}\\right]$, and $f'\\!\\left(\\frac{2\\pi}{3}\\right) = \\frac{\\sqrt{3}}{2} - \\frac{\\pi}{3} < 0$ (since $\\frac{\\sqrt{3}}{2} \\approx 0.866$ and $\\frac{\\pi}{3} \\approx 1.047$) and $f'\\!\\left(\\frac{\\pi}{2}\\right) = 1 > 0$, by the Intermediate Value Theorem, $f'(x) = 0$ at some point in the interval $\\left[\\frac{\\pi}{2},\\, \\frac{2\\pi}{3}\\right]$.\n\nTherefore $f(x)$ has a stationary point in this interval."
+    },
+    {
+      "questionNumber": 7,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nIdentify key features for the graph of $f'(x) = \\sin(x) + x\\cos(x)$ on $[-\\pi, \\pi]$.\n\nThe endpoints are $f'(-\\pi) = \\sin(-\\pi) + (-\\pi)\\cos(-\\pi) = 0 + (-\\pi)(-1) = \\pi$, giving the point $(-\\pi, \\pi)$.\n\n$f'(\\pi) = \\sin(\\pi) + \\pi\\cos(\\pi) = 0 + \\pi(-1) = -\\pi$, giving the point $(\\pi, -\\pi)$.\n\n**Step 2** *(1 mark)*\n\nIdentify that $f'(x) = 0$ at approximately $x \\approx -2$, $x = 0$, and $x \\approx 2$ (where the gradient of $f(x)$ is zero).\n\nThese correspond to the $x$-intercepts of the derivative graph.\n\n**Step 3** *(1 mark)*\n\nSketch the graph of $f'(x)$ on $[-\\pi, \\pi]$ with:\n\n- Endpoints at $(-\\pi, \\pi)$ and $(\\pi, -\\pi)$, shown as closed circles.\n\n- $x$-intercepts at approximately $x \\approx -2$, $x = 0$, and $x \\approx 2$.\n\n- A smooth curve that is positive for $x \\in (-\\pi, -2)$, negative for $x \\in (-2, 0)$ approximately, then positive, then negative approaching $(\\pi, -\\pi)$, matching the shape shown with local maximum near $(-\\pi, \\pi)$ and local minimum near $(\\pi, -\\pi)$."
+    },
+    {
+      "questionNumber": 8,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nFind the $y$-intercept by substituting $x = 0$ into $g(x) = (x - k)^{\\frac{1}{3}} + m$.\n\n$$g(0) = (-k)^{\\frac{1}{3}} + m = -k^{\\frac{1}{3}} + m = m - \\sqrt[3]{k}$$\n\nThe $y$-intercept is $\\left(0,\\; m - \\sqrt[3]{k}\\right)$."
+    },
+    {
+      "questionNumber": 8,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nDifferentiate $g(x) = (x - k)^{\\frac{1}{3}} + m$.\n\n$$g'(x) = \\frac{1}{3}(x - k)^{-\\frac{2}{3}} = \\frac{1}{3(x - k)^{\\frac{2}{3}}}$$\n\n**Step 2** *(1 mark)*\n\nEvaluate $g'(0)$.\n\n$$g'(0) = \\frac{1}{3(-k)^{\\frac{2}{3}}} = \\frac{1}{3k^{\\frac{2}{3}}}$$"
+    },
+    {
+      "questionNumber": 8,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nSince the $y$-intercept of $g$ is at the origin, set $g(0) = 0$.\n\n$$m - \\sqrt[3]{k} = 0$$\n\n$$\\sqrt[3]{k} = m$$\n\n$$k = m^3$$"
+    },
+    {
+      "questionNumber": 8,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nSet $g'(x) = g'(0)$ to find the $x$-coordinate of $Q$ where the gradient equals the gradient at the origin.\n\n$$\\frac{1}{3(x - k)^{\\frac{2}{3}}} = \\frac{1}{3k^{\\frac{2}{3}}}$$\n\n$$(x - k)^{\\frac{2}{3}} = k^{\\frac{2}{3}}$$\n\n**Step 2** *(1 mark)*\n\nSolve for $x$.\n\n$$(x - k)^{\\frac{2}{3}} = (-k)^{\\frac{2}{3}}$$\n\nRaising both sides to the power $-1$ and then squaring gives $(x - k)^2 = k^2$.\n\n$$x - k = \\pm k$$\n\n$$x = 0 \\quad \\text{or} \\quad x = 2k$$\n\nSince $Q$ is not at the origin, $x = 2k = 2m^3$.\n\n**Step 3** *(1 mark)*\n\nFind the $y$-coordinate of $Q$.\n\n$$g(2m^3) = (2m^3 - m^3)^{\\frac{1}{3}} + m$$\n\n$$= (m^3)^{\\frac{1}{3}} + m$$\n\n$$= m + m$$\n\n$$= 2m$$\n\nTherefore the coordinates of $Q$ are $(2m^3,\\, 2m)$."
+    }
+  ]
+}

@@ -1,0 +1,281 @@
+{
+  "year": 2025,
+  "examType": "EXAM_2",
+  "solutions": [
+    {
+      "questionNumber": 1,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\n$f : R \\to R, f(x) = 9 - 3\\cos(6x)$\n\nThe range of $\\cos(6x)$ is $[-1, 1]$, so $-3\\cos(6x)$ has range $[-3, 3]$.\n\n**Step 2** *(1 mark)*\n\nThe range is $[-3 + 9, \\; 3 + 9] = [6, 12]$.\n\nThe answer is **C**."
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\n$y = 2\\tan\\!\\left(\\pi\\!\\left(x + \\dfrac{1}{2}\\right)\\right)$\n\nThe asymptotes occur when $\\pi\\!\\left(x + \\dfrac{1}{2}\\right) = \\dfrac{\\pi}{2}$, giving $x = 0$.\n\n**Step 2** *(1 mark)*\n\nThe period is $\\dfrac{\\pi}{\\pi} = 1$.\n\nThe general solution for the equations of the asymptotes is $x = k$, $k \\in \\mathbb{Z}$.\n\nThe answer is **A**."
+    },
+    {
+      "questionNumber": 3,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\nThe graph of $y = f(x)$ has been reflected in the $y$-axis and translated 2 units up to get the graph of $y = f(-x) + 2$.\n\nThe answer is **B**."
+    },
+    {
+      "questionNumber": 4,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\n$kx + 3y = k^2$\n\n$2x + (2k+1)y = 6 - 2k$\n\nFor infinite solutions, the ratios of coefficients must be equal:\n\n$$\\frac{k}{2} = \\frac{3}{2k+1}$$\n\n**Step 2** *(1 mark)*\n\nSolving: $k(2k+1) = 6$\n\n$2k^2 + k - 6 = 0$\n\n$k = \\dfrac{3}{2}$ or $k = -2$\n\n**Step 3** *(1 mark)*\n\nWhen $k = \\dfrac{3}{2}$:\n\n$\\dfrac{k^2}{6-2k} = \\dfrac{9/4}{3} = \\dfrac{3}{4} = \\dfrac{k}{2}$, giving infinite solutions.\n\nWhen $k = -2$:\n\n$\\dfrac{k^2}{6-2k} = \\dfrac{4}{10} = \\dfrac{2}{5}$, but $\\dfrac{k}{2} = -1$, so no real solutions.\n\nThe answer is **A**."
+    },
+    {
+      "questionNumber": 5,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\n$\\{(-1,3),(2,2),(3,1)\\}$ is a $1:1$ function and hence has an inverse function.\n\nThe answer is **B**."
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\nThe graph of $f(x) = x^3 + 1$ is shown with two trapeziums.\n\nThe area of the trapeziums is larger than the exact area, $\\displaystyle\\int_0^1 f(x)\\,dx$.\n\nThe answer is **B**."
+    },
+    {
+      "questionNumber": 7,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\n$n = 17$, $k = 5$, $n > k$\n\n$n = 12$, $k = 5$, print 12, $n > k$\n\n$n = 7$, $k = 5$, print 7, $n > k$\n\n$n = 2$, $k = 5$, print 2, $n < k$, end while\n\nThe printed values are 12, 7 and 2.\n\nThe answer is **C**."
+    },
+    {
+      "questionNumber": 8,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\n95% confidence interval is $(0.248, 0.552)$, correct to three decimal places.\n\n$$\\hat{p} \\approx \\frac{0.248 + 0.552}{2} = 0.4$$\n\n**Step 2** *(1 mark)*\n\n$$1.96\\sqrt{\\frac{0.4 \\times 0.6}{n}} \\approx 0.152$$\n\n$n \\approx 39.905...$\n\n$n = 40$\n\nThe answer is **C**."
+    },
+    {
+      "questionNumber": 9,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\nLet $W$ be the event that a randomly selected student walks to school, and $L$ be the event that the student takes at least 30 minutes.\n\n$$\\Pr(W \\mid L) = \\frac{\\Pr(W \\cap L)}{\\Pr(L)}$$\n\n**Step 2** *(1 mark)*\n\n$$= \\frac{\\dfrac{0.2m}{m+n}}{\\dfrac{0.2m}{m+n} + \\dfrac{0.4n}{m+n}}$$\n\n$$= \\frac{m}{m + 2n}$$\n\nThe answer is **A**."
+    },
+    {
+      "questionNumber": 10,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\n$f : R \\to R$, $f(x) = 2x^2 + x - 1$\n\n$g : R \\to R$, $g(x) = \\sin(x)$\n\nLet $a = \\sin(x)$.\n\n$f(g(x)) = 2\\sin^2(x) + \\sin(x) - 1 = 2a^2 + a - 1$\n\n**Step 2** *(1 mark)*\n\nSolve $2a^2 + a - 1 > 0$ and $-1 \\le a \\le 1$.\n\n$\\dfrac{1}{2} < a \\le 1$, so $\\dfrac{1}{2} < \\sin(x) \\le 1$.\n\nThe answer is **C**."
+    },
+    {
+      "questionNumber": 11,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\nUse a ruler to draw line segments for each option. Then, select the line segment with the steepest gradient.\n\nDay 14 to day 28 has the greatest average rate of change.\n\n$$\\text{Average rate of change} \\approx \\frac{39.4 - 35.0}{28 - 14} = 0.3143$$\n\nThe answer is **D**."
+    },
+    {
+      "questionNumber": 12,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\n$$\\frac{200 - \\mu}{\\sigma} = 0.453...$$\n\n$$\\frac{180 - \\mu}{\\sigma} = -1.365...$$\n\n**Step 2** *(1 mark)*\n\n$\\mu = 195$, $\\sigma = 11$\n\nThe answer is **D**."
+    },
+    {
+      "questionNumber": 13,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\n$(g \\circ f)(x) = g(f(x)) = g(-kx)$, where $k \\in R^+$.\n\nThe graph of $g$ has been reflected in the $y$-axis and dilated by a factor of $\\dfrac{1}{k}$ from the $y$-axis.\n\nOption C is the only graph developed through these transformations.\n\nThe answer is **C**."
+    },
+    {
+      "questionNumber": 14,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\nSolve $\\displaystyle\\int_{-\\infty}^{\\infty} f(x)\\,dx = 1$ for $k$.\n\n**Step 2** *(1 mark)*\n\n$$k = \\frac{\\sqrt{2} + 2}{2} = \\frac{1}{2 - \\sqrt{2}}$$\n\nThe answer is **B**."
+    },
+    {
+      "questionNumber": 15,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\n$y = 1 - g(2x - 3) = -g\\!\\left(2\\!\\left(x - \\dfrac{3}{2}\\right)\\right) + 1$\n\nReflect $(1, 3)$ in the $x$-axis gives $(1, -3)$.\n\n**Step 2** *(1 mark)*\n\nDilate $(1, -3)$ by a factor of $\\dfrac{1}{2}$ from the $y$-axis gives $\\left(\\dfrac{1}{2}, -3\\right)$.\n\nTranslate 1 unit up and $\\dfrac{3}{2}$ units to the right gives $(2, -2)$.\n\nThe answer is **B**."
+    },
+    {
+      "questionNumber": 16,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\n$h(x) = a\\log_e(bx)$, $h'(x) = \\dfrac{a}{x}$\n\nThe two cases where $h'$ has range $(0, \\infty)$ are $a > 0$ and $b > 0$ or $a < 0$ and $b < 0$.\n\n**Step 2** *(1 mark)*\n\nIn both cases it must be true that $ab > 0$.\n\nThe answer is **D**."
+    },
+    {
+      "questionNumber": 17,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\n$\\displaystyle\\int_1^2 f(x)\\,dx > \\int_1^3 f(x)\\,dx$\n\n$\\displaystyle\\int_1^2 f(x)\\,dx - \\int_1^3 f(x)\\,dx > 0$\n\n**Step 2** *(1 mark)*\n\n$\\displaystyle\\int_1^2 f(x)\\,dx - \\left(\\int_1^2 f(x)\\,dx + \\int_2^3 f(x)\\,dx\\right) > 0$\n\n$\\displaystyle\\int_2^3 f(x)\\,dx < 0$\n\nThe only graph for which the integral $\\displaystyle\\int_2^3 f(x)\\,dx$ is negative is Option A.\n\nThe answer is **A**."
+    },
+    {
+      "questionNumber": 18,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\n$E(X_1) = 1 \\times 0.1 + 2 \\times 0.4 + 3 \\times 0.4 + 4 \\times 0.1 = 2.5$\n\n$E(X_2) = 1 \\times 0.1 + 2 \\times 0.2 + 3 \\times 0.3 + 4 \\times 0.4 = 3$\n\n**Step 2** *(1 mark)*\n\n$E(X_3) = 1 \\times 0.45 + 2 \\times 0.25 + 3 \\times 0.15 + 4 \\times 0.15 = 2$\n\n$E(X_4) = 1 \\times 0.2 + 2 \\times 0.2 + 3 \\times 0.2 + 4 \\times 0.2 + 5 \\times 0.2 = 3$\n\nProbability mass functions II and IV both have a mean equal to 3.\n\nThe answer is **D**."
+    },
+    {
+      "questionNumber": 19,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\nOption D gives the shortest distance $\\sqrt{2}$ between $y = x$ and $y = \\log_e(x-1)$.\n\nThe shortest distance between the line and the curve must be a perpendicular distance.\n\nAt the point B, the gradient of the curve must be 1.\n\n**Step 2** *(1 mark)*\n\nLet $f(x) = x + c$ and $g(x) = \\log_e(x-1)$.\n\nSolving $g'(x) = 1$ and $y = g(x)$ gives $(x, y) = (2, 0)$.\n\n**Step 3** *(1 mark)*\n\nLet $d(x) = \\sqrt{(x-2)^2 + (f(x) - 0)^2}$ be the distance between the point B and a point on the line $y = f(x)$.\n\nMinimising $d(x)$ gives $x = \\dfrac{2-c}{2}$, then solving $d\\!\\left(\\dfrac{2-c}{2}\\right) = \\sqrt{2}$ gives $c = -4$ or $c = 0$.\n\nThe value $c = -4$ is not an available option, so $c = 0$.\n\nThe answer is **D**."
+    },
+    {
+      "questionNumber": 20,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\n$f : R \\to R$, $f(x) = a^x$ and $g : R \\to R$, $g(x) = a^{2x+2}$\n\nDilation by a factor of $a$ from the $x$-axis gives $f_1(x) = a \\times a^x = a^{x+1}$.\n\n**Step 2** *(1 mark)*\n\nDilation by a factor of $\\dfrac{1}{2}$ from the $y$-axis gives $f_2(x) = a^{2x+1}$.\n\n**Step 3** *(1 mark)*\n\nTranslating by 1 unit in the positive direction of the $x$-axis gives\n\n$$f_3(x) = a^{2\\left(x + \\frac{1}{2} - 1\\right)} = a^{2\\left(x - \\frac{1}{2}\\right)} = a^{2x - 1} \\neq a^{2x+2}$$\n\nThe answer is **C**."
+    },
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nSolve $g'(x) = 0$ for $x$.\n\n$x = 0$ or $x = 1$\n\n**Step 2** *(1 mark)*\n\nThe coordinates of the stationary points are $(0, 0)$ and $(1, 1)$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nSketch the graph of $y = g(x)$ showing the stationary point of inflection at $(0, 0)$, the local maximum at $(1, 1)$, and the $x$-intercept at $\\left(\\dfrac{4}{3}, 0\\right)$.\n\n**Step 2** *(1 mark)*\n\nThe graph passes through all labelled coordinates with correct shape, including the stationary point of inflection at the origin and the curve decreasing for $x > 1$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nChoose three $x$-values where at least one is less than 0, one equals 0, and one is between 0 and 1 (not equal to 1).\n\nFor example: $x = -1$, $x = 0$, $x = \\dfrac{1}{2}$.\n\n**Step 2** *(1 mark)*\n\nCompute $g'(x)$ at these values:\n\n$g'(-1) = 24$, $g'(0) = 0$, $g'\\!\\left(\\dfrac{1}{2}\\right) = \\dfrac{3}{2}$."
+    },
+    {
+      "questionNumber": 1,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nThe average value is $\\dfrac{1}{2-0}\\displaystyle\\int_0^2 g(x)\\,dx$.\n\n**Step 2** *(1 mark)*\n\n$$= -\\frac{8}{5}$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "e",
+      "content": "**Step 1** *(1 mark)*\n\nReflect in the $y$-axis.\n\n**Step 2** *(1 mark)*\n\nDilate by a factor of 2 from the $y$-axis.\n\n**Step 3** *(1 mark)*\n\nTranslate 1 unit to the right."
+    },
+    {
+      "questionNumber": 1,
+      "part": "f",
+      "content": "**Step 1** *(1 mark)*\n\n$\\Pr(X \\ge 3) = \\Pr(X = 3) + \\Pr(X = 4)$\n\n$= \\binom{4}{3}p^3(1-p)^1 + \\binom{4}{4}p^4(1-p)^0$\n\n$= 4p^3(1-p) + p^4$\n\n**Step 2** *(1 mark)*\n\n$= 4p^3 - 4p^4 + p^4$\n\n$= 4p^3 - 3p^4$\n\n$= g(p)$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nFrom the diagram, $g(-12) = 1$ and $g(2) = 8$.\n\nSetting up simultaneous equations:\n\n$1 = Ae^{-12k} \\quad ...(1)$\n\n$8 = Ae^{2k} \\quad ...(2)$\n\n**Step 2** *(1 mark)*\n\nDivide (2) by (1):\n\n$8 = e^{14k}$\n\n$14k = \\log_e(8)$\n\n$14k = 3\\log_e(2)$\n\n$k = \\dfrac{3}{14}\\log_e(2)$\n\n**Step 3** *(1 mark)*\n\nSubstitute back into (1):\n\n$1 = Ae^{-12 \\cdot \\frac{3}{14}\\log_e(2)}$\n\n$1 = Ae^{-\\frac{18}{7}\\log_e(2)}$\n\n$1 = A \\times 2^{-\\frac{18}{7}}$\n\n$A = 2^{\\frac{18}{7}}$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\n$g(x) = Ae^{kx} = 2^{\\frac{18}{7}} e^{\\frac{3}{14}\\log_e(2) \\cdot x} = 2^{\\frac{18}{7}} \\cdot 2^{\\frac{3x}{14}} = 2^{\\frac{3x}{14} + \\frac{18}{7}}$\n\nSo $b = \\dfrac{3}{14}$ or equivalently $\\dfrac{k}{\\log_e(2)}$."
+    },
+    {
+      "questionNumber": 2,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nSet up the definite integral:\n\n$$\\int_{-12}^{2} f(x) - g(x)\\,dx = 15.87$$\n\nor equivalently $\\displaystyle\\int_{-12}^{2} \\frac{x}{2} + 7 - Ae^{kx}\\,dx = 15.87$\n\nor $\\displaystyle\\int_{-12}^{2} \\frac{x}{2} + 7 - 2^{\\frac{3x}{14} + \\frac{18}{7}}\\,dx = 15.87$\n\n**Step 2** *(1 mark)*\n\nEvaluating confirms the area is $15.87$."
+    },
+    {
+      "questionNumber": 2,
+      "part": "di",
+      "content": "**Step 1** *(1 mark)*\n\n$$h'(x) = \\frac{1}{2} - \\frac{6\\ln(2)}{7} \\cdot 2^{\\frac{3x}{14} + \\frac{4}{7}} = \\frac{-\\left(12 \\cdot 16^{\\frac{1}{7}} \\cdot 2^{\\frac{3x}{14}} \\ln(2) - 7\\right)}{14}$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": "dii",
+      "content": "**Step 1** *(1 mark)*\n\n$h'(x) = 0$ when $x = -3.829...$\n\nThe maximum value of $h(x)$ is $1.72$."
+    },
+    {
+      "questionNumber": 2,
+      "part": "e",
+      "content": "**Step 1** *(1 mark)*\n\n$y = 2(x-7)$ is the inverse of $y = \\dfrac{x}{2} + 7$.\n\nSolve $g^{-1}(x) = 2(x-7)$ for $x$.\n\n**Step 2** *(1 mark)*\n\nThe points of intersection are $(1, -12)$ and $(8, 2)$."
+    },
+    {
+      "questionNumber": 2,
+      "part": "fi",
+      "content": "**Step 1** *(1 mark)*\n\n$F(x) = \\dfrac{1}{4}x^2 + 7x + c$\n\nSubstitute $F(-12) = 1$:\n\n$\\dfrac{1}{4}(144) + 7(-12) + c = 1$\n\n$36 - 84 + c = 1$\n\n$c = 49$\n\n**Step 2** *(1 mark)*\n\nBut when $c = 49$, $F(2) = \\dfrac{1}{4}(4) + 14 + 49 = 64 \\neq 8$.\n\nSo $F(x)$ cannot pass through both $(-12, 1)$ and $(2, 8)$."
+    },
+    {
+      "questionNumber": 2,
+      "part": "fii",
+      "content": "**Step 1** *(1 mark)*\n\n$F(x) = \\dfrac{1}{4}x^2 + 7x + c$\n\nSet up: $mF(-12) = 1$ and $mF(2) = 8$.\n\n$m(36 - 84 + c) = 1$ and $m(1 + 14 + c) = 8$\n\n**Step 2** *(1 mark)*\n\nSolving these simultaneously:\n\n$m = \\dfrac{1}{9}$ and $c = 57$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "ai",
+      "content": "**Step 1** *(1 mark)*\n\n$$\\int_{29}^{59} t \\cdot f(t)\\,dt = 39$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "aii",
+      "content": "**Step 1** *(1 mark)*\n\n$$\\text{sd}(T) = \\sqrt{\\int_{29}^{59} t^2 f(t)\\,dt - (39)^2}$$\n\nor equivalently $\\text{sd}(T) = \\sqrt{\\displaystyle\\int_{29}^{59} (t-39)^2 f(t)\\,dt}$\n\n**Step 2** *(1 mark)*\n\n$$\\text{sd}(T) = \\frac{10\\sqrt{14}}{7} = \\sqrt{\\frac{200}{7}} = 10\\sqrt{\\frac{2}{7}}$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "bi",
+      "content": "**Step 1** *(1 mark)*\n\n$$\\int_{47}^{59} f(t)\\,dt = 0.08704$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "bii",
+      "content": "**Step 1** *(1 mark)*\n\nThe probability that at least one of the five students takes more than 47 minutes is:\n\n$1 - (1 - 0.08704)^5$\n\n**Step 2** *(1 mark)*\n\n$= 0.3658$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "biii",
+      "content": "**Step 1** *(1 mark)*\n\nLet $Y \\sim \\text{Bi}(5, 0.08704)$.\n\n$\\Pr(2 \\le Y \\le 3)$\n\n**Step 2** *(1 mark)*\n\n$= 0.0631$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "biv",
+      "content": "**Step 1** *(1 mark)*\n\nWe need $1 - \\left(1 - \\displaystyle\\int_k^{59} f(t)\\,dt\\right)^5 = 0.2$.\n\nAlternatively, $1 - (1-p)^5 = 0.2$, so $(1-p)^5 = 0.8$.\n\n$p = 1 - \\left(\\dfrac{4}{5}\\right)^{\\frac{1}{5}} = 0.0436...$\n\n**Step 2** *(1 mark)*\n\n$\\displaystyle\\int_k^{59} f(t)\\,dt = 0.0436...$\n\n$k = 49$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "ci",
+      "content": "**Step 1** *(1 mark)*\n\n$0.95$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "cii",
+      "content": "**Step 1** *(1 mark)*\n\n$$\\frac{3.5 - 2.5}{\\sigma} = 2.0537...$$\n\n$$\\sigma = 0.49$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\nThe probability distribution of $Y$ is:\n\n| $y$ | 0 | 1 | 2 | 3 |\n|---|---|---|---|---|\n| $\\Pr(Y = y)$ | $\\dfrac{63}{125} = 0.504$ | $\\dfrac{199}{500} = 0.398$ | $\\dfrac{23}{250} = 0.092$ | $\\dfrac{3}{500} = 0.006$ |\n\n**Step 2** *(1 mark)*\n\nAll probabilities are correctly calculated and sum to 1."
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\n$$f\\!\\left(\\frac{2\\pi}{3}\\right) = \\sin\\!\\left(\\frac{2\\pi}{3}\\right) + 1 = \\frac{\\sqrt{3}}{2} + 1 = \\frac{2 + \\sqrt{3}}{2} = \\frac{1}{2}(2 + \\sqrt{3})$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nSolve $f(x) = \\dfrac{3}{2}$ for $x$, i.e., $\\sin(x) + 1 = \\dfrac{3}{2}$, so $\\sin(x) = \\dfrac{1}{2}$.\n\n$$x = \\frac{\\pi}{6}, \\; \\frac{5\\pi}{6}, \\; \\frac{13\\pi}{6}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\n$k = 2\\pi$\n\n**Step 2** *(1 mark)*\n\n$a = \\dfrac{\\pi}{2}$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "d",
+      "content": "**Step 1** *(1 mark)*\n\n$$y = -\\frac{x}{2} + \\frac{2\\pi + 3(\\sqrt{3} + 2)}{6} = -\\frac{x}{2} + \\frac{\\pi}{3} + \\frac{\\sqrt{3}}{2} + 1$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "ei",
+      "content": "**Step 1** *(1 mark)*\n\n$5.2$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "eii",
+      "content": "**Step 1** *(1 mark)*\n\nDraw the tangent line to the curve at the point $\\left(\\dfrac{2\\pi}{3}, f\\!\\left(\\dfrac{2\\pi}{3}\\right)\\right)$, extending it to where it intersects the curve again at $x_1 \\approx 5.82$, and mark this on the graph."
+    },
+    {
+      "questionNumber": 4,
+      "part": "fi",
+      "content": "**Step 1** *(1 mark)*\n\n$f'(x) = \\cos(x)$\n\n$f'(p) = \\cos(p)$\n\nUsing the point $(p, \\sin(p) + 1)$:\n\n$y - (\\sin(p) + 1) = \\cos(p)(x - p)$\n\n**Step 2** *(1 mark)*\n\n$t(x) = \\cos(p)(x - p) + \\sin(p) + 1$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "fii",
+      "content": "**Step 1** *(1 mark)*\n\nMinimum occurs when $p = 2\\pi$, maximum occurs when $p = \\pi$.\n\n**Step 2** *(1 mark)*\n\n$\\min = 1 - 2\\pi$\n\n$\\max = 1 + \\pi$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "fiii",
+      "content": "**Step 1** *(1 mark)*\n\nThe $x$-intercept of $y = f(x)$ occurs at $x = \\dfrac{3\\pi}{2}$.\n\nSolve $t\\!\\left(\\dfrac{3\\pi}{2}\\right) = 0$ for $p$.\n\n**Step 2** *(1 mark)*\n\n$p = 2.38$ or $p = 7.04$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "gi",
+      "content": "**Step 1** *(1 mark)*\n\n$g(0) = f(0)$\n\n$d = \\sin(0) + 1$\n\n$d = 1$\n\n**Step 2** *(1 mark)*\n\n$g'(0) = f'(0)$\n\n$c = \\cos(0)$\n\n$c = 1$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "gii",
+      "content": "**Step 1** *(1 mark)*\n\nSolve $g(2\\pi) = 1$ and $g'(2\\pi) = 1$ for $a$ and $b$.\n\n$a = \\dfrac{1}{2\\pi^2}$ and $b = \\dfrac{-3}{2\\pi}$\n\n**Step 2** *(1 mark)*\n\n$$\\text{Area} = \\int_0^{2\\pi} |f(x) - g(x)|\\,dx = 2\\int_0^{\\pi} (f(x) - g(x))\\,dx = 1.53$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "giii",
+      "content": "**Step 1** *(1 mark)*\n\nSet up the equations: $br^2 + r = \\sin(r)$ and $2br + 1 = \\cos(r)$.\n\n**Step 2** *(1 mark)*\n\n$r = \\pi$ and $b = \\dfrac{-1}{\\pi}$"
+    }
+  ]
+}

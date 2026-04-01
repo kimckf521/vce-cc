@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
-import { X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { X, Loader2 } from "lucide-react";
 import MathContent from "@/components/MathContent";
 import FunctionGraph from "@/components/FunctionGraph";
 import CartesianGrid from "@/components/CartesianGrid";
+import SolutionEditor from "@/components/SolutionEditor";
 
 interface SolutionPart {
+  questionId: string;
   part: string | null;
   content: string;
   imageUrl?: string | null;
@@ -38,10 +40,36 @@ interface SolutionModalProps {
   questionLabel: string;
   solutions: SolutionPart[];
   onClose: () => void;
+  isAdmin?: boolean;
 }
 
-export default function SolutionModal({ questionLabel, solutions, onClose }: SolutionModalProps) {
+function SolutionSkeleton() {
+  return (
+    <div className="animate-pulse space-y-4 px-6 py-5">
+      <div className="h-4 bg-gray-200 rounded w-1/4" />
+      <div className="space-y-2">
+        <div className="h-3 bg-gray-200 rounded w-full" />
+        <div className="h-3 bg-gray-200 rounded w-5/6" />
+        <div className="h-3 bg-gray-200 rounded w-3/4" />
+      </div>
+      <div className="h-8 bg-gray-100 rounded w-1/2 mt-4" />
+      <div className="space-y-2">
+        <div className="h-3 bg-gray-200 rounded w-full" />
+        <div className="h-3 bg-gray-200 rounded w-4/6" />
+      </div>
+    </div>
+  );
+}
+
+export default function SolutionModal({ questionLabel, solutions, onClose, isAdmin }: SolutionModalProps) {
   const isMultiPart = solutions.length > 1;
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    // Allow one frame for KaTeX to render before hiding skeleton
+    const id = requestAnimationFrame(() => setLoaded(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -71,7 +99,8 @@ export default function SolutionModal({ questionLabel, solutions, onClose }: Sol
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6">
+        {!loaded && <SolutionSkeleton />}
+        <div className={`flex-1 overflow-y-auto px-6 py-5 space-y-6 ${loaded ? "" : "sr-only"}`}>
           {solutions.map((s, i) => {
             const mcq = parseMCQSolution(s.content);
             const isMCQ = mcq.answer !== null;
@@ -112,6 +141,17 @@ export default function SolutionModal({ questionLabel, solutions, onClose }: Sol
                 >
                   Watch video solution →
                 </a>
+              )}
+
+              {/* Admin inline editor */}
+              {isAdmin && (
+                <div className="mt-3">
+                  <SolutionEditor
+                    questionId={s.questionId}
+                    initialContent={s.content}
+                    initialVideoUrl={s.videoUrl}
+                  />
+                </div>
               )}
 
               {/* Divider between parts */}

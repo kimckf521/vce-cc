@@ -1,0 +1,121 @@
+{
+  "year": 2025,
+  "examType": "EXAM_1",
+  "solutions": [
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nApply the product rule to $y = x^2 \\cos(x)$.\n\nLet $u = x^2$ and $v = \\cos(x)$.\n\n$u' = 2x$ and $v' = -\\sin(x)$.\n\n$$\\frac{dy}{dx} = 2x\\cos(x) + x^2 \\cdot (-\\sin(x))$$\n\n$$= 2x\\cos(x) - x^2 \\sin(x)$$"
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nRewrite $f(x) = 6\\sqrt{x+1} + 5 = 6(x+1)^{\\frac{1}{2}} + 5$.\n\nApply the chain rule to find the derivative.\n\n$$f'(x) = 6 \\cdot \\frac{1}{2} \\cdot (x+1)^{-\\frac{1}{2}} = 3(x+1)^{-\\frac{1}{2}} = \\frac{3}{\\sqrt{x+1}}$$\n\n**Step 2** *(1 mark)*\n\nEvaluate $f'(8)$.\n\n$$f'(8) = \\frac{3}{\\sqrt{8+1}}$$\n\n$$= \\frac{3}{\\sqrt{9}}$$\n\n$$= \\frac{3}{3}$$\n\n$$= 1$$"
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "content": "**Step 1** *(1 mark)*\n\nAntidifferentiate $g'(x) = \\frac{1}{2x+3}$ to find $g(x)$.\n\n$$g(x) = \\int \\frac{1}{2x+3}\\, dx = \\frac{1}{2}\\log_e(2x+3) + c$$\n\n**Step 2** *(1 mark)*\n\nUse the condition $g(1) = 0$ to find $c$.\n\n$$g(1) = 0 = \\frac{1}{2}\\log_e(5) + c$$\n\n$$c = -\\frac{1}{2}\\log_e(5)$$\n\nTherefore:\n\n$$g(x) = \\frac{1}{2}\\log_e(2x+3) - \\frac{1}{2}\\log_e(5) = \\frac{1}{2}\\log_e\\left(\\frac{2x+3}{5}\\right)$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nThe range of $f$ is $[-1, 3]$.\n\nThat is, $-1 \\leq f(x) \\leq 3$."
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nSet up the equation $\\cos(2x) = -\\frac{1}{2}$.\n\nThe base angle where $\\cos(\\theta) = \\frac{1}{2}$ is $\\theta = \\frac{\\pi}{3}$.\n\nSince $\\cos(2x) = -\\frac{1}{2}$, we have $2x = \\frac{2\\pi}{3}, \\frac{4\\pi}{3}$ in the first cycle.\n\n**Step 2** *(1 mark)*\n\nFind all values of $2x$ for $0 \\leq x \\leq 2\\pi$, i.e., $0 \\leq 2x \\leq 4\\pi$.\n\n$$2x = \\frac{2\\pi}{3},\\; \\frac{4\\pi}{3},\\; \\frac{8\\pi}{3},\\; \\frac{10\\pi}{3}$$\n\n**Step 3** *(1 mark)*\n\nDivide by 2 to find $x$.\n\n$$x = \\frac{\\pi}{3},\\; \\frac{2\\pi}{3},\\; \\frac{4\\pi}{3},\\; \\frac{5\\pi}{3}$$"
+    },
+    {
+      "questionNumber": 3,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nSketch the graph of $y = 2\\cos(2(x - \\pi)) + 1$ over the domain $\\left[\\frac{\\pi}{2}, \\frac{3\\pi}{2}\\right]$.\n\nThe graph has a maximum point at $(\\pi, 3)$ and endpoints at $\\left(\\frac{\\pi}{2}, -1\\right)$ and $\\left(\\frac{3\\pi}{2}, -1\\right)$.\n\n**Step 2** *(1 mark)*\n\nThe curve is a smooth cosine shape with correct sinusoidal symmetry about $x = \\pi$.\n\nThe endpoints $\\left(\\frac{\\pi}{2}, -1\\right)$ and $\\left(\\frac{3\\pi}{2}, -1\\right)$ are labelled with closed circles.\n\nThe graph passes through the correct range $[-1, 3]$ and does not extend beyond the given domain."
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nThe sum of all probabilities equals 1.\n\n$$\\frac{4}{k} + \\frac{2k}{75} + \\frac{k}{75} + \\frac{2}{k} = 1$$\n\n$$\\frac{6}{k} + \\frac{3k}{75} = 1$$\n\nMultiply through by $75k$:\n\n$$450 + 3k^2 = 75k$$\n\n**Step 2** *(1 mark)*\n\nSolve the quadratic equation.\n\n$$3k^2 - 75k + 450 = 0$$\n\n$$k^2 - 25k + 150 = 0$$\n\n$$(k - 10)(k - 15) = 0$$\n\n$$k = 10 \\quad \\text{or} \\quad k = 15$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.i",
+      "content": "**Step 1** *(1 mark)*\n\nWith $k = 15$:\n\n$$\\Pr(X > 1) = \\Pr(X = 2) + \\Pr(X = 3)$$\n\n$$= \\frac{15}{75} + \\frac{2}{15}$$\n\n$$= \\frac{1}{5} + \\frac{2}{15}$$\n\n$$= \\frac{3}{15} + \\frac{2}{15}$$\n\n$$= \\frac{5}{15} = \\frac{1}{3}$$"
+    },
+    {
+      "questionNumber": 4,
+      "part": "b.ii",
+      "content": "**Step 1** *(1 mark)*\n\nWith $k = 15$, the probabilities are $\\Pr(X=0) = \\frac{4}{15}$, $\\Pr(X=1) = \\frac{30}{75} = \\frac{2}{5}$, $\\Pr(X=2) = \\frac{15}{75} = \\frac{1}{5}$, $\\Pr(X=3) = \\frac{2}{15}$.\n\n$$E(X) = 0 \\times \\frac{4}{15} + 1 \\times \\frac{30}{75} + 2 \\times \\frac{15}{75} + 3 \\times \\frac{2}{15}$$\n\n$$= 0 + \\frac{30}{75} + \\frac{30}{75} + \\frac{6}{15}$$\n\n$$= \\frac{6}{15} + \\frac{6}{15} + \\frac{6}{15}$$\n\n$$= \\frac{18}{15} = \\frac{6}{5}$$"
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nRecognise $e^{2x} - 8e^x + 7 = 0$ as a quadratic in $e^x$.\n\n$$(e^x - 1)(e^x - 7) = 0$$\n\n**Step 2** *(1 mark)*\n\nSolve each factor.\n\n$e^x = 1$ gives $x = 0$.\n\n$e^x = 7$ gives $x = \\log_e(7)$."
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nFind the turning point by differentiating $g(x) = e^{2x} - 8e^x + 7$.\n\n$$g'(x) = 2e^{2x} - 8e^x = 0$$\n\n$$2e^x(e^x - 4) = 0$$\n\nSince $e^x > 0$, we have $e^x = 4$.\n\n$$x = \\log_e(4)$$\n\n**Step 2** *(1 mark)*\n\nTherefore $a = \\log_e(4) = 2\\log_e(2)$."
+    },
+    {
+      "questionNumber": 6,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nUse the formula $\\text{var}(X) = np(1-p)$ with $n = 6$ and $p = \\frac{1}{4}$.\n\n$$\\text{var}(X) = 6 \\times \\frac{1}{4} \\times \\frac{3}{4} = \\frac{18}{16} = \\frac{9}{8}$$"
+    },
+    {
+      "questionNumber": 6,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nSet up the probability calculation.\n\n$$\\Pr(X \\geq 5) = \\Pr(X = 5) + \\Pr(X = 6)$$\n\n$$= \\binom{6}{5}\\left(\\frac{1}{4}\\right)^5\\left(\\frac{3}{4}\\right)^1 + \\binom{6}{6}\\left(\\frac{1}{4}\\right)^6\\left(\\frac{3}{4}\\right)^0$$\n\n**Step 2** *(1 mark)*\n\nEvaluate.\n\n$$= 6 \\times \\frac{1}{4^6} \\times 3 + \\frac{1}{4^6}$$\n\n$$= \\frac{18 + 1}{4^6}$$\n\n$$= \\frac{19}{4096} = \\frac{19}{2^{12}}$$"
+    },
+    {
+      "questionNumber": 7,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nSubstitute $x = 5$ into $f(x) = x^3 - x^2 - 16x - 20$.\n\n$$f(5) = 125 - 25 - 80 - 20$$\n\n$$= 125 - 125$$\n\n$$= 0$$\n\nTherefore $x = 5$ is a solution to $f(x) = 0$."
+    },
+    {
+      "questionNumber": 7,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nSince $x = 5$ is a root, $(x - 5)$ is a factor. Divide $f(x)$ by $(x - 5)$ using long division or synthetic division.\n\nUsing synthetic division with $x = 5$:\n\n$1 \\quad -1 \\quad -16 \\quad -20$\n\n$\\quad \\quad 5 \\quad \\;\\; 20 \\quad \\;\\; 20$\n\n$1 \\quad \\;\\; 4 \\quad \\;\\;\\; 4 \\quad \\;\\;\\;\\; 0$\n\nSo $\\frac{f(x)}{x-5} = x^2 + 4x + 4$.\n\n**Step 2** *(1 mark)*\n\nFactorise the quadratic.\n\n$$x^2 + 4x + 4 = (x+2)^2$$\n\nTherefore:\n\n$$f(x) = (x-5)(x+2)^2$$"
+    },
+    {
+      "questionNumber": 7,
+      "part": "c",
+      "content": "**Step 1** *(1 mark)*\n\nSketch the graph of $y = f(x) = (x+2)^2(x-5)$.\n\nThe graph has $x$-intercepts at $(-2, 0)$ (a turning point due to the repeated factor) and $(5, 0)$.\n\nThe $y$-intercept is at $(0, -20)$.\n\nThe curve comes from the third quadrant, touches the $x$-axis at $(-2, 0)$, dips down through $(0, -20)$, then rises to cross the $x$-axis at $(5, 0)$ and continues upward.\n\nAll intercepts are labelled with coordinates."
+    },
+    {
+      "questionNumber": 7,
+      "part": "d.i",
+      "content": "**Step 1** *(1 mark)*\n\nFind $y = f(x) \\cdot g(x)$ where $g(x) = x + 2$.\n\n$$y = (x+2)^2(x-5) \\cdot (x+2) = (x+2)^3(x-5)$$\n\nThe triple factor $(x+2)^3$ indicates that $(-2, 0)$ is a stationary point of inflection.\n\nThe coordinates of the stationary point of inflection are $(-2, 0)$."
+    },
+    {
+      "questionNumber": 7,
+      "part": "d.ii",
+      "content": "**Step 1** *(1 mark)*\n\nWe need $f(x)g(x) \\geq 0$, i.e., $(x+2)^3(x-5) \\geq 0$.\n\nSince $(x+2)^3$ has the same sign as $(x+2)$, the product is non-negative when both factors have the same sign or when one is zero.\n\nThe solution is $x \\leq -2$ or $x \\geq 5$.\n\nIn interval notation: $(-\\infty, -2] \\cup [5, \\infty)$."
+    },
+    {
+      "questionNumber": 8,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nSet up the probability equation $\\Pr(X > k) = \\frac{9}{16}$.\n\n$$\\int_k^{\\frac{4}{3}} \\frac{3}{8}(4-3x)\\, dx = \\frac{9}{16}$$\n\n**Step 2** *(1 mark)*\n\nEvaluate the integral using the substitution $u = 3x - 4$.\n\n$$= -\\frac{3}{8} \\cdot \\frac{1}{6}\\left[(3x-4)^2\\right]_k^{\\frac{4}{3}}$$\n\n$$= -\\frac{1}{16}\\left[(4-4)^2 - (3k-4)^2\\right]$$\n\n$$= \\frac{(3k-4)^2}{16}$$\n\n**Step 3** *(1 mark)*\n\nSolve for $k$.\n\n$$\\frac{(3k-4)^2}{16} = \\frac{9}{16}$$\n\n$$(3k-4)^2 = 9$$\n\n$$3k - 4 = \\pm 3$$\n\n$$3k = 7 \\quad \\text{or} \\quad 3k = 1$$\n\n$$k = \\frac{7}{3} \\quad \\text{or} \\quad k = \\frac{1}{3}$$\n\nSince $k$ must be in $\\left[0, \\frac{4}{3}\\right]$, we reject $k = \\frac{7}{3}$.\n\nTherefore $k = \\frac{1}{3}$."
+    },
+    {
+      "questionNumber": 8,
+      "part": "b",
+      "content": "**Step 1** *(1 mark)*\n\nExpress the integral of $h(x)$ using the properties of integrals.\n\n$$\\int_0^{\\frac{4}{3}} h(x)\\, dx = \\int_0^{\\frac{4}{3}} \\left(mf(x) + n\\right)\\, dx$$\n\n$$= m\\int_0^{\\frac{4}{3}} f(x)\\, dx + \\int_0^{\\frac{4}{3}} n\\, dx$$\n\nSince $f(x)$ is a probability density function, $\\int_0^{\\frac{4}{3}} f(x)\\, dx = 1$.\n\n**Step 2** *(1 mark)*\n\nEvaluate the constant integral.\n\n$$\\int_0^{\\frac{4}{3}} n\\, dx = \\frac{4}{3}n$$\n\nTherefore:\n\n$$\\int_0^{\\frac{4}{3}} h(x)\\, dx = m + \\frac{4n}{3} = \\frac{3m + 4n}{3}$$"
+    },
+    {
+      "questionNumber": 9,
+      "part": "a",
+      "content": "**Step 1** *(1 mark)*\n\nSubstitute $w = -3$ into $\\frac{w^2}{(x-1)^2} = (x-w)^2$.\n\n$$\\frac{9}{(x-1)^2} = (x+3)^2$$\n\nTake square roots of both sides, noting both positive and negative cases.\n\n$$(x+3)(x-1) = \\pm 3$$\n\n**Step 2** *(1 mark)*\n\nCase 1: $(x+3)(x-1) = 3$\n\n$$x^2 + 2x - 3 = 3$$\n\n$$x^2 + 2x - 6 = 0$$\n\nUsing the quadratic formula:\n\n$$x = \\frac{-2 \\pm \\sqrt{4 + 24}}{2} = -1 \\pm \\sqrt{7}$$\n\n**Step 3** *(1 mark)*\n\nCase 2: $(x+3)(x-1) = -3$\n\n$$x^2 + 2x - 3 = -3$$\n\n$$x^2 + 2x = 0$$\n\n$$x(x+2) = 0$$\n\n$$x = 0 \\quad \\text{or} \\quad x = -2$$\n\nAll four solutions are valid since none equals 1.\n\nTherefore $x = 0,\\; x = -2,\\; x = -1 + \\sqrt{7},\\; x = -1 - \\sqrt{7}$."
+    },
+    {
+      "questionNumber": 9,
+      "part": "b.i",
+      "content": "**Step 1** *(1 mark)*\n\nFor $y = (x-1)(x-w)$, the $x$-coordinate of the turning point is the average of the roots.\n\n$$x_{\\text{tp}} = \\frac{1+w}{2}$$\n\n**Step 2** *(1 mark)*\n\nSubstitute $x = \\frac{1+w}{2}$ into $y = (x-1)(x-w)$ to find the $y$-coordinate.\n\n$$y_{\\text{tp}} = \\left(\\frac{1+w}{2} - 1\\right)\\left(\\frac{1+w}{2} - w\\right)$$\n\n$$= \\left(\\frac{w-1}{2}\\right)\\left(\\frac{1-w}{2}\\right)$$\n\n$$= -\\frac{(w-1)^2}{4}$$\n\nThe minimum turning point is $\\left(\\frac{1+w}{2},\\; -\\frac{(w-1)^2}{4}\\right)$."
+    },
+    {
+      "questionNumber": 9,
+      "part": "b.ii",
+      "content": "**Step 1** *(1 mark)*\n\nFrom the equation $\\frac{w^2}{(x-1)^2} = (x-w)^2$, take square roots to obtain $(x-w)(x-1) = \\pm w$.\n\nCase 1: $(x-w)(x-1) = w$ gives $x^2 - (w+1)x + w = w$, so $x(x-(w+1)) = 0$, yielding $x = 0$ and $x = w+1$.\n\nThis always gives two distinct solutions since $w > 0$.\n\nCase 2: $(x-w)(x-1) = -w$ gives $x^2 - (w+1)x + 2w = 0$.\n\nFor exactly 3 solutions in total, Case 2 must give exactly one solution (a repeated root), so its discriminant must equal zero.\n\n$$\\Delta = (w+1)^2 - 4(1)(2w) = 0$$\n\n$$w^2 + 2w + 1 - 8w = 0$$\n\n$$w^2 - 6w + 1 = 0$$\n\n**Step 2** *(1 mark)*\n\nSolve $w^2 - 6w + 1 = 0$ using the quadratic formula.\n\n$$w = \\frac{6 \\pm \\sqrt{36 - 4}}{2} = \\frac{6 \\pm \\sqrt{32}}{2} = \\frac{6 \\pm 4\\sqrt{2}}{2} = 3 \\pm 2\\sqrt{2}$$\n\nBoth values are positive, so $w = 3 + 2\\sqrt{2}$ and $w = 3 - 2\\sqrt{2}$."
+    }
+  ]
+}

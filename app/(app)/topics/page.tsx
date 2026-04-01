@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import {
@@ -124,72 +122,77 @@ function freqLabel(yearCount: number): { tag: string; dots: number; title: strin
   return { tag: "Rare", dots: 1, title: `Appeared in ${yearCount} of 8 years — infrequent exam topic` };
 }
 
-// A Section B question with parts a/b/c counts as 1 group (1 question).
-// An MCQ (part=null) is always its own standalone group.
-// This helper returns the number of displayable groups, matching the detail page count.
-type QuestionRow = {
-  examId: string;
-  questionNumber: number;
-  part: string | null;
-  difficulty: "EASY" | "MEDIUM" | "HARD";
-  exam: { year: number };
-};
-
-function computeGroupStats(questions: QuestionRow[]) {
-  // MCQs: each is its own group
-  const mcqs = questions.filter((q) => q.part === null);
-
-  // Section B: deduplicate by (examId, questionNumber), keep first part's difficulty
-  const sectionBMap = new Map<string, "EASY" | "MEDIUM" | "HARD">();
-  for (const q of questions.filter((q) => q.part !== null)) {
-    const key = `${q.examId}-${q.questionNumber}`;
-    if (!sectionBMap.has(key)) sectionBMap.set(key, q.difficulty);
-  }
-
-  const difficulties = [
-    ...mcqs.map((q) => q.difficulty),
-    ...Array.from(sectionBMap.values()),
-  ];
-
-  return {
-    total: difficulties.length,
-    easy: difficulties.filter((d) => d === "EASY").length,
-    medium: difficulties.filter((d) => d === "MEDIUM").length,
-    hard: difficulties.filter((d) => d === "HARD").length,
-    years: Array.from(new Set(questions.map((q) => q.exam.year))).sort(),
-  };
-}
 
 export default async function TopicsPage() {
-  const topics = await prisma.topic.findMany({
-    orderBy: { order: "asc" },
-    include: {
-      // Fetch topic-level questions for the header group count
-      questions: {
-        select: {
-          examId: true,
-          questionNumber: true,
-          part: true,
-          difficulty: true,
-          exam: { select: { year: true } },
+  const [topics, subtopicYearCounts, subtopicStats, topicStats] = await Promise.all([
+    // Lightweight topic + subtopic metadata (no questions)
+    prisma.topic.findMany({
+      orderBy: { order: "asc" },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        order: true,
+        description: true,
+        subtopics: {
+          orderBy: { name: "asc" },
+          select: { id: true, name: true, slug: true },
         },
       },
-      subtopics: {
-        orderBy: { name: "asc" },
-        include: {
-          questions: {
-            select: {
-              examId: true,
-              questionNumber: true,
-              part: true,
-              difficulty: true,
-              exam: { select: { year: true } },
-            },
-          },
-        },
-      },
-    },
-  });
+    }),
+    // Year counts per subtopic
+    prisma.$queryRaw<{ subtopicId: string; yearCount: bigint }[]>`
+      SELECT s."id" AS "subtopicId", COUNT(DISTINCT e."year") AS "yearCount"
+      FROM "Subtopic" s
+      JOIN "_QuestionToSubtopic" qs ON qs."B" = s."id"
+      JOIN "Question" q ON q."id" = qs."A"
+      JOIN "Exam" e ON e."id" = q."examId"
+      GROUP BY s."id"
+    `,
+    // Question group counts + difficulty breakdown per subtopic (via SQL)
+    prisma.$queryRaw<{ subtopicId: string; total: bigint; easy: bigint; medium: bigint; hard: bigint }[]>`
+      SELECT qs."B" AS "subtopicId",
+        COUNT(*) FILTER (WHERE q."part" IS NULL)
+        + COUNT(DISTINCT CASE WHEN q."part" IS NOT NULL THEN q."examId" || '-' || q."questionNumber" END)
+        AS "total",
+        COUNT(*) FILTER (WHERE q."difficulty" = 'EASY' AND q."part" IS NULL)
+        + COUNT(DISTINCT CASE WHEN q."difficulty" = 'EASY' AND q."part" IS NOT NULL THEN q."examId" || '-' || q."questionNumber" END)
+        AS "easy",
+        COUNT(*) FILTER (WHERE q."difficulty" = 'MEDIUM' AND q."part" IS NULL)
+        + COUNT(DISTINCT CASE WHEN q."difficulty" = 'MEDIUM' AND q."part" IS NOT NULL THEN q."examId" || '-' || q."questionNumber" END)
+        AS "medium",
+        COUNT(*) FILTER (WHERE q."difficulty" = 'HARD' AND q."part" IS NULL)
+        + COUNT(DISTINCT CASE WHEN q."difficulty" = 'HARD' AND q."part" IS NOT NULL THEN q."examId" || '-' || q."questionNumber" END)
+        AS "hard"
+      FROM "_QuestionToSubtopic" qs
+      JOIN "Question" q ON q."id" = qs."A"
+      GROUP BY qs."B"
+    `,
+    // Question group counts per topic
+    prisma.$queryRaw<{ topicId: string; total: bigint }[]>`
+      SELECT "topicId",
+        COUNT(*) FILTER (WHERE "part" IS NULL)
+        + COUNT(DISTINCT CASE WHEN "part" IS NOT NULL THEN "examId" || '-' || "questionNumber" END)
+        AS "total"
+      FROM "Question"
+      GROUP BY "topicId"
+    `,
+  ]);
+
+  // Build lookups
+  const yearCountMap = new Map<string, number>();
+  for (const row of subtopicYearCounts) {
+    yearCountMap.set(row.subtopicId, Number(row.yearCount));
+  }
+
+  const subStatsMap = new Map(
+    subtopicStats.map((r) => [
+      r.subtopicId,
+      { total: Number(r.total), easy: Number(r.easy), medium: Number(r.medium), hard: Number(r.hard) },
+    ])
+  );
+
+  const topicStatsMap = new Map(topicStats.map((r) => [r.topicId, Number(r.total)]));
 
   return (
     <div>
@@ -201,7 +204,7 @@ export default async function TopicsPage() {
       <div className="space-y-6 lg:space-y-8">
         {topics.map((topic) => {
           const theme = topicThemes[topic.order] ?? topicThemes[1];
-          const topicStats = computeGroupStats(topic.questions);
+          const topicTotal = topicStatsMap.get(topic.id) ?? 0;
 
           return (
             <div key={topic.id} className="rounded-2xl bg-white border border-gray-100 shadow-sm overflow-hidden">
@@ -216,7 +219,7 @@ export default async function TopicsPage() {
                     <p className="text-sm lg:text-base text-gray-500 mt-1">{topic.description}</p>
                   )}
                   <p className={`text-sm lg:text-base font-semibold mt-1.5 ${theme.accent}`}>
-                    {topicStats.total} questions
+                    {topicTotal} questions
                   </p>
                 </div>
                 <ChevronRight className="h-5 w-5 lg:h-6 lg:w-6 text-gray-300 shrink-0" />
@@ -226,8 +229,9 @@ export default async function TopicsPage() {
               {topic.subtopics.length > 0 && (
                 <div className="p-3 sm:p-4 lg:p-6 border-t border-gray-100 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3 lg:gap-4">
                   {topic.subtopics.map((sub) => {
-                    const { total, easy, medium, hard, years } = computeGroupStats(sub.questions);
-                    const { tag: freq, dots, title: freqTitle } = freqLabel(years.length);
+                    const { total, easy, medium, hard } = subStatsMap.get(sub.id) ?? { total: 0, easy: 0, medium: 0, hard: 0 };
+                    const yearCount = yearCountMap.get(sub.id) ?? 0;
+                    const { tag: freq, dots, title: freqTitle } = freqLabel(yearCount);
                     const Icon = getSubtopicIcon(sub.name);
 
                     return (

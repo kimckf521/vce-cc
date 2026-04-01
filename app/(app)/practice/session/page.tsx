@@ -1,8 +1,11 @@
-export const dynamic = "force-dynamic";
-
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import QuestionGroup from "@/components/QuestionGroup";
+import PracticeTimer from "@/components/PracticeTimer";
+import ExamModeWrapper from "@/components/ExamModeWrapper";
+import Exam2ABModeWrapper from "@/components/Exam2ABModeWrapper";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import { EXAM_CONFIG, type ExamMode } from "@/lib/exam-config";
 
 interface PageProps {
   searchParams: Promise<{
@@ -15,6 +18,7 @@ interface PageProps {
     distB?: string;
     diff?: string;
     solutions?: string;
+    timer?: string;
   }>;
 }
 
@@ -87,30 +91,33 @@ interface QuestionGroupData {
 
 type PartCondition = "any" | "null_only" | "not_null";
 
-/** Fetch all question rows for a topic, grouped into QuestionGroupData, split by difficulty. */
-async function fetchGroupsByDifficulty(
-  topicId: string,
+/**
+ * Fetch ALL question rows for the given exam type + part condition in ONE query.
+ * Groups them by topic and difficulty in memory — far faster than N per-topic queries.
+ */
+async function fetchAllGrouped(
   examTypeFilter: "EXAM_1" | "EXAM_2",
   partCondition: PartCondition
-): Promise<Record<"EASY" | "MEDIUM" | "HARD", QuestionGroupData[]>> {
+): Promise<Map<string, Record<"EASY" | "MEDIUM" | "HARD", QuestionGroupData[]>>> {
   const rows = (await prisma.question.findMany({
     where: {
-      topicId,
       exam: { examType: examTypeFilter },
       ...(partCondition === "null_only" ? { part: null } : {}),
       ...(partCondition === "not_null" ? { part: { not: null } } : {}),
     },
     include: {
       exam: { select: { year: true, examType: true } },
-      topic: { select: { name: true } },
+      topic: { select: { id: true, name: true } },
       subtopics: { select: { name: true } },
       solution: { select: { content: true, imageUrl: true, videoUrl: true } },
     },
     orderBy: [{ exam: { year: "asc" } }, { questionNumber: "asc" }],
-  })) as QuestionRow[];
+  })) as (QuestionRow & { topic: { id: string; name: string } })[];
 
-  // Group rows into question groups
-  const groupMap = new Map<string, QuestionRow[]>();
+  // Group rows into question groups, keyed by topicId
+  const byTopic = new Map<string, Record<"EASY" | "MEDIUM" | "HARD", QuestionGroupData[]>>();
+
+  const groupMap = new Map<string, (typeof rows)[0][]>();
   for (const row of rows) {
     const key =
       row.part === null
@@ -120,22 +127,22 @@ async function fetchGroupsByDifficulty(
     groupMap.get(key)!.push(row);
   }
 
-  const result: Record<"EASY" | "MEDIUM" | "HARD", QuestionGroupData[]> = {
-    EASY: [],
-    MEDIUM: [],
-    HARD: [],
-  };
-
   for (const parts of Array.from(groupMap.values())) {
     const first = parts[0];
+    const topicId = first.topic.id;
     const diff: "EASY" | "MEDIUM" | "HARD" = first.difficulty;
+
+    if (!byTopic.has(topicId)) {
+      byTopic.set(topicId, { EASY: [], MEDIUM: [], HARD: [] });
+    }
+
     const group: QuestionGroupData = {
       examId: `${first.exam.year}-${first.exam.examType}`,
       year: first.exam.year,
       examType: first.exam.examType,
       topicName: first.topic.name,
       subtopics: first.subtopics.map((s: { name: string }) => s.name),
-      parts: parts.map((p: QuestionRow) => ({
+      parts: parts.map((p) => ({
         id: p.id,
         questionNumber: p.questionNumber,
         part: p.part,
@@ -149,33 +156,40 @@ async function fetchGroupsByDifficulty(
         initialStatus: null,
       })),
     };
-    result[diff].push(group);
+    byTopic.get(topicId)![diff].push(group);
   }
 
-  return result;
+  return byTopic;
 }
 
 /**
- * For a single topic: fetch question groups respecting both topic count and
- * difficulty distribution ([easy%, medium%, hard%]).
+ * Pick question groups from a pre-fetched pool for a single topic.
  */
-async function fetchGroupsForTopic(
-  topicId: string,
-  examTypeFilter: "EXAM_1" | "EXAM_2",
-  partCondition: PartCondition,
+function pickGroupsForTopic(
+  pool: Record<"EASY" | "MEDIUM" | "HARD", QuestionGroupData[]> | undefined,
   topicCount: number,
   diffDist: [number, number, number]
-): Promise<QuestionGroupData[]> {
-  if (topicCount <= 0) return [];
+): QuestionGroupData[] {
+  if (topicCount <= 0 || !pool) return [];
 
   const [easyCount, mediumCount, hardCount] = distributeToCounts(diffDist, topicCount);
-  const byDiff = await fetchGroupsByDifficulty(topicId, examTypeFilter, partCondition);
+  const easyPool = shuffle([...pool.EASY]);
+  const mediumPool = shuffle([...pool.MEDIUM]);
+  const hardPool = shuffle([...pool.HARD]);
 
-  return [
-    ...shuffle(byDiff.EASY).slice(0, easyCount),
-    ...shuffle(byDiff.MEDIUM).slice(0, mediumCount),
-    ...shuffle(byDiff.HARD).slice(0, hardCount),
+  const picked = [
+    ...easyPool.splice(0, easyCount),
+    ...mediumPool.splice(0, mediumCount),
+    ...hardPool.splice(0, hardCount),
   ];
+
+  let deficit = topicCount - picked.length;
+  if (deficit > 0) {
+    const remaining = shuffle([...easyPool, ...mediumPool, ...hardPool]);
+    picked.push(...remaining.slice(0, deficit));
+  }
+
+  return picked;
 }
 
 // ---------- page ----------
@@ -197,6 +211,12 @@ export default async function SessionPage({ searchParams }: PageProps) {
 
   const version = params.version ?? "exam";
   const showSolutionButton = params.solutions === "1";
+  const showTimer = params.timer === "1";
+
+  // Timer durations from central config
+  const examCfg = EXAM_CONFIG[mode as ExamMode];
+  const readingSeconds = examCfg?.readingSeconds ?? 15 * 60;
+  const writingSeconds = examCfg?.writingSeconds ?? 60 * 60;
 
   // Parse dist
   function parseDist(raw: string | undefined): number[] {
@@ -243,24 +263,29 @@ export default async function SessionPage({ searchParams }: PageProps) {
     const countsA = distributeToCounts(dist, countA);
     const countsB = distributeToCounts(distB, countB);
 
+    // Single batch fetch for all MCQ + Section B questions across all topics
+    const [poolA, poolB] = await Promise.all([
+      fetchAllGrouped("EXAM_2", "null_only"),
+      fetchAllGrouped("EXAM_2", "not_null"),
+    ]);
+
     const groupsA: QuestionGroupData[] = [];
     const groupsB: QuestionGroupData[] = [];
-
-    await Promise.all(
-      topics.map(async (topic, i) => {
-        const a = await fetchGroupsForTopic(topic.id, "EXAM_2", "null_only", countsA[i] ?? 0, diffDist);
-        const b = await fetchGroupsForTopic(topic.id, "EXAM_2", "not_null", countsB[i] ?? 0, diffDist);
-        groupsA.push(...a);
-        groupsB.push(...b);
-      })
-    );
+    topics.forEach((topic, i) => {
+      groupsA.push(...pickGroupsForTopic(poolA.get(topic.id), countsA[i] ?? 0, diffDist));
+      groupsB.push(...pickGroupsForTopic(poolB.get(topic.id), countsB[i] ?? 0, diffDist));
+    });
 
     const shuffledA = shuffle(groupsA);
     const shuffledB = shuffle(groupsB);
     const totalQuestions = shuffledA.length + shuffledB.length;
+    const isExam2ABExamMode = version === "exam";
 
     return (
       <div className="space-y-8">
+        {/* Timer — only for non-exam-mode (Exam2ABModeWrapper manages its own timer) */}
+        {showTimer && !isExam2ABExamMode && <PracticeTimer readingSeconds={readingSeconds} writingSeconds={writingSeconds} />}
+
         {/* Header */}
         <div>
           <Link href={backHref} className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-700 transition-colors mb-4">
@@ -275,51 +300,66 @@ export default async function SessionPage({ searchParams }: PageProps) {
           </p>
         </div>
 
-        {/* Section A */}
-        <div className="space-y-5 lg:space-y-6">
-          <h2 className="text-lg lg:text-xl font-bold text-gray-800 border-b border-gray-200 pb-2 lg:pb-3">
-            Section A — Multiple Choice ({shuffledA.length} questions)
-          </h2>
-          <div className="space-y-4 lg:space-y-5">
-            {shuffledA.map((group, idx) => (
-              <QuestionGroup
-                key={`a-${group.examId}-${group.parts[0].questionNumber}`}
-                year={group.year}
-                examType={group.examType}
-                sectionLabel="Exam 2A"
-                questionIndex={idx + 1}
-                topic={group.topicName}
-                subtopics={group.subtopics}
-                calculatorAllowed={true}
-                parts={group.parts}
-                showSolutionButton={showSolutionButton}
-              />
-            ))}
-          </div>
-        </div>
+        {isExam2ABExamMode ? (
+          <ErrorBoundary>
+            <Exam2ABModeWrapper
+              groupsA={shuffledA}
+              groupsB={shuffledB}
+              showSolutionsAsYouGo={showSolutionButton}
+              showTimer={showTimer}
+              readingSeconds={readingSeconds}
+              writingSeconds={writingSeconds}
+            />
+          </ErrorBoundary>
+        ) : (
+          <>
+            {/* Section A */}
+            <div className="space-y-5 lg:space-y-6">
+              <h2 className="text-lg lg:text-xl font-bold text-gray-800 border-b border-gray-200 pb-2 lg:pb-3">
+                Section A — Multiple Choice ({shuffledA.length} questions)
+              </h2>
+              <div className="space-y-4 lg:space-y-5">
+                {shuffledA.map((group, idx) => (
+                  <QuestionGroup
+                    key={`a-${group.examId}-${group.parts[0].questionNumber}`}
+                    year={group.year}
+                    examType={group.examType}
+                    sectionLabel="Exam 2A"
+                    questionIndex={idx + 1}
+                    topic={group.topicName}
+                    subtopics={group.subtopics}
+                    calculatorAllowed={true}
+                    parts={group.parts}
+                    showSolutionButton={showSolutionButton}
+                  />
+                ))}
+              </div>
+            </div>
 
-        {/* Section B */}
-        <div className="space-y-5 lg:space-y-6">
-          <h2 className="text-lg lg:text-xl font-bold text-gray-800 border-b border-gray-200 pb-2 lg:pb-3">
-            Section B — Extended Response ({shuffledB.length} questions)
-          </h2>
-          <div className="space-y-4 lg:space-y-5">
-            {shuffledB.map((group, idx) => (
-              <QuestionGroup
-                key={`b-${group.examId}-${group.parts[0].questionNumber}`}
-                year={group.year}
-                examType={group.examType}
-                sectionLabel="Exam 2B"
-                questionIndex={idx + 1}
-                topic={group.topicName}
-                subtopics={group.subtopics}
-                calculatorAllowed={true}
-                parts={group.parts}
-                showSolutionButton={showSolutionButton}
-              />
-            ))}
-          </div>
-        </div>
+            {/* Section B */}
+            <div className="space-y-5 lg:space-y-6">
+              <h2 className="text-lg lg:text-xl font-bold text-gray-800 border-b border-gray-200 pb-2 lg:pb-3">
+                Section B — Extended Response ({shuffledB.length} questions)
+              </h2>
+              <div className="space-y-4 lg:space-y-5">
+                {shuffledB.map((group, idx) => (
+                  <QuestionGroup
+                    key={`b-${group.examId}-${group.parts[0].questionNumber}`}
+                    year={group.year}
+                    examType={group.examType}
+                    sectionLabel="Exam 2B"
+                    questionIndex={idx + 1}
+                    topic={group.topicName}
+                    subtopics={group.subtopics}
+                    calculatorAllowed={true}
+                    parts={group.parts}
+                    showSolutionButton={showSolutionButton}
+                  />
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     );
   }
@@ -351,18 +391,22 @@ export default async function SessionPage({ searchParams }: PageProps) {
     calcInfo = "CAS Calculator allowed";
   }
 
+  // Single batch fetch, then pick per topic
+  const pool = await fetchAllGrouped(examTypeFilter, partCondition);
   const allGroups: QuestionGroupData[] = [];
-  await Promise.all(
-    topics.map(async (topic, i) => {
-      const groups = await fetchGroupsForTopic(topic.id, examTypeFilter, partCondition, counts[i] ?? 0, diffDist);
-      allGroups.push(...groups);
-    })
-  );
+  topics.forEach((topic, i) => {
+    allGroups.push(...pickGroupsForTopic(pool.get(topic.id), counts[i] ?? 0, diffDist));
+  });
 
   const finalGroups = shuffle(allGroups);
 
+  const isExamMode = (mode === "exam1" || mode === "exam2a" || mode === "exam2b") && version === "exam";
+
   return (
     <div className="space-y-8">
+      {/* Timer — only for non-exam-mode (ExamModeWrapper manages its own timer) */}
+      {showTimer && !isExamMode && <PracticeTimer readingSeconds={readingSeconds} writingSeconds={writingSeconds} />}
+
       {/* Header */}
       <div>
         <Link href={backHref} className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-700 transition-colors mb-4">
@@ -377,23 +421,40 @@ export default async function SessionPage({ searchParams }: PageProps) {
         </p>
       </div>
 
-      {/* Questions */}
-      <div className="space-y-4 lg:space-y-5">
-        {finalGroups.map((group, idx) => (
-          <QuestionGroup
-            key={`${group.examId}-${group.parts[0].questionNumber}-${idx}`}
-            year={group.year}
-            examType={group.examType}
+      {/* Questions — exam versions use ExamModeWrapper */}
+      {isExamMode ? (
+        <ErrorBoundary>
+          <ExamModeWrapper
+            groups={finalGroups}
+            totalQuestions={finalGroups.length}
             sectionLabel={sectionLabel}
-            questionIndex={idx + 1}
-            topic={group.topicName}
-            subtopics={group.subtopics}
             calculatorAllowed={calculatorAllowed}
-            parts={group.parts}
-            showSolutionButton={showSolutionButton}
+            showSolutionsAsYouGo={showSolutionButton}
+            showTimer={showTimer}
+            readingSeconds={readingSeconds}
+            writingSeconds={writingSeconds}
+            isMcqMode={mode !== "exam2b"}
+            showScore={mode === "exam2a"}
           />
-        ))}
-      </div>
+        </ErrorBoundary>
+      ) : (
+        <div className="space-y-4 lg:space-y-5">
+          {finalGroups.map((group, idx) => (
+            <QuestionGroup
+              key={`${group.examId}-${group.parts[0].questionNumber}-${idx}`}
+              year={group.year}
+              examType={group.examType}
+              sectionLabel={sectionLabel}
+              questionIndex={idx + 1}
+              topic={group.topicName}
+              subtopics={group.subtopics}
+              calculatorAllowed={calculatorAllowed}
+              parts={group.parts}
+              showSolutionButton={showSolutionButton}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

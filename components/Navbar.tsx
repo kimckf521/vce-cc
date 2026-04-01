@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BookOpen, BarChart2, FileText, LogOut, LayoutDashboard, UserCircle, ShieldCheck } from "lucide-react";
+import { BookOpen, BarChart2, FileText, LogOut, LayoutDashboard, UserCircle, ShieldCheck, Search, History } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +11,8 @@ const navLinks = [
   { href: "/topics", label: "Topics", icon: BookOpen },
   { href: "/exams", label: "Past Papers", icon: FileText },
   { href: "/practice", label: "Practice", icon: BarChart2 },
+  { href: "/search", label: "Search", icon: Search },
+  { href: "/history", label: "History", icon: History },
   { href: "/profile", label: "Profile", icon: UserCircle },
 ];
 

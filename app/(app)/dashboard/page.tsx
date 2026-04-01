@@ -1,43 +1,7 @@
-export const dynamic = "force-dynamic";
-
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { CheckCircle, XCircle, BookmarkIcon, TrendingUp } from "lucide-react";
-
-// Count question groups: MCQs standalone, Section B deduped by (examId, questionNumber)
-function computeGroupCount(questions: { examId: string; questionNumber: number; part: string | null }[]): number {
-  const mcqCount = questions.filter((q) => q.part === null).length;
-  const sectionBKeys = new Set(
-    questions.filter((q) => q.part !== null).map((q) => `${q.examId}-${q.questionNumber}`)
-  );
-  return mcqCount + sectionBKeys.size;
-}
-
-// Count attempted groups (at least one attempt on the group)
-function computeAttemptedGroups(
-  questions: { examId: string; questionNumber: number; part: string | null; attempts: { status: string }[] }[]
-): { attempted: number; correct: number } {
-  const attemptedMcqs = questions.filter((q) => q.part === null && q.attempts.length > 0);
-  const correctMcqs   = attemptedMcqs.filter((q) => q.attempts.some((a) => a.status === "CORRECT"));
-
-  // Section B: group key → best status
-  const sectionBMap = new Map<string, string[]>();
-  for (const q of questions.filter((q) => q.part !== null && q.attempts.length > 0)) {
-    const key = `${q.examId}-${q.questionNumber}`;
-    sectionBMap.set(key, [...(sectionBMap.get(key) ?? []), ...q.attempts.map((a) => a.status)]);
-  }
-
-  const sectionBAttempted = sectionBMap.size;
-  const sectionBCorrect   = Array.from(sectionBMap.values()).filter((statuses) =>
-    statuses.some((s: string) => s === "CORRECT")
-  ).length;
-
-  return {
-    attempted: attemptedMcqs.length + sectionBAttempted,
-    correct:   correctMcqs.length   + sectionBCorrect,
-  };
-}
 
 const TOPIC_COLORS = [
   { bar: "bg-violet-500", text: "text-violet-600", bg: "bg-violet-50", border: "border-violet-200" },
@@ -51,28 +15,50 @@ export default async function DashboardPage() {
   const { data: { user } } = await supabase.auth.getUser();
   const userId = user?.id;
 
-  const [dbUser, attempts, topics] = await Promise.all([
-    userId ? prisma.user.findUnique({ where: { id: userId } }) : null,
+  // Lightweight parallel queries — no full question rows fetched
+  const [dbUser, attempts, topics, questionCounts, topicAttemptCounts] = await Promise.all([
+    userId ? prisma.user.findUnique({ where: { id: userId }, select: { name: true } }) : null,
     userId
       ? prisma.attempt.groupBy({ by: ["status"], where: { userId }, _count: true })
       : [],
     prisma.topic.findMany({
       orderBy: { order: "asc" },
-      include: {
-        questions: {
-          select: {
-            id: true,
-            examId: true,
-            questionNumber: true,
-            part: true,
-            attempts: userId
-              ? { where: { userId }, select: { status: true } }
-              : false,
-          },
-        },
-      },
+      select: { id: true, name: true, slug: true },
     }),
+    // Count MCQs (part=null) and distinct Section B groups per topic in raw SQL
+    prisma.$queryRaw<{ topicId: string; groupCount: bigint }[]>`
+      SELECT "topicId",
+        COUNT(*) FILTER (WHERE "part" IS NULL)
+        + COUNT(DISTINCT CASE WHEN "part" IS NOT NULL THEN "examId" || '-' || "questionNumber" END)
+        AS "groupCount"
+      FROM "Question"
+      GROUP BY "topicId"
+    `,
+    // Count attempted + correct groups per topic for this user
+    userId
+      ? prisma.$queryRaw<{ topicId: string; attempted: bigint; correct: bigint }[]>`
+          SELECT q."topicId",
+            COUNT(DISTINCT CASE WHEN q."part" IS NULL THEN q."id"
+                                ELSE q."examId" || '-' || q."questionNumber" END) AS "attempted",
+            COUNT(DISTINCT CASE WHEN a."status" = 'CORRECT' THEN
+                                CASE WHEN q."part" IS NULL THEN q."id"
+                                     ELSE q."examId" || '-' || q."questionNumber" END END) AS "correct"
+          FROM "Attempt" a
+          JOIN "Question" q ON q."id" = a."questionId"
+          WHERE a."userId" = ${userId}
+          GROUP BY q."topicId"
+        `
+      : [],
   ]);
+
+  // Build lookup maps
+  const countByTopic = new Map(questionCounts.map((r) => [r.topicId, Number(r.groupCount)]));
+  const attemptByTopic = new Map(
+    (topicAttemptCounts as { topicId: string; attempted: bigint; correct: bigint }[]).map((r) => [
+      r.topicId,
+      { attempted: Number(r.attempted), correct: Number(r.correct) },
+    ])
+  );
 
   const countMap = Object.fromEntries(attempts.map((a) => [a.status, a._count]));
   const correct      = countMap["CORRECT"]      ?? 0;
@@ -80,7 +66,7 @@ export default async function DashboardPage() {
   const needsReview  = countMap["NEEDS_REVIEW"] ?? 0;
   const attempted    = countMap["ATTEMPTED"]    ?? 0;
   const totalAttempted = correct + incorrect + needsReview + attempted;
-  const totalQuestions = topics.reduce((sum, t) => sum + computeGroupCount(t.questions), 0);
+  const totalQuestions = topics.reduce((sum, t) => sum + (countByTopic.get(t.id) ?? 0), 0);
   const overallPct = totalQuestions > 0 ? Math.round((totalAttempted / totalQuestions) * 100) : 0;
 
   const stats = [
@@ -135,11 +121,10 @@ export default async function DashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-5">
           {topics.map((topic, i) => {
             const c = TOPIC_COLORS[i % TOPIC_COLORS.length];
-            const total = computeGroupCount(topic.questions);
-            const qs = (topic.questions as (typeof topic.questions[0] & { attempts: { status: string }[] })[]);
-            const { attempted: done, correct: topicCorrect } = userId
-              ? computeAttemptedGroups(qs)
-              : { attempted: 0, correct: 0 };
+            const total = countByTopic.get(topic.id) ?? 0;
+            const topicAttempts = attemptByTopic.get(topic.id) ?? { attempted: 0, correct: 0 };
+            const done = topicAttempts.attempted;
+            const topicCorrect = topicAttempts.correct;
             const progressPct = total > 0 ? Math.round((done / total) * 100) : 0;
             const correctRate = done > 0 ? Math.round((topicCorrect / done) * 100) : null;
 

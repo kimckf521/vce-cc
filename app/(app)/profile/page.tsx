@@ -1,46 +1,8 @@
-export const dynamic = "force-dynamic";
-
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { CheckCircle, XCircle, BookmarkIcon, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import EditDisplayName from "@/components/EditDisplayName";
-
-// ── helpers ──────────────────────────────────────────────────────────────────
-
-function computeGroupCount(
-  questions: { examId: string; questionNumber: number; part: string | null }[]
-): number {
-  const mcqs = questions.filter((q) => q.part === null).length;
-  const sectionBKeys = new Set(
-    questions.filter((q) => q.part !== null).map((q) => `${q.examId}-${q.questionNumber}`)
-  );
-  return mcqs + sectionBKeys.size;
-}
-
-function computeAttemptedGroups(
-  questions: {
-    id: string;
-    examId: string;
-    questionNumber: number;
-    part: string | null;
-    attempts: { status: string }[];
-  }[]
-): number {
-  // MCQs: attempted if the row has ≥1 attempt
-  const attemptedMcqs = questions.filter(
-    (q) => q.part === null && q.attempts.length > 0
-  ).length;
-
-  // Section B: group is attempted if ANY part has ≥1 attempt
-  const sectionBAttempted = new Set(
-    questions
-      .filter((q) => q.part !== null && q.attempts.length > 0)
-      .map((q) => `${q.examId}-${q.questionNumber}`)
-  ).size;
-
-  return attemptedMcqs + sectionBAttempted;
-}
 
 // ── topic brand colours (matching topics page) ────────────────────────────────
 
@@ -62,7 +24,8 @@ export default async function ProfilePage() {
   // Graceful no-auth fallback (auth is disabled in dev, so user may be null)
   const userId = user?.id ?? "__no_user__";
 
-  const [dbUser, attempts, topics] = await Promise.all([
+  // Lightweight parallel queries — no full question rows fetched
+  const [dbUser, attempts, topics, questionCounts, topicAttemptCounts] = await Promise.all([
     user ? prisma.user.findUnique({ where: { id: userId } }) : null,
     prisma.attempt.groupBy({
       by: ["status"],
@@ -71,22 +34,31 @@ export default async function ProfilePage() {
     }),
     prisma.topic.findMany({
       orderBy: { order: "asc" },
-      include: {
-        questions: {
-          select: {
-            id: true,
-            examId: true,
-            questionNumber: true,
-            part: true,
-            attempts: {
-              where: { userId },
-              select: { status: true },
-            },
-          },
-        },
-      },
+      select: { id: true, name: true, slug: true },
     }),
+    prisma.$queryRaw<{ topicId: string; groupCount: bigint }[]>`
+      SELECT "topicId",
+        COUNT(*) FILTER (WHERE "part" IS NULL)
+        + COUNT(DISTINCT CASE WHEN "part" IS NOT NULL THEN "examId" || '-' || "questionNumber" END)
+        AS "groupCount"
+      FROM "Question"
+      GROUP BY "topicId"
+    `,
+    prisma.$queryRaw<{ topicId: string; attempted: bigint }[]>`
+      SELECT q."topicId",
+        COUNT(DISTINCT CASE WHEN q."part" IS NULL THEN q."id"
+                            ELSE q."examId" || '-' || q."questionNumber" END) AS "attempted"
+      FROM "Attempt" a
+      JOIN "Question" q ON q."id" = a."questionId"
+      WHERE a."userId" = ${userId}
+      GROUP BY q."topicId"
+    `,
   ]);
+
+  const countByTopic = new Map(questionCounts.map((r) => [r.topicId, Number(r.groupCount)]));
+  const attemptByTopic = new Map(
+    (topicAttemptCounts as { topicId: string; attempted: bigint }[]).map((r) => [r.topicId, Number(r.attempted)])
+  );
 
   // ── stats ──────────────────────────────────────────────────────────────────
   const countMap = Object.fromEntries(attempts.map((a) => [a.status, a._count]));
@@ -96,7 +68,7 @@ export default async function ProfilePage() {
   const attempted   = countMap["ATTEMPTED"]    ?? 0;
   const totalAttempted = correct + incorrect + needsReview + attempted;
 
-  const totalQuestions = topics.reduce((s, t) => s + computeGroupCount(t.questions), 0);
+  const totalQuestions = topics.reduce((s, t) => s + (countByTopic.get(t.id) ?? 0), 0);
   const progressPct    = totalQuestions > 0 ? Math.round((totalAttempted / totalQuestions) * 100) : 0;
 
   // ── identity ──────────────────────────────────────────────────────────────
@@ -193,8 +165,8 @@ export default async function ProfilePage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-5">
           {topics.map((topic, i) => {
             const c        = TOPIC_COLORS[i % TOPIC_COLORS.length];
-            const total    = computeGroupCount(topic.questions);
-            const done     = computeAttemptedGroups(topic.questions);
+            const total    = countByTopic.get(topic.id) ?? 0;
+            const done     = attemptByTopic.get(topic.id) ?? 0;
             const pct      = total > 0 ? Math.round((done / total) * 100) : 0;
 
             return (

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Minus, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { EXAM_CONFIG, getExamQuestionCount, type ExamMode } from "@/lib/exam-config";
 import TopicDistributionControl from "./TopicDistributionControl";
 import DifficultyDistributionControl, { type DiffDist } from "./DifficultyDistributionControl";
 
@@ -14,52 +15,28 @@ interface PracticeSetupFormProps {
   title: string;
 }
 
-const MODE_CONFIG = {
-  exam1: {
-    examCount: 9,
-    freedomMin: 5,
-    freedomMax: 40,
-    freedomStep: 5,
-    freedomDefault: 10,
-    examDescription: "8–9 short answer questions, matching real Exam 1 format.",
-  },
-  exam2a: {
-    examCount: 20,
-    freedomMin: 10,
-    freedomMax: 100,
-    freedomStep: 5,
-    freedomDefault: 20,
-    examDescription: "20 multiple choice questions, matching real Exam 2A format.",
-  },
-  exam2b: {
-    examCount: 5,
-    freedomMin: 10,
-    freedomMax: 100,
-    freedomStep: 5,
-    freedomDefault: 10,
-    examDescription: "5 extended response questions, matching real Exam 2B format.",
-  },
-} as const;
-
 export default function PracticeSetupForm({ mode, topics, title }: PracticeSetupFormProps) {
   const router = useRouter();
-  const cfg = MODE_CONFIG[mode];
+  const cfg = EXAM_CONFIG[mode];
 
   const [version, setVersion] = useState<"exam" | "freedom">("exam");
   const [count, setCount] = useState<number>(cfg.freedomDefault);
   const [distribution, setDistribution] = useState<number[]>([25, 25, 25, 25]);
   const [diffDist, setDiffDist] = useState<DiffDist>([50, 30, 20]);
   const [showSolutions, setShowSolutions] = useState(false);
+  const [timerEnabled, setTimerEnabled] = useState(true);
+  const [focusWeakAreas, setFocusWeakAreas] = useState(false);
 
   const topicTotal = distribution.reduce((a, b) => a + b, 0);
   const diffTotal = diffDist[0] + diffDist[1] + diffDist[2];
   const isValid = topicTotal === 100 && diffTotal === 100;
 
-  const finalCount = version === "exam" ? cfg.examCount : count;
-
   function handleStart() {
     if (!isValid) return;
-    const url = `/practice/session?mode=${mode}&version=${version}&count=${finalCount}&dist=${distribution.join(",")}&diff=${diffDist.join(",")}&solutions=${showSolutions ? "1" : "0"}`;
+    const finalCount = version === "exam" ? getExamQuestionCount(mode) : count;
+    const timerParam = version === "exam" && timerEnabled ? "&timer=1" : "";
+    const weakParam = focusWeakAreas ? "&weak=1" : "";
+    const url = `/practice/session?mode=${mode}&version=${version}&count=${finalCount}&dist=${distribution.join(",")}&diff=${diffDist.join(",")}&solutions=${showSolutions ? "1" : "0"}${timerParam}${weakParam}`;
     router.push(url);
   }
 
@@ -181,6 +158,52 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
           )} />
         </button>
       </div>
+
+      {/* Focus on weak areas toggle */}
+      <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-5 lg:px-6 py-4 lg:py-5">
+        <div>
+          <p className="text-sm lg:text-base font-semibold text-gray-800">Focus on weak areas</p>
+          <p className="text-xs lg:text-sm text-gray-500 mt-0.5">Prioritize questions you got wrong or marked for review</p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setFocusWeakAreas((v) => !v)}
+          className={cn(
+            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200",
+            focusWeakAreas ? "bg-brand-600" : "bg-gray-200"
+          )}
+        >
+          <span className={cn(
+            "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200",
+            focusWeakAreas ? "translate-x-5" : "translate-x-0"
+          )} />
+        </button>
+      </div>
+
+      {/* Timer toggle — only for exam version */}
+      {version === "exam" && (
+        <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-5 lg:px-6 py-4 lg:py-5">
+          <div>
+            <p className="text-sm lg:text-base font-semibold text-gray-800">Exam timer</p>
+            <p className="text-xs lg:text-sm text-gray-500 mt-0.5">
+              {cfg.timerDescription}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setTimerEnabled((v) => !v)}
+            className={cn(
+              "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200",
+              timerEnabled ? "bg-brand-600" : "bg-gray-200"
+            )}
+          >
+            <span className={cn(
+              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200",
+              timerEnabled ? "translate-x-5" : "translate-x-0"
+            )} />
+          </button>
+        </div>
+      )}
 
       {/* Error message */}
       {!isValid && (

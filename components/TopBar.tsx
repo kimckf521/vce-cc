@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen } from "lucide-react";
+import { BookOpen, Search } from "lucide-react";
 
 const PAGE_TITLES: Record<string, string> = {
   "/dashboard": "Dashboard",
@@ -10,6 +10,8 @@ const PAGE_TITLES: Record<string, string> = {
   "/exams":     "Past Papers",
   "/practice":  "Practice",
   "/profile":   "Profile",
+  "/search":    "Search",
+  "/history":   "History",
 };
 
 function getTitle(pathname: string): string {
@@ -30,7 +32,10 @@ export default function TopBar() {
         <span className="font-bold text-base">VCE Methods</span>
       </Link>
       <span className="text-gray-300">·</span>
-      <span className="font-semibold text-gray-700 text-sm truncate">{title}</span>
+      <span className="font-semibold text-gray-700 text-sm truncate flex-1">{title}</span>
+      <Link href="/search" className="rounded-lg p-2 text-gray-400 hover:text-brand-600 hover:bg-gray-50 transition-colors">
+        <Search className="h-5 w-5" />
+      </Link>
     </header>
   );
 }

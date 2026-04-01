@@ -60,6 +60,10 @@ model Question {
   topic          Topic      @relation(fields: [topicId], references: [id])
   solution       Solution?
   subtopics      Subtopic[] @relation("QuestionToSubtopic")
+
+  @@index([topicId, difficulty])
+  @@index([examId, questionNumber])
+  @@index([topicId, examId])
 }
 
 model Solution {
@@ -74,12 +78,29 @@ model Solution {
 }
 
 model User {
-  id        String    @id
-  email     String    @unique
-  name      String?
-  createdAt DateTime  @default(now())
-  role      Role      @default(STUDENT)
-  attempts  Attempt[]
+  id           String        @id
+  email        String        @unique
+  name         String?
+  createdAt    DateTime      @default(now())
+  role         Role          @default(STUDENT)
+  attempts     Attempt[]
+  examSessions ExamSession[]
+}
+
+model ExamSession {
+  id             String   @id @default(cuid())
+  userId         String
+  mode           String
+  totalQuestions  Int
+  correctCount   Int
+  incorrectCount Int
+  score          Float
+  elapsedSeconds Int?
+  completedAt    DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, completedAt])
 }
 
 model Attempt {
@@ -93,6 +114,8 @@ model Attempt {
   user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, questionId])
+  @@index([userId])
+  @@index([questionId])
 }
 
 enum ExamType {

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookOpen, BarChart2, FileText, CheckCircle } from "lucide-react";
+import { BookOpen, BarChart2, FileText, CheckCircle, Clock, ArrowRight } from "lucide-react";
 
 const features = [
   {
@@ -28,11 +28,26 @@ const features = [
   },
 ];
 
-const topics = [
-  { name: "Functions & Graphs", slug: "functions-and-graphs" },
-  { name: "Algebra", slug: "algebra" },
-  { name: "Calculus", slug: "calculus" },
-  { name: "Probability & Statistics", slug: "probability-and-statistics" },
+const subjects = [
+  {
+    name: "Mathematical Methods",
+    description: "Functions, calculus, algebra, probability and statistics — complete Exam 1 & 2 coverage.",
+    status: "available" as const,
+    href: "/topics",
+    topics: [
+      { name: "Functions & Graphs", slug: "functions-and-graphs" },
+      { name: "Algebra", slug: "algebra" },
+      { name: "Calculus", slug: "calculus" },
+      { name: "Probability & Statistics", slug: "probability-and-statistics" },
+    ],
+  },
+  {
+    name: "Specialist Mathematics",
+    description: "Complex numbers, vectors, differential equations, mechanics and more.",
+    status: "coming-soon" as const,
+    href: "#",
+    topics: [],
+  },
 ];
 
 export default function HomePage() {
@@ -97,24 +112,81 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Topics preview */}
+      {/* Subjects */}
       <section className="py-16 lg:py-24 px-5 sm:px-8 lg:px-12">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-8 lg:mb-12 text-center">
-            Organised by syllabus topic
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3 lg:mb-4 text-center">
+            VCE Subjects
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-            {topics.map((topic) => (
-              <Link
-                key={topic.slug}
-                href={`/topics/${topic.slug}`}
-                className="group rounded-2xl border border-gray-100 bg-white p-6 lg:p-8 shadow-sm hover:border-brand-300 hover:shadow-md transition-all"
+          <p className="text-base lg:text-lg text-gray-500 text-center mb-10 lg:mb-14 max-w-2xl mx-auto">
+            We&apos;re building comprehensive revision tools for every VCE subject. Start with Mathematical Methods today.
+          </p>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+            {subjects.map((subject) => (
+              <div
+                key={subject.name}
+                className={`rounded-2xl border p-6 lg:p-8 transition-all ${
+                  subject.status === "available"
+                    ? "border-brand-200 bg-white shadow-sm"
+                    : "border-gray-100 bg-gray-50"
+                }`}
               >
-                <h3 className="font-semibold lg:text-lg text-gray-900 group-hover:text-brand-600 transition-colors">
-                  {topic.name}
-                </h3>
-                <p className="mt-1.5 text-sm lg:text-base text-gray-400">View questions →</p>
-              </Link>
+                <div className="flex items-start justify-between mb-4">
+                  <h3 className={`text-xl lg:text-2xl font-bold ${
+                    subject.status === "available" ? "text-gray-900" : "text-gray-400"
+                  }`}>
+                    {subject.name}
+                  </h3>
+                  {subject.status === "available" ? (
+                    <span className="inline-flex items-center rounded-full bg-green-50 px-3 py-1 text-xs font-semibold text-green-700 border border-green-200">
+                      Available now
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 border border-amber-200">
+                      <Clock className="h-3 w-3" />
+                      Coming soon
+                    </span>
+                  )}
+                </div>
+
+                <p className={`text-sm lg:text-base leading-relaxed mb-5 ${
+                  subject.status === "available" ? "text-gray-500" : "text-gray-400"
+                }`}>
+                  {subject.description}
+                </p>
+
+                {subject.status === "available" && subject.topics.length > 0 && (
+                  <>
+                    <div className="grid grid-cols-2 gap-2.5 mb-5">
+                      {subject.topics.map((topic) => (
+                        <Link
+                          key={topic.slug}
+                          href={`/topics/${topic.slug}`}
+                          className="group rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 hover:border-brand-300 hover:bg-brand-50 transition-all"
+                        >
+                          <span className="text-sm font-medium text-gray-700 group-hover:text-brand-600 transition-colors">
+                            {topic.name}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                    <Link
+                      href={subject.href}
+                      className="inline-flex items-center gap-1.5 text-sm lg:text-base font-semibold text-brand-600 hover:text-brand-700 transition-colors"
+                    >
+                      Start practising
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </>
+                )}
+
+                {subject.status === "coming-soon" && (
+                  <p className="text-sm text-gray-400 italic">
+                    We&apos;re working on this — stay tuned for updates.
+                  </p>
+                )}
+              </div>
             ))}
           </div>
         </div>
@@ -147,7 +219,7 @@ export default function HomePage() {
         <div className="max-w-2xl mx-auto">
           <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900">Ready to start?</h2>
           <p className="mt-4 lg:mt-6 text-base lg:text-xl text-gray-500">
-            Create a free account and begin practising past exam questions today.
+            Create a free account and start practising VCE past exam questions today. More subjects are on the way.
           </p>
           <Link
             href="/signup"
@@ -160,7 +232,7 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="border-t border-gray-100 py-8 lg:py-10 text-center text-sm lg:text-base text-gray-400">
-        <p>VCE Methods Revision Hub — not affiliated with VCAA</p>
+        <p>VCE Revision Hub — not affiliated with VCAA</p>
       </footer>
     </div>
   );

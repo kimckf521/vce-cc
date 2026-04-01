@@ -1,0 +1,216 @@
+{
+  "year": 2024,
+  "examType": "EXAM_1",
+  "questions": [
+    {
+      "questionNumber": 1,
+      "part": "a",
+      "marks": 1,
+      "content": "Let $y = e^x \\cos(3x)$.\n\nFind $\\dfrac{dy}{dx}$.",
+      "topic": "Calculus",
+      "subtopic": "Product Rule",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 1,
+      "part": "b",
+      "marks": 2,
+      "content": "Let $f(x) = \\log_e\\left(x^3 - 3x + 2\\right)$.\n\nFind $f'(3)$.",
+      "topic": "Calculus",
+      "subtopic": "Chain Rule",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 2,
+      "part": null,
+      "marks": 3,
+      "content": "Consider the simultaneous linear equations\n$$3kx - 2y = k + 4$$\n$$(k-4)x + ky = -k$$\nwhere $x, y \\in R$ and $k$ is a real constant.\n\nDetermine the value of $k$ for which the system of equations has no real solution.",
+      "topic": "Algebra",
+      "subtopic": "Simultaneous Equations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "a",
+      "marks": 3,
+      "content": "Let $g: R \\setminus \\{-3\\} \\to R$, $g(x) = \\dfrac{1}{(x+3)^2} - 2$.\n\nOn the axes below, sketch the graph of $y = g(x)$, labelling all asymptotes with their equations and axis intercepts with their coordinates.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Power Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": "A set of axes is provided with x-axis from -5 to 1 and y-axis from -3 to 2, with gridlines at integer values."
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "marks": 2,
+      "content": "Determine the area of the region bounded by the line $x = -2$, the $x$-axis, the $y$-axis and the graph of $y = g(x)$.",
+      "topic": "Calculus",
+      "subtopic": "Areas Under Curves",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "a",
+      "marks": 1,
+      "content": "Let $X$ be a binomial random variable where $X \\sim \\text{Bi}\\left(4, \\dfrac{9}{10}\\right)$.\n\nFind the standard deviation of $X$.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 4,
+      "part": "b",
+      "marks": 2,
+      "content": "Find $\\Pr(X < 2)$.",
+      "topic": "Probability",
+      "subtopic": "Binomial Distribution",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "a",
+      "marks": 1,
+      "content": "The function $h: [0, \\infty) \\to R$, $h(t) = \\dfrac{3000}{t+1}$ models the population of a town after $t$ years.\n\nUse the model $h(t)$ to predict the population of the town after four years.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Power Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "b",
+      "marks": 2,
+      "content": "A new function, $h_1$, models a population where $h_1(0) = h(0)$ but $h_1$ decreases at half the rate of $h$ at any point in time.\n\nState a sequence of two transformations that maps $h$ to this new model $h_1$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Transformations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "c.i",
+      "marks": 2,
+      "content": "In the town, 100 people were randomly selected and surveyed, with 60 people indicating that they were unhappy with the roads.\n\nDetermine an approximate 95% confidence interval for the proportion of people in the town who are unhappy with the roads. Use $z = 2$ for this confidence interval.",
+      "topic": "Statistics",
+      "subtopic": "Confidence Intervals",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 5,
+      "part": "c.ii",
+      "marks": 1,
+      "content": "A new sample of $n$ people results in the same sample proportion.\n\nFind the smallest value of $n$ to achieve a standard deviation of $\\dfrac{\\sqrt{2}}{50}$ for the sample proportion.",
+      "topic": "Statistics",
+      "subtopic": "Sample Proportions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 6,
+      "part": null,
+      "marks": 4,
+      "content": "Solve $2\\log_3(x-4) + \\log_3(x) = 2$ for $x$.",
+      "topic": "Algebra",
+      "subtopic": "Logarithmic Equations",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "a",
+      "marks": 3,
+      "content": "Part of the graph of $f: [-\\pi, \\pi] \\to R$, $f(x) = x\\sin(x)$ is shown below.\n\nUse the trapezium rule with a step size of $\\dfrac{\\pi}{3}$ to determine an approximation of the total area between the graph of $y = f(x)$ and the $x$-axis over the interval $x \\in [0, \\pi]$.",
+      "topic": "Calculus",
+      "subtopic": "Areas Under Curves",
+      "difficulty": "MEDIUM",
+      "imageDescription": "Graph of y = f(x) = x sin(x) shown for x in [0, π]. The curve starts at the origin, rises to a maximum of approximately 2.3 between x = π/3 and x = 2π/3, then returns to 0 at x = π. The curve is entirely above the x-axis on this interval."
+    },
+    {
+      "questionNumber": 7,
+      "part": "b.i",
+      "marks": 1,
+      "content": "Find $f'(x)$.",
+      "topic": "Calculus",
+      "subtopic": "Product Rule",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "b.ii",
+      "marks": 1,
+      "content": "Determine the range of $f'(x)$ over the interval $\\left[\\dfrac{\\pi}{2}, \\dfrac{2\\pi}{3}\\right]$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "b.iii",
+      "marks": 1,
+      "content": "Hence, verify that $f(x)$ has a stationary point for $x \\in \\left[\\dfrac{\\pi}{2}, \\dfrac{2\\pi}{3}\\right]$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 7,
+      "part": "c",
+      "marks": 3,
+      "content": "On the set of axes below, sketch the graph of $y = f'(x)$ on the domain $[-\\pi, \\pi]$, labelling the endpoints with their coordinates.\n\nYou may use the fact that the graph of $y = f'(x)$ has a local minimum at approximately $(-1.1, -1.4)$ and a local maximum at approximately $(1.1, 1.4)$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": "A set of axes is provided with x-axis from -3 to 3 and y-axis from -3 to 3. The graph of y = f(x) = x sin(x) is also shown on the domain [-π, π], with endpoints labelled (-π, 0) and (π, 0). The curve shows two humps: one centered around x = -2 reaching y ≈ 1.8 and one centered around x = 2 reaching y ≈ 1.8, with a dip to y = 0 at x = 0."
+    },
+    {
+      "questionNumber": 8,
+      "part": "a",
+      "marks": 1,
+      "content": "Let $g: R \\to R$, $g(x) = \\sqrt[3]{x - k} + m$, where $k \\in R \\setminus \\{0\\}$ and $m \\in R$.\n\nLet the point $P$ be the $y$-intercept of the graph of $y = g(x)$.\n\nFind the coordinates of $P$, in terms of $k$ and $m$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Power Functions",
+      "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "b",
+      "marks": 2,
+      "content": "Find the gradient of $g$ at $P$, in terms of $k$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "c",
+      "marks": 1,
+      "content": "Given that the graph of $y = g(x)$ passes through the origin, express $k$ in terms of $m$.",
+      "topic": "Functions and Graphs",
+      "subtopic": "Power Functions",
+      "difficulty": "MEDIUM",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 8,
+      "part": "d",
+      "marks": 3,
+      "content": "Let the point $Q$ be a point different from the point $P$, such that the gradient of $g$ at points $P$ and $Q$ are equal.\n\nGiven that the graph of $y = g(x)$ passes through the origin, find the coordinates of $Q$ in terms of $m$.",
+      "topic": "Calculus",
+      "subtopic": "Differentiation",
+      "difficulty": "HARD",
+      "imageDescription": null
+    }
+  ]
+}
