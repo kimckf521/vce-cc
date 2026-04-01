@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import {
-  fetchQuestionGroups,
+  fetchQuestionGroupsPaginated,
   type SubtopicInfo,
   type TopicQuestionFilters,
   type QuestionGroupData,
@@ -55,15 +55,14 @@ export async function loadMoreGroups(
 
   const user = supabaseResult.data.user;
 
-  const allGroups = await fetchQuestionGroups(
+  const { groups, hasMore } = await fetchQuestionGroupsPaginated(
     topic.id,
     subtopicInfos,
     filters,
-    user?.id
+    user?.id,
+    offset,
+    BATCH_SIZE
   );
 
-  const batch = allGroups.slice(offset, offset + BATCH_SIZE);
-  const hasMore = offset + BATCH_SIZE < allGroups.length;
-
-  return { groups: batch, hasMore };
+  return { groups, hasMore };
 }

@@ -72,26 +72,23 @@ function getGroupFrequency(
 }
 
 /**
- * Fetch, group, sort, and return all question groups for a topic with filters.
- * Returns the full sorted array of groups — caller handles slicing.
+ * Phase 1: Fetch lightweight group keys (no content/solutions) to determine
+ * which groups to display. This is fast because it only fetches IDs and metadata.
  */
-export async function fetchQuestionGroups(
+async function fetchGroupKeys(
   topicId: string,
-  subtopicInfos: SubtopicInfo[],
   filters: TopicQuestionFilters,
-  userId?: string
-): Promise<QuestionGroupData[]> {
+  subtopicInfos: SubtopicInfo[]
+) {
   const examValues = filters.exam ? filters.exam.split(",").filter(Boolean) : [];
   const difficultyValues = filters.difficulty ? filters.difficulty.split(",").filter(Boolean) : [];
   const frequencyValues = filters.frequency ? filters.frequency.split(",").filter(Boolean) : [];
 
-  // Frequency → subtopicIds
   const frequencySubtopicIds =
     frequencyValues.length > 0
       ? subtopicInfos.filter((s) => frequencyValues.includes(s.frequency)).map((s) => s.id)
       : null;
 
-  // Build subtopics WHERE condition
   const subtopicConditions: Record<string, unknown>[] = [];
   if (filters.subtopic) subtopicConditions.push({ slug: filters.subtopic });
   if (frequencySubtopicIds !== null)
@@ -104,7 +101,6 @@ export async function fetchQuestionGroups(
       ? { subtopics: { some: subtopicConditions[0] } }
       : { subtopics: { some: { AND: subtopicConditions } } };
 
-  // Build exam OR conditions
   const examOrConditions: Record<string, unknown>[] = [];
   if (examValues.includes("EXAM_1"))
     examOrConditions.push({ exam: { examType: "EXAM_1" } });
@@ -113,26 +109,8 @@ export async function fetchQuestionGroups(
   if (examValues.includes("EXAM_2_B"))
     examOrConditions.push({ exam: { examType: "EXAM_2" }, part: { not: null } });
 
-  const select = {
-    id: true,
-    questionNumber: true,
-    part: true,
-    marks: true,
-    content: true,
-    imageUrl: true,
-    difficulty: true,
-    examId: true,
-    exam: { select: { year: true, examType: true } },
-    topic: { select: { name: true } },
-    subtopics: { select: { name: true } },
-    solution: { select: { content: true, imageUrl: true, videoUrl: true } },
-    attempts: userId
-      ? ({ where: { userId }, select: { status: true } } as const)
-      : (false as const),
-  };
-
-  // Fetch matching questions
-  const topicQuestions = await prisma.question.findMany({
+  // Lightweight query — only metadata needed for grouping/sorting
+  const questions = await prisma.question.findMany({
     where: {
       topicId,
       ...subtopicsWhere,
@@ -141,51 +119,30 @@ export async function fetchQuestionGroups(
       }),
       ...(examOrConditions.length > 0 && { OR: examOrConditions }),
     },
-    select,
+    select: {
+      id: true,
+      questionNumber: true,
+      part: true,
+      difficulty: true,
+      examId: true,
+      exam: { select: { year: true, examType: true } },
+      subtopics: { select: { name: true } },
+    },
     orderBy: [{ exam: { year: "desc" } }, { questionNumber: "asc" }],
   });
 
-  // Section B siblings
-  const sectionBKeys = topicQuestions
-    .filter((q) => q.part !== null)
-    .map((q) => ({ examId: q.examId, questionNumber: q.questionNumber }));
-
-  const sectionBSiblings =
-    sectionBKeys.length > 0
-      ? await prisma.question.findMany({
-          where: {
-            OR: sectionBKeys.map((k) => ({
-              examId: k.examId,
-              questionNumber: k.questionNumber,
-              part: { not: null },
-            })),
-          },
-          select,
-          orderBy: [{ exam: { year: "desc" } }, { questionNumber: "asc" }, { part: "asc" }],
-        })
-      : [];
-
-  // Merge
-  const mcqQuestions = topicQuestions.filter((q) => q.part === null);
-  const seenIds = new Set<string>();
-  const merged = [...mcqQuestions, ...sectionBSiblings].filter((q) => {
-    if (seenIds.has(q.id)) return false;
-    seenIds.add(q.id);
-    return true;
-  });
-
   // Post-filter by exam section
-  const questions =
+  const filtered =
     examValues.length > 0
-      ? merged.filter((q) => {
+      ? questions.filter((q) => {
           if (q.exam.examType === "EXAM_1") return examValues.includes("EXAM_1");
           if (q.part === null) return examValues.includes("EXAM_2_MC");
           return examValues.includes("EXAM_2_B");
         })
-      : merged;
+      : questions;
 
-  // Group
-  const groupMap = questions.reduce(
+  // Group into display groups
+  const groupMap = filtered.reduce(
     (acc, q) => {
       const key =
         q.part === null
@@ -195,7 +152,7 @@ export async function fetchQuestionGroups(
       acc[key].push(q);
       return acc;
     },
-    {} as Record<string, typeof questions>
+    {} as Record<string, typeof filtered>
   );
   const rawGroups = Object.entries(groupMap);
 
@@ -211,31 +168,156 @@ export async function fetchQuestionGroups(
     return a[0].questionNumber - b[0].questionNumber;
   });
 
-  // Map to serializable shape
-  return rawGroups.map(([key, group]) => {
+  return rawGroups;
+}
+
+/**
+ * Phase 2: Given a slice of group keys, fetch the full question data
+ * (content, solutions, attempts) for only those groups.
+ */
+async function hydrateGroups(
+  groupSlice: [string, { id: string; questionNumber: number; part: string | null; difficulty: string; examId: string; exam: { year: number; examType: string }; subtopics: { name: string }[] }[]][],
+  subtopicInfos: SubtopicInfo[],
+  userId?: string
+): Promise<QuestionGroupData[]> {
+  if (groupSlice.length === 0) return [];
+
+  // Collect all question IDs we need, PLUS section B sibling IDs
+  const mcqIds: string[] = [];
+  const sectionBKeys: { examId: string; questionNumber: number }[] = [];
+
+  for (const [, group] of groupSlice) {
+    for (const q of group) {
+      if (q.part === null) {
+        mcqIds.push(q.id);
+      } else {
+        // Only add unique (examId, questionNumber) pairs
+        if (!sectionBKeys.some((k) => k.examId === q.examId && k.questionNumber === q.questionNumber)) {
+          sectionBKeys.push({ examId: q.examId, questionNumber: q.questionNumber });
+        }
+      }
+    }
+  }
+
+  // Single query for all needed questions (MCQs by ID + Section B siblings)
+  const orConditions: Record<string, unknown>[] = [];
+  if (mcqIds.length > 0) orConditions.push({ id: { in: mcqIds } });
+  for (const k of sectionBKeys) {
+    orConditions.push({ examId: k.examId, questionNumber: k.questionNumber, part: { not: null } });
+  }
+
+  const fullQuestions = orConditions.length > 0
+    ? await prisma.question.findMany({
+        where: { OR: orConditions },
+        select: {
+          id: true,
+          questionNumber: true,
+          part: true,
+          marks: true,
+          content: true,
+          imageUrl: true,
+          difficulty: true,
+          examId: true,
+          exam: { select: { year: true, examType: true } },
+          topic: { select: { name: true } },
+          subtopics: { select: { name: true } },
+          solution: { select: { content: true, imageUrl: true, videoUrl: true } },
+          attempts: userId
+            ? ({ where: { userId }, select: { status: true } } as const)
+            : (false as const),
+        },
+        orderBy: [{ questionNumber: "asc" }, { part: "asc" }],
+      })
+    : [];
+
+  // Index by group key for fast lookup
+  const questionMap = new Map<string, typeof fullQuestions>();
+  for (const q of fullQuestions) {
+    const key =
+      q.part === null
+        ? `${q.examId}-MCQ-${q.questionNumber}`
+        : `${q.examId}-PART-${q.questionNumber}`;
+    if (!questionMap.has(key)) questionMap.set(key, []);
+    questionMap.get(key)!.push(q);
+  }
+
+  // Build final groups
+  return groupSlice.map(([key, metaGroup]) => {
+    const fullGroup = questionMap.get(key) ?? [];
+    // Sort parts within group
+    fullGroup.sort((a, b) => {
+      if (a.part === null && b.part === null) return 0;
+      if (a.part === null) return -1;
+      if (b.part === null) return 1;
+      return a.part.localeCompare(b.part);
+    });
+
     const allSubtopics = Array.from(
-      new Set(group.flatMap((q) => q.subtopics.map((s) => s.name)))
+      new Set((fullGroup.length > 0 ? fullGroup : metaGroup).flatMap((q) => q.subtopics.map((s) => s.name)))
     );
+
+    const representative = fullGroup[0] ?? metaGroup[0];
+
     return {
       key,
-      year: group[0].exam.year,
-      examType: group[0].exam.examType as "EXAM_1" | "EXAM_2",
-      sectionLabel: getSectionLabel(group[0].exam.examType, group[0].part),
+      year: representative.exam.year,
+      examType: representative.exam.examType as "EXAM_1" | "EXAM_2",
+      sectionLabel: getSectionLabel(representative.exam.examType, representative.part),
       frequency: getGroupFrequency(allSubtopics, subtopicInfos),
-      topicName: group[0].topic.name,
+      topicName: "topic" in representative ? (representative as any).topic.name : "",
       subtopics: allSubtopics,
-      calculatorAllowed: group[0].exam.examType === "EXAM_2",
-      parts: group.map((q) => ({
+      calculatorAllowed: representative.exam.examType === "EXAM_2",
+      parts: fullGroup.map((q) => ({
         id: q.id,
         questionNumber: q.questionNumber,
         part: q.part,
         marks: q.marks,
         content: q.content,
         imageUrl: q.imageUrl,
-        difficulty: q.difficulty,
+        difficulty: q.difficulty as "EASY" | "MEDIUM" | "HARD",
         solution: q.solution,
         initialStatus: (q.attempts && Array.isArray(q.attempts) ? q.attempts[0]?.status : null) ?? null,
       })),
     };
   });
+}
+
+/**
+ * Fetch question groups for a topic with pagination support.
+ * Phase 1: Lightweight query to get all group keys (no content/solutions).
+ * Phase 2: Hydrate only the requested slice with full data.
+ */
+export async function fetchQuestionGroups(
+  topicId: string,
+  subtopicInfos: SubtopicInfo[],
+  filters: TopicQuestionFilters,
+  userId?: string
+): Promise<QuestionGroupData[]> {
+  const allGroupKeys = await fetchGroupKeys(topicId, filters, subtopicInfos);
+
+  // Hydrate all groups — caller will slice
+  return hydrateGroups(allGroupKeys, subtopicInfos, userId);
+}
+
+/**
+ * Optimised version: fetch group keys then hydrate only one page.
+ * Returns { groups, totalCount, hasMore }.
+ */
+export async function fetchQuestionGroupsPaginated(
+  topicId: string,
+  subtopicInfos: SubtopicInfo[],
+  filters: TopicQuestionFilters,
+  userId: string | undefined,
+  offset: number,
+  limit: number
+): Promise<{ groups: QuestionGroupData[]; totalCount: number; hasMore: boolean }> {
+  // Phase 1: fast lightweight query for all group keys
+  const allGroupKeys = await fetchGroupKeys(topicId, filters, subtopicInfos);
+  const totalCount = allGroupKeys.length;
+
+  // Phase 2: hydrate only the slice we need
+  const slice = allGroupKeys.slice(offset, offset + limit);
+  const groups = await hydrateGroups(slice, subtopicInfos, userId);
+
+  return { groups, totalCount, hasMore: offset + limit < totalCount };
 }

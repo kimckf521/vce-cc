@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
-import { fetchQuestionGroups, type SubtopicInfo, type TopicQuestionFilters } from "@/lib/question-groups";
+import { fetchQuestionGroupsPaginated, type SubtopicInfo, type TopicQuestionFilters } from "@/lib/question-groups";
 import InfiniteQuestionList from "@/components/InfiniteQuestionList";
 import TopicFilters from "@/components/TopicFilters";
 import Link from "next/link";
@@ -64,17 +64,14 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
 
   const filters: TopicQuestionFilters = { subtopic, exam, difficulty, frequency };
 
-  // Parallel: admin check + question groups fetch
-  const [dbUser, allGroups] = await Promise.all([
+  // Parallel: admin check + question groups fetch (paginated — only hydrates first batch)
+  const [dbUser, { groups: initialGroups, totalCount, hasMore }] = await Promise.all([
     user
       ? prisma.user.findUnique({ where: { id: user.id }, select: { role: true } })
       : null,
-    fetchQuestionGroups(topic.id, subtopicInfos, filters, user?.id),
+    fetchQuestionGroupsPaginated(topic.id, subtopicInfos, filters, user?.id, 0, INITIAL_BATCH),
   ]);
   const isAdmin = dbUser?.role === "ADMIN";
-
-  const initialGroups = allGroups.slice(0, INITIAL_BATCH);
-  const hasMore = allGroups.length > INITIAL_BATCH;
 
   return (
     <div>
@@ -86,7 +83,7 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
       </Link>
 
       <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-1">{topic.name}</h1>
-      <p className="text-gray-500 lg:text-base mb-8">{allGroups.length} questions</p>
+      <p className="text-gray-500 lg:text-base mb-8">{totalCount} questions</p>
 
       {/* Horizontal filter bar */}
       <Suspense>
