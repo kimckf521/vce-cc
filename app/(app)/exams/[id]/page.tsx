@@ -106,6 +106,7 @@ export default async function ExamPage({ params }: PageProps) {
                 year={exam.year}
                 examType={exam.examType}
                 sectionLabel={exam.examType === "EXAM_2" ? "Exam 2A" : "Exam 1"}
+                questionIndex={q.questionNumber}
                 topic={q.topic.name}
                 subtopics={q.subtopics.map((s) => s.name)}
                 parts={toGroupParts([q])}
@@ -136,6 +137,7 @@ export default async function ExamPage({ params }: PageProps) {
                 year={exam.year}
                 examType={exam.examType}
                 sectionLabel={exam.examType === "EXAM_2" ? "Exam 2B" : "Exam 1"}
+                questionIndex={group[0].questionNumber}
                 topic={group[0].topic.name}
                 subtopics={group[0].subtopics.map((s) => s.name)}
                 parts={toGroupParts(group)}
