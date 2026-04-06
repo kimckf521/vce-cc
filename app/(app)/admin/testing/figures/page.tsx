@@ -1468,7 +1468,7 @@ export default function FiguresTestingPage() {
   // Session persistence
   const [sessions, setSessions] = useState<SavedSession[]>([]);
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<"extract" | "history">("extract");
+  const [viewMode, setViewMode] = useState<"extract" | "history">("history");
   const [loaded, setLoaded] = useState(false);
 
   // Extraction state — multi-file queue (up to 10)
@@ -1892,7 +1892,7 @@ export default function FiguresTestingPage() {
       for (const kind of kindOrder) {
         const sel = selectedItems[kind];
         if (sel && sel.size > 0) {
-          allSelectedIds.push(...sel);
+          allSelectedIds.push(...Array.from(sel));
         }
       }
       if (allSelectedIds.length === 0) return;
