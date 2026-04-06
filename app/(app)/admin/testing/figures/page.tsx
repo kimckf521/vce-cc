@@ -1532,15 +1532,19 @@ export default function FiguresTestingPage() {
     });
   }, []);
 
-  // Load exams for upload picker (lazy — only when we have results)
+  // Load exams for upload picker
+  const loadExams = useCallback(() => {
+    if (exams.length > 0) return Promise.resolve();
+    return fetch("/api/admin/testing/figures/exams")
+      .then((r) => r.json())
+      .then((d) => setExams(d.exams || []))
+      .catch(() => {});
+  }, [exams.length]);
+
+  // Auto-load exams when results are available
   useEffect(() => {
-    if ((result || batchSessionIds.length > 0) && exams.length === 0) {
-      fetch("/api/admin/testing/figures/exams")
-        .then((r) => r.json())
-        .then((d) => setExams(d.exams || []))
-        .catch(() => {});
-    }
-  }, [result, batchSessionIds, exams.length]);
+    if (result || batchSessionIds.length > 0) loadExams();
+  }, [result, batchSessionIds, loadExams]);
 
   // Persist helper (local state only — DB updates happen via API)
   const persistSessions = useCallback((updated: SavedSession[]) => {
@@ -1948,7 +1952,7 @@ export default function FiguresTestingPage() {
       )}
 
       {/* Upload popover */}
-      {uploadItem && exams.length > 0 && (
+      {uploadItem && (
         <UploadPopover
           item={uploadItem}
           exams={exams}
@@ -1958,7 +1962,7 @@ export default function FiguresTestingPage() {
       )}
 
       {/* Bulk upload modal */}
-      {bulkUploadMode && result && exams.length > 0 && (
+      {bulkUploadMode && result && (
         <BulkUploadModal
           result={result}
           statuses={statuses}
@@ -2413,29 +2417,27 @@ export default function FiguresTestingPage() {
 
                   <div className="flex items-center gap-2">
                     {/* Upload buttons */}
-                    {exams.length > 0 && (
-                      <>
-                        {(() => {
-                          const selCount = Object.values(selectedItems).reduce((sum, s) => sum + (s?.size || 0), 0);
-                          return selCount > 0 ? (
-                            <button
-                              onClick={() => setBulkUploadMode("selected")}
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-brand-600 text-brand-600 dark:text-brand-400 dark:border-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950 transition-colors"
-                            >
-                              <CloudUpload className="h-3.5 w-3.5" />
-                              Upload Selected ({selCount})
-                            </button>
-                          ) : null;
-                        })()}
-                        <button
-                          onClick={() => setBulkUploadMode("all")}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-600 text-white hover:bg-brand-700 transition-colors"
-                        >
-                          <CloudUpload className="h-3.5 w-3.5" />
-                          Upload All ({result.items.length})
-                        </button>
-                      </>
-                    )}
+                    <>
+                      {(() => {
+                        const selCount = Object.values(selectedItems).reduce((sum, s) => sum + (s?.size || 0), 0);
+                        return selCount > 0 ? (
+                          <button
+                            onClick={() => { loadExams().then(() => setBulkUploadMode("selected")); }}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-brand-600 text-brand-600 dark:text-brand-400 dark:border-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950 transition-colors"
+                          >
+                            <CloudUpload className="h-3.5 w-3.5" />
+                            Upload Selected ({selCount})
+                          </button>
+                        ) : null;
+                      })()}
+                      <button
+                        onClick={() => { loadExams().then(() => setBulkUploadMode("all")); }}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-600 text-white hover:bg-brand-700 transition-colors"
+                      >
+                        <CloudUpload className="h-3.5 w-3.5" />
+                        Upload All ({result.items.length})
+                      </button>
+                    </>
 
                     {/* View toggle */}
                     <div className="flex rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
@@ -2523,7 +2525,7 @@ export default function FiguresTestingPage() {
                                 onPreview={setPreviewItem}
                                 onRename={handleRename}
                                 onClick={(e) => handleItemClick(kind, item.id, e)}
-                                onUpload={exams.length > 0 ? setUploadItem : undefined}
+                                onUpload={(item) => { loadExams().then(() => setUploadItem(item)); }}
                               />
                             ))}
                           </div>
