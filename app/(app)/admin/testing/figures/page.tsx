@@ -2156,7 +2156,22 @@ export default function FiguresTestingPage() {
               />
             </div>
           ) : queue.length > 0 && !result ? (
-            <>
+            <div
+              onDragOver={(e) => {
+                e.preventDefault();
+                e.currentTarget.classList.add("ring-2", "ring-brand-400");
+              }}
+              onDragLeave={(e) => {
+                e.preventDefault();
+                e.currentTarget.classList.remove("ring-2", "ring-brand-400");
+              }}
+              onDrop={(e) => {
+                e.preventDefault();
+                e.currentTarget.classList.remove("ring-2", "ring-brand-400");
+                const files = e.dataTransfer.files;
+                if (files?.length) addFiles(files);
+              }}
+            >
               {/* File queue list */}
               <div className="rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm p-4 mb-4">
                 <div className="flex items-center justify-between mb-3">
@@ -2272,7 +2287,7 @@ export default function FiguresTestingPage() {
                   {error}
                 </div>
               )}
-            </>
+            </div>
           ) : null}
 
           {/* Results */}
