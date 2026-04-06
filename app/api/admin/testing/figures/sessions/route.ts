@@ -35,6 +35,7 @@ export async function GET() {
       pdfName: s.pdfName,
       result: s.result,
       statuses: s.statuses,
+      done: s.done,
       createdAt: s.createdAt.toISOString(),
       updatedAt: s.updatedAt.toISOString(),
       createdBy: s.user.name || s.user.email,
@@ -79,6 +80,7 @@ export async function POST(req: NextRequest) {
       pdfName: session.pdfName,
       result: session.result,
       statuses: session.statuses,
+      done: session.done,
       createdAt: session.createdAt.toISOString(),
       updatedAt: session.updatedAt.toISOString(),
       createdBy: session.user.name || session.user.email,
@@ -96,7 +98,7 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const body = await req.json();
-  const { id, statuses, result } = body;
+  const { id, statuses, result, done } = body;
 
   if (!id) {
     return NextResponse.json({ error: "id is required" }, { status: 400 });
@@ -112,6 +114,7 @@ export async function PATCH(req: NextRequest) {
   const data: Record<string, unknown> = {};
   if (statuses !== undefined) data.statuses = statuses;
   if (result !== undefined) data.result = result;
+  if (done !== undefined) data.done = done;
 
   await prisma.extractionSession.update({
     where: { id },

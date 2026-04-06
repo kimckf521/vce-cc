@@ -90,6 +90,7 @@ interface SavedSession {
   updatedAt?: string;
   result: ExtractionResult;
   statuses: Record<string, ItemStatus>;
+  done?: boolean;
   createdBy?: string;
   userId?: string;
 }
@@ -145,7 +146,7 @@ async function createSessionApi(pdfName: string, result: ExtractionResult, statu
   }
 }
 
-async function updateSessionApi(id: string, updates: { statuses?: Record<string, ItemStatus>; result?: ExtractionResult }) {
+async function updateSessionApi(id: string, updates: { statuses?: Record<string, ItemStatus>; result?: ExtractionResult; done?: boolean }) {
   try {
     await fetch(SESSIONS_API, {
       method: "PATCH",
@@ -2042,8 +2043,12 @@ export default function FiguresTestingPage() {
                 return (
                   <div
                     key={session.id}
-                    className={`rounded-xl border bg-white dark:bg-gray-900 shadow-sm p-4 transition-all ${
-                      isActive ? "border-brand-300 dark:border-brand-700 ring-1 ring-brand-200 dark:ring-brand-800" : "border-gray-100 dark:border-gray-800"
+                    className={`rounded-xl border shadow-sm p-4 transition-all ${
+                      session.done
+                        ? "bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800"
+                        : isActive
+                          ? "bg-white dark:bg-gray-900 border-brand-300 dark:border-brand-700 ring-1 ring-brand-200 dark:ring-brand-800"
+                          : "bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800"
                     }`}
                   >
                     <div className="flex items-center justify-between">
@@ -2097,6 +2102,25 @@ export default function FiguresTestingPage() {
                             {sPending} pending
                           </span>
                         )}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const newDone = !session.done;
+                            setSessions((prev) =>
+                              prev.map((s) => s.id === session.id ? { ...s, done: newDone } : s)
+                            );
+                            updateSessionApi(session.id, { done: newDone });
+                          }}
+                          className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-medium transition-colors ${
+                            session.done
+                              ? "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-400"
+                              : "text-gray-400 dark:text-gray-500 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-950"
+                          }`}
+                          title={session.done ? "Mark as not done" : "Mark as done"}
+                        >
+                          <Check className="h-3 w-3" />
+                          {session.done ? "Done" : "Done"}
+                        </button>
                         <button
                           onClick={(e) => {
                             e.stopPropagation();

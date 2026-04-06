@@ -94,6 +94,7 @@ model ExtractionSession {
   pdfName   String
   result    Json
   statuses  Json
+  done      Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
