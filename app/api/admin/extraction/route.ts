@@ -66,78 +66,8 @@ export async function GET() {
 
   const folders: FolderGroup[] = [];
 
-  // 1. Get sessions from DB to map jobIds to PDF names
-  const sessions = await prisma.extractionSession.findMany({
-    orderBy: { createdAt: "desc" },
-    include: { user: { select: { name: true, email: true } } },
-  });
-
-  // Build jobId -> session info map from result JSON
-  const jobMap = new Map<
-    string,
-    { pdfName: string; label: string; sessionId: string; createdBy: string; createdAt: string }
-  >();
-  for (const s of sessions) {
-    const result = s.result as { jobId?: string } | null;
-    if (result?.jobId) {
-      jobMap.set(result.jobId, {
-        pdfName: s.pdfName,
-        label: pdfNameToLabel(s.pdfName),
-        sessionId: s.id,
-        createdBy: s.user.name || s.user.email,
-        createdAt: s.createdAt.toISOString(),
-      });
-    }
-  }
-
-  // 2. List jobs/ folder in storage
-  const { data: jobsFolders } = await admin.storage
-    .from(BUCKET)
-    .list("jobs", { limit: 200, sortBy: { column: "name", order: "desc" } });
-
-  for (const folder of jobsFolders || []) {
-    if (folder.id) continue; // Skip files, only folders
-    const jobId = folder.name;
-    const sessionInfo = jobMap.get(jobId);
-    const label = sessionInfo?.label || jobId;
-
-    const files: FileEntry[] = [];
-
-    // List items/ subfolder (extracted figures)
-    const { data: itemFiles } = await admin.storage
-      .from(BUCKET)
-      .list(`jobs/${jobId}/items`, { limit: 500, sortBy: { column: "name", order: "asc" } });
-
-    if (itemFiles) {
-      for (const f of itemFiles) {
-        if (!f.id) continue;
-        const path = `jobs/${jobId}/items/${f.name}`;
-        const {
-          data: { publicUrl },
-        } = admin.storage.from(BUCKET).getPublicUrl(path);
-        files.push({
-          path,
-          name: f.name,
-          subfolder: "items",
-          url: publicUrl,
-          size: f.metadata?.size ?? null,
-        });
-      }
-    }
-
-    if (files.length > 0) {
-      folders.push({
-        name: jobId,
-        examLabel: label,
-        sessionId: sessionInfo?.sessionId,
-        createdBy: sessionInfo?.createdBy,
-        createdAt: sessionInfo?.createdAt,
-        files,
-      });
-    }
-  }
-
-  // 3. Also list exam-uploaded files (from Upload to Exam flow)
+  // Only show files explicitly uploaded via "Upload to Exam" flow
+  // (not raw extraction artifacts from jobs/ folder)
   const { data: topFolders } = await admin.storage
     .from(BUCKET)
     .list("", { limit: 200, sortBy: { column: "name", order: "asc" } });
@@ -147,7 +77,7 @@ export async function GET() {
 
     const folderName = folder.name;
     const m = folderName.match(/^(\d{4})-mm([12])$/);
-    const examLabel = m ? `${m[1]} Exam ${m[2]} (uploaded)` : folderName;
+    const examLabel = m ? `${m[1]} Exam ${m[2]}` : folderName;
 
     const files: FileEntry[] = [];
 
