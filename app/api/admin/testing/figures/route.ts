@@ -54,22 +54,8 @@ export async function POST(req: NextRequest) {
     // Ensure artifacts directory exists
     await mkdir(ARTIFACTS_DIR, { recursive: true });
 
-    // Check if Python is available (won't be on Vercel)
-    const scriptPath = join(
-      process.cwd(),
-      "scripts",
-      "figure-extract-cli.py"
-    );
-
-    // Quick check for Python availability
-    try {
-      await new Promise<void>((resolve, reject) => {
-        execFile("python3", ["--version"], { timeout: 5000 }, (err) => {
-          if (err) reject(err);
-          else resolve();
-        });
-      });
-    } catch {
+    // Block extraction on Vercel — Python + native deps aren't available
+    if (process.env.VERCEL) {
       return NextResponse.json(
         {
           error:
@@ -79,6 +65,12 @@ export async function POST(req: NextRequest) {
         { status: 503 }
       );
     }
+
+    const scriptPath = join(
+      process.cwd(),
+      "scripts",
+      "figure-extract-cli.py"
+    );
 
     // Run Python extractor as subprocess
     const result = await new Promise<string>((resolve, reject) => {
