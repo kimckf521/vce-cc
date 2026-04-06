@@ -157,6 +157,85 @@ def extract():
     return jsonify(result)
 
 
+@app.route("/api/recrop", methods=["POST"])
+def recrop():
+    auth_error = check_auth()
+    if auth_error:
+        return auth_error
+
+    payload = request.get_json(silent=True) or {}
+    job_id = str(payload.get("jobId", ""))
+    page_number = int(payload.get("pageNumber", 0))
+    box = payload.get("box", {})
+    kind = str(payload.get("kind", "auto"))
+    item_id = str(payload["itemId"]) if payload.get("itemId") else None
+    label_override = str(payload.get("labelOverride", "") or "")
+    existing_labels = [
+        str(label).strip()
+        for label in payload.get("existingLabels", [])
+        if str(label).strip()
+    ]
+
+    if not job_id or not page_number or not box:
+        return jsonify({"error": "jobId, pageNumber, and box are required"}), 400
+
+    with tempfile.TemporaryDirectory(prefix="vce-recrop-") as temp_dir:
+        artifacts_dir = Path(temp_dir) / "artifacts"
+        artifacts_dir.mkdir()
+
+        # We need the source PDF — download it from Supabase
+        if not SUPABASE_URL or not SUPABASE_SERVICE_KEY:
+            return jsonify({"error": "Supabase not configured for recrop"}), 500
+
+        from supabase import create_client
+        client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+
+        # The source PDF is stored at jobs/{jobId}/source.pdf
+        try:
+            pdf_data = client.storage.from_(BUCKET).download(f"jobs/{job_id}/source.pdf")
+        except Exception:
+            return jsonify({"error": "Source PDF not found. Re-extract the PDF first."}), 404
+
+        # Set up job directory with source PDF
+        job_dir = artifacts_dir / job_id
+        job_dir.mkdir(parents=True, exist_ok=True)
+        (job_dir / "source.pdf").write_bytes(pdf_data)
+        (job_dir / "items").mkdir(exist_ok=True)
+        (job_dir / "tables").mkdir(exist_ok=True)
+
+        try:
+            item = extractor.recrop_pdf_region(
+                job_id=job_id,
+                page_number=page_number,
+                box=box,
+                kind=kind,
+                artifacts_root=artifacts_dir,
+                item_id=item_id,
+                label_override=label_override,
+                existing_labels=existing_labels,
+            )
+        except FileNotFoundError as e:
+            return jsonify({"error": str(e)}), 404
+        except ValueError as e:
+            return jsonify({"error": str(e)}), 400
+        except Exception as e:
+            return jsonify({"error": f"Recrop failed: {str(e)}"}), 500
+
+        # Upload the new artifact to Supabase
+        url_map = upload_to_supabase(job_dir, job_id)
+
+        # Rewrite URLs in the item
+        if url_map:
+            if item.get("imageUrl") in url_map:
+                item["imageUrl"] = url_map[item["imageUrl"]]
+            if item.get("downloadUrl") in url_map:
+                item["downloadUrl"] = url_map[item["downloadUrl"]]
+            if item.get("tableUrl") and item["tableUrl"] in url_map:
+                item["tableUrl"] = url_map[item["tableUrl"]]
+
+    return jsonify({"item": item})
+
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="VCE Figure Extractor API Server")

@@ -10,10 +10,28 @@ const ARTIFACTS_DIR = join(process.cwd(), ".figure-artifacts");
 
 export async function POST(req: NextRequest) {
   if (process.env.VERCEL) {
-    return NextResponse.json(
-      { error: "Recrop requires Python and is only available when running locally or via the remote extractor." },
-      { status: 503 }
-    );
+    const extractorUrl = process.env.EXTRACTOR_API_URL;
+    if (!extractorUrl) {
+      return NextResponse.json(
+        { error: "Recrop requires the remote extractor server." },
+        { status: 503 }
+      );
+    }
+
+    // Proxy to remote extractor
+    const body = await req.json();
+    const headers: Record<string, string> = { "Content-Type": "application/json" };
+    const apiKey = process.env.EXTRACTOR_API_KEY;
+    if (apiKey) headers["Authorization"] = `Bearer ${apiKey}`;
+
+    const remoteRes = await fetch(`${extractorUrl}/api/recrop`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+    });
+
+    const data = await remoteRes.json().catch(() => ({ error: "Remote recrop failed" }));
+    return NextResponse.json(data, { status: remoteRes.status });
   }
 
   const supabase = await createClient();
