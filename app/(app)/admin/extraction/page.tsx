@@ -237,9 +237,7 @@ export default function ExtractionStoragePage() {
         <div className="space-y-4">
           {folders.map((folder) => {
             const isExpanded = expanded.has(folder.name);
-            const questionFiles = folder.files.filter((f) => f.subfolder === "questions");
-            const solutionFiles = folder.files.filter((f) => f.subfolder === "solutions");
-            const itemFiles = folder.files.filter((f) => f.subfolder === "items");
+            const figureFiles = folder.files;
 
             return (
               <div
@@ -268,16 +266,6 @@ export default function ExtractionStoragePage() {
                         by {folder.createdBy}
                       </span>
                     )}
-                    {questionFiles.length > 0 && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-400 font-medium">
-                        {questionFiles.length} question
-                      </span>
-                    )}
-                    {solutionFiles.length > 0 && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-400 font-medium">
-                        {solutionFiles.length} solution
-                      </span>
-                    )}
                   </button>
                   <button
                     onClick={() => handleDeleteFolder(folder.name)}
@@ -290,74 +278,20 @@ export default function ExtractionStoragePage() {
                 {/* Files grid */}
                 {isExpanded && (
                   <div className="p-3">
-                    {/* Questions section */}
-                    {questionFiles.length > 0 && (
-                      <div className="mb-3">
-                        <p className="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
-                          Question Images
-                        </p>
-                        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">
-                          {questionFiles.map((file) => (
-                            <FileCard
-                              key={file.path}
-                              file={file}
-                              deleting={deleting.has(file.path)}
-                              onPreview={() => {
-                                setPreviewUrl(file.url);
-                                setPreviewLabel(`${folder.examLabel} — ${file.name}`);
-                              }}
-                              onDelete={() => handleDelete(file.path)}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Solutions section */}
-                    {solutionFiles.length > 0 && (
-                      <div className="mb-3">
-                        <p className="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
-                          Solution Images
-                        </p>
-                        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">
-                          {solutionFiles.map((file) => (
-                            <FileCard
-                              key={file.path}
-                              file={file}
-                              deleting={deleting.has(file.path)}
-                              onPreview={() => {
-                                setPreviewUrl(file.url);
-                                setPreviewLabel(`${folder.examLabel} — ${file.name}`);
-                              }}
-                              onDelete={() => handleDelete(file.path)}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Extracted figures section */}
-                    {itemFiles.length > 0 && (
-                      <div>
-                        <p className="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
-                          Extracted Figures
-                        </p>
-                        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">
-                          {itemFiles.map((file) => (
-                            <FileCard
-                              key={file.path}
-                              file={file}
-                              deleting={deleting.has(file.path)}
-                              onPreview={() => {
-                                setPreviewUrl(file.url);
-                                setPreviewLabel(`${folder.examLabel} — ${file.name}`);
-                              }}
-                              onDelete={() => handleDelete(file.path)}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                    <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">
+                      {figureFiles.map((file) => (
+                        <FileCard
+                          key={file.path}
+                          file={file}
+                          deleting={deleting.has(file.path)}
+                          onPreview={() => {
+                            setPreviewUrl(file.url);
+                            setPreviewLabel(`${folder.examLabel} — ${file.name}`);
+                          }}
+                          onDelete={() => handleDelete(file.path)}
+                        />
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>

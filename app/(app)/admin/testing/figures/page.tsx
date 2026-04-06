@@ -1300,39 +1300,45 @@ function BulkUploadModal({
     setResults({});
     setErrors({});
 
-    for (let i = 0; i < itemsToUpload.length; i++) {
-      const item = itemsToUpload[i];
-      const parsed = parseLabel(item.label);
-      if (!parsed) {
-        setResults((prev) => ({ ...prev, [item.id]: "skip" }));
-        continue;
-      }
+    // Derive session name from PDF name
+    const sessionName = autoExam
+      ? (() => {
+          const parsed = parsePdfName(pdfName || "");
+          if (!parsed) return pdfName || "Unknown";
+          return `${parsed.year} Exam ${parsed.examNum}${parsed.isSolution ? " Solution" : ""}`;
+        })()
+      : pdfName?.replace(/\.pdf$/i, "") || "Unknown";
 
-      try {
-        const res = await fetch("/api/admin/testing/figures/upload", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            imageUrl: item.imageUrl,
-            examId,
-            questionNumber: parsed.questionNumber,
-            part: parsed.part,
-            target,
-            label: item.label,
-            pdfName,
-          }),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Upload failed");
-        setResults((prev) => ({ ...prev, [item.id]: "ok" }));
-      } catch (err) {
-        setResults((prev) => ({ ...prev, [item.id]: "error" }));
-        setErrors((prev) => ({
-          ...prev,
-          [item.id]: err instanceof Error ? err.message : "Failed",
-        }));
+    try {
+      // Upload all to extraction storage in one batch
+      const res = await fetch("/api/admin/extraction/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionName,
+          imageUrls: itemsToUpload.map((item) => item.imageUrl),
+          labels: itemsToUpload.map((item) => item.label),
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Upload failed");
+
+      // Mark all as ok
+      const allOk: Record<string, "ok"> = {};
+      for (const item of itemsToUpload) allOk[item.id] = "ok";
+      setResults(allOk);
+      setProgress(itemsToUpload.length);
+    } catch (err) {
+      const allErr: Record<string, "error"> = {};
+      const allErrMsgs: Record<string, string> = {};
+      const msg = err instanceof Error ? err.message : "Upload failed";
+      for (const item of itemsToUpload) {
+        allErr[item.id] = "error";
+        allErrMsgs[item.id] = msg;
       }
-      setProgress(i + 1);
+      setResults(allErr);
+      setErrors(allErrMsgs);
+      setProgress(itemsToUpload.length);
     }
     setUploading(false);
   };
@@ -1349,7 +1355,7 @@ function BulkUploadModal({
       <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl w-full max-w-lg max-h-[80vh] flex flex-col overflow-hidden">
         <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100 dark:border-gray-800">
           <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100">
-            {isSelectedMode ? "Upload Selected to Exam" : "Upload All to Exam"}
+            {isSelectedMode ? "Upload Selected to Extraction Storage" : "Upload All to Extraction Storage"}
           </h3>
           <button onClick={onClose} className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
             <X className="h-4 w-4" />
@@ -1357,50 +1363,18 @@ function BulkUploadModal({
         </div>
 
         <div className="p-5 overflow-auto flex-1">
-          {/* Exam picker */}
-          {/* Auto-detect info */}
-          {autoExam && (
+          {/* Session info */}
+          {pdfName && (
             <div className="rounded-lg bg-brand-50 dark:bg-brand-950 border border-brand-200 dark:border-brand-800 px-3 py-2 mb-3 text-xs text-brand-700 dark:text-brand-400">
-              Auto-detected from <span className="font-medium">{pdfName}</span> → {autoExam.isSolution ? "Solution" : "Question"} images
+              Will create session: <span className="font-semibold">
+                {(() => {
+                  const p = parsePdfName(pdfName);
+                  if (!p) return pdfName.replace(/\.pdf$/i, "");
+                  return `${p.year} Exam ${p.examNum}${p.isSolution ? " Solution" : ""}`;
+                })()}
+              </span>
             </div>
           )}
-
-          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Target Exam</label>
-          <select
-            value={examId}
-            onChange={(e) => setExamId(e.target.value)}
-            disabled={uploading}
-            className="w-full mb-3 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100 disabled:opacity-50"
-          >
-            {exams.map((e) => (
-              <option key={e.id} value={e.id}>{e.label}</option>
-            ))}
-          </select>
-
-          {/* Target */}
-          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Attach as</label>
-          <div className="flex gap-2 mb-4">
-            <button
-              onClick={() => !uploading && setTarget("question")}
-              className={`flex-1 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
-                target === "question"
-                  ? "bg-brand-600 text-white border-brand-600"
-                  : "border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400"
-              }`}
-            >
-              Question images
-            </button>
-            <button
-              onClick={() => !uploading && setTarget("solution")}
-              className={`flex-1 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
-                target === "solution"
-                  ? "bg-brand-600 text-white border-brand-600"
-                  : "border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400"
-              }`}
-            >
-              Solution images
-            </button>
-          </div>
 
           {/* Items list */}
           <p className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">

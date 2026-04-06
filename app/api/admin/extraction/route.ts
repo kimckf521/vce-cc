@@ -24,15 +24,6 @@ async function requireAdmin() {
   return user;
 }
 
-function pdfNameToLabel(pdfName: string): string {
-  const m = pdfName.match(/^(\d{4})-mm([12])(-sol)?\.pdf$/i);
-  if (!m) return pdfName.replace(/\.pdf$/i, "");
-  const year = m[1];
-  const num = m[2];
-  const isSol = !!m[3];
-  return `${year} Exam ${num}${isSol ? " Solution" : ""}`;
-}
-
 interface FileEntry {
   path: string;
   name: string;
@@ -44,14 +35,11 @@ interface FileEntry {
 interface FolderGroup {
   name: string;
   examLabel: string;
-  sessionId?: string;
-  createdBy?: string;
-  createdAt?: string;
   files: FileEntry[];
 }
 
 /**
- * GET — list all extraction images grouped by session/exam.
+ * GET — list uploaded extraction images grouped by session.
  */
 export async function GET() {
   if (!(await requireAdmin()))
@@ -66,49 +54,50 @@ export async function GET() {
 
   const folders: FolderGroup[] = [];
 
-  // Only show files explicitly uploaded via "Upload to Exam" flow
-  // (not raw extraction artifacts from jobs/ folder)
-  const { data: topFolders } = await admin.storage
+  // List sessions/ folder (uploaded via Upload All / Upload Selected)
+  const { data: sessionFolders } = await admin.storage
     .from(BUCKET)
-    .list("", { limit: 200, sortBy: { column: "name", order: "asc" } });
+    .list("sessions", { limit: 200, sortBy: { column: "name", order: "asc" } });
 
-  for (const folder of topFolders || []) {
-    if (folder.id || folder.name === "jobs") continue;
+  for (const folder of sessionFolders || []) {
+    if (folder.id) continue;
 
-    const folderName = folder.name;
-    const m = folderName.match(/^(\d{4})-mm([12])$/);
-    const examLabel = m ? `${m[1]} Exam ${m[2]}` : folderName;
+    const slug = folder.name;
+    // Convert slug back to label: "2016-exam-1" → "2016 Exam 1"
+    const examLabel = slug
+      .split("-")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
 
     const files: FileEntry[] = [];
 
-    for (const sub of ["questions", "solutions"]) {
-      const { data: subFiles } = await admin.storage
-        .from(BUCKET)
-        .list(`${folderName}/${sub}`, {
-          limit: 500,
-          sortBy: { column: "name", order: "asc" },
-        });
+    const { data: sessionFiles } = await admin.storage
+      .from(BUCKET)
+      .list(`sessions/${slug}`, {
+        limit: 500,
+        sortBy: { column: "name", order: "asc" },
+      });
 
-      if (subFiles) {
-        for (const f of subFiles) {
-          if (!f.id) continue;
-          const path = `${folderName}/${sub}/${f.name}`;
-          const {
-            data: { publicUrl },
-          } = admin.storage.from(BUCKET).getPublicUrl(path);
-          files.push({
-            path,
-            name: f.name,
-            subfolder: sub,
-            url: publicUrl,
-            size: f.metadata?.size ?? null,
-          });
-        }
+    if (sessionFiles) {
+      for (const f of sessionFiles) {
+        if (!f.id) continue;
+        const path = `sessions/${slug}/${f.name}`;
+        const {
+          data: { publicUrl },
+        } = admin.storage.from(BUCKET).getPublicUrl(path);
+
+        files.push({
+          path,
+          name: f.name,
+          subfolder: "figures",
+          url: publicUrl,
+          size: f.metadata?.size ?? null,
+        });
       }
     }
 
     if (files.length > 0) {
-      folders.push({ name: folderName, examLabel, files });
+      folders.push({ name: slug, examLabel, files });
     }
   }
 
