@@ -86,8 +86,11 @@ interface SavedSession {
   id: string;
   pdfName: string;
   createdAt: string;
+  updatedAt?: string;
   result: ExtractionResult;
   statuses: Record<string, ItemStatus>;
+  createdBy?: string;
+  userId?: string;
 }
 
 interface ExamOption {

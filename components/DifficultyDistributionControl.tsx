@@ -7,26 +7,26 @@ const DIFFICULTIES = [
   {
     key: "easy",
     label: "Easy",
-    card: "bg-green-50 border-green-200",
-    text: "text-green-700",
+    card: "bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800",
+    text: "text-green-700 dark:text-green-400",
     bar: "bg-green-500",
-    btn: "bg-green-100 hover:bg-green-200 text-green-700",
+    btn: "bg-green-100 dark:bg-green-900 hover:bg-green-200 dark:hover:bg-green-800 text-green-700 dark:text-green-400",
   },
   {
     key: "medium",
     label: "Medium",
-    card: "bg-amber-50 border-amber-200",
-    text: "text-amber-700",
+    card: "bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800",
+    text: "text-amber-700 dark:text-amber-400",
     bar: "bg-amber-500",
-    btn: "bg-amber-100 hover:bg-amber-200 text-amber-700",
+    btn: "bg-amber-100 dark:bg-amber-900 hover:bg-amber-200 dark:hover:bg-amber-800 text-amber-700 dark:text-amber-400",
   },
   {
     key: "hard",
     label: "Hard",
-    card: "bg-red-50 border-red-200",
-    text: "text-red-700",
+    card: "bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800",
+    text: "text-red-700 dark:text-red-400",
     bar: "bg-red-500",
-    btn: "bg-red-100 hover:bg-red-200 text-red-700",
+    btn: "bg-red-100 dark:bg-red-900 hover:bg-red-200 dark:hover:bg-red-800 text-red-700 dark:text-red-400",
   },
 ] as const;
 
@@ -56,11 +56,11 @@ export default function DifficultyDistributionControl({ distribution, onChange, 
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
-        <h3 className="font-semibold text-gray-800 lg:text-lg">{label ?? "Difficulty Distribution"}</h3>
+        <h3 className="font-semibold text-gray-800 dark:text-gray-200 lg:text-lg">{label ?? "Difficulty Distribution"}</h3>
         <span
           className={cn(
             "text-xs font-semibold px-2.5 py-1 rounded-full",
-            isValid ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+            isValid ? "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-400" : "bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-400"
           )}
         >
           {total}%{!isValid && " · must be 100%"}
@@ -100,7 +100,7 @@ export default function DifficultyDistributionControl({ distribution, onChange, 
               </button>
             </div>
 
-            <div className="h-1.5 lg:h-2 rounded-full bg-black/5 overflow-hidden">
+            <div className="h-1.5 lg:h-2 rounded-full bg-black/5 dark:bg-white/10 overflow-hidden">
               <div
                 className={cn("h-full rounded-full transition-all duration-200", d.bar)}
                 style={{ width: `${distribution[i]}%` }}

@@ -60,10 +60,10 @@ export default function PracticeClient({ topics, years }: Props) {
     return (
       <div>
         <div className="flex items-center justify-between mb-6">
-          <p className="text-sm lg:text-base text-gray-500">{questions.length} questions</p>
+          <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400">{questions.length} questions</p>
           <button
             onClick={reset}
-            className="text-sm lg:text-base text-brand-600 font-medium hover:underline"
+            className="text-sm lg:text-base text-brand-600 dark:text-brand-400 font-medium hover:underline"
           >
             ← New practice set
           </button>
@@ -91,10 +91,10 @@ export default function PracticeClient({ topics, years }: Props) {
   }
 
   return (
-    <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-6 lg:p-8 space-y-6 lg:space-y-8">
+    <div className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm p-6 lg:p-8 space-y-6 lg:space-y-8">
       {/* Topics */}
       <div>
-        <h3 className="text-sm lg:text-base font-semibold text-gray-700 mb-3">Topics (leave blank for all)</h3>
+        <h3 className="text-sm lg:text-base font-semibold text-gray-700 dark:text-gray-300 mb-3">Topics (leave blank for all)</h3>
         <div className="flex flex-wrap gap-2">
           {topics.map((t) => (
             <button
@@ -103,7 +103,7 @@ export default function PracticeClient({ topics, years }: Props) {
               className={`rounded-full px-3 lg:px-4 py-1.5 lg:py-2 text-xs lg:text-sm font-medium transition-colors ${
                 selectedTopics.includes(t.id)
                   ? "bg-brand-600 text-white"
-                  : "bg-gray-100 text-gray-600 hover:bg-brand-50 hover:text-brand-700"
+                  : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-brand-50 dark:hover:bg-brand-950 hover:text-brand-700 dark:hover:text-brand-400"
               }`}
             >
               {t.name}
@@ -114,7 +114,7 @@ export default function PracticeClient({ topics, years }: Props) {
 
       {/* Difficulty */}
       <div>
-        <h3 className="text-sm lg:text-base font-semibold text-gray-700 mb-3">Difficulty</h3>
+        <h3 className="text-sm lg:text-base font-semibold text-gray-700 dark:text-gray-300 mb-3">Difficulty</h3>
         <div className="flex gap-2">
           {["ALL", "EASY", "MEDIUM", "HARD"].map((d) => (
             <button
@@ -123,7 +123,7 @@ export default function PracticeClient({ topics, years }: Props) {
               className={`rounded-full px-3 lg:px-4 py-1.5 lg:py-2 text-xs lg:text-sm font-medium transition-colors ${
                 difficulty === d
                   ? "bg-brand-600 text-white"
-                  : "bg-gray-100 text-gray-600 hover:bg-brand-50 hover:text-brand-700"
+                  : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-brand-50 dark:hover:bg-brand-950 hover:text-brand-700 dark:hover:text-brand-400"
               }`}
             >
               {d === "ALL" ? "All" : d.charAt(0) + d.slice(1).toLowerCase()}
@@ -134,8 +134,8 @@ export default function PracticeClient({ topics, years }: Props) {
 
       {/* Question count */}
       <div>
-        <h3 className="text-sm lg:text-base font-semibold text-gray-700 mb-3">
-          Number of questions: <span className="text-brand-600">{count}</span>
+        <h3 className="text-sm lg:text-base font-semibold text-gray-700 dark:text-gray-300 mb-3">
+          Number of questions: <span className="text-brand-600 dark:text-brand-400">{count}</span>
         </h3>
         <input
           type="range"
@@ -146,7 +146,7 @@ export default function PracticeClient({ topics, years }: Props) {
           onChange={(e) => setCount(Number(e.target.value))}
           className="w-full accent-brand-600"
         />
-        <div className="flex justify-between text-xs lg:text-sm text-gray-400 mt-1">
+        <div className="flex justify-between text-xs lg:text-sm text-gray-400 dark:text-gray-500 mt-1">
           <span>5</span><span>40</span>
         </div>
       </div>

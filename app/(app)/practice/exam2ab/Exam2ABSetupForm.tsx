@@ -37,18 +37,18 @@ export default function Exam2ABSetupForm({ topics }: Props) {
       {/* Back link */}
       <Link
         href="/practice"
-        className="inline-flex items-center gap-1.5 text-sm lg:text-base font-medium text-brand-600 hover:text-brand-700 transition-colors"
+        className="inline-flex items-center gap-1.5 text-sm lg:text-base font-medium text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors"
       >
         ← Practice
       </Link>
 
       {/* Heading */}
-      <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Exam 2A &amp; 2B Practice</h1>
+      <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">Exam 2A &amp; 2B Practice</h1>
 
       {/* Info banner */}
-      <div className="rounded-xl border border-gray-200 bg-gray-50 px-5 lg:px-6 py-4 lg:py-5 text-sm lg:text-base text-gray-600 flex items-start gap-3">
+      <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-5 lg:px-6 py-4 lg:py-5 text-sm lg:text-base text-gray-600 dark:text-gray-400 flex items-start gap-3">
         <div className="shrink-0 mt-0.5">
-          <svg className="h-4 w-4 lg:h-5 lg:w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="h-4 w-4 lg:h-5 lg:w-5 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
@@ -59,7 +59,7 @@ export default function Exam2ABSetupForm({ topics }: Props) {
 
       {/* Section A distribution */}
       <div className="space-y-3 lg:space-y-4">
-        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 uppercase tracking-widest">
+        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
           Section A — Multiple Choice Distribution
         </h2>
         <TopicDistributionControl
@@ -71,7 +71,7 @@ export default function Exam2ABSetupForm({ topics }: Props) {
 
       {/* Section B distribution */}
       <div className="space-y-3 lg:space-y-4">
-        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 uppercase tracking-widest">
+        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
           Section B — Extended Response Distribution
         </h2>
         <TopicDistributionControl
@@ -83,7 +83,7 @@ export default function Exam2ABSetupForm({ topics }: Props) {
 
       {/* Difficulty distribution */}
       <div className="space-y-3 lg:space-y-4">
-        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 uppercase tracking-widest">
+        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
           Difficulty Distribution
         </h2>
         <DifficultyDistributionControl
@@ -93,17 +93,17 @@ export default function Exam2ABSetupForm({ topics }: Props) {
       </div>
 
       {/* Show solutions toggle */}
-      <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-5 lg:px-6 py-4 lg:py-5">
+      <div className="flex items-center justify-between rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-5 lg:px-6 py-4 lg:py-5">
         <div>
-          <p className="text-sm lg:text-base font-semibold text-gray-800">Show solutions as I go</p>
-          <p className="text-xs lg:text-sm text-gray-500 mt-0.5">Display a solution button on each question</p>
+          <p className="text-sm lg:text-base font-semibold text-gray-800 dark:text-gray-200">Show solutions as I go</p>
+          <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 mt-0.5">Display a solution button on each question</p>
         </div>
         <button
           type="button"
           onClick={() => setShowSolutions((v) => !v)}
           className={cn(
             "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200",
-            showSolutions ? "bg-brand-600" : "bg-gray-200"
+            showSolutions ? "bg-brand-600" : "bg-gray-200 dark:bg-gray-600"
           )}
         >
           <span className={cn(
@@ -114,17 +114,17 @@ export default function Exam2ABSetupForm({ topics }: Props) {
       </div>
 
       {/* Timer toggle */}
-      <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-5 lg:px-6 py-4 lg:py-5">
+      <div className="flex items-center justify-between rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-5 lg:px-6 py-4 lg:py-5">
         <div>
-          <p className="text-sm lg:text-base font-semibold text-gray-800">Exam timer</p>
-          <p className="text-xs lg:text-sm text-gray-500 mt-0.5">15 min reading time + 2 hour writing time</p>
+          <p className="text-sm lg:text-base font-semibold text-gray-800 dark:text-gray-200">Exam timer</p>
+          <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 mt-0.5">15 min reading time + 2 hour writing time</p>
         </div>
         <button
           type="button"
           onClick={() => setTimerEnabled((v) => !v)}
           className={cn(
             "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200",
-            timerEnabled ? "bg-brand-600" : "bg-gray-200"
+            timerEnabled ? "bg-brand-600" : "bg-gray-200 dark:bg-gray-600"
           )}
         >
           <span className={cn(
@@ -136,7 +136,7 @@ export default function Exam2ABSetupForm({ topics }: Props) {
 
       {/* Validation errors */}
       {!isValid && (
-        <p className="text-sm lg:text-base font-medium text-red-600">
+        <p className="text-sm lg:text-base font-medium text-red-600 dark:text-red-400">
           All distributions must add up to 100% before you can start.
         </p>
       )}

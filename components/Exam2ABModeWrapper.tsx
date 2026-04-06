@@ -103,32 +103,32 @@ export default function Exam2ABModeWrapper({
 
       {/* Results banner — shown after submit */}
       {submitted && (
-        <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
-          <div className="px-6 py-6 lg:px-8 lg:py-8 bg-blue-50">
+        <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm overflow-hidden">
+          <div className="px-6 py-6 lg:px-8 lg:py-8 bg-blue-50 dark:bg-blue-950">
             <div className="flex items-center gap-3 mb-4">
-              <Trophy className="h-7 w-7 lg:h-8 lg:w-8 text-blue-600" />
-              <h2 className="text-xl lg:text-2xl font-bold text-gray-900">Exam Results</h2>
+              <Trophy className="h-7 w-7 lg:h-8 lg:w-8 text-blue-600 dark:text-blue-400" />
+              <h2 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100">Exam Results</h2>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6">
               {/* Score */}
-              <div className="rounded-xl bg-white/80 border border-white p-4 lg:p-5">
-                <p className="text-sm lg:text-base text-gray-500 mb-1">Score</p>
-                <p className="text-3xl lg:text-4xl font-bold text-gray-900">N/A</p>
+              <div className="rounded-xl bg-white/80 dark:bg-gray-800/80 border border-white dark:border-gray-700 p-4 lg:p-5">
+                <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-1">Score</p>
+                <p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100">N/A</p>
               </div>
 
               {/* Percentage */}
-              <div className="rounded-xl bg-white/80 border border-white p-4 lg:p-5">
-                <p className="text-sm lg:text-base text-gray-500 mb-1">Percentage</p>
-                <p className="text-3xl lg:text-4xl font-bold text-gray-900">N/A</p>
+              <div className="rounded-xl bg-white/80 dark:bg-gray-800/80 border border-white dark:border-gray-700 p-4 lg:p-5">
+                <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-1">Percentage</p>
+                <p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100">N/A</p>
               </div>
 
               {/* Time taken */}
-              <div className="rounded-xl bg-white/80 border border-white p-4 lg:p-5">
-                <p className="text-sm lg:text-base text-gray-500 mb-1">Time Taken</p>
+              <div className="rounded-xl bg-white/80 dark:bg-gray-800/80 border border-white dark:border-gray-700 p-4 lg:p-5">
+                <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-1">Time Taken</p>
                 <div className="flex items-center gap-2">
-                  <Clock className="h-5 w-5 lg:h-6 lg:w-6 text-gray-400" />
-                  <p className="text-2xl lg:text-3xl font-bold text-gray-900">{formatElapsed(finalTime)}</p>
+                  <Clock className="h-5 w-5 lg:h-6 lg:w-6 text-gray-400 dark:text-gray-500" />
+                  <p className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">{formatElapsed(finalTime)}</p>
                 </div>
               </div>
             </div>
@@ -138,7 +138,7 @@ export default function Exam2ABModeWrapper({
 
       {/* Section A — Multiple Choice */}
       <div className="space-y-5 lg:space-y-6">
-        <h2 className="text-lg lg:text-xl font-bold text-gray-800 border-b border-gray-200 pb-2 lg:pb-3">
+        <h2 className="text-lg lg:text-xl font-bold text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700 pb-2 lg:pb-3">
           Section A — Multiple Choice ({groupsA.length} questions)
         </h2>
         <div className="space-y-4 lg:space-y-5">
@@ -163,7 +163,7 @@ export default function Exam2ABModeWrapper({
 
       {/* Section B — Extended Response */}
       <div className="space-y-5 lg:space-y-6">
-        <h2 className="text-lg lg:text-xl font-bold text-gray-800 border-b border-gray-200 pb-2 lg:pb-3">
+        <h2 className="text-lg lg:text-xl font-bold text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700 pb-2 lg:pb-3">
           Section B — Extended Response ({groupsB.length} questions)
         </h2>
         <div className="space-y-4 lg:space-y-5">

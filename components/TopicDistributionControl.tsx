@@ -18,28 +18,28 @@ interface Props {
 
 const TOPIC_COLORS = [
   {
-    card: "border-violet-200 bg-violet-50",
+    card: "border-violet-200 dark:border-violet-800 bg-violet-50 dark:bg-violet-950",
     bar: "bg-violet-500",
-    badge: "bg-violet-100 text-violet-700",
-    btn: "border-violet-200 bg-white text-violet-700 hover:bg-violet-100",
+    badge: "bg-violet-100 dark:bg-violet-900 text-violet-700 dark:text-violet-400",
+    btn: "border-violet-200 dark:border-violet-800 bg-white dark:bg-violet-950 text-violet-700 dark:text-violet-400 hover:bg-violet-100 dark:hover:bg-violet-900",
   },
   {
-    card: "border-sky-200 bg-sky-50",
+    card: "border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950",
     bar: "bg-sky-500",
-    badge: "bg-sky-100 text-sky-700",
-    btn: "border-sky-200 bg-white text-sky-700 hover:bg-sky-100",
+    badge: "bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-400",
+    btn: "border-sky-200 dark:border-sky-800 bg-white dark:bg-sky-950 text-sky-700 dark:text-sky-400 hover:bg-sky-100 dark:hover:bg-sky-900",
   },
   {
-    card: "border-amber-200 bg-amber-50",
+    card: "border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950",
     bar: "bg-amber-500",
-    badge: "bg-amber-100 text-amber-700",
-    btn: "border-amber-200 bg-white text-amber-700 hover:bg-amber-100",
+    badge: "bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-400",
+    btn: "border-amber-200 dark:border-amber-800 bg-white dark:bg-amber-950 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900",
   },
   {
-    card: "border-emerald-200 bg-emerald-50",
+    card: "border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950",
     bar: "bg-emerald-500",
-    badge: "bg-emerald-100 text-emerald-700",
-    btn: "border-emerald-200 bg-white text-emerald-700 hover:bg-emerald-100",
+    badge: "bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-400",
+    btn: "border-emerald-200 dark:border-emerald-800 bg-white dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900",
   },
 ];
 
@@ -57,11 +57,11 @@ export default function TopicDistributionControl({ topics, distribution, onChang
       {/* Header row */}
       <div className="flex items-center justify-between">
         {label && (
-          <h3 className="text-sm font-semibold text-gray-700">{label}</h3>
+          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{label}</h3>
         )}
         <div className={cn(
           "ml-auto rounded-full px-3 py-1 text-xs font-semibold",
-          isValid ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+          isValid ? "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-400" : "bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-400"
         )}>
           {isValid ? `Total: ${total}%` : `Total: ${total}% — must be 100%`}
         </div>
@@ -80,14 +80,14 @@ export default function TopicDistributionControl({ topics, distribution, onChang
             >
               {/* Topic name + percentage */}
               <div className="flex items-center justify-between gap-2">
-                <span className="text-sm lg:text-base font-medium text-gray-800 leading-tight">{topic.name}</span>
+                <span className="text-sm lg:text-base font-medium text-gray-800 dark:text-gray-200 leading-tight">{topic.name}</span>
                 <span className={cn("rounded-full px-2.5 py-0.5 text-xs lg:text-sm font-bold shrink-0", colors.badge)}>
                   {pct}%
                 </span>
               </div>
 
               {/* Progress bar */}
-              <div className="h-2 lg:h-2.5 rounded-full bg-white/70 overflow-hidden">
+              <div className="h-2 lg:h-2.5 rounded-full bg-white/70 dark:bg-black/20 overflow-hidden">
                 <div
                   className={cn("h-full rounded-full transition-all", colors.bar)}
                   style={{ width: `${pct}%` }}
@@ -108,7 +108,7 @@ export default function TopicDistributionControl({ topics, distribution, onChang
                 >
                   <Minus className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
                 </button>
-                <div className="flex-1 text-center text-sm lg:text-base font-semibold text-gray-700 tabular-nums">
+                <div className="flex-1 text-center text-sm lg:text-base font-semibold text-gray-700 dark:text-gray-300 tabular-nums">
                   {pct}%
                 </div>
                 <button
