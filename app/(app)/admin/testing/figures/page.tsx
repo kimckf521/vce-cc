@@ -27,6 +27,7 @@ import {
   Save,
   CloudUpload,
   ChevronDown,
+  GripVertical,
 } from "lucide-react";
 
 // ── Types ────────────────────────────────────────────────────────────
@@ -2223,7 +2224,44 @@ export default function FiguresTestingPage() {
                   {queue.map((item, i) => (
                     <div
                       key={`${item.file.name}-${i}`}
+                      draggable={item.status === "pending" && !extracting}
+                      onDragStart={(e) => {
+                        e.dataTransfer.effectAllowed = "move";
+                        e.dataTransfer.setData("text/plain", String(i));
+                        e.currentTarget.classList.add("opacity-40");
+                      }}
+                      onDragEnd={(e) => {
+                        e.currentTarget.classList.remove("opacity-40");
+                        document.querySelectorAll("[data-drag-over]").forEach((el) => el.removeAttribute("data-drag-over"));
+                      }}
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = "move";
+                        e.currentTarget.setAttribute("data-drag-over", "true");
+                        e.currentTarget.classList.add("ring-2", "ring-brand-400");
+                      }}
+                      onDragLeave={(e) => {
+                        e.currentTarget.removeAttribute("data-drag-over");
+                        e.currentTarget.classList.remove("ring-2", "ring-brand-400");
+                      }}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        e.currentTarget.removeAttribute("data-drag-over");
+                        e.currentTarget.classList.remove("ring-2", "ring-brand-400");
+                        const fromIndex = Number(e.dataTransfer.getData("text/plain"));
+                        const toIndex = i;
+                        if (fromIndex !== toIndex && !extracting) {
+                          setQueue((prev) => {
+                            const next = [...prev];
+                            const [moved] = next.splice(fromIndex, 1);
+                            next.splice(toIndex, 0, moved);
+                            return next;
+                          });
+                        }
+                      }}
                       className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-colors ${
+                        item.status === "pending" && !extracting ? "cursor-grab active:cursor-grabbing" : ""
+                      } ${
                         item.status === "extracting"
                           ? "bg-brand-50 dark:bg-brand-950 border border-brand-200 dark:border-brand-800"
                           : item.status === "done"
@@ -2233,6 +2271,9 @@ export default function FiguresTestingPage() {
                               : "bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700"
                       }`}
                     >
+                      {item.status === "pending" && !extracting && (
+                        <GripVertical className="h-4 w-4 text-gray-300 dark:text-gray-600 flex-shrink-0" />
+                      )}
                       {item.status === "extracting" ? (
                         <Loader2 className="h-4 w-4 animate-spin text-brand-600 flex-shrink-0" />
                       ) : item.status === "done" ? (
