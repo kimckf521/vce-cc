@@ -25,6 +25,9 @@ interface FileEntry {
 interface FolderEntry {
   name: string;
   examLabel: string;
+  sessionId?: string;
+  createdBy?: string;
+  createdAt?: string;
   files: FileEntry[];
 }
 
@@ -236,6 +239,7 @@ export default function ExtractionStoragePage() {
             const isExpanded = expanded.has(folder.name);
             const questionFiles = folder.files.filter((f) => f.subfolder === "questions");
             const solutionFiles = folder.files.filter((f) => f.subfolder === "solutions");
+            const itemFiles = folder.files.filter((f) => f.subfolder === "items");
 
             return (
               <div
@@ -259,6 +263,11 @@ export default function ExtractionStoragePage() {
                     <span className="text-xs text-gray-400 dark:text-gray-500">
                       {folder.files.length} image{folder.files.length !== 1 ? "s" : ""}
                     </span>
+                    {folder.createdBy && (
+                      <span className="text-[10px] text-gray-400 dark:text-gray-500">
+                        by {folder.createdBy}
+                      </span>
+                    )}
                     {questionFiles.length > 0 && (
                       <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-400 font-medium">
                         {questionFiles.length} question
@@ -306,12 +315,35 @@ export default function ExtractionStoragePage() {
 
                     {/* Solutions section */}
                     {solutionFiles.length > 0 && (
-                      <div>
+                      <div className="mb-3">
                         <p className="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
                           Solution Images
                         </p>
                         <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">
                           {solutionFiles.map((file) => (
+                            <FileCard
+                              key={file.path}
+                              file={file}
+                              deleting={deleting.has(file.path)}
+                              onPreview={() => {
+                                setPreviewUrl(file.url);
+                                setPreviewLabel(`${folder.examLabel} — ${file.name}`);
+                              }}
+                              onDelete={() => handleDelete(file.path)}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Extracted figures section */}
+                    {itemFiles.length > 0 && (
+                      <div>
+                        <p className="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+                          Extracted Figures
+                        </p>
+                        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">
+                          {itemFiles.map((file) => (
                             <FileCard
                               key={file.path}
                               file={file}
