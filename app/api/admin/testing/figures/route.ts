@@ -54,16 +54,44 @@ export async function POST(req: NextRequest) {
     // Ensure artifacts directory exists
     await mkdir(ARTIFACTS_DIR, { recursive: true });
 
-    // Block extraction on Vercel — Python + native deps aren't available
+    // On Vercel: proxy to remote extractor server if configured
+    const extractorUrl = process.env.EXTRACTOR_API_URL;
     if (process.env.VERCEL) {
-      return NextResponse.json(
-        {
-          error:
-            "PDF extraction requires Python and is only available when running locally. " +
-            "Use your local dev server to extract PDFs — results will be shared with all admins via the database.",
-        },
-        { status: 503 }
-      );
+      if (!extractorUrl) {
+        return NextResponse.json(
+          {
+            error:
+              "PDF extraction requires the remote extractor server. " +
+              "Set EXTRACTOR_API_URL in Vercel environment variables, or extract locally.",
+          },
+          { status: 503 }
+        );
+      }
+
+      // Forward PDF to remote extractor
+      const remoteForm = new FormData();
+      remoteForm.append("pdf", file);
+
+      const headers: Record<string, string> = {};
+      const apiKey = process.env.EXTRACTOR_API_KEY;
+      if (apiKey) headers["Authorization"] = `Bearer ${apiKey}`;
+
+      const remoteRes = await fetch(`${extractorUrl}/api/extract`, {
+        method: "POST",
+        headers,
+        body: remoteForm,
+      });
+
+      if (!remoteRes.ok) {
+        const err = await remoteRes.json().catch(() => ({ error: "Remote extraction failed" }));
+        return NextResponse.json(
+          { error: err.error || "Remote extraction failed" },
+          { status: remoteRes.status }
+        );
+      }
+
+      const data = await remoteRes.json();
+      return NextResponse.json(data);
     }
 
     const scriptPath = join(

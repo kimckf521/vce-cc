@@ -11,7 +11,7 @@ const ARTIFACTS_DIR = join(process.cwd(), ".figure-artifacts");
 export async function POST(req: NextRequest) {
   if (process.env.VERCEL) {
     return NextResponse.json(
-      { error: "Recrop requires Python and is only available when running locally." },
+      { error: "Recrop requires Python and is only available when running locally or via the remote extractor." },
       { status: 503 }
     );
   }
