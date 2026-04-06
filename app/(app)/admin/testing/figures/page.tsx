@@ -1258,12 +1258,14 @@ function BulkUploadModal({
   statuses,
   exams,
   pdfName,
+  selectedItemIds,
   onClose,
 }: {
   result: ExtractionResult;
   statuses: Record<string, ItemStatus>;
   exams: ExamOption[];
   pdfName?: string;
+  selectedItemIds?: Set<string>;
   onClose: () => void;
 }) {
   const autoExam = pdfName ? findExamByPdfName(pdfName, exams) : null;
@@ -1274,15 +1276,22 @@ function BulkUploadModal({
   const [results, setResults] = useState<Record<string, "ok" | "error" | "skip">>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const isSelectedMode = selectedItemIds && selectedItemIds.size > 0;
+
   // Only include items that have parseable labels
   const uploadableItems = result.items.filter((item) => {
+    if (isSelectedMode && !selectedItemIds.has(item.id)) return false;
     const p = parseLabel(item.label);
     return p !== null;
   });
 
-  // Prefer accepted items, but include all parseable ones
-  const acceptedItems = uploadableItems.filter((i) => statuses[i.id] === "accepted");
-  const itemsToUpload = acceptedItems.length > 0 ? acceptedItems : uploadableItems;
+  // In "all" mode, prefer accepted items; in "selected" mode, use the selection as-is
+  const itemsToUpload = isSelectedMode
+    ? uploadableItems
+    : (() => {
+        const accepted = uploadableItems.filter((i) => statuses[i.id] === "accepted");
+        return accepted.length > 0 ? accepted : uploadableItems;
+      })();
 
   const handleBulkUpload = async () => {
     setUploading(true);
@@ -1338,7 +1347,9 @@ function BulkUploadModal({
     >
       <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl w-full max-w-lg max-h-[80vh] flex flex-col overflow-hidden">
         <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100 dark:border-gray-800">
-          <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100">Bulk Upload to Exam</h3>
+          <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100">
+            {isSelectedMode ? "Upload Selected to Exam" : "Upload All to Exam"}
+          </h3>
           <button onClick={onClose} className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
             <X className="h-4 w-4" />
           </button>
@@ -1392,9 +1403,9 @@ function BulkUploadModal({
 
           {/* Items list */}
           <p className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">
-            {acceptedItems.length > 0
-              ? `${itemsToUpload.length} accepted figure(s) to upload`
-              : `${itemsToUpload.length} figure(s) to upload (none accepted — using all)`}
+            {isSelectedMode
+              ? `${itemsToUpload.length} selected figure(s) to upload`
+              : `${itemsToUpload.length} figure(s) to upload`}
           </p>
           <div className="space-y-1.5 mb-4">
             {itemsToUpload.map((item) => {
@@ -1510,7 +1521,7 @@ export default function FiguresTestingPage() {
   // Upload state
   const [exams, setExams] = useState<ExamOption[]>([]);
   const [uploadItem, setUploadItem] = useState<ItemResult | null>(null);
-  const [showBulkUpload, setShowBulkUpload] = useState(false);
+  const [bulkUploadMode, setBulkUploadMode] = useState<"all" | "selected" | null>(null);
 
   // Load sessions from database
   useEffect(() => {
@@ -1891,7 +1902,7 @@ export default function FiguresTestingPage() {
       // Don't interfere with inputs, modals, or text editing
       const tag = (e.target as HTMLElement)?.tagName;
       if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
-      if (editorPage || previewItem || uploadItem || showBulkUpload) return;
+      if (editorPage || previewItem || uploadItem || bulkUploadMode) return;
       if (!result) return;
 
       // Find all selected items across all kinds
@@ -1915,7 +1926,7 @@ export default function FiguresTestingPage() {
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [result, selectedItems, editorPage, previewItem, uploadItem, showBulkUpload, handleDeleteSelected, kindOrder]);
+  }, [result, selectedItems, editorPage, previewItem, uploadItem, bulkUploadMode, handleDeleteSelected, kindOrder]);
 
   return (
     <div className="max-w-5xl">
@@ -1946,13 +1957,16 @@ export default function FiguresTestingPage() {
       )}
 
       {/* Bulk upload modal */}
-      {showBulkUpload && result && exams.length > 0 && (
+      {bulkUploadMode && result && exams.length > 0 && (
         <BulkUploadModal
           result={result}
           statuses={statuses}
           exams={exams}
           pdfName={activeSession?.pdfName || result?.filename}
-          onClose={() => setShowBulkUpload(false)}
+          selectedItemIds={bulkUploadMode === "selected"
+            ? new Set(Object.values(selectedItems).flatMap((s) => Array.from(s || [])))
+            : undefined}
+          onClose={() => setBulkUploadMode(null)}
         />
       )}
 
@@ -2374,15 +2388,29 @@ export default function FiguresTestingPage() {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    {/* Upload to exam button */}
+                    {/* Upload buttons */}
                     {exams.length > 0 && (
-                      <button
-                        onClick={() => setShowBulkUpload(true)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-600 text-white hover:bg-brand-700 transition-colors"
-                      >
-                        <CloudUpload className="h-3.5 w-3.5" />
-                        Upload to Exam
-                      </button>
+                      <>
+                        {(() => {
+                          const selCount = Object.values(selectedItems).reduce((sum, s) => sum + (s?.size || 0), 0);
+                          return selCount > 0 ? (
+                            <button
+                              onClick={() => setBulkUploadMode("selected")}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-brand-600 text-brand-600 dark:text-brand-400 dark:border-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950 transition-colors"
+                            >
+                              <CloudUpload className="h-3.5 w-3.5" />
+                              Upload Selected ({selCount})
+                            </button>
+                          ) : null;
+                        })()}
+                        <button
+                          onClick={() => setBulkUploadMode("all")}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-600 text-white hover:bg-brand-700 transition-colors"
+                        >
+                          <CloudUpload className="h-3.5 w-3.5" />
+                          Upload All ({result.items.length})
+                        </button>
+                      </>
                     )}
 
                     {/* View toggle */}
