@@ -9,6 +9,13 @@ import { join } from "path";
 const ARTIFACTS_DIR = join(process.cwd(), ".figure-artifacts");
 
 export async function POST(req: NextRequest) {
+  if (process.env.VERCEL) {
+    return NextResponse.json(
+      { error: "Recrop requires Python and is only available when running locally." },
+      { status: 503 }
+    );
+  }
+
   const supabase = await createClient();
   const {
     data: { user },

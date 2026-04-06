@@ -954,15 +954,21 @@ function PageEditorModal({
 
         {/* Status bar */}
         <div className={`px-4 py-2 border-t text-xs ${
-          overlappingIds.size > 0
-            ? "border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400"
-            : "border-gray-100 dark:border-gray-800 text-gray-500 dark:text-gray-400"
+          status?.includes("successfully") || status?.includes("Saved")
+            ? "border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950/50 text-green-600 dark:text-green-400"
+            : status?.includes("failed") || status?.includes("error") || status?.includes("requires Python")
+              ? "border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400"
+              : overlappingIds.size > 0
+                ? "border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400"
+                : "border-gray-100 dark:border-gray-800 text-gray-500 dark:text-gray-400"
         }`}>
-          {status || (overlappingIds.size > 0
-            ? `⚠ Selected box overlaps with ${overlappingIds.size - selectedIds.size} other box(es). Adjust to avoid cropping issues.`
-            : selectedIds.size > 0
-              ? `${selectedIds.size} box(es) selected. Drag to move, corners to resize.`
-              : `${allBoxes.length} detection(s). Click a box to select it.`)}
+          {status
+            ? (status.includes("successfully") || status.includes("Saved") ? `✓ ${status}` : `✕ ${status}`)
+            : (overlappingIds.size > 0
+              ? `⚠ Selected box overlaps with ${overlappingIds.size - selectedIds.size} other box(es). Adjust to avoid cropping issues.`
+              : selectedIds.size > 0
+                ? `${selectedIds.size} box(es) selected. Drag to move, corners to resize.`
+                : `${allBoxes.length} detection(s). Click a box to select it.`)}
         </div>
       </div>
     </div>
