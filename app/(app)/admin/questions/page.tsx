@@ -48,6 +48,7 @@ function EditQuestionRow({
   const [part, setPart] = useState(question.part || "");
   const [marks, setMarks] = useState(String(question.marks));
   const [difficulty, setDifficulty] = useState(question.difficulty);
+  const [content, setContent] = useState(question.content);
   const [saving, setSaving] = useState(false);
 
   async function handleSave() {
@@ -57,12 +58,14 @@ function EditQuestionRow({
       part: part || null,
       marks: parseInt(marks),
       difficulty,
+      content,
     });
     setSaving(false);
   }
 
   return (
-    <div className="px-5 py-3 lg:px-6 lg:py-4 bg-brand-50/30 dark:bg-brand-950/20">
+    <div className="px-5 py-4 lg:px-6 lg:py-5 bg-brand-50/30 dark:bg-brand-950/20 space-y-3">
+      {/* Metadata row */}
       <div className="flex items-center gap-3 flex-wrap">
         <div className="flex items-center gap-2">
           <label className="text-xs text-gray-500 dark:text-gray-400">Q#</label>
@@ -104,12 +107,26 @@ function EditQuestionRow({
             <option value="HARD">Hard</option>
           </select>
         </div>
-        <div className="flex items-center gap-1 ml-auto">
-          <button
-            onClick={handleSave}
-            disabled={saving}
-            className="inline-flex items-center gap-1 rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-brand-700 transition-colors disabled:opacity-60"
-          >
+      </div>
+
+      {/* Content textarea */}
+      <div>
+        <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Content (Markdown + LaTeX)</label>
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          rows={6}
+          className="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 font-mono focus:outline-none focus:ring-2 focus:ring-brand-500 resize-y"
+        />
+      </div>
+
+      {/* Actions */}
+      <div className="flex items-center gap-1">
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className="inline-flex items-center gap-1 rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-brand-700 transition-colors disabled:opacity-60"
+        >
             {saving ? <Loader2 className="h-3 w-3 animate-spin" /> : <Check className="h-3 w-3" />}
             Save
           </button>
@@ -119,7 +136,6 @@ function EditQuestionRow({
           >
             Cancel
           </button>
-        </div>
       </div>
     </div>
   );
