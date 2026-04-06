@@ -1294,23 +1294,27 @@ function BulkUploadModal({
         return accepted.length > 0 ? accepted : uploadableItems;
       })();
 
+  const [uploadStatus, setUploadStatus] = useState("");
+
+  const sessionName = (() => {
+    const parsed = pdfName ? parsePdfName(pdfName) : null;
+    if (parsed) return `${parsed.year} Exam ${parsed.examNum}${parsed.isSolution ? " Solution" : ""}`;
+    return pdfName?.replace(/\.pdf$/i, "") || "Unknown";
+  })();
+
   const handleBulkUpload = async () => {
     setUploading(true);
     setProgress(0);
     setResults({});
     setErrors({});
+    setUploadStatus(`Uploading ${itemsToUpload.length} figure(s) to "${sessionName}"...`);
 
-    // Derive session name from PDF name
-    const sessionName = autoExam
-      ? (() => {
-          const parsed = parsePdfName(pdfName || "");
-          if (!parsed) return pdfName || "Unknown";
-          return `${parsed.year} Exam ${parsed.examNum}${parsed.isSolution ? " Solution" : ""}`;
-        })()
-      : pdfName?.replace(/\.pdf$/i, "") || "Unknown";
+    // Mark all as uploading
+    const uploading_: Record<string, "ok" | "error" | "skip"> = {};
+    for (const item of itemsToUpload) uploading_[item.id] = "skip";
+    setResults(uploading_);
 
     try {
-      // Upload all to extraction storage in one batch
       const res = await fetch("/api/admin/extraction/upload", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1323,11 +1327,11 @@ function BulkUploadModal({
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Upload failed");
 
-      // Mark all as ok
       const allOk: Record<string, "ok"> = {};
       for (const item of itemsToUpload) allOk[item.id] = "ok";
       setResults(allOk);
       setProgress(itemsToUpload.length);
+      setUploadStatus(`✓ Successfully uploaded ${data.uploaded} figure(s) to "${sessionName}"`);
     } catch (err) {
       const allErr: Record<string, "error"> = {};
       const allErrMsgs: Record<string, string> = {};
@@ -1339,6 +1343,7 @@ function BulkUploadModal({
       setResults(allErr);
       setErrors(allErrMsgs);
       setProgress(itemsToUpload.length);
+      setUploadStatus(`✕ Upload failed: ${msg}`);
     }
     setUploading(false);
   };
@@ -1414,18 +1419,25 @@ function BulkUploadModal({
             })}
           </div>
 
-          {/* Progress */}
-          {(uploading || isDone) && (
+          {/* Status message */}
+          {uploadStatus && (
+            <div className={`rounded-lg px-4 py-3 mb-4 text-sm font-medium ${
+              uploadStatus.startsWith("✓")
+                ? "bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400"
+                : uploadStatus.startsWith("✕")
+                  ? "bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400"
+                  : "bg-brand-50 dark:bg-brand-950 border border-brand-200 dark:border-brand-800 text-brand-700 dark:text-brand-400"
+            }`}>
+              {uploading && <Loader2 className="h-4 w-4 animate-spin inline mr-2" />}
+              {uploadStatus}
+            </div>
+          )}
+
+          {/* Progress bar */}
+          {uploading && (
             <div className="mb-4">
-              <div className="flex justify-between text-[10px] text-gray-500 dark:text-gray-400 mb-1">
-                <span>{progress}/{itemsToUpload.length}</span>
-                <span>{doneCount} uploaded{errorCount > 0 ? `, ${errorCount} failed` : ""}</span>
-              </div>
-              <div className="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-1.5">
-                <div
-                  className="bg-brand-500 rounded-full h-1.5 transition-all"
-                  style={{ width: `${(progress / itemsToUpload.length) * 100}%` }}
-                />
+              <div className="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-1.5 overflow-hidden">
+                <div className="bg-brand-500 rounded-full h-1.5 animate-pulse w-full" />
               </div>
             </div>
           )}
