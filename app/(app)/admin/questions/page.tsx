@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { HelpCircle, Plus, CheckCircle, Pencil, Trash2, X, Check, Loader2 } from "lucide-react";
+import { HelpCircle, Plus, CheckCircle, Pencil, Trash2, X, Check, Loader2, Eye, Code2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import MathContent from "@/components/MathContent";
 
 interface Question {
   id: string;
@@ -109,15 +110,32 @@ function EditQuestionRow({
         </div>
       </div>
 
-      {/* Content textarea */}
-      <div>
-        <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Content (Markdown + LaTeX)</label>
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          rows={6}
-          className="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 font-mono focus:outline-none focus:ring-2 focus:ring-brand-500 resize-y"
-        />
+      {/* Split pane: Preview (left) | Editor (right) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {/* Left: Student preview */}
+        <div>
+          <div className="flex items-center gap-1.5 mb-1">
+            <Eye className="h-3 w-3 text-gray-400 dark:text-gray-500" />
+            <label className="text-xs text-gray-500 dark:text-gray-400">Student Preview</label>
+          </div>
+          <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 min-h-[160px] text-base leading-relaxed overflow-auto">
+            <MathContent content={content} />
+          </div>
+        </div>
+
+        {/* Right: Markdown + LaTeX editor */}
+        <div>
+          <div className="flex items-center gap-1.5 mb-1">
+            <Code2 className="h-3 w-3 text-gray-400 dark:text-gray-500" />
+            <label className="text-xs text-gray-500 dark:text-gray-400">Content (Markdown + LaTeX)</label>
+          </div>
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            rows={6}
+            className="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 font-mono focus:outline-none focus:ring-2 focus:ring-brand-500 resize-y min-h-[160px]"
+          />
+        </div>
       </div>
 
       {/* Actions */}
@@ -127,15 +145,15 @@ function EditQuestionRow({
           disabled={saving}
           className="inline-flex items-center gap-1 rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-brand-700 transition-colors disabled:opacity-60"
         >
-            {saving ? <Loader2 className="h-3 w-3 animate-spin" /> : <Check className="h-3 w-3" />}
-            Save
-          </button>
-          <button
-            onClick={onCancel}
-            className="rounded-lg px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-          >
-            Cancel
-          </button>
+          {saving ? <Loader2 className="h-3 w-3 animate-spin" /> : <Check className="h-3 w-3" />}
+          Save
+        </button>
+        <button
+          onClick={onCancel}
+          className="rounded-lg px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+        >
+          Cancel
+        </button>
       </div>
     </div>
   );
