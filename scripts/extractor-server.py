@@ -74,14 +74,16 @@ def upload_to_supabase(job_dir: Path, job_id: str) -> dict[str, str]:
     url_map: dict[str, str] = {}
 
     for file_path in job_dir.rglob("*"):
-        if file_path.is_dir() or file_path.name.endswith(".pdf"):
+        if file_path.is_dir():
             continue
 
         relative = str(file_path.relative_to(job_dir))
         storage_path = f"jobs/{job_id}/{relative}"
 
         content_type = "image/png"
-        if file_path.suffix == ".csv":
+        if file_path.suffix == ".pdf":
+            content_type = "application/pdf"
+        elif file_path.suffix == ".csv":
             content_type = "text/csv"
         elif file_path.suffix == ".json":
             content_type = "application/json"

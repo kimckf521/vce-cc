@@ -166,8 +166,8 @@ export async function POST(req: NextRequest) {
             const s = await stat(fullPath);
             if (s.isDirectory()) {
               await uploadDir(fullPath, `${storagePrefix}/${entry}`);
-            } else if (!entry.endsWith(".pdf")) {
-              // Skip source PDFs, upload images and CSVs
+            } else {
+              // Upload all files including source PDF (needed for recrop)
               await uploadFile(fullPath, `${storagePrefix}/${entry}`);
             }
           }
