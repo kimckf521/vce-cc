@@ -1466,7 +1466,7 @@ export default function FiguresTestingPage() {
   const [viewMode, setViewMode] = useState<"extract" | "history">("history");
   const [loaded, setLoaded] = useState(false);
 
-  // Extraction state — multi-file queue (up to 10)
+  // Extraction state — multi-file queue (up to 20)
   type QueueItem = {
     file: File;
     status: "pending" | "extracting" | "done" | "error";
@@ -1554,10 +1554,10 @@ export default function FiguresTestingPage() {
   const addFiles = useCallback((files: FileList | File[]) => {
     const pdfs = Array.from(files)
       .filter((f) => f.type === "application/pdf")
-      .slice(0, 10);
+      .slice(0, 20);
     if (pdfs.length === 0) return;
     setQueue((prev) => {
-      const remaining = 10 - prev.length;
+      const remaining = 20 - prev.length;
       if (remaining <= 0) return prev;
       const newItems: QueueItem[] = pdfs.slice(0, remaining).map((file) => ({
         file,
@@ -2170,7 +2170,7 @@ export default function FiguresTestingPage() {
             >
               <Upload className="h-10 w-10 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
               <p className="font-medium text-gray-700 dark:text-gray-300 mb-1">Upload PDF exam papers</p>
-              <p className="text-sm text-gray-400 dark:text-gray-500">Click to select or drag and drop · up to 10 files</p>
+              <p className="text-sm text-gray-400 dark:text-gray-500">Click to select or drag and drop · up to 20 files</p>
               <input
                 ref={fileInputRef}
                 type="file"
@@ -2204,7 +2204,7 @@ export default function FiguresTestingPage() {
                     {queue.length} PDF{queue.length !== 1 ? "s" : ""} selected
                   </p>
                   <div className="flex items-center gap-2">
-                    {!extracting && queue.length < 10 && (
+                    {!extracting && queue.length < 20 && (
                       <button
                         onClick={() => fileInputRef.current?.click()}
                         className="rounded-xl px-3 py-1.5 text-xs font-medium text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950 transition-colors"
