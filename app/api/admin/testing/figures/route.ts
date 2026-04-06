@@ -54,13 +54,33 @@ export async function POST(req: NextRequest) {
     // Ensure artifacts directory exists
     await mkdir(ARTIFACTS_DIR, { recursive: true });
 
-    // Run Python extractor as subprocess
+    // Check if Python is available (won't be on Vercel)
     const scriptPath = join(
       process.cwd(),
       "scripts",
       "figure-extract-cli.py"
     );
 
+    // Quick check for Python availability
+    try {
+      await new Promise<void>((resolve, reject) => {
+        execFile("python3", ["--version"], { timeout: 5000 }, (err) => {
+          if (err) reject(err);
+          else resolve();
+        });
+      });
+    } catch {
+      return NextResponse.json(
+        {
+          error:
+            "PDF extraction requires Python and is only available when running locally. " +
+            "Use your local dev server to extract PDFs — results will be shared with all admins via the database.",
+        },
+        { status: 503 }
+      );
+    }
+
+    // Run Python extractor as subprocess
     const result = await new Promise<string>((resolve, reject) => {
       execFile(
         "python3",
