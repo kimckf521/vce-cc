@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BookOpen, BarChart2, FileText, CheckCircle, Clock, ArrowRight } from "lucide-react";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const features = [
   {
@@ -66,6 +67,7 @@ export default function HomePage() {
             <Link href="/practice" className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Practice</Link>
           </nav>
           <div className="flex items-center gap-3 lg:gap-4">
+            <ThemeToggle compact />
             <Link
               href="/login"
               className="text-sm lg:text-base text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
