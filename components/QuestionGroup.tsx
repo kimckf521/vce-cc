@@ -65,9 +65,9 @@ interface QuestionGroupProps {
 }
 
 const difficultyStyles = {
-  EASY: "bg-green-50 text-green-700",
-  MEDIUM: "bg-yellow-50 text-yellow-700",
-  HARD: "bg-red-50 text-red-700",
+  EASY: "bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-400",
+  MEDIUM: "bg-yellow-50 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-400",
+  HARD: "bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-400",
 };
 const difficultyLabel = { EASY: "Easy", MEDIUM: "Medium", HARD: "Hard" };
 
@@ -131,25 +131,24 @@ function InteractiveMCQOptions({
         const isSelected = selectedOption === letter;
         const isCorrect = correctAnswer === letter;
 
-        let wrapperStyle = "border-gray-100 bg-gray-50 hover:border-brand-200 hover:bg-brand-50";
-        let badgeStyle = "border-gray-300 text-gray-500";
+        let wrapperStyle = "border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 hover:border-brand-200 dark:hover:border-brand-700 hover:bg-brand-50 dark:hover:bg-brand-950";
+        let badgeStyle = "border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400";
         let icon: React.ReactNode = null;
 
         if (showFeedback) {
           if (isCorrect) {
-            wrapperStyle = "border-green-200 bg-green-50";
+            wrapperStyle = "border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950";
             badgeStyle = "border-green-500 bg-green-500 text-white";
-            if (isSelected) icon = <CheckCircle className="h-5 w-5 text-green-600 shrink-0 mt-0.5" />;
+            if (isSelected) icon = <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 shrink-0 mt-0.5" />;
           } else if (isSelected) {
-            wrapperStyle = "border-red-200 bg-red-50";
+            wrapperStyle = "border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950";
             badgeStyle = "border-red-400 bg-red-400 text-white";
-            icon = <XCircle className="h-5 w-5 text-red-500 shrink-0 mt-0.5" />;
+            icon = <XCircle className="h-5 w-5 text-red-500 dark:text-red-400 shrink-0 mt-0.5" />;
           } else {
-            wrapperStyle = "border-gray-100 bg-gray-50 opacity-50";
+            wrapperStyle = "border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 opacity-50";
           }
         } else if (examMode && isSelected) {
-          // Exam mode: just highlight selected option in brand color
-          wrapperStyle = "border-brand-300 bg-brand-50";
+          wrapperStyle = "border-brand-300 dark:border-brand-700 bg-brand-50 dark:bg-brand-950";
           badgeStyle = "border-brand-500 bg-brand-500 text-white";
         }
 
@@ -328,7 +327,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
       ref={cardRef}
       tabIndex={0}
       onKeyDown={handleKeyDown}
-      className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden focus:outline-none focus:ring-2 focus:ring-brand-300"
+      className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm overflow-hidden focus:outline-none focus:ring-2 focus:ring-brand-300 dark:focus:ring-brand-700"
     >
       {/* Card header */}
       <div className="flex items-start justify-between gap-4 px-5 pt-5 pb-3 lg:px-7 lg:pt-6 lg:pb-4">
@@ -336,13 +335,13 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
           {/* Row 1: "Question N — M marks" · difficulty · frequency */}
           <div className="flex flex-wrap items-center gap-2 mb-2">
             {questionIndex !== undefined ? (
-              <span className="text-lg lg:text-xl font-bold text-gray-900">
+              <span className="text-lg lg:text-xl font-bold text-gray-900 dark:text-gray-100">
                 Question {questionIndex}
-                <span className="text-gray-400 font-normal mx-1.5">—</span>
+                <span className="text-gray-400 dark:text-gray-500 font-normal mx-1.5">—</span>
                 {totalMarks} {totalMarks === 1 ? "mark" : "marks"}
               </span>
             ) : (
-              <span className="text-lg lg:text-xl font-bold text-gray-900">
+              <span className="text-lg lg:text-xl font-bold text-gray-900 dark:text-gray-100">
                 {totalMarks} {totalMarks === 1 ? "mark" : "marks"}
               </span>
             )}
@@ -350,24 +349,24 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
               {difficultyLabel[overallDifficulty]}
             </span>
             {frequency && (
-              <span className="flex items-center gap-1 rounded-md border border-gray-200 bg-white px-2 py-0.5 text-xs lg:text-sm font-medium text-gray-500 whitespace-nowrap">
-                <CalendarDays className="h-3 w-3 lg:h-3.5 lg:w-3.5 text-gray-400" />
+              <span className="flex items-center gap-1 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-0.5 text-xs lg:text-sm font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                <CalendarDays className="h-3 w-3 lg:h-3.5 lg:w-3.5 text-gray-400 dark:text-gray-500" />
                 {FREQ_LABEL[frequency]}
               </span>
             )}
           </div>
           {/* Row 2: Topic · subtopics · calculator */}
           <div className="flex flex-wrap gap-2 items-center">
-            <span className="rounded-full bg-brand-50 text-brand-700 px-3 py-1 text-sm lg:text-base font-medium">{topic}</span>
+            <span className="rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-400 px-3 py-1 text-sm lg:text-base font-medium">{topic}</span>
             {subtopics?.map((s) => (
-              <span key={s} className="rounded-full bg-gray-100 text-gray-600 px-3 py-1 text-sm lg:text-base font-medium">{s}</span>
+              <span key={s} className="rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-3 py-1 text-sm lg:text-base font-medium">{s}</span>
             ))}
             {calculatorAllowed !== undefined && (
               <span className={cn(
                 "rounded-full px-3 py-1 text-sm lg:text-base font-medium",
                 calculatorAllowed
-                  ? "bg-blue-50 text-blue-700"
-                  : "bg-orange-50 text-orange-700"
+                  ? "bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-400"
+                  : "bg-orange-50 dark:bg-orange-950 text-orange-700 dark:text-orange-400"
               )}>
                 {calculatorAllowed ? "Calculator" : "Non-calculator"}
               </span>
@@ -378,7 +377,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
         <div className="flex items-center gap-0.5 shrink-0 mt-1">
           {/* BookOpen — hover tooltip shows reference */}
           <div className="group relative cursor-default p-1 lg:p-1.5">
-            <BookOpen className="h-4 w-4 lg:h-5 lg:w-5 text-gray-400 group-hover:text-gray-600 transition-colors" />
+            <BookOpen className="h-4 w-4 lg:h-5 lg:w-5 text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors" />
             <div className="pointer-events-none absolute top-full right-0 mt-1.5 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
               <div className="rounded-lg bg-gray-900 text-white text-xs lg:text-sm px-3 py-1.5 shadow-lg whitespace-nowrap font-mono">
                 {referenceTag}
@@ -390,15 +389,15 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
           {!hasParts && !examMode && (
             <>
               <button onClick={() => toggleStatus(parts[0].id, "CORRECT")} title="Mark correct"
-                className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[parts[0].id] === "CORRECT" ? "bg-green-100 text-green-600" : "text-gray-400 hover:text-green-500")}>
+                className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[parts[0].id] === "CORRECT" ? "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400" : "text-gray-400 dark:text-gray-500 hover:text-green-500")}>
                 <CheckCircle className="h-4 w-4 lg:h-5 lg:w-5" />
               </button>
               <button onClick={() => toggleStatus(parts[0].id, "INCORRECT")} title="Mark incorrect"
-                className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[parts[0].id] === "INCORRECT" ? "bg-red-100 text-red-600" : "text-gray-400 hover:text-red-500")}>
+                className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[parts[0].id] === "INCORRECT" ? "bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400" : "text-gray-400 dark:text-gray-500 hover:text-red-500")}>
                 <XCircle className="h-4 w-4 lg:h-5 lg:w-5" />
               </button>
               <button onClick={() => toggleStatus(parts[0].id, "NEEDS_REVIEW")} title="Needs review"
-                className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[parts[0].id] === "NEEDS_REVIEW" ? "bg-yellow-100 text-yellow-600" : "text-gray-400 hover:text-yellow-500")}>
+                className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[parts[0].id] === "NEEDS_REVIEW" ? "bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400" : "text-gray-400 dark:text-gray-500 hover:text-yellow-500")}>
                 <BookmarkIcon className="h-4 w-4 lg:h-5 lg:w-5" />
               </button>
             </>
@@ -422,22 +421,22 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
               <div className="flex items-center justify-between mb-1">
                 <div className="flex items-center gap-2">
                   {p.part && (
-                    <span className="text-base lg:text-lg font-bold text-gray-800">({p.part.toLowerCase()})</span>
+                    <span className="text-base lg:text-lg font-bold text-gray-800 dark:text-gray-200">({p.part.toLowerCase()})</span>
                   )}
-                  <span className="text-sm lg:text-base text-gray-400">{p.marks} {p.marks === 1 ? "mark" : "marks"}</span>
+                  <span className="text-sm lg:text-base text-gray-400 dark:text-gray-500">{p.marks} {p.marks === 1 ? "mark" : "marks"}</span>
                 </div>
                 {!examMode && (
                 <div className="flex items-center gap-0.5">
                   <button onClick={() => toggleStatus(p.id, "CORRECT")} title="Mark correct"
-                    className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[p.id] === "CORRECT" ? "bg-green-100 text-green-600" : "text-gray-400 hover:text-green-500")}>
+                    className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[p.id] === "CORRECT" ? "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400" : "text-gray-400 dark:text-gray-500 hover:text-green-500")}>
                     <CheckCircle className="h-4 w-4 lg:h-5 lg:w-5" />
                   </button>
                   <button onClick={() => toggleStatus(p.id, "INCORRECT")} title="Mark incorrect"
-                    className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[p.id] === "INCORRECT" ? "bg-red-100 text-red-600" : "text-gray-400 hover:text-red-500")}>
+                    className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[p.id] === "INCORRECT" ? "bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400" : "text-gray-400 dark:text-gray-500 hover:text-red-500")}>
                     <XCircle className="h-4 w-4 lg:h-5 lg:w-5" />
                   </button>
                   <button onClick={() => toggleStatus(p.id, "NEEDS_REVIEW")} title="Needs review"
-                    className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[p.id] === "NEEDS_REVIEW" ? "bg-yellow-100 text-yellow-600" : "text-gray-400 hover:text-yellow-500")}>
+                    className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[p.id] === "NEEDS_REVIEW" ? "bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400" : "text-gray-400 dark:text-gray-500 hover:text-yellow-500")}>
                     <BookmarkIcon className="h-4 w-4 lg:h-5 lg:w-5" />
                   </button>
                 </div>
@@ -467,7 +466,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
                     {!examMode && mcqSelections[p.id] !== undefined && mcqSelections[p.id] !== null && (
                       <button
                         onClick={() => setMcqSelections((prev) => ({ ...prev, [p.id]: null }))}
-                        className="mt-2 text-sm text-gray-400 hover:text-gray-600 underline underline-offset-2"
+                        className="mt-2 text-sm text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 underline underline-offset-2"
                       >
                         Try again
                       </button>
@@ -479,7 +478,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
             })()}
 
             {i < renderedParts.length - 1 && (
-              <div className="mt-4 border-t border-dashed border-gray-100" />
+              <div className="mt-4 border-t border-dashed border-gray-100 dark:border-gray-800" />
             )}
           </div>
         ))}
@@ -487,15 +486,15 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
 
       {/* Save error message */}
       {saveError && (
-        <div className="mx-5 lg:mx-7 mb-3 rounded-lg bg-red-50 border border-red-200 px-4 py-2.5 text-sm text-red-700 flex items-center justify-between gap-3">
+        <div className="mx-5 lg:mx-7 mb-3 rounded-lg bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 px-4 py-2.5 text-sm text-red-700 dark:text-red-400 flex items-center justify-between gap-3">
           <span>{saveError}</span>
-          <button onClick={() => setSaveError(null)} className="text-red-400 hover:text-red-600 text-lg leading-none">×</button>
+          <button onClick={() => setSaveError(null)} className="text-red-400 hover:text-red-600 dark:hover:text-red-300 text-lg leading-none">×</button>
         </div>
       )}
 
       {/* Single solution button at the bottom */}
       {hasSolution && showSolutionButton && (
-        <div className="px-5 lg:px-7 pb-5 lg:pb-6 pt-1 border-t border-gray-50">
+        <div className="px-5 lg:px-7 pb-5 lg:pb-6 pt-1 border-t border-gray-50 dark:border-gray-800">
           <button
             onClick={() => setShowSolution(true)}
             className="rounded-xl px-6 lg:px-8 py-2.5 lg:py-3 text-base lg:text-lg font-semibold bg-brand-600 text-white hover:bg-brand-700 transition-colors"

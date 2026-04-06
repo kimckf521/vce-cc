@@ -49,17 +49,17 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
       {/* Back link */}
       <Link
         href="/practice"
-        className="inline-flex items-center gap-1.5 text-sm lg:text-base font-medium text-brand-600 hover:text-brand-700 transition-colors"
+        className="inline-flex items-center gap-1.5 text-sm lg:text-base font-medium text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors"
       >
         ← Practice
       </Link>
 
       {/* Heading */}
-      <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">{title}</h1>
+      <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">{title}</h1>
 
       {/* Mode selection */}
       <div className="space-y-3 lg:space-y-4">
-        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 uppercase tracking-widest">Mode</h2>
+        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Mode</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">
           {/* Exam Version card */}
           <button
@@ -68,12 +68,12 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
             className={cn(
               "rounded-xl border-2 p-4 lg:p-5 text-left transition-all",
               version === "exam"
-                ? "border-brand-500 bg-brand-50"
-                : "border-gray-200 bg-white hover:border-gray-300"
+                ? "border-brand-500 bg-brand-50 dark:bg-brand-950"
+                : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-gray-300 dark:hover:border-gray-600"
             )}
           >
-            <div className="font-bold text-gray-900 text-base lg:text-lg mb-1">Exam Version</div>
-            <div className="text-xs lg:text-sm text-gray-500">{cfg.examDescription}</div>
+            <div className="font-bold text-gray-900 dark:text-gray-100 text-base lg:text-lg mb-1">Exam Version</div>
+            <div className="text-xs lg:text-sm text-gray-500 dark:text-gray-400">{cfg.examDescription}</div>
           </button>
 
           {/* Freedom Version card */}
@@ -83,36 +83,36 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
             className={cn(
               "rounded-xl border-2 p-4 lg:p-5 text-left transition-all",
               version === "freedom"
-                ? "border-brand-500 bg-brand-50"
-                : "border-gray-200 bg-white hover:border-gray-300"
+                ? "border-brand-500 bg-brand-50 dark:bg-brand-950"
+                : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-gray-300 dark:hover:border-gray-600"
             )}
           >
-            <div className="font-bold text-gray-900 text-base lg:text-lg mb-1">Freedom Version</div>
-            <div className="text-xs lg:text-sm text-gray-500">Choose your own question count.</div>
+            <div className="font-bold text-gray-900 dark:text-gray-100 text-base lg:text-lg mb-1">Freedom Version</div>
+            <div className="text-xs lg:text-sm text-gray-500 dark:text-gray-400">Choose your own question count.</div>
           </button>
         </div>
 
         {/* Freedom count picker */}
         {version === "freedom" && (
-          <div className="flex items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 lg:p-5">
-            <span className="text-sm lg:text-base font-medium text-gray-700">Question count</span>
+          <div className="flex items-center gap-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4 lg:p-5">
+            <span className="text-sm lg:text-base font-medium text-gray-700 dark:text-gray-300">Question count</span>
             <div className="flex items-center gap-2 ml-auto">
               <button
                 type="button"
                 onClick={() => adjustCount(-1)}
                 disabled={count <= cfg.freedomMin}
-                className="flex items-center justify-center rounded-lg border border-gray-200 bg-gray-50 p-1.5 lg:p-2 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="flex items-center justify-center rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-1.5 lg:p-2 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
-                <Minus className="h-4 w-4 lg:h-5 lg:w-5 text-gray-600" />
+                <Minus className="h-4 w-4 lg:h-5 lg:w-5 text-gray-600 dark:text-gray-400" />
               </button>
-              <span className="w-14 text-center text-xl lg:text-2xl font-bold text-brand-600 tabular-nums">{count}</span>
+              <span className="w-14 text-center text-xl lg:text-2xl font-bold text-brand-600 dark:text-brand-400 tabular-nums">{count}</span>
               <button
                 type="button"
                 onClick={() => adjustCount(1)}
                 disabled={count >= cfg.freedomMax}
-                className="flex items-center justify-center rounded-lg border border-gray-200 bg-gray-50 p-1.5 lg:p-2 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="flex items-center justify-center rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-1.5 lg:p-2 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
-                <Plus className="h-4 w-4 lg:h-5 lg:w-5 text-gray-600" />
+                <Plus className="h-4 w-4 lg:h-5 lg:w-5 text-gray-600 dark:text-gray-400" />
               </button>
             </div>
           </div>
@@ -121,7 +121,7 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
 
       {/* Topic distribution */}
       <div className="space-y-3 lg:space-y-4">
-        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 uppercase tracking-widest">Topic Distribution</h2>
+        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Topic Distribution</h2>
         <TopicDistributionControl
           topics={topics}
           distribution={distribution}
@@ -131,7 +131,7 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
 
       {/* Difficulty distribution */}
       <div className="space-y-3 lg:space-y-4">
-        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 uppercase tracking-widest">Difficulty Distribution</h2>
+        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Difficulty Distribution</h2>
         <DifficultyDistributionControl
           distribution={diffDist}
           onChange={setDiffDist}
@@ -139,17 +139,17 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
       </div>
 
       {/* Show solutions toggle */}
-      <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-5 lg:px-6 py-4 lg:py-5">
+      <div className="flex items-center justify-between rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-5 lg:px-6 py-4 lg:py-5">
         <div>
-          <p className="text-sm lg:text-base font-semibold text-gray-800">Show solutions as I go</p>
-          <p className="text-xs lg:text-sm text-gray-500 mt-0.5">Display a solution button on each question</p>
+          <p className="text-sm lg:text-base font-semibold text-gray-800 dark:text-gray-200">Show solutions as I go</p>
+          <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 mt-0.5">Display a solution button on each question</p>
         </div>
         <button
           type="button"
           onClick={() => setShowSolutions((v) => !v)}
           className={cn(
             "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200",
-            showSolutions ? "bg-brand-600" : "bg-gray-200"
+            showSolutions ? "bg-brand-600" : "bg-gray-200 dark:bg-gray-700"
           )}
         >
           <span className={cn(
@@ -160,17 +160,17 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
       </div>
 
       {/* Focus on weak areas toggle */}
-      <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-5 lg:px-6 py-4 lg:py-5">
+      <div className="flex items-center justify-between rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-5 lg:px-6 py-4 lg:py-5">
         <div>
-          <p className="text-sm lg:text-base font-semibold text-gray-800">Focus on weak areas</p>
-          <p className="text-xs lg:text-sm text-gray-500 mt-0.5">Prioritize questions you got wrong or marked for review</p>
+          <p className="text-sm lg:text-base font-semibold text-gray-800 dark:text-gray-200">Focus on weak areas</p>
+          <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 mt-0.5">Prioritize questions you got wrong or marked for review</p>
         </div>
         <button
           type="button"
           onClick={() => setFocusWeakAreas((v) => !v)}
           className={cn(
             "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200",
-            focusWeakAreas ? "bg-brand-600" : "bg-gray-200"
+            focusWeakAreas ? "bg-brand-600" : "bg-gray-200 dark:bg-gray-700"
           )}
         >
           <span className={cn(
@@ -182,10 +182,10 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
 
       {/* Timer toggle — only for exam version */}
       {version === "exam" && (
-        <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-5 lg:px-6 py-4 lg:py-5">
+        <div className="flex items-center justify-between rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-5 lg:px-6 py-4 lg:py-5">
           <div>
-            <p className="text-sm lg:text-base font-semibold text-gray-800">Exam timer</p>
-            <p className="text-xs lg:text-sm text-gray-500 mt-0.5">
+            <p className="text-sm lg:text-base font-semibold text-gray-800 dark:text-gray-200">Exam timer</p>
+            <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
               {cfg.timerDescription}
             </p>
           </div>
@@ -194,7 +194,7 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
             onClick={() => setTimerEnabled((v) => !v)}
             className={cn(
               "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200",
-              timerEnabled ? "bg-brand-600" : "bg-gray-200"
+              timerEnabled ? "bg-brand-600" : "bg-gray-200 dark:bg-gray-700"
             )}
           >
             <span className={cn(
@@ -207,7 +207,7 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
 
       {/* Error message */}
       {!isValid && (
-        <p className="text-sm lg:text-base font-medium text-red-600">
+        <p className="text-sm lg:text-base font-medium text-red-600 dark:text-red-400">
           {topicTotal !== 100 && "Topic percentages"}
           {topicTotal !== 100 && diffTotal !== 100 && " and "}
           {diffTotal !== 100 && "difficulty percentages"}

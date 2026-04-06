@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { BookOpen, BarChart2, FileText, LogOut, LayoutDashboard, UserCircle, ShieldCheck, Search, History } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const navLinks = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -28,10 +29,10 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
   }
 
   return (
-    <aside className="fixed inset-y-0 left-0 w-72 bg-white border-r border-gray-100 hidden lg:flex flex-col">
+    <aside className="fixed inset-y-0 left-0 w-72 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 hidden lg:flex flex-col">
       {/* Logo */}
-      <div className="h-20 flex items-center px-8 border-b border-gray-100">
-        <Link href="/" className="flex items-center gap-2.5 font-bold text-xl text-brand-700">
+      <div className="h-20 flex items-center px-8 border-b border-gray-100 dark:border-gray-800">
+        <Link href="/" className="flex items-center gap-2.5 font-bold text-xl text-brand-700 dark:text-brand-400">
           <BookOpen className="h-6 w-6" />
           VCE Methods
         </Link>
@@ -46,8 +47,8 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
             className={cn(
               "flex items-center gap-3 rounded-xl px-4 py-3 text-base font-medium transition-colors",
               pathname === href || pathname.startsWith(href + "/")
-                ? "bg-brand-50 text-brand-700"
-                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                ? "bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-400"
+                : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
             )}
           >
             <Icon className="h-5 w-5 flex-shrink-0" />
@@ -58,14 +59,14 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
         {/* Admin link — only for admins */}
         {isAdmin && (
           <>
-            <div className="my-2 border-t border-gray-100" />
+            <div className="my-2 border-t border-gray-100 dark:border-gray-800" />
             <Link
               href="/admin"
               className={cn(
                 "flex items-center gap-3 rounded-xl px-4 py-3 text-base font-medium transition-colors",
                 pathname === "/admin" || pathname.startsWith("/admin/")
-                  ? "bg-violet-50 text-violet-700"
-                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  ? "bg-violet-50 dark:bg-violet-950 text-violet-700 dark:text-violet-400"
+                  : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
               )}
             >
               <ShieldCheck className="h-5 w-5 flex-shrink-0" />
@@ -75,11 +76,14 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
         )}
       </nav>
 
-      {/* Sign out */}
-      <div className="px-4 pb-5 border-t border-gray-100 pt-4">
+      {/* Theme toggle + Sign out */}
+      <div className="px-4 pb-5 border-t border-gray-100 dark:border-gray-800 pt-4 space-y-3">
+        <div className="px-2">
+          <ThemeToggle compact />
+        </div>
         <button
           onClick={handleSignOut}
-          className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+          className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-base font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
         >
           <LogOut className="h-5 w-5" />
           Sign out

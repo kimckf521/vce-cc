@@ -58,7 +58,7 @@ export default function EditDisplayName({ initialName }: Props) {
   if (editing) {
     return (
       <div className="flex-1">
-        <p className="text-xs lg:text-sm font-semibold text-gray-400 uppercase tracking-wide mb-1.5">
+        <p className="text-xs lg:text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1.5">
           Display name
         </p>
         <div className="flex items-center gap-2">
@@ -67,7 +67,7 @@ export default function EditDisplayName({ initialName }: Props) {
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter") save(); if (e.key === "Escape") cancel(); }}
-            className="flex-1 rounded-xl border border-brand-300 px-3 py-2 text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-brand-500 transition"
+            className="flex-1 rounded-xl border border-brand-300 dark:border-brand-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-3 py-2 text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-brand-500 transition"
           />
           <button
             onClick={save}
@@ -79,13 +79,13 @@ export default function EditDisplayName({ initialName }: Props) {
           </button>
           <button
             onClick={cancel}
-            className="p-2 rounded-xl bg-gray-100 text-gray-600 hover:bg-gray-200 transition"
+            className="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
             title="Cancel"
           >
             <X className="h-4 w-4 lg:h-5 lg:w-5" />
           </button>
         </div>
-        {error && <p className="mt-1.5 text-xs lg:text-sm text-red-600">{error}</p>}
+        {error && <p className="mt-1.5 text-xs lg:text-sm text-red-600 dark:text-red-400">{error}</p>}
       </div>
     );
   }
@@ -93,14 +93,14 @@ export default function EditDisplayName({ initialName }: Props) {
   return (
     <div className="flex items-center justify-between w-full">
       <div>
-        <p className="text-xs lg:text-sm font-semibold text-gray-400 uppercase tracking-wide mb-0.5">
+        <p className="text-xs lg:text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-0.5">
           Display name
         </p>
-        <p className="text-sm lg:text-base font-medium text-gray-900">{name}</p>
+        <p className="text-sm lg:text-base font-medium text-gray-900 dark:text-gray-100">{name}</p>
       </div>
       <button
         onClick={startEdit}
-        className="flex items-center gap-1.5 text-xs lg:text-sm text-brand-600 hover:text-brand-700 font-medium transition px-3 py-1.5 rounded-lg hover:bg-brand-50"
+        className="flex items-center gap-1.5 text-xs lg:text-sm text-brand-600 hover:text-brand-700 font-medium transition px-3 py-1.5 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-950"
       >
         <Pencil className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
         Edit

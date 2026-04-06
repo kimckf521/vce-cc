@@ -101,7 +101,7 @@ async function fetchAllGrouped(
 ): Promise<Map<string, Record<"EASY" | "MEDIUM" | "HARD", QuestionGroupData[]>>> {
   const rows = (await prisma.question.findMany({
     where: {
-      exam: { examType: examTypeFilter },
+      exam: { examType: examTypeFilter, year: { not: 9999 } },
       ...(partCondition === "null_only" ? { part: null } : {}),
       ...(partCondition === "not_null" ? { part: { not: null } } : {}),
     },
@@ -200,7 +200,7 @@ export default async function SessionPage({ searchParams }: PageProps) {
 
   if (!mode) {
     return (
-      <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-red-700">
+      <div className="rounded-2xl border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950 p-6 text-red-700 dark:text-red-400">
         <p className="font-semibold">Missing mode parameter.</p>
         <Link href="/practice" className="mt-2 inline-block text-sm underline">
           ← Back to Practice
@@ -288,14 +288,14 @@ export default async function SessionPage({ searchParams }: PageProps) {
 
         {/* Header */}
         <div>
-          <Link href={backHref} className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-700 transition-colors mb-4">
+          <Link href={backHref} className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-400 transition-colors mb-4">
             ← Back to Setup
           </Link>
-          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">
             {modeLabel}
-            <span className="ml-2 text-lg lg:text-xl font-normal text-gray-400">— {versionLabel}</span>
+            <span className="ml-2 text-lg lg:text-xl font-normal text-gray-400 dark:text-gray-500">— {versionLabel}</span>
           </h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             {totalQuestions} questions · CAS Calculator allowed
           </p>
         </div>
@@ -315,7 +315,7 @@ export default async function SessionPage({ searchParams }: PageProps) {
           <>
             {/* Section A */}
             <div className="space-y-5 lg:space-y-6">
-              <h2 className="text-lg lg:text-xl font-bold text-gray-800 border-b border-gray-200 pb-2 lg:pb-3">
+              <h2 className="text-lg lg:text-xl font-bold text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700 pb-2 lg:pb-3">
                 Section A — Multiple Choice ({shuffledA.length} questions)
               </h2>
               <div className="space-y-4 lg:space-y-5">
@@ -338,7 +338,7 @@ export default async function SessionPage({ searchParams }: PageProps) {
 
             {/* Section B */}
             <div className="space-y-5 lg:space-y-6">
-              <h2 className="text-lg lg:text-xl font-bold text-gray-800 border-b border-gray-200 pb-2 lg:pb-3">
+              <h2 className="text-lg lg:text-xl font-bold text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700 pb-2 lg:pb-3">
                 Section B — Extended Response ({shuffledB.length} questions)
               </h2>
               <div className="space-y-4 lg:space-y-5">
@@ -409,14 +409,14 @@ export default async function SessionPage({ searchParams }: PageProps) {
 
       {/* Header */}
       <div>
-        <Link href={backHref} className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-700 transition-colors mb-4">
+        <Link href={backHref} className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-400 transition-colors mb-4">
           ← Back to Setup
         </Link>
-        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">
           {modeLabel}
-          <span className="ml-2 text-lg lg:text-xl font-normal text-gray-400">— {versionLabel}</span>
+          <span className="ml-2 text-lg lg:text-xl font-normal text-gray-400 dark:text-gray-500">— {versionLabel}</span>
         </h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           {finalGroups.length} questions · {calcInfo}
         </p>
       </div>

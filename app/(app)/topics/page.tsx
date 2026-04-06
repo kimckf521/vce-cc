@@ -62,10 +62,10 @@ function getSubtopicIcon(name: string): LucideIcon {
 
 // Topic colour themes
 const topicThemes: Record<number, { bg: string; iconBg: string; iconColor: string; accent: string; freqColor: string }> = {
-  1: { bg: "from-violet-50 to-white", iconBg: "bg-violet-100", iconColor: "text-violet-600", accent: "text-violet-700", freqColor: "bg-violet-100 text-violet-700" },
-  2: { bg: "from-sky-50 to-white", iconBg: "bg-sky-100", iconColor: "text-sky-600", accent: "text-sky-700", freqColor: "bg-sky-100 text-sky-700" },
-  3: { bg: "from-amber-50 to-white", iconBg: "bg-amber-100", iconColor: "text-amber-600", accent: "text-amber-700", freqColor: "bg-amber-100 text-amber-700" },
-  4: { bg: "from-emerald-50 to-white", iconBg: "bg-emerald-100", iconColor: "text-emerald-600", accent: "text-emerald-700", freqColor: "bg-emerald-100 text-emerald-700" },
+  1: { bg: "from-violet-50 to-white dark:from-violet-950 dark:to-gray-900", iconBg: "bg-violet-100 dark:bg-violet-900", iconColor: "text-violet-600 dark:text-violet-400", accent: "text-violet-700 dark:text-violet-400", freqColor: "bg-violet-100 dark:bg-violet-900 text-violet-700 dark:text-violet-400" },
+  2: { bg: "from-sky-50 to-white dark:from-sky-950 dark:to-gray-900", iconBg: "bg-sky-100 dark:bg-sky-900", iconColor: "text-sky-600 dark:text-sky-400", accent: "text-sky-700 dark:text-sky-400", freqColor: "bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-400" },
+  3: { bg: "from-amber-50 to-white dark:from-amber-950 dark:to-gray-900", iconBg: "bg-amber-100 dark:bg-amber-900", iconColor: "text-amber-600 dark:text-amber-400", accent: "text-amber-700 dark:text-amber-400", freqColor: "bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-400" },
+  4: { bg: "from-emerald-50 to-white dark:from-emerald-950 dark:to-gray-900", iconBg: "bg-emerald-100 dark:bg-emerald-900", iconColor: "text-emerald-600 dark:text-emerald-400", accent: "text-emerald-700 dark:text-emerald-400", freqColor: "bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-400" },
 };
 
 const SUBTOPIC_DESCRIPTIONS: Record<string, string> = {
@@ -196,8 +196,8 @@ export default async function TopicsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Topics</h1>
-      <p className="text-gray-500 lg:text-base mb-8">
+      <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Topics</h1>
+      <p className="text-gray-500 dark:text-gray-400 lg:text-base mb-8">
         Browse past exam questions organised by VCE Mathematical Methods syllabus topic.
       </p>
 
@@ -207,27 +207,27 @@ export default async function TopicsPage() {
           const topicTotal = topicStatsMap.get(topic.id) ?? 0;
 
           return (
-            <div key={topic.id} className="rounded-2xl bg-white border border-gray-100 shadow-sm overflow-hidden">
+            <div key={topic.id} className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
               {/* Topic header */}
               <Link
                 href={`/topics/${topic.slug}`}
                 className={`flex items-center justify-between px-6 py-5 lg:px-8 lg:py-6 bg-gradient-to-r ${theme.bg} hover:brightness-[0.98] transition-all`}
               >
                 <div className="flex-1 min-w-0 pr-4">
-                  <h2 className="font-bold text-gray-900 text-lg lg:text-xl">{topic.name}</h2>
+                  <h2 className="font-bold text-gray-900 dark:text-gray-100 text-lg lg:text-xl">{topic.name}</h2>
                   {topic.description && (
-                    <p className="text-sm lg:text-base text-gray-500 mt-1">{topic.description}</p>
+                    <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mt-1">{topic.description}</p>
                   )}
                   <p className={`text-sm lg:text-base font-semibold mt-1.5 ${theme.accent}`}>
                     {topicTotal} questions
                   </p>
                 </div>
-                <ChevronRight className="h-5 w-5 lg:h-6 lg:w-6 text-gray-300 shrink-0" />
+                <ChevronRight className="h-5 w-5 lg:h-6 lg:w-6 text-gray-300 dark:text-gray-600 shrink-0" />
               </Link>
 
               {/* Subtopic card grid — more columns on wider screens */}
               {topic.subtopics.length > 0 && (
-                <div className="p-3 sm:p-4 lg:p-6 border-t border-gray-100 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3 lg:gap-4">
+                <div className="p-3 sm:p-4 lg:p-6 border-t border-gray-100 dark:border-gray-800 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3 lg:gap-4">
                   {topic.subtopics.map((sub) => {
                     const { total, easy, medium, hard } = subStatsMap.get(sub.id) ?? { total: 0, easy: 0, medium: 0, hard: 0 };
                     const yearCount = yearCountMap.get(sub.id) ?? 0;
@@ -238,7 +238,7 @@ export default async function TopicsPage() {
                       <div key={sub.id} className="group relative">
                         <Link
                           href={`/topics/${topic.slug}?subtopic=${sub.slug}`}
-                          className="flex flex-col gap-2.5 sm:gap-3 lg:gap-4 rounded-xl border border-gray-100 bg-gray-50 hover:border-gray-200 hover:bg-white hover:shadow-sm transition-all p-3 sm:p-3.5 lg:p-5 h-full"
+                          className="flex flex-col gap-2.5 sm:gap-3 lg:gap-4 rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800 hover:border-gray-200 dark:hover:border-gray-700 hover:bg-white dark:hover:bg-gray-900 hover:shadow-sm transition-all p-3 sm:p-3.5 lg:p-5 h-full"
                         >
                           {/* Top row: icon + freq badge */}
                           <div className="flex items-start justify-between gap-1.5">
@@ -247,15 +247,15 @@ export default async function TopicsPage() {
                             </span>
                             {/* Frequency badge: dots-only on mobile, full label on sm+ */}
                             <span
-                              className="flex items-center gap-0.5 sm:gap-1 rounded-md border border-gray-200 bg-white px-1 sm:px-1.5 py-0.5 text-xs font-medium text-gray-500 shrink-0"
+                              className="flex items-center gap-0.5 sm:gap-1 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-1 sm:px-1.5 py-0.5 text-xs font-medium text-gray-500 dark:text-gray-400 shrink-0"
                             >
-                              <CalendarDays className="h-3 w-3 text-gray-400 shrink-0" />
+                              <CalendarDays className="h-3 w-3 text-gray-400 dark:text-gray-500 shrink-0" />
                               <span className="hidden sm:inline lg:hidden xl:inline">{freq}</span>
                               <span className="flex gap-0.5 sm:ml-0.5">
                                 {[1, 2, 3].map((d) => (
                                   <span
                                     key={d}
-                                    className={`h-1.5 w-1.5 rounded-full shrink-0 ${d <= dots ? "bg-gray-500" : "bg-gray-200"}`}
+                                    className={`h-1.5 w-1.5 rounded-full shrink-0 ${d <= dots ? "bg-gray-500 dark:bg-gray-400" : "bg-gray-200 dark:bg-gray-700"}`}
                                   />
                                 ))}
                               </span>
@@ -264,8 +264,8 @@ export default async function TopicsPage() {
 
                           {/* Name + count */}
                           <div>
-                            <p className="text-xs sm:text-sm lg:text-base font-semibold text-gray-800 leading-snug">{sub.name}</p>
-                            <p className="text-xs lg:text-sm text-gray-400 mt-0.5">{total} question{total !== 1 ? "s" : ""}</p>
+                            <p className="text-xs sm:text-sm lg:text-base font-semibold text-gray-800 dark:text-gray-200 leading-snug">{sub.name}</p>
+                            <p className="text-xs lg:text-sm text-gray-400 dark:text-gray-500 mt-0.5">{total} question{total !== 1 ? "s" : ""}</p>
                           </div>
 
                           {/* Difficulty bar */}
@@ -297,7 +297,7 @@ export default async function TopicsPage() {
                         <div className="pointer-events-none absolute bottom-full left-0 mb-2 z-10 opacity-0 lg:group-hover:opacity-100 transition-opacity duration-150 w-60 lg:w-72">
                           <div className="rounded-lg bg-gray-900 text-white text-xs lg:text-sm px-3 py-2.5 shadow-lg">
                             <p className="font-semibold mb-1">{sub.name}</p>
-                            <p className="text-gray-300 leading-relaxed">{getSubtopicDescription(sub.name)}</p>
+                            <p className="text-gray-300 dark:text-gray-400 leading-relaxed">{getSubtopicDescription(sub.name)}</p>
                             <div className="absolute top-full left-6 border-4 border-transparent border-t-gray-900" />
                           </div>
                         </div>

@@ -77,13 +77,13 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
     <div>
       <Link
         href="/topics"
-        className="inline-flex items-center gap-1 text-sm lg:text-base text-gray-500 hover:text-brand-600 mb-6 transition-colors"
+        className="inline-flex items-center gap-1 text-sm lg:text-base text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 mb-6 transition-colors"
       >
         <ChevronLeft className="h-4 w-4 lg:h-5 lg:w-5" /> All topics
       </Link>
 
-      <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-1">{topic.name}</h1>
-      <p className="text-gray-500 lg:text-base mb-8">{totalCount} questions</p>
+      <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">{topic.name}</h1>
+      <p className="text-gray-500 dark:text-gray-400 lg:text-base mb-8">{totalCount} questions</p>
 
       {/* Horizontal filter bar */}
       <Suspense>

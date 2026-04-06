@@ -144,10 +144,10 @@ export default function PracticeTimer({
       {/* Banner notification */}
       {banner && (
         <div className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none animate-in slide-in-from-top duration-300">
-          <div className="pointer-events-auto mt-4 mx-4 flex items-center gap-3 rounded-xl bg-gray-900 text-white px-5 py-3 shadow-2xl max-w-lg">
-            <AlertTriangle className="h-5 w-5 text-yellow-400 shrink-0" />
+          <div className="pointer-events-auto mt-4 mx-4 flex items-center gap-3 rounded-xl bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-5 py-3 shadow-2xl max-w-lg">
+            <AlertTriangle className="h-5 w-5 text-yellow-400 dark:text-yellow-600 shrink-0" />
             <span className="text-sm lg:text-base font-medium">{banner}</span>
-            <button onClick={() => setBanner(null)} className="ml-2 text-gray-400 hover:text-white">
+            <button onClick={() => setBanner(null)} className="ml-2 text-gray-400 dark:text-gray-500 hover:text-white dark:hover:text-gray-900">
               <X className="h-4 w-4" />
             </button>
           </div>
@@ -162,12 +162,12 @@ export default function PracticeTimer({
           "fixed z-40 flex items-center gap-1.5 rounded-2xl shadow-lg border px-3 py-2 transition-colors select-none",
           dragging && "shadow-2xl scale-105 cursor-grabbing",
           isFinished
-            ? "bg-red-50 border-red-200"
+            ? "bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800"
             : isLow
-            ? "bg-yellow-50 border-yellow-200"
+            ? "bg-yellow-50 dark:bg-yellow-950 border-yellow-200 dark:border-yellow-800"
             : phase === "reading"
-            ? "bg-blue-50 border-blue-200"
-            : "bg-white border-gray-200"
+            ? "bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800"
+            : "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700"
         )}
       >
         {/* Drag handle */}
@@ -181,24 +181,24 @@ export default function PracticeTimer({
           )}
           title="Drag to move"
         >
-          <GripVertical className="h-4 w-4 text-gray-300" />
+          <GripVertical className="h-4 w-4 text-gray-300 dark:text-gray-500" />
         </div>
 
         <Clock className={cn(
           "h-4 w-4 lg:h-5 lg:w-5 shrink-0",
-          isFinished ? "text-red-500" : isLow ? "text-yellow-600" : phase === "reading" ? "text-blue-500" : "text-gray-500"
+          isFinished ? "text-red-500 dark:text-red-400" : isLow ? "text-yellow-600 dark:text-yellow-400" : phase === "reading" ? "text-blue-500 dark:text-blue-400" : "text-gray-500 dark:text-gray-400"
         )} />
 
         <div className="flex flex-col leading-tight">
           <span className={cn(
             "text-[10px] lg:text-xs font-semibold uppercase tracking-wider",
-            isFinished ? "text-red-500" : isLow ? "text-yellow-600" : phase === "reading" ? "text-blue-600" : "text-gray-400"
+            isFinished ? "text-red-500 dark:text-red-400" : isLow ? "text-yellow-600 dark:text-yellow-400" : phase === "reading" ? "text-blue-600 dark:text-blue-400" : "text-gray-400 dark:text-gray-500"
           )}>
             {phaseLabel}
           </span>
           <span className={cn(
             "text-lg lg:text-xl font-bold tabular-nums",
-            isFinished ? "text-red-600" : isLow ? "text-yellow-700" : phase === "reading" ? "text-blue-700" : "text-gray-900"
+            isFinished ? "text-red-600 dark:text-red-400" : isLow ? "text-yellow-700 dark:text-yellow-400" : phase === "reading" ? "text-blue-700 dark:text-blue-400" : "text-gray-900 dark:text-gray-100"
           )}>
             {formatTime(remaining)}
           </span>
@@ -211,10 +211,10 @@ export default function PracticeTimer({
             className={cn(
               "rounded-lg p-1.5 transition-colors",
               locked
-                ? "text-gray-200 cursor-not-allowed"
+                ? "text-gray-200 dark:text-gray-700 cursor-not-allowed"
                 : running
-                ? "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
-                : "text-brand-500 hover:text-brand-700 hover:bg-brand-50"
+                ? "text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                : "text-brand-500 hover:text-brand-700 dark:hover:text-brand-300 hover:bg-brand-50 dark:hover:bg-brand-950"
             )}
             title={locked ? "Unlock timer to pause" : running ? "Pause timer" : "Resume timer"}
             disabled={locked}
@@ -230,8 +230,8 @@ export default function PracticeTimer({
             className={cn(
               "rounded-lg p-1.5 transition-colors",
               locked
-                ? "text-gray-200 cursor-not-allowed"
-                : "text-gray-400 hover:text-orange-600 hover:bg-orange-50"
+                ? "text-gray-200 dark:text-gray-700 cursor-not-allowed"
+                : "text-gray-400 dark:text-gray-500 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950"
             )}
             title={locked ? "Unlock timer to skip" : phase === "reading" ? "Skip to writing time" : "Finish now"}
             disabled={locked}
@@ -247,8 +247,8 @@ export default function PracticeTimer({
             className={cn(
               "rounded-lg p-1.5 transition-colors",
               locked
-                ? "text-amber-500 hover:text-amber-700 hover:bg-amber-50"
-                : "text-gray-300 hover:text-gray-500 hover:bg-gray-100"
+                ? "text-amber-500 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-950"
+                : "text-gray-300 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
             )}
             title={locked ? "Unlock timer controls" : "Lock timer controls"}
           >
@@ -261,7 +261,7 @@ export default function PracticeTimer({
           onClick={() => !locked && setShowDismissConfirm(true)}
           className={cn(
             "transition-colors",
-            locked ? "text-gray-200 cursor-not-allowed" : "text-gray-300 hover:text-gray-500"
+            locked ? "text-gray-200 dark:text-gray-700 cursor-not-allowed" : "text-gray-300 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-300"
           )}
           title={locked ? "Unlock timer to dismiss" : "Dismiss timer"}
           disabled={locked}
@@ -273,20 +273,20 @@ export default function PracticeTimer({
       {/* Dismiss confirmation dialog */}
       {showDismissConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 animate-in fade-in duration-150">
-          <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-6 max-w-sm mx-4 space-y-4 animate-in zoom-in-95 duration-200">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 p-6 max-w-sm mx-4 space-y-4 animate-in zoom-in-95 duration-200">
             <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center h-10 w-10 rounded-full bg-yellow-100">
-                <AlertTriangle className="h-5 w-5 text-yellow-600" />
+              <div className="flex items-center justify-center h-10 w-10 rounded-full bg-yellow-100 dark:bg-yellow-900">
+                <AlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
               </div>
-              <h3 className="text-lg font-bold text-gray-900">Close Timer?</h3>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Close Timer?</h3>
             </div>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               Are you sure you want to close the timer? You won&apos;t be able to bring it back.
             </p>
             <div className="flex gap-3 pt-1">
               <button
                 onClick={() => setShowDismissConfirm(false)}
-                className="flex-1 rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
+                className="flex-1 rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
               >
                 Keep Timer
               </button>

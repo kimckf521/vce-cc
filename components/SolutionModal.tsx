@@ -25,7 +25,7 @@ function SolutionVisual({ imageUrl }: { imageUrl?: string | null }) {
     const cfg = JSON.parse(imageUrl.slice(5));
     return <CartesianGrid {...cfg} />;
   }
-  return <img src={imageUrl} alt="Solution diagram" className="my-4 max-w-full rounded-lg border border-gray-100" />;
+  return <img src={imageUrl} alt="Solution diagram" className="my-4 max-w-full rounded-lg border border-gray-100 dark:border-gray-800" />;
 }
 
 // Parse MCQ solution content into answer letter + explanation
@@ -46,16 +46,16 @@ interface SolutionModalProps {
 function SolutionSkeleton() {
   return (
     <div className="animate-pulse space-y-4 px-6 py-5">
-      <div className="h-4 bg-gray-200 rounded w-1/4" />
+      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4" />
       <div className="space-y-2">
-        <div className="h-3 bg-gray-200 rounded w-full" />
-        <div className="h-3 bg-gray-200 rounded w-5/6" />
-        <div className="h-3 bg-gray-200 rounded w-3/4" />
+        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full" />
+        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-5/6" />
+        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-3/4" />
       </div>
-      <div className="h-8 bg-gray-100 rounded w-1/2 mt-4" />
+      <div className="h-8 bg-gray-100 dark:bg-gray-800 rounded w-1/2 mt-4" />
       <div className="space-y-2">
-        <div className="h-3 bg-gray-200 rounded w-full" />
-        <div className="h-3 bg-gray-200 rounded w-4/6" />
+        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full" />
+        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-4/6" />
       </div>
     </div>
   );
@@ -84,15 +84,15 @@ export default function SolutionModal({ questionLabel, solutions, onClose, isAdm
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="relative w-full max-w-2xl max-h-[85vh] flex flex-col bg-white rounded-2xl shadow-xl overflow-hidden">
+      <div className="relative w-full max-w-2xl max-h-[85vh] flex flex-col bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-          <h2 className="text-sm font-semibold text-gray-900">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-gray-800">
+          <h2 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
             Worked Solution — {questionLabel}
           </h2>
           <button
             onClick={onClose}
-            className="rounded-lg p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+            className="rounded-lg p-1.5 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -108,7 +108,7 @@ export default function SolutionModal({ questionLabel, solutions, onClose, isAdm
             <div key={i}>
               {/* Part label if multi-part */}
               {isMultiPart && s.part && (
-                <p className="text-xs font-bold uppercase tracking-wide text-brand-600 mb-2">
+                <p className="text-xs font-bold uppercase tracking-wide text-brand-600 dark:text-brand-400 mb-2">
                   Part {s.part.toUpperCase()}
                 </p>
               )}
@@ -117,11 +117,11 @@ export default function SolutionModal({ questionLabel, solutions, onClose, isAdm
               {isMCQ ? (
                 <>
                   <div className="mb-4 flex items-center gap-3">
-                    <div className="flex items-center gap-2 rounded-xl bg-green-50 border border-green-200 px-4 py-2.5">
+                    <div className="flex items-center gap-2 rounded-xl bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 px-4 py-2.5">
                       <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white text-base font-bold">
                         {mcq.answer}
                       </span>
-                      <span className="text-base font-semibold text-green-700">Correct answer</span>
+                      <span className="text-base font-semibold text-green-700 dark:text-green-400">Correct answer</span>
                     </div>
                   </div>
                   {mcq.explanation && <MathContent content={mcq.explanation} />}
@@ -137,7 +137,7 @@ export default function SolutionModal({ questionLabel, solutions, onClose, isAdm
                   href={s.videoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-3 inline-flex items-center gap-1.5 text-brand-600 font-medium hover:underline text-sm"
+                  className="mt-3 inline-flex items-center gap-1.5 text-brand-600 dark:text-brand-400 font-medium hover:underline text-sm"
                 >
                   Watch video solution →
                 </a>
@@ -156,7 +156,7 @@ export default function SolutionModal({ questionLabel, solutions, onClose, isAdm
 
               {/* Divider between parts */}
               {isMultiPart && i < solutions.length - 1 && (
-                <div className="mt-6 border-t border-dashed border-gray-200" />
+                <div className="mt-6 border-t border-dashed border-gray-200 dark:border-gray-700" />
               )}
             </div>
           );
@@ -164,10 +164,10 @@ export default function SolutionModal({ questionLabel, solutions, onClose, isAdm
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-3 border-t border-gray-100 flex justify-end">
+        <div className="px-6 py-3 border-t border-gray-100 dark:border-gray-800 flex justify-end">
           <button
             onClick={onClose}
-            className="rounded-lg px-4 py-2 text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
+            className="rounded-lg px-4 py-2 text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
           >
             Close
           </button>

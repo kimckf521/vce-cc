@@ -187,30 +187,30 @@ export default function ExamModeWrapper({
 
       {/* Results banner — shown after submit */}
       {submitted && (
-        <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
+        <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm overflow-hidden">
           <div className={cn(
             "px-6 py-6 lg:px-8 lg:py-8",
             showScore
-              ? percentage >= 80 ? "bg-green-50" : percentage >= 50 ? "bg-yellow-50" : "bg-red-50"
-              : "bg-blue-50"
+              ? percentage >= 80 ? "bg-green-50 dark:bg-green-950" : percentage >= 50 ? "bg-yellow-50 dark:bg-yellow-950" : "bg-red-50 dark:bg-red-950"
+              : "bg-blue-50 dark:bg-blue-950"
           )}>
             <div className="flex items-center gap-3 mb-4">
               <Trophy className={cn(
                 "h-7 w-7 lg:h-8 lg:w-8",
                 showScore
-                  ? percentage >= 80 ? "text-green-600" : percentage >= 50 ? "text-yellow-600" : "text-red-500"
-                  : "text-blue-600"
+                  ? percentage >= 80 ? "text-green-600 dark:text-green-400" : percentage >= 50 ? "text-yellow-600 dark:text-yellow-400" : "text-red-500 dark:text-red-400"
+                  : "text-blue-600 dark:text-blue-400"
               )} />
-              <h2 className="text-xl lg:text-2xl font-bold text-gray-900">Exam Results</h2>
+              <h2 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100">Exam Results</h2>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6">
               {/* Score */}
               <div className="rounded-xl bg-white/80 border border-white p-4 lg:p-5">
-                <p className="text-sm lg:text-base text-gray-500 mb-1">Score</p>
-                <p className="text-3xl lg:text-4xl font-bold text-gray-900">
+                <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-1">Score</p>
+                <p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100">
                   {showScore ? (
-                    <>{correctCount}<span className="text-lg lg:text-xl text-gray-400">/{totalQuestions}</span></>
+                    <>{correctCount}<span className="text-lg lg:text-xl text-gray-400 dark:text-gray-500">/{totalQuestions}</span></>
                   ) : (
                     "N/A"
                   )}
@@ -219,12 +219,12 @@ export default function ExamModeWrapper({
 
               {/* Percentage */}
               <div className="rounded-xl bg-white/80 border border-white p-4 lg:p-5">
-                <p className="text-sm lg:text-base text-gray-500 mb-1">Percentage</p>
+                <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-1">Percentage</p>
                 <p className={cn(
                   "text-3xl lg:text-4xl font-bold",
                   showScore
-                    ? percentage >= 80 ? "text-green-600" : percentage >= 50 ? "text-yellow-600" : "text-red-600"
-                    : "text-gray-900"
+                    ? percentage >= 80 ? "text-green-600 dark:text-green-400" : percentage >= 50 ? "text-yellow-600 dark:text-yellow-400" : "text-red-600 dark:text-red-400"
+                    : "text-gray-900 dark:text-gray-100"
                 )}>
                   {showScore ? `${percentage}%` : "N/A"}
                 </p>
@@ -232,10 +232,10 @@ export default function ExamModeWrapper({
 
               {/* Time taken */}
               <div className="rounded-xl bg-white/80 border border-white p-4 lg:p-5">
-                <p className="text-sm lg:text-base text-gray-500 mb-1">Time Taken</p>
+                <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-1">Time Taken</p>
                 <div className="flex items-center gap-2">
-                  <Clock className="h-5 w-5 lg:h-6 lg:w-6 text-gray-400" />
-                  <p className="text-2xl lg:text-3xl font-bold text-gray-900">{formatElapsed(finalTime)}</p>
+                  <Clock className="h-5 w-5 lg:h-6 lg:w-6 text-gray-400 dark:text-gray-500" />
+                  <p className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">{formatElapsed(finalTime)}</p>
                 </div>
               </div>
             </div>
@@ -244,17 +244,17 @@ export default function ExamModeWrapper({
             {showScore && (
               <div className="flex items-center gap-6 mt-5 pt-4 border-t border-black/5">
                 <div className="flex items-center gap-1.5">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
-                  <span className="text-sm lg:text-base font-medium text-gray-700">{correctCount} correct</span>
+                  <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
+                  <span className="text-sm lg:text-base font-medium text-gray-700 dark:text-gray-300">{correctCount} correct</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <XCircle className="h-4 w-4 text-red-500" />
-                  <span className="text-sm lg:text-base font-medium text-gray-700">{answeredCount - correctCount} incorrect</span>
+                  <XCircle className="h-4 w-4 text-red-500 dark:text-red-400" />
+                  <span className="text-sm lg:text-base font-medium text-gray-700 dark:text-gray-300">{answeredCount - correctCount} incorrect</span>
                 </div>
                 {answeredCount < totalQuestions && (
                   <div className="flex items-center gap-1.5">
-                    <span className="h-4 w-4 rounded-full border-2 border-gray-300" />
-                    <span className="text-sm lg:text-base font-medium text-gray-700">{totalQuestions - answeredCount} unanswered</span>
+                    <span className="h-4 w-4 rounded-full border-2 border-gray-300 dark:border-gray-600" />
+                    <span className="text-sm lg:text-base font-medium text-gray-700 dark:text-gray-300">{totalQuestions - answeredCount} unanswered</span>
                   </div>
                 )}
               </div>

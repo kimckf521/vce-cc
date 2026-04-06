@@ -78,13 +78,13 @@ export default async function ExamPage({ params }: PageProps) {
     <div>
       <Link
         href="/exams"
-        className="inline-flex items-center gap-1 text-sm lg:text-base text-gray-500 hover:text-brand-600 mb-6 transition-colors"
+        className="inline-flex items-center gap-1 text-sm lg:text-base text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 mb-6 transition-colors"
       >
         <ChevronLeft className="h-4 w-4 lg:h-5 lg:w-5" /> Past Papers
       </Link>
 
-      <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-1">{title}</h1>
-      <p className="text-gray-500 lg:text-base mb-8">
+      <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">{title}</h1>
+      <p className="text-gray-500 dark:text-gray-400 lg:text-base mb-8">
         {isTwoSection
           ? `Section A: ${sectionA.length} questions · Section B: ${sectionBGroups.length} questions`
           : `${sectionA.length + sectionBGroups.length} questions`}
@@ -95,8 +95,8 @@ export default async function ExamPage({ params }: PageProps) {
         <div className="mb-10 lg:mb-12">
           {isTwoSection && (
             <div className="mb-4 lg:mb-5">
-              <h2 className="text-lg lg:text-xl font-bold text-gray-900">Section A — Multiple Choice</h2>
-              <p className="text-sm lg:text-base text-gray-500">{sectionA.length} questions · 1 mark each</p>
+              <h2 className="text-lg lg:text-xl font-bold text-gray-900 dark:text-gray-100">Section A — Multiple Choice</h2>
+              <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400">{sectionA.length} questions · 1 mark each</p>
             </div>
           )}
           <div className="space-y-4 lg:space-y-5">
@@ -121,13 +121,13 @@ export default async function ExamPage({ params }: PageProps) {
         <div>
           {isTwoSection && (
             <div className="mb-4 lg:mb-5">
-              <h2 className="text-lg lg:text-xl font-bold text-gray-900">Section B — Extended Response</h2>
-              <p className="text-sm lg:text-base text-gray-500">{sectionBGroups.length} questions</p>
+              <h2 className="text-lg lg:text-xl font-bold text-gray-900 dark:text-gray-100">Section B — Extended Response</h2>
+              <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400">{sectionBGroups.length} questions</p>
             </div>
           )}
           <div className="space-y-4 lg:space-y-5">
             {sectionBGroups.length === 0 && (
-              <div className="rounded-2xl border border-dashed border-gray-200 p-12 text-center text-gray-400">
+              <div className="rounded-2xl border border-dashed border-gray-200 dark:border-gray-700 p-12 text-center text-gray-400 dark:text-gray-500">
                 No questions found for this exam.
               </div>
             )}
@@ -149,7 +149,7 @@ export default async function ExamPage({ params }: PageProps) {
 
       {/* Fallback if no sections */}
       {sectionA.length === 0 && sectionBGroups.length === 0 && (
-        <div className="rounded-2xl border border-dashed border-gray-200 p-12 text-center text-gray-400">
+        <div className="rounded-2xl border border-dashed border-gray-200 dark:border-gray-700 p-12 text-center text-gray-400 dark:text-gray-500">
           No questions found for this exam.
         </div>
       )}

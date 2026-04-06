@@ -79,7 +79,7 @@ export default function InfiniteQuestionList({
 
   if (groups.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-gray-200 p-12 text-center text-gray-400">
+      <div className="rounded-2xl border border-dashed border-gray-200 dark:border-gray-700 p-12 text-center text-gray-400 dark:text-gray-500">
         No questions found for this filter.
       </div>
     );

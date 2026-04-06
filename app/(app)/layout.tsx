@@ -16,7 +16,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const isAdmin = dbUser?.role === "ADMIN";
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
       {/* Desktop sidebar */}
       <Navbar isAdmin={isAdmin} />
 
@@ -39,7 +39,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       </main>
 
       {/* Mobile bottom nav */}
-      <BottomNav />
+      <BottomNav isAdmin={isAdmin} />
     </div>
   );
 }

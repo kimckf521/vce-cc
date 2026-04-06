@@ -29,9 +29,9 @@ interface QuestionCardProps {
 }
 
 const difficultyStyles = {
-  EASY: "bg-green-50 text-green-700",
-  MEDIUM: "bg-yellow-50 text-yellow-700",
-  HARD: "bg-red-50 text-red-700",
+  EASY: "bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-400",
+  MEDIUM: "bg-yellow-50 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-400",
+  HARD: "bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-400",
 };
 
 const difficultyLabel = { EASY: "Easy", MEDIUM: "Medium", HARD: "Hard" };
@@ -62,12 +62,12 @@ export default function QuestionCard({
   }
 
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
+    <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm overflow-hidden">
       {/* Header */}
       <div className="flex items-start justify-between gap-4 px-5 pt-5 pb-4">
         <div className="flex-1">
           <div className="flex flex-wrap items-center gap-2 mb-2">
-            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+            <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide">
               {year} · {examType === "EXAM_1" ? "Exam 1" : "Exam 2"} · Q{questionNumber}
               {part ? part.toUpperCase() : ""}
             </span>
@@ -76,15 +76,15 @@ export default function QuestionCard({
             </span>
           </div>
           <div className="flex flex-wrap gap-2">
-            <span className="rounded-full bg-brand-50 text-brand-700 px-2.5 py-0.5 text-xs font-medium">
+            <span className="rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-400 px-2.5 py-0.5 text-xs font-medium">
               {topic}
             </span>
             {subtopic && (
-              <span className="rounded-full bg-gray-100 text-gray-600 px-2.5 py-0.5 text-xs font-medium">
+              <span className="rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-2.5 py-0.5 text-xs font-medium">
                 {subtopic}
               </span>
             )}
-            <span className="rounded-full bg-gray-100 text-gray-600 px-2.5 py-0.5 text-xs font-medium">
+            <span className="rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-2.5 py-0.5 text-xs font-medium">
               {marks} {marks === 1 ? "mark" : "marks"}
             </span>
           </div>
@@ -97,7 +97,7 @@ export default function QuestionCard({
             title="Mark correct"
             className={cn(
               "rounded-lg p-1.5 transition-colors",
-              status === "CORRECT" ? "bg-green-100 text-green-600" : "text-gray-300 hover:text-green-500"
+              status === "CORRECT" ? "bg-green-100 dark:bg-green-950 text-green-600 dark:text-green-400" : "text-gray-300 dark:text-gray-600 hover:text-green-500"
             )}
           >
             <CheckCircle className="h-5 w-5" />
@@ -107,7 +107,7 @@ export default function QuestionCard({
             title="Mark incorrect"
             className={cn(
               "rounded-lg p-1.5 transition-colors",
-              status === "INCORRECT" ? "bg-red-100 text-red-600" : "text-gray-300 hover:text-red-500"
+              status === "INCORRECT" ? "bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400" : "text-gray-300 dark:text-gray-600 hover:text-red-500"
             )}
           >
             <XCircle className="h-5 w-5" />
@@ -117,7 +117,7 @@ export default function QuestionCard({
             title="Needs review"
             className={cn(
               "rounded-lg p-1.5 transition-colors",
-              status === "NEEDS_REVIEW" ? "bg-yellow-100 text-yellow-600" : "text-gray-300 hover:text-yellow-500"
+              status === "NEEDS_REVIEW" ? "bg-yellow-100 dark:bg-yellow-950 text-yellow-600 dark:text-yellow-400" : "text-gray-300 dark:text-gray-600 hover:text-yellow-500"
             )}
           >
             <BookmarkIcon className="h-5 w-5" />

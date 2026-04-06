@@ -52,23 +52,23 @@ const subjects = [
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-900">
       {/* Nav */}
-      <header className="border-b border-gray-100 bg-white sticky top-0 z-50">
+      <header className="border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex h-16 lg:h-20 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 font-bold text-xl lg:text-2xl text-brand-700">
+          <Link href="/" className="flex items-center gap-2 font-bold text-xl lg:text-2xl text-brand-700 dark:text-brand-400">
             <BookOpen className="h-6 w-6 lg:h-7 lg:w-7" />
             VCE Methods
           </Link>
-          <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm lg:text-base text-gray-600">
-            <Link href="/topics" className="hover:text-brand-600 transition-colors">Topics</Link>
-            <Link href="/exams" className="hover:text-brand-600 transition-colors">Past Papers</Link>
-            <Link href="/practice" className="hover:text-brand-600 transition-colors">Practice</Link>
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm lg:text-base text-gray-600 dark:text-gray-400">
+            <Link href="/topics" className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Topics</Link>
+            <Link href="/exams" className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Past Papers</Link>
+            <Link href="/practice" className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Practice</Link>
           </nav>
           <div className="flex items-center gap-3 lg:gap-4">
             <Link
               href="/login"
-              className="text-sm lg:text-base text-gray-600 hover:text-brand-600 transition-colors"
+              className="text-sm lg:text-base text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
             >
               Log in
             </Link>
@@ -83,15 +83,15 @@ export default function HomePage() {
       </header>
 
       {/* Hero */}
-      <section className="py-24 lg:py-36 xl:py-44 px-5 sm:px-8 lg:px-12 text-center bg-gradient-to-b from-brand-50 to-white">
+      <section className="py-24 lg:py-36 xl:py-44 px-5 sm:px-8 lg:px-12 text-center bg-gradient-to-b from-brand-50 to-white dark:from-gray-950 dark:to-gray-900">
         <div className="max-w-4xl mx-auto">
-          <span className="inline-block rounded-full bg-brand-100 px-4 py-1.5 text-sm lg:text-base font-medium text-brand-700 mb-6 lg:mb-8">
+          <span className="inline-block rounded-full bg-brand-100 dark:bg-brand-900 px-4 py-1.5 text-sm lg:text-base font-medium text-brand-700 dark:text-brand-400 mb-6 lg:mb-8">
             VCE Mathematical Methods
           </span>
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tight text-gray-900 leading-tight">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100 leading-tight">
             Ace your Methods exam
           </h1>
-          <p className="mt-6 lg:mt-8 text-xl lg:text-2xl text-gray-500 leading-relaxed max-w-2xl mx-auto">
+          <p className="mt-6 lg:mt-8 text-xl lg:text-2xl text-gray-500 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto">
             Practice with real VCAA past exam questions, organised by topic. See worked solutions,
             track your progress, and build exam confidence.
           </p>
@@ -104,7 +104,7 @@ export default function HomePage() {
             </Link>
             <Link
               href="/topics"
-              className="rounded-2xl border border-gray-200 bg-white px-8 lg:px-10 py-4 lg:py-5 text-base lg:text-lg font-semibold text-gray-700 shadow-sm hover:border-brand-300 transition-colors"
+              className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-8 lg:px-10 py-4 lg:py-5 text-base lg:text-lg font-semibold text-gray-700 dark:text-gray-300 shadow-sm hover:border-brand-300 transition-colors"
             >
               Browse topics
             </Link>
@@ -115,10 +115,10 @@ export default function HomePage() {
       {/* Subjects */}
       <section className="py-16 lg:py-24 px-5 sm:px-8 lg:px-12">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3 lg:mb-4 text-center">
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3 lg:mb-4 text-center">
             VCE Subjects
           </h2>
-          <p className="text-base lg:text-lg text-gray-500 text-center mb-10 lg:mb-14 max-w-2xl mx-auto">
+          <p className="text-base lg:text-lg text-gray-500 dark:text-gray-400 text-center mb-10 lg:mb-14 max-w-2xl mx-auto">
             We&apos;re building comprehensive revision tools for every VCE subject. Start with Mathematical Methods today.
           </p>
 
@@ -128,22 +128,22 @@ export default function HomePage() {
                 key={subject.name}
                 className={`rounded-2xl border p-6 lg:p-8 transition-all ${
                   subject.status === "available"
-                    ? "border-brand-200 bg-white shadow-sm"
-                    : "border-gray-100 bg-gray-50"
+                    ? "border-brand-200 bg-white dark:bg-gray-900 shadow-sm"
+                    : "border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800"
                 }`}
               >
                 <div className="flex items-start justify-between mb-4">
                   <h3 className={`text-xl lg:text-2xl font-bold ${
-                    subject.status === "available" ? "text-gray-900" : "text-gray-400"
+                    subject.status === "available" ? "text-gray-900 dark:text-gray-100" : "text-gray-400 dark:text-gray-500"
                   }`}>
                     {subject.name}
                   </h3>
                   {subject.status === "available" ? (
-                    <span className="inline-flex items-center rounded-full bg-green-50 px-3 py-1 text-xs font-semibold text-green-700 border border-green-200">
+                    <span className="inline-flex items-center rounded-full bg-green-50 dark:bg-green-950 px-3 py-1 text-xs font-semibold text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800">
                       Available now
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 border border-amber-200">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 dark:bg-amber-950 px-3 py-1 text-xs font-semibold text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800">
                       <Clock className="h-3 w-3" />
                       Coming soon
                     </span>
@@ -151,7 +151,7 @@ export default function HomePage() {
                 </div>
 
                 <p className={`text-sm lg:text-base leading-relaxed mb-5 ${
-                  subject.status === "available" ? "text-gray-500" : "text-gray-400"
+                  subject.status === "available" ? "text-gray-500 dark:text-gray-400" : "text-gray-400 dark:text-gray-500"
                 }`}>
                   {subject.description}
                 </p>
@@ -163,9 +163,9 @@ export default function HomePage() {
                         <Link
                           key={topic.slug}
                           href={`/topics/${topic.slug}`}
-                          className="group rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 hover:border-brand-300 hover:bg-brand-50 transition-all"
+                          className="group rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800 px-4 py-3 hover:border-brand-300 hover:bg-brand-50 dark:hover:bg-brand-950 transition-all"
                         >
-                          <span className="text-sm font-medium text-gray-700 group-hover:text-brand-600 transition-colors">
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
                             {topic.name}
                           </span>
                         </Link>
@@ -173,7 +173,7 @@ export default function HomePage() {
                     </div>
                     <Link
                       href={subject.href}
-                      className="inline-flex items-center gap-1.5 text-sm lg:text-base font-semibold text-brand-600 hover:text-brand-700 transition-colors"
+                      className="inline-flex items-center gap-1.5 text-sm lg:text-base font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors"
                     >
                       Start practising
                       <ArrowRight className="h-4 w-4" />
@@ -182,7 +182,7 @@ export default function HomePage() {
                 )}
 
                 {subject.status === "coming-soon" && (
-                  <p className="text-sm text-gray-400 italic">
+                  <p className="text-sm text-gray-400 dark:text-gray-500 italic">
                     We&apos;re working on this — stay tuned for updates.
                   </p>
                 )}
@@ -193,20 +193,20 @@ export default function HomePage() {
       </section>
 
       {/* Features */}
-      <section className="py-16 lg:py-24 px-5 sm:px-8 lg:px-12 bg-gray-50">
+      <section className="py-16 lg:py-24 px-5 sm:px-8 lg:px-12 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-12 lg:mb-16 text-center">
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-12 lg:mb-16 text-center">
             Everything you need to prepare
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-10">
             {features.map((f) => (
               <div key={f.title} className="flex gap-5 lg:gap-6">
-                <div className="flex-shrink-0 rounded-2xl bg-brand-100 p-3.5 lg:p-4 h-fit">
-                  <f.icon className="h-6 w-6 lg:h-7 lg:w-7 text-brand-600" />
+                <div className="flex-shrink-0 rounded-2xl bg-brand-100 dark:bg-brand-900 p-3.5 lg:p-4 h-fit">
+                  <f.icon className="h-6 w-6 lg:h-7 lg:w-7 text-brand-600 dark:text-brand-400" />
                 </div>
                 <div>
-                  <h3 className="font-semibold lg:text-lg text-gray-900">{f.title}</h3>
-                  <p className="mt-1.5 text-sm lg:text-base text-gray-500 leading-relaxed">{f.description}</p>
+                  <h3 className="font-semibold lg:text-lg text-gray-900 dark:text-gray-100">{f.title}</h3>
+                  <p className="mt-1.5 text-sm lg:text-base text-gray-500 dark:text-gray-400 leading-relaxed">{f.description}</p>
                 </div>
               </div>
             ))}
@@ -217,8 +217,8 @@ export default function HomePage() {
       {/* CTA */}
       <section className="py-24 lg:py-36 px-5 sm:px-8 text-center">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900">Ready to start?</h2>
-          <p className="mt-4 lg:mt-6 text-base lg:text-xl text-gray-500">
+          <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 dark:text-gray-100">Ready to start?</h2>
+          <p className="mt-4 lg:mt-6 text-base lg:text-xl text-gray-500 dark:text-gray-400">
             Create a free account and start practising VCE past exam questions today. More subjects are on the way.
           </p>
           <Link
@@ -231,7 +231,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gray-100 py-8 lg:py-10 text-center text-sm lg:text-base text-gray-400">
+      <footer className="border-t border-gray-100 dark:border-gray-800 py-8 lg:py-10 text-center text-sm lg:text-base text-gray-400 dark:text-gray-500">
         <p>VCE Revision Hub — not affiliated with VCAA</p>
       </footer>
     </div>
