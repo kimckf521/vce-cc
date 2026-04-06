@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
+import { isAdminRole } from "@/lib/utils";
 import { fetchQuestionGroupsPaginated, type SubtopicInfo, type TopicQuestionFilters } from "@/lib/question-groups";
 import InfiniteQuestionList from "@/components/InfiniteQuestionList";
 import TopicFilters from "@/components/TopicFilters";
@@ -71,7 +72,7 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
       : null,
     fetchQuestionGroupsPaginated(topic.id, subtopicInfos, filters, user?.id, 0, INITIAL_BATCH),
   ]);
-  const isAdmin = dbUser?.role === "ADMIN";
+  const isAdmin = isAdminRole(dbUser?.role);
 
   return (
     <div>

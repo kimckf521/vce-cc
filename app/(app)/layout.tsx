@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
+import { isAdminRole } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import TopBar from "@/components/TopBar";
 import BottomNav from "@/components/BottomNav";
@@ -13,7 +14,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   // Admin check runs after auth — fast single-field lookup
   const dbUser = await prisma.user.findUnique({ where: { id: user.id }, select: { role: true } });
-  const isAdmin = dbUser?.role === "ADMIN";
+  const isAdmin = isAdminRole(dbUser?.role);
 
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">

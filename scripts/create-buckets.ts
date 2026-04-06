@@ -6,7 +6,7 @@ const supabase = createClient(
 );
 
 async function main() {
-  const buckets = ["exams", "solutions"];
+  const buckets = ["exams", "solutions", "extraction"];
   for (const name of buckets) {
     const { error } = await supabase.storage.createBucket(name, { public: true });
     if (error && error.message !== "The resource already exists") {

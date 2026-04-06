@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { rateLimit } from "@/lib/rate-limit";
+import { isAdminRole } from "@/lib/utils";
 
 const updateSolutionSchema = z.object({
   questionId: z.string().min(1),
@@ -20,7 +21,7 @@ export async function PUT(req: NextRequest) {
   if (limited) return limited;
 
   const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-  if (dbUser?.role !== "ADMIN") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!isAdminRole(dbUser?.role)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const body = await req.json();
   const parsed = updateSolutionSchema.safeParse(body);

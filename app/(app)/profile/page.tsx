@@ -1,9 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { CheckCircle, XCircle, BookmarkIcon, TrendingUp } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, roleLabel } from "@/lib/utils";
 import EditDisplayName from "@/components/EditDisplayName";
 import ThemeToggle from "@/components/ThemeToggle";
+import ChangePassword from "@/components/ChangePassword";
 
 // ── topic brand colours (matching topics page) ────────────────────────────────
 
@@ -86,7 +87,7 @@ export default async function ProfilePage() {
     ? new Date(user.created_at).toLocaleDateString("en-AU", { month: "long", year: "numeric" })
     : null;
 
-  const role = dbUser?.role === "ADMIN" ? "Admin" : "Student";
+  const role = roleLabel(dbUser?.role);
 
   const statCards = [
     { label: "Correct",        value: correct,        icon: CheckCircle,  iconBg: "bg-green-50 dark:bg-green-950",  iconColor: "text-green-600 dark:text-green-400"  },
@@ -223,6 +224,11 @@ export default async function ProfilePage() {
               <p className="text-xs lg:text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-0.5">Role</p>
               <p className="text-sm lg:text-base font-medium text-gray-900 dark:text-gray-100">{role}</p>
             </div>
+          </div>
+
+          {/* Password row */}
+          <div className="px-5 lg:px-7 py-4 lg:py-5">
+            <ChangePassword />
           </div>
 
           {/* Theme row */}

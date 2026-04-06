@@ -1,8 +1,9 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
+import { isAdminRole } from "@/lib/utils";
 import Link from "next/link";
-import { FileText, BookOpen, HelpCircle, Users, FlaskConical } from "lucide-react";
+import { FileText, BookOpen, HelpCircle, Users, FlaskConical, ImageIcon } from "lucide-react";
 
 export default async function AdminPage() {
   const supabase = await createClient();
@@ -10,7 +11,7 @@ export default async function AdminPage() {
   if (!user) redirect("/login");
 
   const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-  if (dbUser?.role !== "ADMIN") redirect("/dashboard");
+  if (!isAdminRole(dbUser?.role)) redirect("/dashboard");
 
   const [examCount, questionCount, userCount, solutionCount] = await Promise.all([
     prisma.exam.count(),
@@ -76,6 +77,16 @@ export default async function AdminPage() {
         >
           <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">Seed topics</h3>
           <p className="text-sm text-gray-500 dark:text-gray-400">Populate the database with VCE Methods syllabus topics.</p>
+        </Link>
+        <Link
+          href="/admin/extraction"
+          className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm p-5 hover:border-brand-300 dark:hover:border-brand-700 transition-all"
+        >
+          <div className="flex items-center gap-2 mb-1">
+            <ImageIcon className="h-4 w-4 text-brand-500 dark:text-brand-400" />
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100">Extraction Storage</h3>
+          </div>
+          <p className="text-sm text-gray-500 dark:text-gray-400">View and manage uploaded extraction images.</p>
         </Link>
         <Link
           href="/admin/testing"

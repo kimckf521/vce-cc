@@ -132,6 +132,7 @@ enum Difficulty {
 enum Role {
   STUDENT
   ADMIN
+  SUPER_ADMIN
 }
 
 enum AttemptStatus {

@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { createQuestionSchema } from "@/lib/validations";
 import { rateLimit } from "@/lib/rate-limit";
+import { isAdminRole } from "@/lib/utils";
 
 export async function GET() {
   const supabase = await createClient();
@@ -10,7 +11,7 @@ export async function GET() {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-  if (dbUser?.role !== "ADMIN") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!isAdminRole(dbUser?.role)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const questions = await prisma.question.findMany({
     orderBy: [{ exam: { year: "desc" } }, { exam: { examType: "asc" } }, { questionNumber: "asc" }, { part: "asc" }],
@@ -33,7 +34,7 @@ export async function POST(req: NextRequest) {
   if (limited) return limited;
 
   const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-  if (dbUser?.role !== "ADMIN") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!isAdminRole(dbUser?.role)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const body = await req.json();
   const parsed = createQuestionSchema.safeParse(body);
@@ -80,7 +81,7 @@ export async function PATCH(req: NextRequest) {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-  if (dbUser?.role !== "ADMIN") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!isAdminRole(dbUser?.role)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const body = await req.json();
   const { id, questionNumber, part, marks, content, difficulty, imageUrl } = body;
@@ -107,7 +108,7 @@ export async function DELETE(req: NextRequest) {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-  if (dbUser?.role !== "ADMIN") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!isAdminRole(dbUser?.role)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
