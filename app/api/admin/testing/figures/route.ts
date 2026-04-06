@@ -3,13 +3,15 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { rateLimit } from "@/lib/rate-limit";
 import { isAdminRole } from "@/lib/utils";
+import { createClient as createSupabaseAdmin } from "@supabase/supabase-js";
 import { execFile } from "child_process";
-import { writeFile, mkdir } from "fs/promises";
+import { writeFile, mkdir, readFile, readdir, stat } from "fs/promises";
 import { join } from "path";
 import { tmpdir } from "os";
 import { randomUUID } from "crypto";
 
 const ARTIFACTS_DIR = join(process.cwd(), ".figure-artifacts");
+const BUCKET = "extraction";
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
@@ -28,6 +30,9 @@ export async function POST(req: NextRequest) {
   const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
   if (!isAdminRole(dbUser?.role))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   try {
     const formData = await req.formData();
@@ -61,8 +66,8 @@ export async function POST(req: NextRequest) {
         "python3",
         [scriptPath, "--file", tempPdf, "--artifacts-dir", ARTIFACTS_DIR],
         {
-          maxBuffer: 50 * 1024 * 1024, // 50MB for large outputs
-          timeout: 120_000, // 2 minute timeout
+          maxBuffer: 50 * 1024 * 1024,
+          timeout: 120_000,
           env: {
             ...process.env,
             PATH: `/opt/homebrew/bin:${process.env.PATH}`,
@@ -85,24 +90,95 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: data.error }, { status: 500 });
     }
 
-    // Rewrite artifact URLs to use our API route
-    const rewrite = (url: string | null) => {
-      if (!url) return null;
-      // Original: /artifacts/{jobId}/pages/page-001.png
-      // Rewrite to: /api/admin/testing/figures/artifacts/{jobId}/pages/page-001.png
-      return url.replace(
-        /^\/artifacts\//,
-        "/api/admin/testing/figures/artifacts/"
-      );
-    };
+    // Upload artifacts to Supabase Storage if configured
+    const useSupabase = supabaseUrl && serviceRoleKey;
+    let adminClient: ReturnType<typeof createSupabaseAdmin> | null = null;
 
-    for (const page of data.pages || []) {
-      page.imageUrl = rewrite(page.imageUrl);
-    }
-    for (const item of data.items || []) {
-      item.imageUrl = rewrite(item.imageUrl);
-      item.downloadUrl = rewrite(item.downloadUrl);
-      if (item.tableUrl) item.tableUrl = rewrite(item.tableUrl);
+    if (useSupabase) {
+      adminClient = createSupabaseAdmin(supabaseUrl, serviceRoleKey);
+      // Ensure bucket exists
+      await adminClient.storage.createBucket(BUCKET, { public: true }).catch(() => {});
+
+      const jobId = data.jobId as string;
+      const jobDir = join(ARTIFACTS_DIR, jobId);
+
+      // Upload all files in the job directory recursively
+      const uploadFile = async (filePath: string, storagePath: string) => {
+        try {
+          const fileData = await readFile(filePath);
+          const ext = filePath.substring(filePath.lastIndexOf(".")).toLowerCase();
+          const contentType =
+            ext === ".png" ? "image/png" :
+            ext === ".csv" ? "text/csv" :
+            ext === ".json" ? "application/json" :
+            "application/octet-stream";
+
+          await adminClient!.storage
+            .from(BUCKET)
+            .upload(storagePath, fileData, { contentType, upsert: true });
+        } catch {
+          // Skip files that fail to upload
+        }
+      };
+
+      const uploadDir = async (dirPath: string, storagePrefix: string) => {
+        try {
+          const entries = await readdir(dirPath);
+          for (const entry of entries) {
+            const fullPath = join(dirPath, entry);
+            const s = await stat(fullPath);
+            if (s.isDirectory()) {
+              await uploadDir(fullPath, `${storagePrefix}/${entry}`);
+            } else if (!entry.endsWith(".pdf")) {
+              // Skip source PDFs, upload images and CSVs
+              await uploadFile(fullPath, `${storagePrefix}/${entry}`);
+            }
+          }
+        } catch {
+          // Skip directories that don't exist
+        }
+      };
+
+      await uploadDir(jobDir, `jobs/${jobId}`);
+
+      // Rewrite URLs to Supabase public URLs
+      const rewriteToSupabase = (url: string | null): string | null => {
+        if (!url) return null;
+        // Original: /artifacts/{jobId}/pages/page-001.png
+        const match = url.match(/^\/artifacts\/(.+)$/);
+        if (!match) return url;
+        const { data: { publicUrl } } = adminClient!.storage
+          .from(BUCKET)
+          .getPublicUrl(`jobs/${match[1]}`);
+        return publicUrl;
+      };
+
+      for (const page of data.pages || []) {
+        page.imageUrl = rewriteToSupabase(page.imageUrl);
+      }
+      for (const item of data.items || []) {
+        item.imageUrl = rewriteToSupabase(item.imageUrl);
+        item.downloadUrl = rewriteToSupabase(item.downloadUrl);
+        if (item.tableUrl) item.tableUrl = rewriteToSupabase(item.tableUrl);
+      }
+    } else {
+      // Fallback: rewrite to local API route (dev only)
+      const rewriteToLocal = (url: string | null) => {
+        if (!url) return null;
+        return url.replace(
+          /^\/artifacts\//,
+          "/api/admin/testing/figures/artifacts/"
+        );
+      };
+
+      for (const page of data.pages || []) {
+        page.imageUrl = rewriteToLocal(page.imageUrl);
+      }
+      for (const item of data.items || []) {
+        item.imageUrl = rewriteToLocal(item.imageUrl);
+        item.downloadUrl = rewriteToLocal(item.downloadUrl);
+        if (item.tableUrl) item.tableUrl = rewriteToLocal(item.tableUrl);
+      }
     }
 
     return NextResponse.json(data);
