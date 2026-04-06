@@ -6,14 +6,16 @@ import { createClient as createSupabaseAdmin } from "@supabase/supabase-js";
 
 const BUCKET = "extraction";
 
+// Extend timeout for bulk uploads
+export const maxDuration = 60;
+
 /**
- * POST — upload extraction images to a named session in the extraction bucket.
+ * POST — upload/copy extraction images to a named session in the extraction bucket.
  *
  * Body: { sessionName, imageUrls: string[], labels: string[] }
  *
- * sessionName: e.g. "2016 Exam 1", "2016 Exam 1 Solution"
- * imageUrls: Supabase public URLs of extracted images (from jobs/ artifacts)
- * labels: corresponding labels for each image (e.g. "Q8", "Q3a")
+ * Images are copied from their current Supabase location (jobs/) to sessions/{slug}/.
+ * If a URL is not in the same bucket, falls back to download + re-upload.
  */
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
@@ -51,7 +53,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Create a slug from the session name
     const slug = sessionName
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
@@ -59,10 +60,12 @@ export async function POST(req: NextRequest) {
 
     const adminClient = createSupabaseAdmin(supabaseUrl, serviceRoleKey);
 
-    // Ensure bucket exists
     await adminClient.storage
       .createBucket(BUCKET, { public: true })
       .catch(() => {});
+
+    // Extract the bucket public URL prefix to detect same-bucket files
+    const bucketPrefix = `${supabaseUrl}/storage/v1/object/public/${BUCKET}/`;
 
     let uploaded = 0;
     let failed = 0;
@@ -71,23 +74,36 @@ export async function POST(req: NextRequest) {
       const imageUrl = imageUrls[i];
       const label = labels?.[i] || `figure-${i + 1}`;
       const safeLabel = label.replace(/[^a-zA-Z0-9_-]/g, "");
+      const destPath = `sessions/${slug}/${safeLabel}.png`;
 
       try {
-        // Download the image from its current Supabase URL
-        const imgRes = await fetch(imageUrl);
-        if (!imgRes.ok) {
-          failed++;
-          continue;
+        if (imageUrl.startsWith(bucketPrefix)) {
+          // Same bucket — use copy (fast, no download needed)
+          const sourcePath = imageUrl.slice(bucketPrefix.length);
+          const { error: copyError } = await adminClient.storage
+            .from(BUCKET)
+            .copy(sourcePath, destPath);
+
+          if (copyError) {
+            // Copy failed (maybe dest exists) — try with upsert via download
+            const imgRes = await fetch(imageUrl);
+            if (!imgRes.ok) { failed++; continue; }
+            const imgBuffer = Buffer.from(await imgRes.arrayBuffer());
+            await adminClient.storage.from(BUCKET).upload(destPath, imgBuffer, {
+              contentType: "image/png",
+              upsert: true,
+            });
+          }
+        } else {
+          // Different source — download and upload
+          const imgRes = await fetch(imageUrl);
+          if (!imgRes.ok) { failed++; continue; }
+          const imgBuffer = Buffer.from(await imgRes.arrayBuffer());
+          await adminClient.storage.from(BUCKET).upload(destPath, imgBuffer, {
+            contentType: "image/png",
+            upsert: true,
+          });
         }
-
-        const imgBuffer = Buffer.from(await imgRes.arrayBuffer());
-        const storagePath = `sessions/${slug}/${safeLabel}.png`;
-
-        await adminClient.storage.from(BUCKET).upload(storagePath, imgBuffer, {
-          contentType: "image/png",
-          upsert: true,
-        });
-
         uploaded++;
       } catch {
         failed++;
@@ -103,7 +119,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error("[extraction-upload] Error:", err);
     return NextResponse.json(
-      { error: "Upload failed" },
+      { error: err instanceof Error ? err.message : "Upload failed" },
       { status: 500 }
     );
   }
