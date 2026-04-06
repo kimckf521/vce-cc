@@ -1280,19 +1280,9 @@ function BulkUploadModal({
   const isSelectedMode = selectedItemIds && selectedItemIds.size > 0;
 
   // Only include items that have parseable labels
-  const uploadableItems = result.items.filter((item) => {
-    if (isSelectedMode && !selectedItemIds.has(item.id)) return false;
-    const p = parseLabel(item.label);
-    return p !== null;
-  });
-
-  // In "all" mode, prefer accepted items; in "selected" mode, use the selection as-is
   const itemsToUpload = isSelectedMode
-    ? uploadableItems
-    : (() => {
-        const accepted = uploadableItems.filter((i) => statuses[i.id] === "accepted");
-        return accepted.length > 0 ? accepted : uploadableItems;
-      })();
+    ? result.items.filter((item) => selectedItemIds!.has(item.id))
+    : result.items;
 
   const [uploadStatus, setUploadStatus] = useState("");
 
@@ -1454,7 +1444,7 @@ function BulkUploadModal({
           {!isDone && (
             <button
               onClick={handleBulkUpload}
-              disabled={uploading || itemsToUpload.length === 0 || !examId}
+              disabled={uploading || itemsToUpload.length === 0}
               className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-brand-600 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-50 transition-colors"
             >
               {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <CloudUpload className="h-4 w-4" />}
