@@ -116,23 +116,55 @@ const kindConfig: Record<string, { label: string; color: string; borderColor: st
   image: { label: "Others", color: "bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-400", borderColor: "border-purple-400" },
 };
 
-const SESSIONS_KEY = "vce-admin-figure-sessions";
+const SESSIONS_API = "/api/admin/testing/figures/sessions";
 
-function loadSessions(): SavedSession[] {
-  if (typeof window === "undefined") return [];
+async function fetchSessions(): Promise<SavedSession[]> {
   try {
-    const raw = localStorage.getItem(SESSIONS_KEY);
-    return raw ? JSON.parse(raw) : [];
+    const res = await fetch(SESSIONS_API);
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.sessions || [];
   } catch {
     return [];
   }
 }
 
-function saveSessions(sessions: SavedSession[]) {
+async function createSessionApi(pdfName: string, result: ExtractionResult, statuses: Record<string, ItemStatus>): Promise<SavedSession | null> {
   try {
-    localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions));
-  } catch (e) {
-    console.warn("Failed to save figure sessions:", e);
+    const res = await fetch(SESSIONS_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pdfName, result, statuses }),
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.session || null;
+  } catch {
+    return null;
+  }
+}
+
+async function updateSessionApi(id: string, updates: { statuses?: Record<string, ItemStatus>; result?: ExtractionResult }) {
+  try {
+    await fetch(SESSIONS_API, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, ...updates }),
+    });
+  } catch {
+    // silent fail
+  }
+}
+
+async function deleteSessionApi(id: string) {
+  try {
+    await fetch(SESSIONS_API, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+  } catch {
+    // silent fail
   }
 }
 
@@ -1473,10 +1505,12 @@ export default function FiguresTestingPage() {
   const [uploadItem, setUploadItem] = useState<ItemResult | null>(null);
   const [showBulkUpload, setShowBulkUpload] = useState(false);
 
-  // Load sessions
+  // Load sessions from database
   useEffect(() => {
-    setSessions(loadSessions());
-    setLoaded(true);
+    fetchSessions().then((s) => {
+      setSessions(s);
+      setLoaded(true);
+    });
   }, []);
 
   // Load exams for upload picker (lazy — only when we have results)
@@ -1489,36 +1523,31 @@ export default function FiguresTestingPage() {
     }
   }, [result, batchSessionIds, exams.length]);
 
-  // Persist helper
+  // Persist helper (local state only — DB updates happen via API)
   const persistSessions = useCallback((updated: SavedSession[]) => {
     setSessions(updated);
-    saveSessions(updated);
   }, []);
 
   const saveToSession = useCallback(
-    (extractionResult: ExtractionResult, itemStatuses: Record<string, ItemStatus>) => {
-      setSessions((prev) => {
-        let updated: SavedSession[];
-        if (activeSessionId) {
-          updated = prev.map((s) =>
+    async (extractionResult: ExtractionResult, itemStatuses: Record<string, ItemStatus>) => {
+      if (activeSessionId) {
+        // Update existing session
+        setSessions((prev) =>
+          prev.map((s) =>
             s.id === activeSessionId
               ? { ...s, result: extractionResult, statuses: itemStatuses }
               : s
-          );
-        } else {
-          const newSession: SavedSession = {
-            id: crypto.randomUUID(),
-            pdfName: extractionResult.filename,
-            createdAt: new Date().toISOString(),
-            result: extractionResult,
-            statuses: itemStatuses,
-          };
-          setActiveSessionId(newSession.id);
-          updated = [newSession, ...prev];
+          )
+        );
+        updateSessionApi(activeSessionId, { result: extractionResult, statuses: itemStatuses });
+      } else {
+        // Create new session via API
+        const saved = await createSessionApi(extractionResult.filename, extractionResult, itemStatuses);
+        if (saved) {
+          setActiveSessionId(saved.id);
+          setSessions((prev) => [saved, ...prev]);
         }
-        saveSessions(updated);
-        return updated;
-      });
+      }
     },
     [activeSessionId]
   );
@@ -1583,24 +1612,16 @@ export default function FiguresTestingPage() {
           initialStatuses[item.id] = "pending";
         }
 
-        const newSession: SavedSession = {
-          id: crypto.randomUUID(),
-          pdfName: data.filename,
-          createdAt: new Date().toISOString(),
-          result: data,
-          statuses: initialStatuses,
-        };
-        completedIds.push(newSession.id);
-
-        setSessions((prev) => {
-          const updated = [newSession, ...prev];
-          saveSessions(updated);
-          return updated;
-        });
+        // Save session to database
+        const newSession = await createSessionApi(data.filename, data, initialStatuses);
+        if (newSession) {
+          completedIds.push(newSession.id);
+          setSessions((prev) => [newSession, ...prev]);
+        }
 
         setQueue((prev) =>
           prev.map((q, j) =>
-            j === i ? { ...q, status: "done" as const, sessionId: newSession.id } : q
+            j === i ? { ...q, status: "done" as const, sessionId: newSession?.id } : q
           )
         );
       } catch (err) {
@@ -1829,6 +1850,7 @@ export default function FiguresTestingPage() {
   const deleteSession = (sessionId: string) => {
     const updated = sessions.filter((s) => s.id !== sessionId);
     persistSessions(updated);
+    deleteSessionApi(sessionId);
     if (activeSessionId === sessionId) {
       setActiveSessionId(null);
       setResult(null);
@@ -2020,6 +2042,11 @@ export default function FiguresTestingPage() {
                               <Clock className="h-3 w-3" />
                               {formatDate(session.createdAt)}
                             </span>
+                            {session.createdBy && (
+                              <span className="text-gray-400 dark:text-gray-500">
+                                by {session.createdBy}
+                              </span>
+                            )}
                             <span>
                               {session.result.summary.items} item
                               {session.result.summary.items !== 1 ? "s" : ""}
