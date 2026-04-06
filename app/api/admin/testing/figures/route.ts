@@ -44,17 +44,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Save uploaded PDF to temp file
-    const tempDir = join(tmpdir(), `vce-figures-${randomUUID()}`);
-    await mkdir(tempDir, { recursive: true });
-    const tempPdf = join(tempDir, file.name);
-    const buffer = Buffer.from(await file.arrayBuffer());
-    await writeFile(tempPdf, buffer);
-
-    // Ensure artifacts directory exists
-    await mkdir(ARTIFACTS_DIR, { recursive: true });
-
-    // On Vercel: proxy to remote extractor server if configured
+    // On Vercel: proxy to remote extractor server (no local filesystem)
     const extractorUrl = process.env.EXTRACTOR_API_URL;
     if (process.env.VERCEL) {
       if (!extractorUrl) {
@@ -94,13 +84,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(data);
     }
 
+    // Local extraction: save PDF to temp file and run Python
+    const tempDir = join(tmpdir(), `vce-figures-${randomUUID()}`);
+    await mkdir(tempDir, { recursive: true });
+    const tempPdf = join(tempDir, file.name);
+    const buffer = Buffer.from(await file.arrayBuffer());
+    await writeFile(tempPdf, buffer);
+    await mkdir(ARTIFACTS_DIR, { recursive: true });
+
     const scriptPath = join(
       process.cwd(),
       "scripts",
       "figure-extract-cli.py"
     );
 
-    // Run Python extractor as subprocess
     const result = await new Promise<string>((resolve, reject) => {
       execFile(
         "python3",
