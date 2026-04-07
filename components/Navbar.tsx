@@ -77,15 +77,14 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
       </nav>
 
       {/* Theme toggle + Sign out */}
-      <div className="border-t border-gray-100 dark:border-gray-800 pt-3 pb-5 px-4 space-y-1">
-        <div className="px-4 py-2">
-          <ThemeToggle compact />
-        </div>
+      <div className="border-t border-gray-100 dark:border-gray-800 px-4 py-3 flex items-center justify-between">
+        <ThemeToggle compact />
         <button
           onClick={handleSignOut}
-          className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-base font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+          className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+          title="Sign out"
         >
-          <LogOut className="h-5 w-5" />
+          <LogOut className="h-4 w-4" />
           Sign out
         </button>
       </div>
