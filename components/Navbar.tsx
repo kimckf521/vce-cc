@@ -78,9 +78,7 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
 
       {/* Theme toggle + Sign out */}
       <div className="px-4 pb-5 border-t border-gray-100 dark:border-gray-800 pt-4 space-y-3">
-        <div className="px-2">
-          <ThemeToggle compact />
-        </div>
+        <ThemeToggle compact />
         <button
           onClick={handleSignOut}
           className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-base font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
