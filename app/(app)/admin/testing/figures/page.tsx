@@ -2020,10 +2020,41 @@ export default function FiguresTestingPage() {
                 const isActive = session.id === activeSessionId;
                 const counts = session.result.summary.counts;
 
+                const idx = sessions.indexOf(session);
                 return (
                   <div
                     key={session.id}
-                    className={`rounded-xl border shadow-sm p-4 transition-all ${
+                    draggable
+                    onDragStart={(e) => {
+                      e.dataTransfer.effectAllowed = "move";
+                      e.dataTransfer.setData("text/plain", String(idx));
+                      e.currentTarget.classList.add("opacity-40");
+                    }}
+                    onDragEnd={(e) => {
+                      e.currentTarget.classList.remove("opacity-40");
+                    }}
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      e.dataTransfer.dropEffect = "move";
+                      e.currentTarget.classList.add("ring-2", "ring-brand-400");
+                    }}
+                    onDragLeave={(e) => {
+                      e.currentTarget.classList.remove("ring-2", "ring-brand-400");
+                    }}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      e.currentTarget.classList.remove("ring-2", "ring-brand-400");
+                      const fromIdx = Number(e.dataTransfer.getData("text/plain"));
+                      if (fromIdx !== idx) {
+                        setSessions((prev) => {
+                          const next = [...prev];
+                          const [moved] = next.splice(fromIdx, 1);
+                          next.splice(idx, 0, moved);
+                          return next;
+                        });
+                      }
+                    }}
+                    className={`rounded-xl border shadow-sm p-4 transition-all cursor-grab active:cursor-grabbing ${
                       session.done
                         ? "bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800"
                         : isActive
