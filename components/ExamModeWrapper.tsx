@@ -138,6 +138,10 @@ export default function ExamModeWrapper({
     const incorrect = Object.keys(selections).length - correct;
     const pct = totalQuestions > 0 ? Math.round((correct / totalQuestions) * 100) : 0;
 
+    // Exam 2A is MCQ (auto-graded). Exam 1 and Exam 2B are open-ended
+    // and can't be auto-marked yet, so flag them as ungraded.
+    const isGraded = sectionLabel === "Exam 2A";
+
     fetch("/api/exam-sessions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -148,6 +152,7 @@ export default function ExamModeWrapper({
         incorrectCount: incorrect,
         score: pct,
         elapsedSeconds,
+        graded: isGraded,
       }),
     }).catch(() => {});
 

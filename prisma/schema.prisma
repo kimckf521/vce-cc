@@ -83,9 +83,40 @@ model User {
   name                 String?
   createdAt            DateTime             @default(now())
   role                 Role                 @default(STUDENT)
+  stripeCustomerId     String?              @unique
   attempts             Attempt[]
   examSessions         ExamSession[]
   extractionSessions   ExtractionSession[]
+  enrolments           SubjectEnrolment[]
+}
+
+model Subject {
+  id         String             @id @default(cuid())
+  name       String             @unique
+  slug       String             @unique
+  order      Int                @default(0)
+  createdAt  DateTime           @default(now())
+  enrolments SubjectEnrolment[]
+}
+
+model SubjectEnrolment {
+  id                    String              @id @default(cuid())
+  userId                String
+  subjectId             String
+  tier                  EnrolmentTier       @default(FREE)
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @default(now()) @updatedAt
+  stripeSubscriptionId  String?             @unique
+  stripePriceId         String?
+  subscriptionStatus    SubscriptionStatus?
+  currentPeriodEnd      DateTime?
+  cancelAtPeriodEnd     Boolean             @default(false)
+  user                  User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject               Subject             @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, subjectId])
+  @@index([userId])
+  @@index([subjectId])
 }
 
 model ExtractionSession {
@@ -112,6 +143,7 @@ model ExamSession {
   incorrectCount Int
   score          Float
   elapsedSeconds Int?
+  graded         Boolean  @default(true)
   completedAt    DateTime @default(now())
   user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -156,4 +188,20 @@ enum AttemptStatus {
   CORRECT
   INCORRECT
   NEEDS_REVIEW
+}
+
+enum EnrolmentTier {
+  FREE
+  PAID
+}
+
+enum SubscriptionStatus {
+  active
+  trialing
+  past_due
+  canceled
+  unpaid
+  incomplete
+  incomplete_expired
+  paused
 }

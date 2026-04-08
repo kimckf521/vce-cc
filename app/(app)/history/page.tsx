@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
-import { TrendingUp, Clock, Trophy, BarChart2 } from "lucide-react";
+import { TrendingUp, Clock, Trophy, BarChart2, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -41,21 +41,26 @@ export default async function HistoryPage() {
     take: 50,
   });
 
-  // Compute stats
+  // Only graded sessions contribute to score stats. Ungraded sessions
+  // (Exam 1, Exam 2B) are still listed but excluded from averages/trends.
+  const gradedSessions = sessions.filter((s) => s.graded);
+
+  // Compute stats (graded only)
   const totalSessions = sessions.length;
-  const avgScore = totalSessions > 0
-    ? Math.round(sessions.reduce((sum, s) => sum + s.score, 0) / totalSessions)
+  const totalGraded = gradedSessions.length;
+  const avgScore = totalGraded > 0
+    ? Math.round(gradedSessions.reduce((sum, s) => sum + s.score, 0) / totalGraded)
     : 0;
-  const bestScore = totalSessions > 0
-    ? Math.round(Math.max(...sessions.map((s) => s.score)))
+  const bestScore = totalGraded > 0
+    ? Math.round(Math.max(...gradedSessions.map((s) => s.score)))
     : 0;
-  const recentTrend = sessions.length >= 2
-    ? Math.round(sessions[0].score - sessions[sessions.length - 1].score)
+  const recentTrend = gradedSessions.length >= 2
+    ? Math.round(gradedSessions[0].score - gradedSessions[gradedSessions.length - 1].score)
     : 0;
 
-  // Group by mode for breakdown
+  // Group by mode for breakdown (graded only)
   const modeMap = new Map<string, { count: number; totalScore: number }>();
-  for (const s of sessions) {
+  for (const s of gradedSessions) {
     const entry = modeMap.get(s.mode) ?? { count: 0, totalScore: 0 };
     entry.count++;
     entry.totalScore += s.score;
@@ -89,7 +94,14 @@ export default async function HistoryPage() {
                 <BarChart2 className="h-5 w-5 text-brand-600 dark:text-brand-400" />
               </div>
               <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{totalSessions}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Total Exams</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Total Exams
+                {totalGraded !== totalSessions && (
+                  <span className="block text-xs text-gray-400 dark:text-gray-500">
+                    {totalGraded} graded
+                  </span>
+                )}
+              </p>
             </div>
             <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm p-5">
               <div className="inline-flex rounded-xl bg-blue-50 dark:bg-blue-950 p-2.5 mb-3">
@@ -133,27 +145,29 @@ export default async function HistoryPage() {
             </div>
           )}
 
-          {/* Score trend chart (simple bar representation) */}
-          <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm p-6">
-            <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-4">Score Trend</h2>
-            <div className="flex items-end gap-1.5 h-32">
-              {sessions.slice().reverse().slice(-20).map((s, i) => (
-                <div key={s.id} className="flex-1 flex flex-col items-center gap-1" title={`${s.mode}: ${Math.round(s.score)}% — ${formatDate(s.completedAt)}`}>
-                  <div
-                    className={cn(
-                      "w-full rounded-t-md min-h-[4px] transition-all",
-                      s.score >= 80 ? "bg-green-400" : s.score >= 50 ? "bg-yellow-400" : "bg-red-400"
-                    )}
-                    style={{ height: `${Math.max(s.score, 4)}%` }}
-                  />
-                </div>
-              ))}
+          {/* Score trend chart (graded sessions only) */}
+          {totalGraded > 0 && (
+            <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm p-6">
+              <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-4">Score Trend</h2>
+              <div className="flex items-end gap-1.5 h-32">
+                {gradedSessions.slice().reverse().slice(-20).map((s) => (
+                  <div key={s.id} className="flex-1 flex flex-col items-center gap-1" title={`${s.mode}: ${Math.round(s.score)}% — ${formatDate(s.completedAt)}`}>
+                    <div
+                      className={cn(
+                        "w-full rounded-t-md min-h-[4px] transition-all",
+                        s.score >= 80 ? "bg-green-400" : s.score >= 50 ? "bg-yellow-400" : "bg-red-400"
+                      )}
+                      style={{ height: `${Math.max(s.score, 4)}%` }}
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-between mt-2 text-xs text-gray-400 dark:text-gray-500">
+                <span>Oldest</span>
+                <span>Latest</span>
+              </div>
             </div>
-            <div className="flex justify-between mt-2 text-xs text-gray-400 dark:text-gray-500">
-              <span>Oldest</span>
-              <span>Latest</span>
-            </div>
-          </div>
+          )}
 
           {/* Session list */}
           <div>
@@ -165,18 +179,33 @@ export default async function HistoryPage() {
                   className="flex items-center justify-between rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 px-5 py-4"
                 >
                   <div className="flex items-center gap-4">
-                    <div className={cn(
-                      "flex items-center justify-center h-10 w-10 rounded-xl text-sm font-bold",
-                      s.score >= 80 ? "bg-green-50 dark:bg-green-950 text-green-600 dark:text-green-400" :
-                      s.score >= 50 ? "bg-yellow-50 dark:bg-yellow-950 text-yellow-600 dark:text-yellow-400" :
-                      "bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400"
-                    )}>
-                      {Math.round(s.score)}%
-                    </div>
+                    {s.graded ? (
+                      <div className={cn(
+                        "flex items-center justify-center h-10 w-10 rounded-xl text-sm font-bold",
+                        s.score >= 80 ? "bg-green-50 dark:bg-green-950 text-green-600 dark:text-green-400" :
+                        s.score >= 50 ? "bg-yellow-50 dark:bg-yellow-950 text-yellow-600 dark:text-yellow-400" :
+                        "bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400"
+                      )}>
+                        {Math.round(s.score)}%
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+                        <FileText className="h-4 w-4" />
+                      </div>
+                    )}
                     <div>
-                      <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">{s.mode}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">{s.mode}</p>
+                        {!s.graded && (
+                          <span className="rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide">
+                            Not marked yet
+                          </span>
+                        )}
+                      </div>
                       <p className="text-xs text-gray-400 dark:text-gray-500">
-                        {s.correctCount}/{s.totalQuestions} correct
+                        {s.graded
+                          ? `${s.correctCount}/${s.totalQuestions} correct`
+                          : `${s.totalQuestions} questions`}
                         {s.elapsedSeconds ? ` · ${formatElapsed(s.elapsedSeconds)}` : ""}
                       </p>
                     </div>

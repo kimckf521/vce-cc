@@ -11,6 +11,7 @@ const createSessionSchema = z.object({
   incorrectCount: z.number().int().min(0),
   score: z.number().min(0).max(100),
   elapsedSeconds: z.number().int().min(0).nullish(),
+  graded: z.boolean().optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -32,6 +33,7 @@ export async function POST(req: NextRequest) {
       userId: user.id,
       ...parsed.data,
       elapsedSeconds: parsed.data.elapsedSeconds ?? null,
+      graded: parsed.data.graded ?? true,
     },
   });
 
