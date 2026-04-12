@@ -26,8 +26,6 @@ const nextConfig = {
       ],
     },
   ],
-  // Reduce serverless function size by excluding dev-only modules
-  serverExternalPackages: [],
 };
 
 export default nextConfig;
