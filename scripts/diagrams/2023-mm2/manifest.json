@@ -1,0 +1,209 @@
+[
+  {
+    "file": "p7-q15.png",
+    "page": 7,
+    "question": "15",
+    "type": "normal_distribution",
+    "description": "Two normal distribution curves, solid and dashed lines on grid",
+    "bbox_pct": {
+      "x": 15,
+      "y": 48,
+      "w": 35,
+      "h": 25
+    },
+    "bbox_pts": {
+      "x0": 83.5,
+      "y0": 394.1,
+      "x1": 321.8,
+      "y1": 624.6
+    },
+    "size": {
+      "width": 716,
+      "height": 692
+    }
+  },
+  {
+    "file": "p7-q15-2.png",
+    "page": 7,
+    "question": "15",
+    "type": "normal_distribution",
+    "description": "Two normal distribution curves, solid and dashed lines on grid",
+    "bbox_pct": {
+      "x": 55,
+      "y": 48,
+      "w": 35,
+      "h": 25
+    },
+    "bbox_pts": {
+      "x0": 333.0,
+      "y0": 394.1,
+      "x1": 571.3,
+      "y1": 624.6
+    },
+    "size": {
+      "width": 716,
+      "height": 692
+    }
+  },
+  {
+    "file": "p7-q15-3.png",
+    "page": 7,
+    "question": "15",
+    "type": "normal_distribution",
+    "description": "Two normal distribution curves, solid and dashed lines on grid",
+    "bbox_pct": {
+      "x": 15,
+      "y": 73,
+      "w": 35,
+      "h": 25
+    },
+    "bbox_pts": {
+      "x0": 83.5,
+      "y0": 604.6,
+      "x1": 321.8,
+      "y1": 835.1
+    },
+    "size": {
+      "width": 716,
+      "height": 693
+    }
+  },
+  {
+    "file": "p7-q15-4.png",
+    "page": 7,
+    "question": "15",
+    "type": "normal_distribution",
+    "description": "Two normal distribution curves, solid and dashed lines on grid",
+    "bbox_pct": {
+      "x": 55,
+      "y": 73,
+      "w": 35,
+      "h": 25
+    },
+    "bbox_pts": {
+      "x0": 333.0,
+      "y0": 604.6,
+      "x1": 571.3,
+      "y1": 835.1
+    },
+    "size": {
+      "width": 716,
+      "height": 693
+    }
+  },
+  {
+    "file": "p7-q15-5.png",
+    "page": 7,
+    "question": "15",
+    "type": "normal_distribution",
+    "description": "Two normal distribution curves, solid and dashed lines on grid",
+    "bbox_pct": {
+      "x": 15,
+      "y": 98,
+      "w": 35,
+      "h": 20
+    },
+    "bbox_pts": {
+      "x0": 83.5,
+      "y0": 815.1,
+      "x1": 321.8,
+      "y1": 841.9
+    },
+    "size": {
+      "width": 716,
+      "height": 81
+    }
+  },
+  {
+    "file": "p8-q17.png",
+    "page": 8,
+    "question": "17",
+    "type": "diagram",
+    "description": "Rectangular sheet diagram showing cylinder formation with dimensions x, v, h, and r marked with dashed cut lines",
+    "bbox_pct": {
+      "x": 15,
+      "y": 40,
+      "w": 70,
+      "h": 35
+    },
+    "bbox_pts": {
+      "x0": 83.5,
+      "y0": 326.8,
+      "x1": 540.1,
+      "y1": 641.4
+    },
+    "size": {
+      "width": 1371,
+      "height": 945
+    }
+  },
+  {
+    "file": "p10-q1.png",
+    "page": 10,
+    "question": "1",
+    "type": "graph",
+    "description": "Cartesian coordinate plane showing part of a cubic function with local maximum and minimum, axes labeled with origin O",
+    "bbox_pct": {
+      "x": 15,
+      "y": 35,
+      "w": 70,
+      "h": 40
+    },
+    "bbox_pts": {
+      "x0": 83.5,
+      "y0": 284.7,
+      "x1": 540.1,
+      "y1": 641.4
+    },
+    "size": {
+      "width": 1371,
+      "height": 1072
+    }
+  },
+  {
+    "file": "p12-q2.png",
+    "page": 12,
+    "question": "2",
+    "type": "diagram",
+    "description": "Observation wheel diagram showing circular wheel with center point P, radius 60m, height 15m above ground, with coordinate axes and point A marked",
+    "bbox_pct": {
+      "x": 15,
+      "y": 25,
+      "w": 70,
+      "h": 45
+    },
+    "bbox_pts": {
+      "x0": 83.5,
+      "y0": 200.5,
+      "x1": 540.1,
+      "y1": 599.3
+    },
+    "size": {
+      "width": 1371,
+      "height": 1197
+    }
+  },
+  {
+    "file": "p15-qiii.png",
+    "page": 15,
+    "question": "iii",
+    "type": "graph",
+    "description": "Cartesian plane with x-axis from 0 to 25, y-axis labeled 'w' from 0 to 150, grid lines provided for sketching piecewise function",
+    "bbox_pct": {
+      "x": 15,
+      "y": 15,
+      "w": 70,
+      "h": 80
+    },
+    "bbox_pts": {
+      "x0": 83.5,
+      "y0": 116.3,
+      "x1": 540.1,
+      "y1": 809.8
+    },
+    "size": {
+      "width": 1371,
+      "height": 2082
+    }
+  }
+]

@@ -1,7 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import { CheckCircle, XCircle, BookmarkIcon, TrendingUp } from "lucide-react";
+import { CheckCircle, XCircle, BookmarkIcon, TrendingUp, Sparkles, ArrowRight } from "lucide-react";
+import { hasActiveSubscription } from "@/lib/subscription";
+import { isAdminRole } from "@/lib/utils";
 
 const TOPIC_COLORS = [
   { bar: "bg-violet-500", text: "text-violet-600 dark:text-violet-400", bg: "bg-violet-50 dark:bg-violet-950", border: "border-violet-200 dark:border-violet-800" },
@@ -17,7 +19,7 @@ export default async function DashboardPage() {
 
   // Lightweight parallel queries — no full question rows fetched
   const [dbUser, attempts, topics, questionCounts, topicAttemptCounts] = await Promise.all([
-    userId ? prisma.user.findUnique({ where: { id: userId }, select: { name: true } }) : null,
+    userId ? prisma.user.findUnique({ where: { id: userId }, select: { name: true, role: true } }) : null,
     userId
       ? prisma.attempt.groupBy({ by: ["status"], where: { userId }, _count: true })
       : [],
@@ -71,6 +73,12 @@ export default async function DashboardPage() {
   const totalQuestions = topics.reduce((sum, t) => sum + (countByTopic.get(t.id) ?? 0), 0);
   const overallPct = totalQuestions > 0 ? Math.round((totalAttempted / totalQuestions) * 100) : 0;
 
+  // Show the upgrade CTA only to authenticated free non-admin users.
+  const showUpgradeCard =
+    !!userId &&
+    !isAdminRole(dbUser?.role) &&
+    !(await hasActiveSubscription(userId));
+
   const stats = [
     { label: "Correct",        value: correct,        icon: CheckCircle,  color: "text-green-600 dark:text-green-400",  bg: "bg-green-50 dark:bg-green-950"  },
     { label: "Incorrect",      value: incorrect,       icon: XCircle,      color: "text-red-600 dark:text-red-400",    bg: "bg-red-50 dark:bg-red-950"    },
@@ -89,6 +97,32 @@ export default async function DashboardPage() {
           {totalAttempted} of {totalQuestions} questions attempted
         </p>
       </div>
+
+      {/* Upgrade CTA — free users only */}
+      {showUpgradeCard && (
+        <div className="rounded-2xl border border-brand-200 dark:border-brand-800 bg-gradient-to-br from-brand-50 to-white dark:from-brand-950 dark:to-gray-900 p-6 lg:p-7 shadow-sm">
+          <div className="flex items-start gap-4">
+            <div className="flex h-11 w-11 lg:h-12 lg:w-12 shrink-0 items-center justify-center rounded-xl bg-brand-100 dark:bg-brand-900">
+              <Sparkles className="h-5 w-5 lg:h-6 lg:w-6 text-brand-600 dark:text-brand-400" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100">
+                Unlock the full Methods experience
+              </h2>
+              <p className="mt-1 text-sm lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+                You&apos;re on the free plan. Upgrade to access all four topics, practice mode, search, and history.
+              </p>
+              <Link
+                href="/pricing"
+                className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-brand-600 hover:bg-brand-700 px-4 py-2 lg:px-5 lg:py-2.5 text-sm lg:text-base font-semibold text-white transition-colors"
+              >
+                See plans
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Overall progress bar */}
       <div className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm p-6 lg:p-8">

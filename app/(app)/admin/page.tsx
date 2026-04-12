@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/utils";
 import Link from "next/link";
-import { FileText, BookOpen, HelpCircle, Users, FlaskConical, ImageIcon } from "lucide-react";
+import { FileText, BookOpen, HelpCircle, Users, FlaskConical, ImageIcon, Gift } from "lucide-react";
 
 export default async function AdminPage() {
   const supabase = await createClient();
@@ -13,11 +13,12 @@ export default async function AdminPage() {
   const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
   if (!isAdminRole(dbUser?.role)) redirect("/dashboard");
 
-  const [examCount, questionCount, userCount, solutionCount] = await Promise.all([
+  const [examCount, questionCount, userCount, solutionCount, affiliateCount] = await Promise.all([
     prisma.exam.count(),
     prisma.question.count(),
     prisma.user.count(),
     prisma.solution.count(),
+    prisma.affiliate.count(),
   ]);
 
   const stats = [
@@ -25,6 +26,7 @@ export default async function AdminPage() {
     { label: "Questions", value: questionCount, icon: HelpCircle, href: "/admin/questions" },
     { label: "Solutions", value: solutionCount, icon: BookOpen, href: "/admin/questions" },
     { label: "Users", value: userCount, icon: Users, href: "/admin/users" },
+    { label: "Affiliates", value: affiliateCount, icon: Gift, href: "/admin/affiliates" },
   ];
 
   return (

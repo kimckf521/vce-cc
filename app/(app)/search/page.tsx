@@ -61,7 +61,7 @@ export default function SearchPage() {
     <div>
       <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Search Questions</h1>
       <p className="text-gray-500 dark:text-gray-400 lg:text-base mb-8">
-        Search across all questions by content, keywords, or mathematical terms.
+        Search by content, topic, subtopic, year, or exam type.
       </p>
 
       {/* Search input */}
@@ -71,7 +71,7 @@ export default function SearchPage() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search questions..."
+          placeholder="e.g. tangent, 2023, chain rule, binomial..."
           className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 pl-12 lg:pl-14 pr-4 py-3 lg:py-4 text-sm lg:text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
           autoFocus
         />

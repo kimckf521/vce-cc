@@ -6,6 +6,9 @@ import ExamModeWrapper from "@/components/ExamModeWrapper";
 import Exam2ABModeWrapper from "@/components/Exam2ABModeWrapper";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { EXAM_CONFIG, type ExamMode } from "@/lib/exam-config";
+import { getGeneratedQuestionSetId } from "@/lib/question-set-groups";
+
+type QuestionSetItemType = "MCQ" | "SHORT_ANSWER" | "EXTENDED_RESPONSE";
 
 interface PageProps {
   searchParams: Promise<{
@@ -55,19 +58,6 @@ function distributeToCounts(percentages: number[], total: number): number[] {
 
 // ---------- types ----------
 
-interface QuestionRow {
-  id: string;
-  questionNumber: number;
-  part: string | null;
-  marks: number;
-  content: string;
-  difficulty: "EASY" | "MEDIUM" | "HARD";
-  exam: { year: number; examType: "EXAM_1" | "EXAM_2" };
-  topic: { name: string };
-  subtopics: { name: string }[];
-  solution: { content: string; imageUrl: string | null; videoUrl: string | null } | null;
-}
-
 interface QuestionGroupData {
   examId: string;
   year: number;
@@ -89,72 +79,85 @@ interface QuestionGroupData {
 
 // ---------- fetch ----------
 
-type PartCondition = "any" | "null_only" | "not_null";
-
 /**
- * Fetch ALL question rows for the given exam type + part condition in ONE query.
- * Groups them by topic and difficulty in memory — far faster than N per-topic queries.
+ * Fetch QuestionSetItems from the "1st Generated Question Set" for the given
+ * item types in ONE query. Groups them by topic and difficulty in memory.
+ *
+ * Each item becomes a single-part group (the generated set has no multi-part
+ * structure — every item stands alone).
  */
 async function fetchAllGrouped(
-  examTypeFilter: "EXAM_1" | "EXAM_2",
-  partCondition: PartCondition
+  types: QuestionSetItemType[]
 ): Promise<Map<string, Record<"EASY" | "MEDIUM" | "HARD", QuestionGroupData[]>>> {
-  const rows = (await prisma.question.findMany({
+  const setId = await getGeneratedQuestionSetId();
+  const byTopic = new Map<string, Record<"EASY" | "MEDIUM" | "HARD", QuestionGroupData[]>>();
+  if (!setId) return byTopic;
+
+  const items = await prisma.questionSetItem.findMany({
     where: {
-      exam: { examType: examTypeFilter, year: { not: 9999 } },
-      ...(partCondition === "null_only" ? { part: null } : {}),
-      ...(partCondition === "not_null" ? { part: { not: null } } : {}),
+      questionSetId: setId,
+      type: { in: types },
     },
-    include: {
-      exam: { select: { year: true, examType: true } },
+    select: {
+      id: true,
+      topicId: true,
+      type: true,
+      marks: true,
+      content: true,
+      difficulty: true,
+      optionA: true,
+      optionB: true,
+      optionC: true,
+      optionD: true,
+      correctOption: true,
+      solutionContent: true,
       topic: { select: { id: true, name: true } },
       subtopics: { select: { name: true } },
-      solution: { select: { content: true, imageUrl: true, videoUrl: true } },
     },
-    orderBy: [{ exam: { year: "asc" } }, { questionNumber: "asc" }],
-  })) as (QuestionRow & { topic: { id: string; name: string } })[];
+  });
 
-  // Group rows into question groups, keyed by topicId
-  const byTopic = new Map<string, Record<"EASY" | "MEDIUM" | "HARD", QuestionGroupData[]>>();
-
-  const groupMap = new Map<string, (typeof rows)[0][]>();
-  for (const row of rows) {
-    const key =
-      row.part === null
-        ? row.id
-        : `${row.exam.year}-${row.exam.examType}-${row.questionNumber}`;
-    if (!groupMap.has(key)) groupMap.set(key, []);
-    groupMap.get(key)!.push(row);
-  }
-
-  for (const parts of Array.from(groupMap.values())) {
-    const first = parts[0];
-    const topicId = first.topic.id;
-    const diff: "EASY" | "MEDIUM" | "HARD" = first.difficulty;
+  for (const it of items) {
+    const topicId = it.topic.id;
+    const diff = it.difficulty as "EASY" | "MEDIUM" | "HARD";
 
     if (!byTopic.has(topicId)) {
       byTopic.set(topicId, { EASY: [], MEDIUM: [], HARD: [] });
     }
 
+    // Stitch MCQ options into the content so they render inside the card body
+    const contentWithOptions =
+      it.type === "MCQ" && it.optionA
+        ? `${it.content}\n\n**A.** ${it.optionA}\n\n**B.** ${it.optionB ?? ""}\n\n**C.** ${it.optionC ?? ""}\n\n**D.** ${it.optionD ?? ""}`
+        : it.content;
+
+    // Embed the MCQ answer inside the solution text so the existing MCQ
+    // parser in QuestionGroup can detect it (format: "**Answer: X**")
+    const solutionContent =
+      it.type === "MCQ" && it.correctOption && it.solutionContent
+        ? `**Answer: ${it.correctOption}**\n\n${it.solutionContent}`
+        : it.solutionContent ?? "";
+
     const group: QuestionGroupData = {
-      examId: `${first.exam.year}-${first.exam.examType}`,
-      year: first.exam.year,
-      examType: first.exam.examType,
-      topicName: first.topic.name,
-      subtopics: first.subtopics.map((s: { name: string }) => s.name),
-      parts: parts.map((p) => ({
-        id: p.id,
-        questionNumber: p.questionNumber,
-        part: p.part,
-        marks: p.marks,
-        content: p.content,
-        imageUrl: null,
-        difficulty: p.difficulty,
-        solution: p.solution
-          ? { content: p.solution.content, videoUrl: p.solution.videoUrl }
-          : null,
-        initialStatus: null,
-      })),
+      examId: `gen-${it.id}`,
+      year: 0, // sentinel — QuestionGroup hides year when 0
+      examType: "EXAM_1", // placeholder; not rendered (sectionLabel is passed explicitly)
+      topicName: it.topic.name,
+      subtopics: it.subtopics.map((s) => s.name),
+      parts: [
+        {
+          id: it.id,
+          questionNumber: 1,
+          part: null,
+          marks: it.marks,
+          content: contentWithOptions,
+          imageUrl: null,
+          difficulty: diff,
+          solution: solutionContent
+            ? { content: solutionContent, videoUrl: null }
+            : null,
+          initialStatus: null,
+        },
+      ],
     };
     byTopic.get(topicId)![diff].push(group);
   }
@@ -263,10 +266,10 @@ export default async function SessionPage({ searchParams }: PageProps) {
     const countsA = distributeToCounts(dist, countA);
     const countsB = distributeToCounts(distB, countB);
 
-    // Single batch fetch for all MCQ + Section B questions across all topics
+    // Single batch fetch for all MCQ + Extended Response items across all topics
     const [poolA, poolB] = await Promise.all([
-      fetchAllGrouped("EXAM_2", "null_only"),
-      fetchAllGrouped("EXAM_2", "not_null"),
+      fetchAllGrouped(["MCQ"]),
+      fetchAllGrouped(["EXTENDED_RESPONSE"]),
     ]);
 
     const groupsA: QuestionGroupData[] = [];
@@ -368,31 +371,27 @@ export default async function SessionPage({ searchParams }: PageProps) {
   const count = parseInt(params.count ?? "10", 10);
   const counts = distributeToCounts(dist, count);
 
-  let examTypeFilter: "EXAM_1" | "EXAM_2";
-  let partCondition: PartCondition;
+  let itemTypes: QuestionSetItemType[];
   let sectionLabel: "Exam 1" | "Exam 2A" | "Exam 2B";
   let calcInfo: string;
 
   if (mode === "exam1") {
-    examTypeFilter = "EXAM_1";
-    partCondition = "any";
+    itemTypes = ["SHORT_ANSWER"];
     sectionLabel = "Exam 1";
     calcInfo = "No calculator";
   } else if (mode === "exam2a") {
-    examTypeFilter = "EXAM_2";
-    partCondition = "null_only";
+    itemTypes = ["MCQ"];
     sectionLabel = "Exam 2A";
     calcInfo = "CAS Calculator allowed";
   } else {
     // exam2b
-    examTypeFilter = "EXAM_2";
-    partCondition = "not_null";
+    itemTypes = ["EXTENDED_RESPONSE"];
     sectionLabel = "Exam 2B";
     calcInfo = "CAS Calculator allowed";
   }
 
   // Single batch fetch, then pick per topic
-  const pool = await fetchAllGrouped(examTypeFilter, partCondition);
+  const pool = await fetchAllGrouped(itemTypes);
   const allGroups: QuestionGroupData[] = [];
   topics.forEach((topic, i) => {
     allGroups.push(...pickGroupsForTopic(pool.get(topic.id), counts[i] ?? 0, diffDist));

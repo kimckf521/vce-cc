@@ -20,7 +20,7 @@ interface ExtractedQuestion {
   marks: number;
   content: string; // Question text (LaTeX for math, e.g. $f(x) = x^2$)
   topic: string;
-  subtopic: string | null;
+  subtopics: string[]; // 1-3 subtopics per question
   difficulty: "EASY" | "MEDIUM" | "HARD";
   imageDescription: string | null; // Describe any diagrams if present
 }
@@ -35,11 +35,10 @@ interface ExtractedExam {
 
 const TOPICS = `
 Valid topics and their subtopics:
-- Functions and Graphs → Linear Functions, Quadratic Functions, Polynomial Functions, Power Functions, Exponential Functions, Logarithmic Functions, Circular Functions (sin/cos/tan), Inverse Functions, Transformations
-- Calculus → Limits, Differentiation, Product Rule, Quotient Rule, Chain Rule, Integration, Definite Integrals, Areas Under Curves, Antiderivatives
-- Algebra → Simultaneous Equations, Inequalities, Partial Fractions, Exponential Equations, Logarithmic Equations
-- Probability → Probability Rules, Conditional Probability, Discrete Random Variables, Binomial Distribution, Normal Distribution, Continuous Random Variables, Expected Value, Variance
-- Statistics → Sample Proportions, Confidence Intervals, Hypothesis Testing
+- Algebra, Number, and Structure → Polynomial Equations, Exponential Equations, Logarithmic Equations, Trigonometric Equations, Simultaneous Equations, Exponent and Logarithm Laws
+- Functions, Relations, and Graphs → Polynomial Functions, Exponential Functions, Logarithmic Functions, Trigonometric Functions, Rational Functions, Domain and Range, Transformations, Inverse Functions, Composite Functions
+- Calculus → Differentiation, Chain Rule, Product Rule, Quotient Rule, Tangents and Normals, Rates of Change, Stationary Points and Curve Sketching, Optimisation, Antidifferentiation, Definite Integrals, Area Under Curves, Fundamental Theorem of Calculus
+- Data Analysis, Probability, and Statistics → Probability Rules, Conditional Probability, Discrete Random Variables, Binomial Distribution, Continuous Random Variables, Normal Distribution, Confidence Intervals, Sample Proportions and Sampling
 `;
 
 // ─── System Prompt ────────────────────────────────────────────────────────────
@@ -52,11 +51,12 @@ Rules:
 2. For math expressions, use LaTeX format wrapped in dollar signs: $f(x) = x^2 + 3x - 2$
 3. For displayed equations (on their own line), use double dollar signs: $$\\int_0^1 x^2 \\, dx$$
 4. If a question references a diagram/graph, describe it briefly in imageDescription
-5. Assign the most appropriate topic and subtopic from the list provided
-6. Estimate difficulty: EASY (straightforward recall/application), MEDIUM (multi-step), HARD (complex/unfamiliar)
-7. For multiple choice questions (Exam 2 Section A), still extract them as individual questions
-8. Parts are labelled "a", "b", "c", "d" etc. If a question has no parts, set part to null
-9. Always include the mark allocation for each question/part
+5. Assign the most appropriate topic from the list provided
+6. Assign 1-3 subtopics as an array. Use the primary skill first, then add secondary skills if the question genuinely requires them. Most questions need 1-2 subtopics; use 3 only when truly warranted
+7. Estimate difficulty: EASY (straightforward recall/application), MEDIUM (multi-step), HARD (complex/unfamiliar)
+8. For multiple choice questions (Exam 2 Section A), still extract them as individual questions
+9. Parts are labelled "a", "b", "c", "d" etc. If a question has no parts, set part to null
+10. Always include the mark allocation for each question/part
 
 ${TOPICS}
 
@@ -111,8 +111,18 @@ Extract ALL questions and return them as a JSON object with this exact structure
       "marks": 2,
       "content": "Find the derivative of $f(x) = x^3 + 2x$",
       "topic": "Calculus",
-      "subtopic": "Differentiation",
+      "subtopics": ["Differentiation"],
       "difficulty": "EASY",
+      "imageDescription": null
+    },
+    {
+      "questionNumber": 3,
+      "part": "b",
+      "marks": 4,
+      "content": "Find the area enclosed between $y = e^x$ and $y = 2x + 1$ for $x \\in [0, 2]$",
+      "topic": "Calculus",
+      "subtopics": ["Integration", "Areas Under Curves", "Exponential Functions"],
+      "difficulty": "HARD",
       "imageDescription": null
     }
   ]
@@ -322,13 +332,22 @@ Output:
 
 function printSummary(exam: ExtractedExam) {
   const byTopic: Record<string, number> = {};
+  const bySubtopic: Record<string, number> = {};
   for (const q of exam.questions) {
     byTopic[q.topic] = (byTopic[q.topic] || 0) + 1;
+    for (const st of q.subtopics) {
+      bySubtopic[st] = (bySubtopic[st] || 0) + 1;
+    }
   }
+
+  const avgSubtopics = exam.questions.length
+    ? (exam.questions.reduce((s, q) => s + q.subtopics.length, 0) / exam.questions.length).toFixed(1)
+    : "0";
 
   console.log(`\n📊 Summary: ${exam.year} ${exam.examType}`);
   console.log(`   Total questions: ${exam.questions.length}`);
   console.log(`   Total marks: ${exam.questions.reduce((s, q) => s + q.marks, 0)}`);
+  console.log(`   Avg subtopics per question: ${avgSubtopics}`);
   console.log(`   By topic:`);
   for (const [topic, count] of Object.entries(byTopic).sort()) {
     console.log(`     ${topic}: ${count}`);

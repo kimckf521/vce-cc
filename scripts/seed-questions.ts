@@ -23,9 +23,17 @@ interface ExtractedQuestion {
   marks: number;
   content: string;
   topic: string;
-  subtopic: string | null;
+  subtopics?: string[];       // New: array of 1-3 subtopics
+  subtopic?: string | null;   // Legacy: single subtopic (backward compat)
   difficulty: "EASY" | "MEDIUM" | "HARD";
   imageDescription: string | null;
+}
+
+/** Normalize both old (subtopic) and new (subtopics) formats into an array. */
+function getSubtopics(q: ExtractedQuestion): string[] {
+  if (q.subtopics && q.subtopics.length > 0) return q.subtopics;
+  if (q.subtopic) return [q.subtopic];
+  return [];
 }
 
 interface ExtractedExam {
@@ -107,8 +115,8 @@ async function seedExam(exam: ExtractedExam, dryRun: boolean): Promise<void> {
     const subtopicNames = [
       ...new Set(
         exam.questions
-          .filter((q) => q.topic === topicName && q.subtopic)
-          .map((q) => q.subtopic!)
+          .filter((q) => q.topic === topicName)
+          .flatMap((q) => getSubtopics(q))
       ),
     ];
 
@@ -146,13 +154,16 @@ async function seedExam(exam: ExtractedExam, dryRun: boolean): Promise<void> {
 
   for (const q of exam.questions) {
     const topicId = topicMap[q.topic];
-    const subtopicKey = q.subtopic ? `${q.topic}|${q.subtopic}` : null;
-    const subtopicId = subtopicKey ? subtopicMap[subtopicKey] : null;
-    const subtopicConnect = subtopicId ? [{ id: subtopicId }] : [];
+    const qSubtopics = getSubtopics(q);
+    const subtopicConnect = qSubtopics
+      .map((name) => subtopicMap[`${q.topic}|${name}`])
+      .filter(Boolean)
+      .map((id) => ({ id }));
 
     if (dryRun) {
+      const stLabel = qSubtopics.length ? " / " + qSubtopics.join(", ") : "";
       console.log(
-        `   [DRY] Q${q.questionNumber}${q.part ? q.part : ""} (${q.marks}m) — ${q.topic}${q.subtopic ? " / " + q.subtopic : ""} [${q.difficulty}]`
+        `   [DRY] Q${q.questionNumber}${q.part ? q.part : ""} (${q.marks}m) — ${q.topic}${stLabel} [${q.difficulty}]`
       );
       created++;
       continue;

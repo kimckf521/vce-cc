@@ -42,8 +42,8 @@ function QuestionVisual({ imageUrl }: { imageUrl?: string | null }) {
 interface QuestionGroupProps {
   year: number;
   examType: "EXAM_1" | "EXAM_2";
-  /** Precise section label — "Exam 1", "Exam 2A" (MCQ) or "Exam 2B" (Extended) */
-  sectionLabel?: "Exam 1" | "Exam 2A" | "Exam 2B";
+  /** Precise section label — "Exam 1", "Exam 2A" (MCQ), "Exam 2B" (Extended), or a custom label (e.g. "MCQ", "Short Answer") for generated items */
+  sectionLabel?: string;
   /** Sequential position within the current topic/view (1-based) */
   questionIndex?: number;
   /** Highest frequency tier among this question's subtopics */
@@ -230,7 +230,10 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
 
   // Derived section label — falls back gracefully when prop is not supplied
   const derivedSectionLabel = sectionLabel ?? (examType === "EXAM_1" ? "Exam 1" : "Exam 2");
-  const referenceTag = `${year} · ${derivedSectionLabel} · Q${questionNumber}`;
+  // When year is 0 (e.g. generated items), omit it from the reference tag
+  const referenceTag = year === 0
+    ? `${derivedSectionLabel} · #${questionNumber}`
+    : `${year} · ${derivedSectionLabel} · Q${questionNumber}`;
   const questionLabel = `${referenceTag}`;
 
   // Extract shared preamble from first part if present

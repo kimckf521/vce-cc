@@ -1,13 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { createClient } from "@/lib/supabase/server";
+import { requireAuthenticatedUser } from "@/lib/auth";
 import { practiceQuerySchema } from "@/lib/validations";
 import { rateLimit } from "@/lib/rate-limit";
+import { canAccessFeature } from "@/lib/subscription";
+import { isAdminRole } from "@/lib/utils";
 
 export async function GET(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for") ?? "anonymous";
   const limited = rateLimit(`practice:${ip}`, { maxRequests: 30, windowMs: 60_000 });
   if (limited) return limited;
+
+  // Auth + paid-feature gate. Defence in depth — page-level layout already
+  // shows a paywall, but a free user calling this endpoint directly should
+  // also be rejected.
+  const auth = await requireAuthenticatedUser();
+  if (auth.response) return auth.response;
+  const { user } = auth;
+  if (!isAdminRole(auth.dbUser.role)) {
+    const access = await canAccessFeature(user.id, "practice");
+    if (!access.allowed) {
+      return NextResponse.json(
+        { error: "Practice mode requires a paid subscription." },
+        { status: 403 }
+      );
+    }
+  }
 
   const { searchParams } = req.nextUrl;
   const parsed = practiceQuerySchema.safeParse({
@@ -25,6 +43,7 @@ export async function GET(req: NextRequest) {
   const topicIds = topics ? topics.split(",").filter(Boolean) : [];
 
   const where = {
+    exam: { year: { not: 9999 } },
     ...(topicIds.length > 0 && { topicId: { in: topicIds } }),
     ...(difficulty && difficulty !== "ALL" && { difficulty: difficulty as "EASY" | "MEDIUM" | "HARD" }),
   };
@@ -39,18 +58,14 @@ export async function GET(req: NextRequest) {
   // and give them 3x weight in the random sampling
   let weakQuestionIds = new Set<string>();
   if (weak === "1") {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      const weakAttempts = await prisma.attempt.findMany({
-        where: {
-          userId: user.id,
-          status: { in: ["INCORRECT", "NEEDS_REVIEW"] },
-        },
-        select: { questionId: true },
-      });
-      weakQuestionIds = new Set(weakAttempts.map((a) => a.questionId));
-    }
+    const weakAttempts = await prisma.attempt.findMany({
+      where: {
+        userId: user.id,
+        status: { in: ["INCORRECT", "NEEDS_REVIEW"] },
+      },
+      select: { questionId: true },
+    });
+    weakQuestionIds = new Set(weakAttempts.map((a) => a.questionId));
   }
 
   // Sample with weighted randomness: weak questions get 3x weight

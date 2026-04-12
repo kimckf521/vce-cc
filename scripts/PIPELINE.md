@@ -51,7 +51,7 @@ npm run extract -- --folder ./exams
       "marks": 2,
       "content": "Find $f'(x)$ where $f(x) = x^3 - 2x$.",
       "topic": "Calculus",
-      "subtopic": "Differentiation",
+      "subtopics": ["Differentiation"],
       "difficulty": "EASY",
       "imageDescription": null
     }
@@ -62,8 +62,9 @@ npm run extract -- --folder ./exams
 **Notes**:
 - Math uses LaTeX: inline `$...$`, display `$$...$$`
 - MCQs (Exam 2 Section A) use `**A.**`, `**B.**` etc. format for options
-- Claude assigns topic, subtopic, and difficulty estimates
+- Claude assigns topic, 1-3 subtopics (as an array), and difficulty estimates
 - Parts are `"a"`, `"b"`, `"c"` or `null` for standalone questions
+- Old JSON files with singular `subtopic: string` are still supported by the seeder
 
 ## Step 2: Seed Questions
 

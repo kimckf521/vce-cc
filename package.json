@@ -17,7 +17,8 @@
     "seed": "tsx --env-file=.env.local scripts/seed-questions.ts",
     "upload-solutions": "tsx --env-file=.env.local scripts/upload-solutions.ts",
     "extract-solutions": "tsx --env-file=.env.local scripts/extract-solutions.ts",
-    "seed-solutions": "tsx --env-file=.env.local scripts/seed-solutions.ts"
+    "seed-solutions": "tsx --env-file=.env.local scripts/seed-solutions.ts",
+    "upload-diagrams": "tsx --env-file=.env.local scripts/upload-diagrams.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",
@@ -33,7 +34,10 @@
     "react-markdown": "^10.1.0",
     "react-pdf": "^9.1.1",
     "rehype-katex": "^7.0.1",
+    "remark-breaks": "^4.0.0",
+    "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",
+    "stripe": "^22.0.0",
     "tailwind-merge": "^2.5.2",
     "zod": "^4.3.6"
   },

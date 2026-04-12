@@ -1,32 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { requireAuthenticatedUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/utils";
 import { createClient as createSupabaseAdmin } from "@supabase/supabase-js";
 import { z } from "zod";
 
+const enrolmentSchema = z.object({
+  subjectId: z.string().min(1),
+  tier: z.enum(["FREE", "PAID"]),
+});
+
 const createUserSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6, "Password must be at least 6 characters"),
   name: z.string().min(1, "Name is required"),
-  role: z.enum(["STUDENT", "ADMIN", "SUPER_ADMIN"]).default("STUDENT"),
+  role: z.enum(["STUDENT", "TUTOR", "INFLUENCER", "ADMIN", "SUPER_ADMIN"]).default("STUDENT"),
+  enrolments: z.array(enrolmentSchema).optional().default([]),
 });
 
 const changeRoleSchema = z.object({
   userId: z.string().min(1),
-  role: z.enum(["STUDENT", "ADMIN", "SUPER_ADMIN"]),
+  role: z.enum(["STUDENT", "TUTOR", "INFLUENCER", "ADMIN", "SUPER_ADMIN"]),
 });
 
 export async function POST(req: NextRequest) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user)
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const auth = await requireAuthenticatedUser();
+  if (auth.response) return auth.response;
 
-  const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-  if (!isAdminRole(dbUser?.role))
+  if (!isAdminRole(auth.dbUser.role))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -48,7 +49,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { email, password, name, role } = parsed.data;
+    const { email, password, name, role, enrolments } = parsed.data;
 
     // Check if email already exists in our DB
     const existing = await prisma.user.findUnique({ where: { email } });
@@ -83,14 +84,23 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Create user in Prisma DB
+    // Create user in Prisma DB (with optional enrolments)
     const newUser = await prisma.user.create({
       data: {
         id: authData.user.id,
         email,
         name,
         role,
+        ...(enrolments.length > 0 && {
+          enrolments: {
+            create: enrolments.map((e) => ({
+              subjectId: e.subjectId,
+              tier: e.tier,
+            })),
+          },
+        }),
       },
+      include: { enrolments: { include: { subject: true } } },
     });
 
     return NextResponse.json({
@@ -98,6 +108,7 @@ export async function POST(req: NextRequest) {
       email: newUser.email,
       name: newUser.name,
       role: newUser.role,
+      enrolments: newUser.enrolments,
     });
   } catch (err) {
     console.error("[admin/users] Error:", err);
@@ -115,15 +126,11 @@ export async function POST(req: NextRequest) {
  * PATCH — change a user's role. Only SUPER_ADMIN can do this.
  */
 export async function PATCH(req: NextRequest) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user)
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const auth = await requireAuthenticatedUser();
+  if (auth.response) return auth.response;
+  const { user } = auth;
 
-  const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-  if (dbUser?.role !== "SUPER_ADMIN")
+  if (auth.dbUser.role !== "SUPER_ADMIN")
     return NextResponse.json(
       { error: "Only Super Admin can change roles" },
       { status: 403 }

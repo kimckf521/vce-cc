@@ -23,3 +23,10 @@ exams/
 
 # prisma generated
 prisma/generated/
+
+# extracted question JSON & python cache
+scripts/output/
+scripts/__pycache__/
+
+# textbook PDFs (too large for git)
+textbook/

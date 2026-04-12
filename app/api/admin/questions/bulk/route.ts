@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { requireAuthenticatedUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { rateLimit } from "@/lib/rate-limit";
@@ -29,15 +29,14 @@ const bulkSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const auth = await requireAuthenticatedUser();
+  if (auth.response) return auth.response;
+  const { user } = auth;
 
   const limited = rateLimit(`admin-bulk:${user.id}`, { maxRequests: 5, windowMs: 60_000 });
   if (limited) return limited;
 
-  const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-  if (!isAdminRole(dbUser?.role)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!isAdminRole(auth.dbUser.role)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const body = await req.json();
   const parsed = bulkSchema.safeParse(body);

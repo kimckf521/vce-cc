@@ -28,12 +28,6 @@ const DIFFICULTY_OPTIONS = [
   { value: "HARD", label: "Hard", active: "bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800" },
 ] as const;
 
-const FREQUENCY_OPTIONS = [
-  { value: "often", label: "Every year" },
-  { value: "normal", label: "Most years" },
-  { value: "rare", label: "Rare" },
-] as const;
-
 export default function TopicFilters({ slug, subtopics }: Props) {
   const router = useRouter();
   const pathname = usePathname();
@@ -42,10 +36,9 @@ export default function TopicFilters({ slug, subtopics }: Props) {
   const currentSubtopic = searchParams.get("subtopic") ?? "";
   const currentExams = (searchParams.get("exam") ?? "").split(",").filter(Boolean);
   const currentDifficulties = (searchParams.get("difficulty") ?? "").split(",").filter(Boolean);
-  const currentFrequencies = (searchParams.get("frequency") ?? "").split(",").filter(Boolean);
 
   const hasFilters =
-    currentSubtopic || currentExams.length > 0 || currentDifficulties.length > 0 || currentFrequencies.length > 0;
+    currentSubtopic || currentExams.length > 0 || currentDifficulties.length > 0;
 
   function buildUrl(updates: Record<string, string | null>) {
     const params = new URLSearchParams(searchParams.toString());
@@ -133,32 +126,6 @@ export default function TopicFilters({ slug, subtopics }: Props) {
                 "rounded-full border px-3 py-1 text-xs lg:text-sm font-medium transition-colors whitespace-nowrap",
                 active
                   ? `border ${activeStyle}`
-                  : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800"
-              )}
-            >
-              {label}
-            </button>
-          );
-        })}
-      </div>
-
-      <div className="h-5 w-px bg-gray-200 dark:bg-gray-700 shrink-0" />
-
-      {/* ── Frequency pills ───────────────────────────────────── */}
-      <div className="flex items-center gap-1.5 shrink-0">
-        <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 whitespace-nowrap">
-          Frequency
-        </span>
-        {FREQUENCY_OPTIONS.map(({ value, label }) => {
-          const active = currentFrequencies.includes(value);
-          return (
-            <button
-              key={value}
-              onClick={() => toggleMulti("frequency", currentFrequencies, value)}
-              className={cn(
-                "rounded-full border px-3 py-1 text-xs lg:text-sm font-medium transition-colors whitespace-nowrap",
-                active
-                  ? "border-brand-300 dark:border-brand-700 bg-brand-100 dark:bg-brand-900 text-brand-700 dark:text-brand-400"
                   : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800"
               )}
             >

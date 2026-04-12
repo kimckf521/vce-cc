@@ -25,7 +25,7 @@ export interface QuestionGroupData {
   key: string;
   year: number;
   examType: "EXAM_1" | "EXAM_2";
-  sectionLabel: "Exam 1" | "Exam 2A" | "Exam 2B";
+  sectionLabel: string;
   frequency: "rare" | "normal" | "often" | undefined;
   topicName: string;
   subtopics: string[];
@@ -113,6 +113,7 @@ async function fetchGroupKeys(
   const questions = await prisma.question.findMany({
     where: {
       topicId,
+      exam: { year: { not: 9999 } },
       ...subtopicsWhere,
       ...(difficultyValues.length > 0 && {
         difficulty: { in: difficultyValues as ("EASY" | "MEDIUM" | "HARD")[] },

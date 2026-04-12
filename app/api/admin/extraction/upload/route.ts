@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
-import { prisma } from "@/lib/prisma";
+import { requireAuthenticatedUser } from "@/lib/auth";
 import { isAdminRole } from "@/lib/utils";
 import { createClient as createSupabaseAdmin } from "@supabase/supabase-js";
 
@@ -18,15 +17,9 @@ export const maxDuration = 60;
  * If a URL is not in the same bucket, falls back to download + re-upload.
  */
 export async function POST(req: NextRequest) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user)
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-  const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-  if (!isAdminRole(dbUser?.role))
+  const auth = await requireAuthenticatedUser();
+  if (auth.response) return auth.response;
+  if (!isAdminRole(auth.dbUser.role))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { requireAuthenticatedUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/utils";
 import { createClient as createSupabaseAdmin } from "@supabase/supabase-js";
@@ -14,14 +14,14 @@ function getAdminClient() {
 }
 
 async function requireAdmin() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return null;
-  const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-  if (!isAdminRole(dbUser?.role)) return null;
-  return user;
+  const auth = await requireAuthenticatedUser();
+  if (auth.response) return { response: auth.response } as const;
+  if (!isAdminRole(auth.dbUser.role)) {
+    return {
+      response: NextResponse.json({ error: "Forbidden" }, { status: 403 }),
+    } as const;
+  }
+  return { authUser: auth.user } as const;
 }
 
 interface FileEntry {
@@ -42,8 +42,8 @@ interface FolderGroup {
  * GET — list uploaded extraction images grouped by session.
  */
 export async function GET() {
-  if (!(await requireAdmin()))
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  const adminCheck = await requireAdmin();
+  if ("response" in adminCheck) return adminCheck.response;
 
   const admin = getAdminClient();
   if (!admin)
@@ -108,8 +108,8 @@ export async function GET() {
  * DELETE — remove files from the extraction bucket and clear matching DB imageUrl.
  */
 export async function DELETE(req: NextRequest) {
-  if (!(await requireAdmin()))
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  const adminCheck = await requireAdmin();
+  if ("response" in adminCheck) return adminCheck.response;
 
   const admin = getAdminClient();
   if (!admin)

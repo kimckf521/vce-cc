@@ -17,6 +17,7 @@ model Topic {
   slug        String     @unique
   questions   Question[]
   subtopics   Subtopic[]
+  questionSetItems QuestionSetItem[]
 }
 
 model Subtopic {
@@ -27,6 +28,7 @@ model Subtopic {
   topicId   String
   topic     Topic      @relation(fields: [topicId], references: [id], onDelete: Cascade)
   questions Question[] @relation("QuestionToSubtopic")
+  questionSetItems QuestionSetItem[] @relation("QuestionSetItemToSubtopic")
 
   @@unique([topicId, slug])
 }
@@ -84,10 +86,16 @@ model User {
   createdAt            DateTime             @default(now())
   role                 Role                 @default(STUDENT)
   stripeCustomerId     String?              @unique
+  referredByCode       String?              // Referral code used at signup (immutable record)
+  activeSessionId      String?              // Single-active-session enforcement — new logins rotate this, stale sessions get kicked
   attempts             Attempt[]
   examSessions         ExamSession[]
   extractionSessions   ExtractionSession[]
   enrolments           SubjectEnrolment[]
+  affiliate            Affiliate?
+  referral             Referral?            @relation("ReferredUser")
+
+  @@index([referredByCode])
 }
 
 model Subject {
@@ -179,6 +187,8 @@ enum Difficulty {
 
 enum Role {
   STUDENT
+  TUTOR
+  INFLUENCER
   ADMIN
   SUPER_ADMIN
 }
@@ -195,6 +205,48 @@ enum EnrolmentTier {
   PAID
 }
 
+model QuestionSet {
+  id          String            @id @default(cuid())
+  name        String
+  description String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  items       QuestionSetItem[]
+}
+
+model QuestionSetItem {
+  id            String              @id @default(cuid())
+  questionSetId String
+  topicId       String
+  type          QuestionSetItemType
+  order         Int                 @default(0)
+  marks         Int
+  content       String
+  // MCQ-only fields (4 options A–D)
+  optionA       String?
+  optionB       String?
+  optionC       String?
+  optionD       String?
+  correctOption String? // "A" | "B" | "C" | "D"
+  // Solution
+  solutionContent String?
+  difficulty    Difficulty          @default(MEDIUM)
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  questionSet   QuestionSet         @relation(fields: [questionSetId], references: [id], onDelete: Cascade)
+  topic         Topic               @relation(fields: [topicId], references: [id])
+  subtopics     Subtopic[]          @relation("QuestionSetItemToSubtopic")
+
+  @@index([questionSetId])
+  @@index([topicId])
+}
+
+enum QuestionSetItemType {
+  MCQ
+  SHORT_ANSWER
+  EXTENDED_RESPONSE
+}
+
 enum SubscriptionStatus {
   active
   trialing
@@ -204,4 +256,107 @@ enum SubscriptionStatus {
   incomplete
   incomplete_expired
   paused
+}
+
+// =====================================================
+// Affiliate Program
+// =====================================================
+
+enum AffiliateType {
+  STUDENT_REFERRAL    // Track A — students earn $5 platform credit
+  TUTOR_AFFILIATE     // Track B — tutors earn $10 cash per referral
+  INFLUENCER_AFFILIATE // Track C — influencers earn $10 + content fee
+}
+
+enum ReferralStatus {
+  PENDING    // Signed up via referral, no paid subscription yet
+  CONVERTED  // First paid subscription successful
+  EXPIRED    // Did not convert within window
+  REFUNDED   // Subscription refunded — reward clawed back
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model Affiliate {
+  id            String        @id @default(cuid())
+  userId        String        @unique
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type          AffiliateType
+  referralCode  String        @unique
+  abn           String?       // Required for TUTOR/INFLUENCER
+  approved      Boolean       @default(false)
+  active        Boolean       @default(true)
+  creditBalance Int           @default(0)  // Cents — Track A platform credit
+  notes         String?       // Admin notes
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  referrals    Referral[]
+  payouts      Payout[]
+  contracts    InfluencerContract[]
+
+  @@index([type])
+  @@index([approved])
+}
+
+model Referral {
+  id              String         @id @default(cuid())
+  affiliateId     String
+  affiliate       Affiliate      @relation(fields: [affiliateId], references: [id], onDelete: Cascade)
+  referredUserId  String         @unique
+  referredUser    User           @relation("ReferredUser", fields: [referredUserId], references: [id], onDelete: Cascade)
+  status          ReferralStatus @default(PENDING)
+  rewardAmount    Int            @default(0)  // Cents — set on conversion (500 student / 1000 tutor+influencer)
+  rewardPaid      Boolean        @default(false)
+  createdAt       DateTime       @default(now())
+  convertedAt     DateTime?
+
+  @@index([affiliateId])
+  @@index([status])
+}
+
+model Payout {
+  id          String       @id @default(cuid())
+  affiliateId String
+  affiliate   Affiliate    @relation(fields: [affiliateId], references: [id], onDelete: Cascade)
+  amount      Int          // Cents
+  type        PayoutType   @default(COMMISSION)
+  status      PayoutStatus @default(PENDING)
+  method      String?      // e.g. "bank_transfer"
+  reference   String?      // External payment reference
+  notes       String?
+  createdAt   DateTime     @default(now())
+  processedAt DateTime?
+
+  @@index([affiliateId])
+  @@index([status])
+}
+
+enum PayoutType {
+  COMMISSION   // Per-referral commission
+  CONTENT_FEE  // Influencer upfront content payment
+}
+
+model InfluencerContract {
+  id               String    @id @default(cuid())
+  affiliateId      String
+  affiliate        Affiliate @relation(fields: [affiliateId], references: [id], onDelete: Cascade)
+  platform         String    // YouTube, TikTok, Instagram, etc
+  platformHandle   String    // @username or channel URL
+  followerCount    Int?      // Optional, for admin reference
+  contentFee       Int       // Upfront payment in cents
+  feePaid          Boolean   @default(false)
+  contentUrl       String?   // Link to published video
+  contentDeadline  DateTime?
+  contentVerified  Boolean   @default(false)
+  notes            String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([affiliateId])
 }

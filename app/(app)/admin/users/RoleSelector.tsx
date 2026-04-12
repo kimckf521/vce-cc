@@ -5,6 +5,8 @@ import { Loader2 } from "lucide-react";
 
 const ROLE_OPTIONS = [
   { value: "STUDENT", label: "Student", color: "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400" },
+  { value: "TUTOR", label: "Tutor", color: "bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-400" },
+  { value: "INFLUENCER", label: "Influencer", color: "bg-pink-100 dark:bg-pink-900 text-pink-700 dark:text-pink-400" },
   { value: "ADMIN", label: "Admin", color: "bg-violet-100 dark:bg-violet-900 text-violet-700 dark:text-violet-400" },
   { value: "SUPER_ADMIN", label: "Super Admin", color: "bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-400" },
 ];

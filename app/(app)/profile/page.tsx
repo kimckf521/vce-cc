@@ -5,6 +5,8 @@ import { cn, roleLabel } from "@/lib/utils";
 import EditDisplayName from "@/components/EditDisplayName";
 import ThemeToggle from "@/components/ThemeToggle";
 import ChangePassword from "@/components/ChangePassword";
+import BillingSection from "@/components/BillingSection";
+import { STANDARD_SUBJECT_SLUG } from "@/lib/stripe";
 
 // ── topic brand colours (matching topics page) ────────────────────────────────
 
@@ -27,7 +29,7 @@ export default async function ProfilePage() {
   const userId = user?.id ?? "__no_user__";
 
   // Lightweight parallel queries — no full question rows fetched
-  const [dbUser, attempts, topics, questionCounts, topicAttemptCounts] = await Promise.all([
+  const [dbUser, attempts, topics, questionCounts, topicAttemptCounts, enrolment] = await Promise.all([
     user ? prisma.user.findUnique({ where: { id: userId } }) : null,
     prisma.attempt.groupBy({
       by: ["status"],
@@ -55,6 +57,12 @@ export default async function ProfilePage() {
       WHERE a."userId" = ${userId}
       GROUP BY q."topicId"
     `,
+    user
+      ? prisma.subjectEnrolment.findFirst({
+          where: { userId, subject: { slug: STANDARD_SUBJECT_SLUG } },
+          include: { subject: { select: { name: true } } },
+        })
+      : null,
   ]);
 
   const countByTopic = new Map(questionCounts.map((r) => [r.topicId, Number(r.groupCount)]));
@@ -199,6 +207,21 @@ export default async function ProfilePage() {
           })}
         </div>
       </div>
+
+      {/* ── Billing ──────────────────────────────────────────────────────── */}
+      <BillingSection
+        hasSubscription={
+          enrolment?.tier === "PAID" &&
+          (enrolment?.subscriptionStatus === "active" ||
+            enrolment?.subscriptionStatus === "trialing")
+        }
+        planName={enrolment?.subject?.name ?? null}
+        status={enrolment?.subscriptionStatus ?? null}
+        currentPeriodEnd={
+          enrolment?.currentPeriodEnd ? enrolment.currentPeriodEnd.toISOString() : null
+        }
+        cancelAtPeriodEnd={enrolment?.cancelAtPeriodEnd ?? false}
+      />
 
       {/* ── Account info ─────────────────────────────────────────────────── */}
       <div>

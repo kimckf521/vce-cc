@@ -56,3 +56,79 @@ export const deleteAttemptSchema = z.object({
 export const updateNameSchema = z.object({
   name: z.string().trim().min(1, "Name cannot be empty").max(100, "Name is too long"),
 });
+
+// =====================================================
+// Affiliate Program
+// =====================================================
+
+export const AffiliateType = z.enum([
+  "STUDENT_REFERRAL",
+  "TUTOR_AFFILIATE",
+  "INFLUENCER_AFFILIATE",
+]);
+
+// POST /api/auth/sync-user — accepts an optional referral code
+export const syncUserSchema = z.object({
+  referralCode: z.string().trim().min(1).max(60).optional(),
+});
+
+// POST /api/affiliates/register
+export const registerAffiliateSchema = z
+  .object({
+    type: AffiliateType,
+    abn: z.string().trim().regex(/^\d{11}$/, "ABN must be 11 digits").optional(),
+    platform: z.string().trim().max(50).optional(),
+    platformHandle: z.string().trim().max(200).optional(),
+    followerCount: z.coerce.number().int().min(0).optional(),
+  })
+  .refine(
+    (data) => data.type === "STUDENT_REFERRAL" || !!data.abn,
+    { message: "ABN is required for tutors and influencers", path: ["abn"] }
+  )
+  .refine(
+    (data) => data.type !== "INFLUENCER_AFFILIATE" || (!!data.platform && !!data.platformHandle),
+    { message: "Platform and handle are required for influencers", path: ["platform"] }
+  );
+
+// POST /api/affiliates/payouts — request a payout
+export const requestPayoutSchema = z.object({
+  amount: z.coerce.number().int().min(2000, "Minimum payout is $20"),
+});
+
+// PATCH /api/admin/affiliates/[id]
+export const updateAffiliateSchema = z.object({
+  approved: z.boolean().optional(),
+  active: z.boolean().optional(),
+  creditAdjustment: z.coerce.number().int().optional(), // Cents — positive or negative
+  notes: z.string().max(2000).optional(),
+});
+
+// POST /api/admin/affiliates/[id]/contracts
+export const createContractSchema = z.object({
+  platform: z.string().trim().min(1).max(50),
+  platformHandle: z.string().trim().min(1).max(200),
+  followerCount: z.coerce.number().int().min(0).optional(),
+  contentFee: z.coerce.number().int().min(0),
+  contentDeadline: z.string().datetime().optional(),
+  notes: z.string().max(2000).optional(),
+});
+
+// PATCH /api/admin/affiliates/[id]/contracts/[contractId]
+export const updateContractSchema = z.object({
+  contentUrl: z.string().url().optional(),
+  contentVerified: z.boolean().optional(),
+  feePaid: z.boolean().optional(),
+  notes: z.string().max(2000).optional(),
+});
+
+// PATCH /api/admin/affiliates/payouts/[id]
+export const updatePayoutSchema = z.object({
+  status: z.enum(["PENDING", "PROCESSING", "COMPLETED", "FAILED"]),
+  reference: z.string().max(200).optional(),
+  notes: z.string().max(2000).optional(),
+});
+
+// POST /api/admin/affiliates/[id]/mark-converted — manual override
+export const markConvertedSchema = z.object({
+  referralId: z.string().min(1),
+});

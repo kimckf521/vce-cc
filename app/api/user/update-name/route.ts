@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { requireAuthenticatedUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { updateNameSchema } from "@/lib/validations";
 import { rateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
+  const auth = await requireAuthenticatedUser();
+  if (auth.response) return auth.response;
+  const { user } = auth;
+  // Still need raw supabase client to update auth user metadata below
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
-  }
 
   const limited = rateLimit(`update-name:${user.id}`, { maxRequests: 10, windowMs: 60_000 });
   if (limited) return limited;

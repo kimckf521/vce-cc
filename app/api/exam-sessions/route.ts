@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { requireAuthenticatedUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { rateLimit } from "@/lib/rate-limit";
 import { z } from "zod";
@@ -15,9 +15,9 @@ const createSessionSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const auth = await requireAuthenticatedUser();
+  if (auth.response) return auth.response;
+  const { user } = auth;
 
   const limited = rateLimit(`exam-sessions:${user.id}`, { maxRequests: 20, windowMs: 60_000 });
   if (limited) return limited;
@@ -41,9 +41,9 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const auth = await requireAuthenticatedUser();
+  if (auth.response) return auth.response;
+  const { user } = auth;
 
   const limited = rateLimit(`exam-sessions-read:${user.id}`, { maxRequests: 30, windowMs: 60_000 });
   if (limited) return limited;

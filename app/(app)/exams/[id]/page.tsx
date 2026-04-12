@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import QuestionGroup from "@/components/QuestionGroup";
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, FileText } from "lucide-react";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -83,12 +83,57 @@ export default async function ExamPage({ params }: PageProps) {
         <ChevronLeft className="h-4 w-4 lg:h-5 lg:w-5" /> Past Papers
       </Link>
 
-      <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">{title}</h1>
-      <p className="text-gray-500 dark:text-gray-400 lg:text-base mb-8">
-        {isTwoSection
-          ? `Section A: ${sectionA.length} questions · Section B: ${sectionBGroups.length} questions`
-          : `${sectionA.length + sectionBGroups.length} questions`}
-      </p>
+      <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
+        <div>
+          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">{title}</h1>
+          <p className="text-gray-500 dark:text-gray-400 lg:text-base">
+            {isTwoSection
+              ? `Section A: ${sectionA.length} questions · Section B: ${sectionBGroups.length} questions`
+              : `${sectionA.length + sectionBGroups.length} questions`}
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          {exam.pdfUrl && (
+            <a
+              href={exam.pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-xl border border-brand-200 dark:border-brand-700 bg-brand-50 dark:bg-brand-950/50 px-3 py-2 text-sm font-medium text-brand-700 dark:text-brand-300 hover:bg-brand-100 dark:hover:bg-brand-900/50 transition-colors"
+            >
+              <FileText className="h-4 w-4" />
+              Original Exam PDF
+            </a>
+          )}
+          {exam.answerUrl && (
+            <a
+              href={exam.answerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            >
+              <FileText className="h-4 w-4" />
+              Examiner Report
+            </a>
+          )}
+        </div>
+      </div>
+
+      {/* VCAA Copyright Notice */}
+      <div className="mb-8 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-3 text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+        <span className="font-semibold text-gray-600 dark:text-gray-300">Copyright notice: </span>
+        Exam questions on this page are reproduced from past VCAA Mathematical Methods examinations for individual study and research purposes under the fair dealing provisions of the{" "}
+        <em>Copyright Act 1968</em> (Cth). This site is not affiliated with, endorsed by, or associated with the Victorian Curriculum and Assessment Authority (VCAA).{" "}
+        © Victorian Curriculum and Assessment Authority. For current and official versions of all VCE examinations, visit{" "}
+        <a
+          href="https://www.vcaa.vic.edu.au"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline hover:text-gray-700 dark:hover:text-gray-300"
+        >
+          www.vcaa.vic.edu.au
+        </a>
+        .
+      </div>
 
       {/* Section A — Multiple Choice */}
       {sectionA.length > 0 && (

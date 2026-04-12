@@ -1,17 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { requireAuthenticatedUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/utils";
 
 async function getAdmin() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return null;
-  const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-  if (!isAdminRole(dbUser?.role)) return null;
-  return { authUser: user, dbUser: dbUser! };
+  const auth = await requireAuthenticatedUser();
+  if (auth.response) return { response: auth.response } as const;
+  if (!isAdminRole(auth.dbUser.role)) {
+    return {
+      response: NextResponse.json({ error: "Forbidden" }, { status: 403 }),
+    } as const;
+  }
+  return { authUser: auth.user, dbUser: auth.dbUser } as const;
 }
 
 /**
@@ -19,8 +19,7 @@ async function getAdmin() {
  */
 export async function GET() {
   const admin = await getAdmin();
-  if (!admin)
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if ("response" in admin) return admin.response;
 
   const sessions = await prisma.extractionSession.findMany({
     orderBy: { createdAt: "desc" },
@@ -49,8 +48,7 @@ export async function GET() {
  */
 export async function POST(req: NextRequest) {
   const admin = await getAdmin();
-  if (!admin)
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if ("response" in admin) return admin.response;
 
   const body = await req.json();
   const { pdfName, result, statuses } = body;
@@ -94,8 +92,7 @@ export async function POST(req: NextRequest) {
  */
 export async function PATCH(req: NextRequest) {
   const admin = await getAdmin();
-  if (!admin)
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if ("response" in admin) return admin.response;
 
   const body = await req.json();
   const { id, statuses, result, done } = body;
@@ -129,8 +126,7 @@ export async function PATCH(req: NextRequest) {
  */
 export async function DELETE(req: NextRequest) {
   const admin = await getAdmin();
-  if (!admin)
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if ("response" in admin) return admin.response;
 
   const body = await req.json();
   const { id } = body;

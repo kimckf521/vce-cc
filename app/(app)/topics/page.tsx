@@ -1,8 +1,11 @@
 import { prisma } from "@/lib/prisma";
-import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+import { isAdminRole } from "@/lib/utils";
+import { canAccessTopic } from "@/lib/subscription";
+import LockedTopicLink from "@/components/LockedTopicLink";
 import {
   ChevronRight,
-  CalendarDays,
+  Lock,
   Shuffle,
   TrendingUp,
   RefreshCw,
@@ -24,39 +27,57 @@ import {
   PieChart,
   LineChart,
   Ruler,
-  Layers,
   FlaskConical,
+  MoveUpRight,
+  Gauge,
+  PenLine,
+  Combine,
+  Scale,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 // Map subtopic name → icon
 function getSubtopicIcon(name: string): LucideIcon {
   const n = name.toLowerCase();
-  if (n.includes("transform")) return Shuffle;
-  if (n.includes("logarithm") && n.includes("eq")) return BookOpen;
-  if (n.includes("logarithm")) return TrendingUp;
-  if (n.includes("inverse")) return RefreshCw;
-  if (n.includes("trig") || n.includes("circular")) return Waves;
-  if (n.includes("rational") || n.includes("quotient")) return Divide;
-  if (n.includes("domain") || n.includes("range")) return Maximize2;
-  if (n.includes("algebraic") || n.includes("function")) return FunctionSquare;
-  if (n.includes("polynomial") || n.includes("polynomials")) return Hash;
+  // Algebra, Number, and Structure
+  if (n.includes("polynomial") && n.includes("eq")) return Hash;
   if (n.includes("exponential") && n.includes("eq")) return Zap;
-  if (n.includes("exponential")) return TrendingUp;
-  if (n.includes("quadratic")) return BarChart2;
+  if (n.includes("logarithmic") && n.includes("eq")) return BookOpen;
+  if (n.includes("trigonometric") && n.includes("eq")) return Waves;
   if (n.includes("simultaneous")) return GitMerge;
+  if (n.includes("exponent") && n.includes("law")) return Scale;
+  // Functions, Relations, and Graphs
+  if (n.includes("polynomial") && n.includes("func")) return Hash;
+  if (n.includes("exponential") && n.includes("func")) return TrendingUp;
+  if (n.includes("logarithmic") && n.includes("func")) return TrendingUp;
+  if (n.includes("trigonometric") && n.includes("func")) return Waves;
+  if (n.includes("rational")) return Divide;
+  if (n.includes("domain")) return Maximize2;
+  if (n.includes("transform")) return Shuffle;
+  if (n.includes("inverse")) return RefreshCw;
+  if (n.includes("composite")) return Combine;
+  // Calculus
   if (n.includes("chain")) return Link2;
-  if (n.includes("product") || n.includes("differentiation")) return Activity;
+  if (n.includes("product rule")) return Activity;
+  if (n.includes("quotient")) return Divide;
+  if (n.includes("tangent")) return PenLine;
+  if (n.includes("rate")) return Gauge;
+  if (n.includes("stationary")) return MoveUpRight;
   if (n.includes("optimis")) return Target;
-  if (n.includes("integration") || n.includes("integral") || n.includes("area")) return RotateCcw;
-  if (n.includes("antidifferentiation") || n.includes("fundamental")) return BookOpen;
-  if (n.includes("binomial") || n.includes("discrete")) return BarChart2;
-  if (n.includes("normal") || n.includes("continuous")) return LineChart;
-  if (n.includes("conditional") || n.includes("probability rules")) return GitBranch;
+  if (n.includes("antidifferentiation")) return RotateCcw;
+  if (n.includes("definite")) return RotateCcw;
+  if (n.includes("area")) return RotateCcw;
+  if (n.includes("fundamental")) return BookOpen;
+  if (n.includes("differentiation")) return Activity;
+  // Data Analysis, Probability, and Statistics
+  if (n.includes("binomial")) return BarChart2;
+  if (n.includes("normal")) return LineChart;
+  if (n.includes("continuous")) return LineChart;
+  if (n.includes("discrete")) return BarChart2;
+  if (n.includes("conditional")) return GitBranch;
   if (n.includes("confidence")) return Ruler;
-  if (n.includes("proportion") || n.includes("sampling") || n.includes("sample")) return PieChart;
-  if (n.includes("combinatoric")) return Layers;
-  if (n.includes("percent") || n.includes("probability")) return Percent;
+  if (n.includes("sample") || n.includes("sampling")) return PieChart;
+  if (n.includes("probability")) return Percent;
   return FlaskConical;
 }
 
@@ -70,61 +91,61 @@ const topicThemes: Record<number, { bg: string; iconBg: string; iconColor: strin
 
 const SUBTOPIC_DESCRIPTIONS: Record<string, string> = {
   // Algebra, Number, and Structure
-  "Algebraic Functions": "Piecewise, hybrid, and absolute value functions — defining rules and sketching their graphs.",
-  "Domain and Range": "Finding maximal domains and ranges, and restricting domains for inverse functions.",
-  "Exponential Functions": "Functions of the form a·bˣ — graphs, transformations, and key features.",
-  "Inverse Functions": "Finding and verifying inverse functions including domain and range relationships.",
-  "Logarithmic Functions": "Logarithmic functions and their transformations, focusing on log\u2091 (natural log).",
-  "Polynomial Functions": "Polynomials up to degree 4 — factorising, key features, and graph sketching.",
-  "Rational Functions": "Functions of the form 1/xⁿ — asymptotes, transformations, and sketching.",
-  "Transformations": "Dilations, reflections, and translations applied to function graphs.",
-  "Trigonometric Functions": "Circular functions sin, cos, and tan — amplitude, period, phase, and graphs.",
-  // Functions, Relations, and Graphs
+  "Polynomial Equations": "Solving polynomial equations using the factor theorem, remainder theorem, and algebraic techniques.",
   "Exponential Equations": "Solving equations with exponential expressions using logarithm laws.",
   "Logarithmic Equations": "Solving logarithmic equations analytically and graphically.",
-  "Polynomials": "Polynomial equations — factor theorem, remainder theorem, and solving techniques.",
-  "Quadratics": "Solving quadratic equations by factoring, completing the square, or the quadratic formula.",
+  "Trigonometric Equations": "Solving trigonometric equations over specified domains including general solutions.",
   "Simultaneous Equations": "Solving systems of linear and non-linear equations using substitution or elimination.",
+  "Exponent and Logarithm Laws": "Applying index laws, logarithm properties, and change-of-base rule to simplify expressions.",
+  // Functions, Relations, and Graphs
+  "Polynomial Functions": "Polynomials up to degree 4 — factorising, key features, and graph sketching.",
+  "Exponential Functions": "Functions of the form a·bˣ and eˣ — graphs, transformations, and key features.",
+  "Logarithmic Functions": "Logarithmic functions and their transformations, including logₑ (natural log).",
+  "Trigonometric Functions": "Circular functions sin, cos, and tan — amplitude, period, phase, and graphs.",
+  "Rational Functions": "Functions of the form 1/xⁿ — asymptotes, transformations, and sketching.",
+  "Domain and Range": "Finding maximal domains and ranges, and restricting domains for inverse functions.",
+  "Transformations": "Dilations, reflections, and translations applied to function graphs.",
+  "Inverse Functions": "Finding and verifying inverse functions including domain and range relationships.",
+  "Composite Functions": "Forming and evaluating composite functions f(g(x)) and determining their domains.",
   // Calculus
-  "Antidifferentiation": "Finding antiderivatives of polynomial, exponential, and trigonometric functions.",
-  "Area Under Curve": "Calculating exact areas bounded by curves using definite integrals.",
-  "Areas Under Curves": "Estimating areas using numerical methods including the trapezium rule.",
+  "Differentiation": "Finding derivatives using first principles, power rule, and standard rules for all function types.",
   "Chain Rule": "Differentiating composite functions f(g(x)) using the chain rule.",
-  "Definite Integrals": "Evaluating definite integrals and applying the fundamental theorem of calculus.",
-  "Differentiation": "Finding derivatives from first principles and standard rules; rates of change.",
-  "Fundamental Theorem": "Connecting differentiation and integration via the fundamental theorem of calculus.",
-  "Integration": "Integration techniques and calculating signed areas between curves.",
-  "Optimisation": "Using derivatives to find maximum and minimum values in applied problems.",
   "Product Rule": "Differentiating products of two functions: d/dx[u·v] = u'v + uv'.",
   "Quotient Rule": "Differentiating quotients of two functions: d/dx[u/v] = (u'v − uv')/v².",
+  "Tangents and Normals": "Finding equations of tangent and normal lines to curves at given points.",
+  "Rates of Change": "Using derivatives to model instantaneous and average rates of change in context.",
+  "Stationary Points and Curve Sketching": "Finding and classifying stationary points; sketching curves using calculus.",
+  "Optimisation": "Using derivatives to find maximum and minimum values in applied problems.",
+  "Antidifferentiation": "Finding antiderivatives of polynomial, exponential, and trigonometric functions.",
+  "Definite Integrals": "Evaluating definite integrals and understanding their geometric interpretation.",
+  "Area Under Curves": "Calculating exact areas bounded by curves, axes, and between two curves.",
+  "Fundamental Theorem of Calculus": "Connecting differentiation and integration via the fundamental theorem.",
   // Data Analysis, Probability, and Statistics
-  "Binomial Distribution": "Discrete distribution for repeated independent trials — mean, variance, and probabilities.",
-  "Combinatorics": "Counting methods including permutations and combinations for probability problems.",
-  "Conditional Probability": "Probability given prior information — Pr(A|B) and independence testing.",
-  "Confidence Intervals": "Constructing and interpreting confidence intervals for a population proportion.",
-  "Continuous Distributions": "Probability density functions for general continuous random variables.",
-  "Continuous Random Variables": "Working with PDFs and CDFs — calculating probabilities and expected values.",
-  "Discrete Distributions": "Probability distributions for discrete random variables using tables and rules.",
-  "Discrete Random Variables": "Expected value, variance, and probability for discrete random variables.",
-  "Normal Distribution": "Standard and general normal distributions — z-scores and probability calculations.",
   "Probability Rules": "Addition, multiplication, and complement rules for calculating probabilities.",
-  "Sample Proportions": "Distribution of sample proportions and the central limit theorem.",
-  "Sampling": "Simulating sampling distributions to understand statistical inference.",
+  "Conditional Probability": "Probability given prior information — Pr(A|B) and independence testing.",
+  "Discrete Random Variables": "Expected value, variance, and probability for discrete random variables.",
+  "Binomial Distribution": "Discrete distribution for repeated independent trials — mean, variance, and probabilities.",
+  "Continuous Random Variables": "Working with PDFs and CDFs — calculating probabilities and expected values.",
+  "Normal Distribution": "Standard and general normal distributions — z-scores and probability calculations.",
+  "Confidence Intervals": "Constructing and interpreting confidence intervals for a population proportion.",
+  "Sample Proportions and Sampling": "Distribution of sample proportions, sampling distributions, and the central limit theorem.",
 };
 
 function getSubtopicDescription(name: string): string {
   return SUBTOPIC_DESCRIPTIONS[name] ?? "Practice questions for this topic area.";
 }
 
-function freqLabel(yearCount: number): { tag: string; dots: number; title: string } {
-  if (yearCount >= 6) return { tag: "Every year", dots: 3, title: `Appeared in ${yearCount} of 8 years — very common exam topic` };
-  if (yearCount >= 3) return { tag: "Most years", dots: 2, title: `Appeared in ${yearCount} of 8 years — common exam topic` };
-  return { tag: "Rare", dots: 1, title: `Appeared in ${yearCount} of 8 years — infrequent exam topic` };
-}
-
+const GENERATED_QUESTION_SET_NAME = "1st Generated Question Set";
 
 export default async function TopicsPage() {
-  const [topics, subtopicYearCounts, subtopicStats, topicStats] = await Promise.all([
+  // Resolve the active generated question set (single row lookup; safe if it's missing)
+  const generatedSet = await prisma.questionSet.findFirst({
+    where: { name: GENERATED_QUESTION_SET_NAME },
+    select: { id: true },
+  });
+  const generatedSetId = generatedSet?.id ?? "";
+
+  const [topics, topicStats] = await Promise.all([
     // Lightweight topic + subtopic metadata (no questions)
     prisma.topic.findMany({
       orderBy: { order: "asc" },
@@ -140,59 +161,36 @@ export default async function TopicsPage() {
         },
       },
     }),
-    // Year counts per subtopic
-    prisma.$queryRaw<{ subtopicId: string; yearCount: bigint }[]>`
-      SELECT s."id" AS "subtopicId", COUNT(DISTINCT e."year") AS "yearCount"
-      FROM "Subtopic" s
-      JOIN "_QuestionToSubtopic" qs ON qs."B" = s."id"
-      JOIN "Question" q ON q."id" = qs."A"
-      JOIN "Exam" e ON e."id" = q."examId"
-      GROUP BY s."id"
-    `,
-    // Question group counts + difficulty breakdown per subtopic (via SQL)
-    prisma.$queryRaw<{ subtopicId: string; total: bigint; easy: bigint; medium: bigint; hard: bigint }[]>`
-      SELECT qs."B" AS "subtopicId",
-        COUNT(*) FILTER (WHERE q."part" IS NULL)
-        + COUNT(DISTINCT CASE WHEN q."part" IS NOT NULL THEN q."examId" || '-' || q."questionNumber" END)
-        AS "total",
-        COUNT(*) FILTER (WHERE q."difficulty" = 'EASY' AND q."part" IS NULL)
-        + COUNT(DISTINCT CASE WHEN q."difficulty" = 'EASY' AND q."part" IS NOT NULL THEN q."examId" || '-' || q."questionNumber" END)
-        AS "easy",
-        COUNT(*) FILTER (WHERE q."difficulty" = 'MEDIUM' AND q."part" IS NULL)
-        + COUNT(DISTINCT CASE WHEN q."difficulty" = 'MEDIUM' AND q."part" IS NOT NULL THEN q."examId" || '-' || q."questionNumber" END)
-        AS "medium",
-        COUNT(*) FILTER (WHERE q."difficulty" = 'HARD' AND q."part" IS NULL)
-        + COUNT(DISTINCT CASE WHEN q."difficulty" = 'HARD' AND q."part" IS NOT NULL THEN q."examId" || '-' || q."questionNumber" END)
-        AS "hard"
-      FROM "_QuestionToSubtopic" qs
-      JOIN "Question" q ON q."id" = qs."A"
-      GROUP BY qs."B"
-    `,
-    // Question group counts per topic
+    // Per-topic totals from the generated question set
     prisma.$queryRaw<{ topicId: string; total: bigint }[]>`
-      SELECT "topicId",
-        COUNT(*) FILTER (WHERE "part" IS NULL)
-        + COUNT(DISTINCT CASE WHEN "part" IS NOT NULL THEN "examId" || '-' || "questionNumber" END)
-        AS "total"
-      FROM "Question"
+      SELECT "topicId", COUNT(*) AS "total"
+      FROM "QuestionSetItem"
+      WHERE "questionSetId" = ${generatedSetId}
       GROUP BY "topicId"
     `,
   ]);
 
-  // Build lookups
-  const yearCountMap = new Map<string, number>();
-  for (const row of subtopicYearCounts) {
-    yearCountMap.set(row.subtopicId, Number(row.yearCount));
+  const topicTotalMap = new Map(topicStats.map((r) => [r.topicId, Number(r.total)]));
+
+  // Compute lock state per topic for the current user.
+  // Admins see no locks. PAID users see no locks. FREE users see locks on every
+  // topic except the free-preview topic (Algebra).
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const dbUser = user
+    ? await prisma.user.findUnique({ where: { id: user.id }, select: { role: true } })
+    : null;
+  const isAdmin = isAdminRole(dbUser?.role);
+
+  const lockedSlugs = new Set<string>();
+  if (user && !isAdmin) {
+    await Promise.all(
+      topics.map(async (t) => {
+        const access = await canAccessTopic(user.id, t.slug);
+        if (!access.allowed) lockedSlugs.add(t.slug);
+      })
+    );
   }
-
-  const subStatsMap = new Map(
-    subtopicStats.map((r) => [
-      r.subtopicId,
-      { total: Number(r.total), easy: Number(r.easy), medium: Number(r.medium), hard: Number(r.hard) },
-    ])
-  );
-
-  const topicStatsMap = new Map(topicStats.map((r) => [r.topicId, Number(r.total)]));
 
   return (
     <div>
@@ -204,17 +202,28 @@ export default async function TopicsPage() {
       <div className="space-y-6 lg:space-y-8">
         {topics.map((topic) => {
           const theme = topicThemes[topic.order] ?? topicThemes[1];
-          const topicTotal = topicStatsMap.get(topic.id) ?? 0;
+          const topicTotal = topicTotalMap.get(topic.id) ?? 0;
+          const isLocked = lockedSlugs.has(topic.slug);
 
           return (
-            <div key={topic.id} className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
+            <div key={topic.id} className={`rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden ${isLocked ? "opacity-75" : ""}`}>
               {/* Topic header */}
-              <Link
+              <LockedTopicLink
                 href={`/topics/${topic.slug}`}
-                className={`flex items-center justify-between px-6 py-5 lg:px-8 lg:py-6 bg-gradient-to-r ${theme.bg} hover:brightness-[0.98] transition-all`}
+                locked={isLocked}
+                topicName={topic.name}
+                className={`w-full flex items-center justify-between text-left px-6 py-5 lg:px-8 lg:py-6 bg-gradient-to-r ${theme.bg} hover:brightness-[0.98] transition-all`}
               >
                 <div className="flex-1 min-w-0 pr-4">
-                  <h2 className="font-bold text-gray-900 dark:text-gray-100 text-lg lg:text-xl">{topic.name}</h2>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h2 className="font-bold text-gray-900 dark:text-gray-100 text-lg lg:text-xl">{topic.name}</h2>
+                    {isLocked && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-gray-900/80 dark:bg-gray-700 px-2 py-0.5 text-xs font-semibold text-white">
+                        <Lock className="h-3 w-3" />
+                        Paid plan
+                      </span>
+                    )}
+                  </div>
                   {topic.description && (
                     <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mt-1">{topic.description}</p>
                   )}
@@ -223,75 +232,34 @@ export default async function TopicsPage() {
                   </p>
                 </div>
                 <ChevronRight className="h-5 w-5 lg:h-6 lg:w-6 text-gray-300 dark:text-gray-600 shrink-0" />
-              </Link>
+              </LockedTopicLink>
 
               {/* Subtopic card grid — more columns on wider screens */}
               {topic.subtopics.length > 0 && (
                 <div className="p-3 sm:p-4 lg:p-6 border-t border-gray-100 dark:border-gray-800 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3 lg:gap-4">
                   {topic.subtopics.map((sub) => {
-                    const { total, easy, medium, hard } = subStatsMap.get(sub.id) ?? { total: 0, easy: 0, medium: 0, hard: 0 };
-                    const yearCount = yearCountMap.get(sub.id) ?? 0;
-                    const { tag: freq, dots, title: freqTitle } = freqLabel(yearCount);
                     const Icon = getSubtopicIcon(sub.name);
 
                     return (
                       <div key={sub.id} className="group relative">
-                        <Link
+                        <LockedTopicLink
                           href={`/topics/${topic.slug}?subtopic=${sub.slug}`}
-                          className="flex flex-col gap-2.5 sm:gap-3 lg:gap-4 rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800 hover:border-gray-200 dark:hover:border-gray-700 hover:bg-white dark:hover:bg-gray-900 hover:shadow-sm transition-all p-3 sm:p-3.5 lg:p-5 h-full"
+                          locked={isLocked}
+                          topicName={topic.name}
+                          className="flex flex-col gap-2.5 sm:gap-3 lg:gap-4 rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800 hover:border-gray-200 dark:hover:border-gray-700 hover:bg-white dark:hover:bg-gray-900 hover:shadow-sm transition-all p-3 sm:p-3.5 lg:p-5 h-full text-left w-full"
                         >
-                          {/* Top row: icon + freq badge */}
-                          <div className="flex items-start justify-between gap-1.5">
+                          {/* Icon */}
+                          <div className="flex items-start">
                             <span className={`flex h-8 w-8 sm:h-9 sm:w-9 lg:h-11 lg:w-11 items-center justify-center rounded-lg lg:rounded-xl shrink-0 ${theme.iconBg}`}>
                               <Icon className={`h-3.5 w-3.5 sm:h-4 sm:w-4 lg:h-5 lg:w-5 ${theme.iconColor}`} />
                             </span>
-                            {/* Frequency badge: dots-only on mobile, full label on sm+ */}
-                            <span
-                              className="flex items-center gap-0.5 sm:gap-1 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-1 sm:px-1.5 py-0.5 text-xs font-medium text-gray-500 dark:text-gray-400 shrink-0"
-                            >
-                              <CalendarDays className="h-3 w-3 text-gray-400 dark:text-gray-500 shrink-0" />
-                              <span className="hidden sm:inline lg:hidden xl:inline">{freq}</span>
-                              <span className="flex gap-0.5 sm:ml-0.5">
-                                {[1, 2, 3].map((d) => (
-                                  <span
-                                    key={d}
-                                    className={`h-1.5 w-1.5 rounded-full shrink-0 ${d <= dots ? "bg-gray-500 dark:bg-gray-400" : "bg-gray-200 dark:bg-gray-700"}`}
-                                  />
-                                ))}
-                              </span>
-                            </span>
                           </div>
 
-                          {/* Name + count */}
+                          {/* Name */}
                           <div>
                             <p className="text-xs sm:text-sm lg:text-base font-semibold text-gray-800 dark:text-gray-200 leading-snug">{sub.name}</p>
-                            <p className="text-xs lg:text-sm text-gray-400 dark:text-gray-500 mt-0.5">{total} question{total !== 1 ? "s" : ""}</p>
                           </div>
-
-                          {/* Difficulty bar */}
-                          {total > 0 && (
-                            <div className="flex h-1 sm:h-1.5 lg:h-2 w-full rounded-full overflow-hidden gap-px mt-auto">
-                              {easy > 0 && (
-                                <div
-                                  className="bg-green-400 rounded-full"
-                                  style={{ width: `${(easy / total) * 100}%` }}
-                                />
-                              )}
-                              {medium > 0 && (
-                                <div
-                                  className="bg-yellow-400 rounded-full"
-                                  style={{ width: `${(medium / total) * 100}%` }}
-                                />
-                              )}
-                              {hard > 0 && (
-                                <div
-                                  className="bg-red-400 rounded-full"
-                                  style={{ width: `${(hard / total) * 100}%` }}
-                                />
-                              )}
-                            </div>
-                          )}
-                        </Link>
+                        </LockedTopicLink>
 
                         {/* Description tooltip on hover */}
                         <div className="pointer-events-none absolute bottom-full left-0 mb-2 z-10 opacity-0 lg:group-hover:opacity-100 transition-opacity duration-150 w-60 lg:w-72">

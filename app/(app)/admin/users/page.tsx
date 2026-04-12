@@ -45,7 +45,19 @@ export default async function AdminUsersPage() {
   const [users, totalQuestions, attemptStats] = await Promise.all([
     prisma.user.findMany({
       orderBy: { createdAt: "desc" },
-      select: { id: true, email: true, name: true, role: true, createdAt: true },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        createdAt: true,
+        enrolments: {
+          select: {
+            tier: true,
+            subject: { select: { id: true, name: true } },
+          },
+        },
+      },
     }),
     prisma.question.count(),
     prisma.attempt.groupBy({
@@ -141,9 +153,45 @@ export default async function AdminUsersPage() {
                       isSelf={u.id === user!.id}
                       currentUserRole={dbUser!.role}
                     />
+                    {u.role === "STUDENT" && (
+                      (() => {
+                        const hasPaid = u.enrolments.some((e) => e.tier === "PAID");
+                        const hasAny = u.enrolments.length > 0;
+                        return (
+                          <span
+                            className={`rounded-full px-2.5 py-0.5 text-xs lg:text-sm font-medium ${
+                              hasPaid
+                                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-400"
+                                : hasAny
+                                  ? "bg-sky-100 text-sky-700 dark:bg-sky-900 dark:text-sky-400"
+                                  : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                            }`}
+                          >
+                            {hasPaid ? "Paid" : hasAny ? "Free" : "No subjects"}
+                          </span>
+                        );
+                      })()
+                    )}
                   </div>
                   <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 truncate">{u.email}</p>
                   <p className="text-xs lg:text-sm text-gray-400 dark:text-gray-500 mt-0.5">Joined {formatDate(u.createdAt)}</p>
+                  {u.role === "STUDENT" && u.enrolments.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {u.enrolments.map((e) => (
+                        <span
+                          key={e.subject.id}
+                          className={`inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs font-medium ${
+                            e.tier === "PAID"
+                              ? "bg-emerald-50 dark:bg-emerald-950 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400"
+                              : "bg-sky-50 dark:bg-sky-950 border-sky-200 dark:border-sky-800 text-sky-700 dark:text-sky-400"
+                          }`}
+                        >
+                          {e.subject.name}
+                          <span className="opacity-70">· {e.tier === "PAID" ? "Paid" : "Free"}</span>
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
 

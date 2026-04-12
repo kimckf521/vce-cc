@@ -1,26 +1,46 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Loader2, UserPlus, Check, Eye, EyeOff } from "lucide-react";
+
+type Subject = { id: string; name: string; slug: string };
+type EnrolmentTier = "NONE" | "FREE" | "PAID";
 
 export default function CreateAccountForm({ isSuperAdmin = false }: { isSuperAdmin?: boolean }) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<"STUDENT" | "ADMIN" | "SUPER_ADMIN">("STUDENT");
+  const [role, setRole] = useState<
+    "STUDENT" | "TUTOR" | "INFLUENCER" | "ADMIN" | "SUPER_ADMIN"
+  >("STUDENT");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [enrolments, setEnrolments] = useState<Record<string, EnrolmentTier>>({});
+
+  useEffect(() => {
+    if (!open) return;
+    fetch("/api/admin/subjects")
+      .then((r) => r.json())
+      .then((data) => setSubjects(data.subjects || []))
+      .catch(() => {});
+  }, [open]);
 
   const reset = () => {
     setName("");
     setEmail("");
     setPassword("");
     setRole("STUDENT");
+    setEnrolments({});
     setError("");
     setSuccess("");
+  };
+
+  const setSubjectTier = (subjectId: string, tier: EnrolmentTier) => {
+    setEnrolments((prev) => ({ ...prev, [subjectId]: tier }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -30,10 +50,14 @@ export default function CreateAccountForm({ isSuperAdmin = false }: { isSuperAdm
     setSuccess("");
 
     try {
+      const enrolmentPayload = Object.entries(enrolments)
+        .filter(([, tier]) => tier === "FREE" || tier === "PAID")
+        .map(([subjectId, tier]) => ({ subjectId, tier }));
+
       const res = await fetch("/api/admin/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password, role }),
+        body: JSON.stringify({ name, email, password, role, enrolments: enrolmentPayload }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to create account");
@@ -42,6 +66,7 @@ export default function CreateAccountForm({ isSuperAdmin = false }: { isSuperAdm
       setEmail("");
       setPassword("");
       setRole("STUDENT");
+      setEnrolments({});
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create account");
     } finally {
@@ -136,45 +161,78 @@ export default function CreateAccountForm({ isSuperAdmin = false }: { isSuperAdm
           </div>
           <div>
             <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Role</label>
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => setRole("STUDENT")}
-                className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${
-                  role === "STUDENT"
-                    ? "bg-brand-600 text-white border-brand-600"
-                    : "border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"
-                }`}
+            <div className="relative">
+              <select
+                value={role}
+                onChange={(e) =>
+                  setRole(e.target.value as typeof role)
+                }
+                className="w-full appearance-none px-3 py-2 pr-9 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100 cursor-pointer focus:outline-none focus:border-brand-500"
               >
-                Student
-              </button>
-              <button
-                type="button"
-                onClick={() => setRole("ADMIN")}
-                className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${
-                  role === "ADMIN"
-                    ? "bg-violet-600 text-white border-violet-600"
-                    : "border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"
-                }`}
+                <option value="STUDENT">Student</option>
+                <option value="TUTOR">Tutor</option>
+                <option value="INFLUENCER">Influencer</option>
+                <option value="ADMIN">Admin</option>
+                {isSuperAdmin && <option value="SUPER_ADMIN">Super Admin</option>}
+              </select>
+              <svg
+                className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
-                Admin
-              </button>
-              {isSuperAdmin && (
-                <button
-                  type="button"
-                  onClick={() => setRole("SUPER_ADMIN")}
-                  className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${
-                    role === "SUPER_ADMIN"
-                      ? "bg-red-600 text-white border-red-600"
-                      : "border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"
-                  }`}
-                >
-                  Super Admin
-                </button>
-              )}
+                <path d="m6 9 6 6 6-6" />
+              </svg>
             </div>
           </div>
         </div>
+
+        {role === "STUDENT" && subjects.length > 0 && (
+          <div>
+            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+              Subject enrolments
+            </label>
+            <div className="space-y-2">
+              {subjects.map((subj) => {
+                const tier = enrolments[subj.id] ?? "NONE";
+                return (
+                  <div
+                    key={subj.id}
+                    className="flex items-center justify-between gap-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2"
+                  >
+                    <span className="text-sm text-gray-900 dark:text-gray-100 truncate">
+                      {subj.name}
+                    </span>
+                    <div className="flex gap-1 flex-shrink-0">
+                      {(["NONE", "FREE", "PAID"] as const).map((t) => (
+                        <button
+                          key={t}
+                          type="button"
+                          onClick={() => setSubjectTier(subj.id, t)}
+                          className={`px-2.5 py-1 rounded-md text-xs font-medium border transition-colors ${
+                            tier === t
+                              ? t === "PAID"
+                                ? "bg-emerald-600 text-white border-emerald-600"
+                                : t === "FREE"
+                                  ? "bg-sky-600 text-white border-sky-600"
+                                  : "bg-gray-600 text-white border-gray-600"
+                              : "border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700"
+                          }`}
+                        >
+                          {t === "NONE" ? "None" : t === "FREE" ? "Free" : "Paid"}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         <div className="flex justify-end pt-1">
           <button

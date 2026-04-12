@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { BookOpen, BarChart2, FileText, CheckCircle, Clock, ArrowRight } from "lucide-react";
-import ThemeToggle from "@/components/ThemeToggle";
+import MarketingNav from "@/components/MarketingNav";
+import MarketingFooter from "@/components/MarketingFooter";
+import { createClient } from "@/lib/supabase/server";
 
 const features = [
   {
@@ -51,38 +53,12 @@ const subjects = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
-      {/* Nav */}
-      <header className="border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex h-16 lg:h-20 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 font-bold text-xl lg:text-2xl text-brand-700 dark:text-brand-400">
-            <BookOpen className="h-6 w-6 lg:h-7 lg:w-7" />
-            VCE Methods
-          </Link>
-          <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm lg:text-base text-gray-600 dark:text-gray-400">
-            <Link href="/topics" className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Topics</Link>
-            <Link href="/exams" className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Past Papers</Link>
-            <Link href="/practice" className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Practice</Link>
-          </nav>
-          <div className="flex items-center gap-3 lg:gap-4">
-            <ThemeToggle compact />
-            <Link
-              href="/login"
-              className="text-sm lg:text-base text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
-            >
-              Log in
-            </Link>
-            <Link
-              href="/signup"
-              className="rounded-xl bg-brand-600 px-4 lg:px-6 py-2 lg:py-2.5 text-sm lg:text-base font-semibold text-white hover:bg-brand-700 transition-colors"
-            >
-              Get started
-            </Link>
-          </div>
-        </div>
-      </header>
+      <MarketingNav />
 
       {/* Hero */}
       <section className="py-24 lg:py-36 xl:py-44 px-5 sm:px-8 lg:px-12 text-center bg-gradient-to-b from-brand-50 to-white dark:from-gray-950 dark:to-gray-900">
@@ -99,10 +75,10 @@ export default function HomePage() {
           </p>
           <div className="mt-10 lg:mt-12 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/signup"
+              href={user ? "/dashboard" : "/signup"}
               className="rounded-2xl bg-brand-600 px-8 lg:px-10 py-4 lg:py-5 text-base lg:text-lg font-semibold text-white shadow-sm hover:bg-brand-700 transition-colors"
             >
-              Start practising — it&apos;s free
+              {user ? "Go to dashboard" : "Start practising — it's free"}
             </Link>
             <Link
               href="/topics"
@@ -224,18 +200,15 @@ export default function HomePage() {
             Create a free account and start practising VCE past exam questions today. More subjects are on the way.
           </p>
           <Link
-            href="/signup"
+            href={user ? "/dashboard" : "/signup"}
             className="mt-8 lg:mt-10 inline-block rounded-2xl bg-brand-600 px-8 lg:px-12 py-4 lg:py-5 text-base lg:text-lg font-semibold text-white hover:bg-brand-700 transition-colors"
           >
-            Create free account
+            {user ? "Go to dashboard" : "Create free account"}
           </Link>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-gray-100 dark:border-gray-800 py-8 lg:py-10 text-center text-sm lg:text-base text-gray-400 dark:text-gray-500">
-        <p>VCE Revision Hub — not affiliated with VCAA</p>
-      </footer>
+      <MarketingFooter />
     </div>
   );
 }

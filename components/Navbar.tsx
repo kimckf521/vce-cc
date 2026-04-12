@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BookOpen, BarChart2, FileText, LogOut, LayoutDashboard, UserCircle, ShieldCheck, Search, History } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
+import { BookOpen, BarChart2, FileText, LogOut, LayoutDashboard, UserCircle, ShieldCheck, Search, History, Gift } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "@/components/ThemeToggle";
 
@@ -14,6 +13,7 @@ const navLinks = [
   { href: "/practice", label: "Practice", icon: BarChart2 },
   { href: "/search", label: "Search", icon: Search },
   { href: "/history", label: "History", icon: History },
+  { href: "/referrals", label: "Refer & Earn", icon: Gift },
   { href: "/profile", label: "Profile", icon: UserCircle },
 ];
 
@@ -22,8 +22,10 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
   const router = useRouter();
 
   async function handleSignOut() {
-    const supabase = createClient();
-    await supabase.auth.signOut();
+    // Use the server-side logout endpoint so the Prisma activeSessionId is
+    // cleared and the vce_sid cookie is wiped in one round trip. The endpoint
+    // also handles supabase.auth.signOut() on the server.
+    await fetch("/api/auth/logout", { method: "POST" });
     router.push("/");
     router.refresh();
   }

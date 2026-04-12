@@ -1,0 +1,25 @@
+[
+  {
+    "file": "p4-q3a.png",
+    "page": 4,
+    "question": "3a",
+    "type": "graph",
+    "description": "Cartesian plane with x-axis from -3 to 4 and y-axis from -2 to 6, with grid lines",
+    "bbox_pct": {
+      "x": 15,
+      "y": 45,
+      "w": 55,
+      "h": 35
+    },
+    "bbox_pts": {
+      "x0": 83.5,
+      "y0": 368.9,
+      "x1": 446.5,
+      "y1": 683.5
+    },
+    "size": {
+      "width": 1090,
+      "height": 945
+    }
+  }
+]

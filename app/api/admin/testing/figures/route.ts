@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
-import { prisma } from "@/lib/prisma";
+import { requireAuthenticatedUser } from "@/lib/auth";
 import { rateLimit } from "@/lib/rate-limit";
 import { isAdminRole } from "@/lib/utils";
 import { createClient as createSupabaseAdmin } from "@supabase/supabase-js";
@@ -14,12 +13,9 @@ const ARTIFACTS_DIR = join(process.cwd(), ".figure-artifacts");
 const BUCKET = "extraction";
 
 export async function POST(req: NextRequest) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user)
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const auth = await requireAuthenticatedUser();
+  if (auth.response) return auth.response;
+  const { user } = auth;
 
   const limited = rateLimit(`admin-figures:${user.id}`, {
     maxRequests: 10,
@@ -27,8 +23,7 @@ export async function POST(req: NextRequest) {
   });
   if (limited) return limited;
 
-  const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-  if (!isAdminRole(dbUser?.role))
+  if (!isAdminRole(auth.dbUser.role))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
