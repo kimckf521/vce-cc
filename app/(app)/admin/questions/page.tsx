@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { HelpCircle, Plus, CheckCircle, Pencil, Trash2, X, Check, Loader2, Eye, Code2, FlaskConical, ChevronDown, ChevronRight, BookOpen } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, stripLatex } from "@/lib/utils";
 import MathContent from "@/components/MathContent";
 
 interface Question {
@@ -270,24 +270,9 @@ export default function AdminQuestionsPage() {
   }, []);
 
   useEffect(() => {
-    Promise.all([
-      fetch("/api/admin/questions").then((r) => r.json()),
-      fetch("/api/admin/solutions").then((r) => r.json()),
-    ]).then(([qData, sData]) => {
-      setQuestions(qData.questions || []);
-      setTotalSolutions(sData.count ?? 0);
-    }).catch(() => {
-      // Fallback: just load questions
-      fetch("/api/admin/questions")
-        .then((r) => r.json())
-        .then((data) => setQuestions(data.questions || []));
-    }).finally(() => setLoading(false));
-  }, []);
-
-  // We need a GET endpoint for questions. Let me fetch from the page itself instead.
-  useEffect(() => {
-    fetch("/api/search?q=&limit=0")
-      .catch(() => {});
+    // Exam questions are managed on the Exams page — this page only shows
+    // AI-generated question sets, so no separate questions fetch is needed.
+    setLoading(false);
   }, []);
 
   async function handleSave(id: string, data: Partial<Question>) {
@@ -659,7 +644,7 @@ export default function AdminQuestionsPage() {
             <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">Questions</h1>
           </div>
           <p className="text-gray-500 dark:text-gray-400 lg:text-base ml-9">
-            {questions.length} questions
+            {questionSets.reduce((s, set) => s + set.items.length, 0)} questions in {questionSets.length} set{questionSets.length !== 1 ? "s" : ""}
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -759,7 +744,7 @@ export default function AdminQuestionsPage() {
                       const subKeysInSet: string[] = [];
                       for (const topicEntry of orderedTopicEntries) {
                         topicKeysInSet.push(`${set.id}::${topicEntry.topicName}`);
-                        for (const sub of topicEntry.subtopics.values()) {
+                        for (const sub of Array.from(topicEntry.subtopics.values())) {
                           subKeysInSet.push(`${set.id}::${topicEntry.topicName}::${sub.name}`);
                         }
                       }
@@ -821,7 +806,7 @@ export default function AdminQuestionsPage() {
                       // Sum item counts across all subtopics for this topic
                       let topicMcq = 0, topicShort = 0, topicExt = 0;
                       const topicAllItems: QuestionSetItem[] = [];
-                      for (const sub of topic.subtopics.values()) {
+                      for (const sub of Array.from(topic.subtopics.values())) {
                         for (const item of sub.items) {
                           topicAllItems.push(item);
                           if (item.type === "MCQ") topicMcq++;
@@ -1000,7 +985,7 @@ export default function AdminQuestionsPage() {
                                               {item.difficulty.charAt(0) + item.difficulty.slice(1).toLowerCase()}
                                             </span>
                                             <div className="text-sm text-gray-700 dark:text-gray-300 truncate min-w-0 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
-                                              {item.content.replace(/\$/g, "").slice(0, 110)}
+                                              {stripLatex(item.content).slice(0, 110)}
                                             </div>
                                           </div>
                                           <div className="flex items-center gap-2 flex-shrink-0">
@@ -1164,89 +1149,10 @@ export default function AdminQuestionsPage() {
         </div>
       )}
 
-      {/* Questions grouped by exam */}
-      {questions.length === 0 ? (
+      {/* Exam questions are managed on the Exams page (Admin → Exams) */}
+      {questionSets.length === 0 && (
         <div className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm p-10 text-center text-gray-400 dark:text-gray-500">
-          No questions yet. Add your first question to get started.
-        </div>
-      ) : (
-        <div className="space-y-4 lg:space-y-5">
-          {Array.from(grouped.entries()).map(([key, { label, examType, questions: qs }]) => {
-            const isExamOpen = openExamKeys.has(key);
-            const totalMarks = qs.reduce((s, q) => s + q.marks, 0);
-            const withSolution = qs.filter((q) => q.solution).length;
-            return (
-            <div key={key} className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
-              <button
-                onClick={() => {
-                  const next = new Set(openExamKeys);
-                  next.has(key) ? next.delete(key) : next.add(key);
-                  setOpenExamKeys(next);
-                }}
-                className="w-full px-5 lg:px-6 py-4 flex items-center justify-between gap-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
-              >
-                <div className="flex items-center gap-3 min-w-0">
-                  <BookOpen className="h-5 w-5 lg:h-6 lg:w-6 text-brand-600 dark:text-brand-400 flex-shrink-0" />
-                  <h2 className="text-base lg:text-lg font-semibold text-gray-900 dark:text-gray-100 truncate text-left">
-                    {label} Question Set
-                  </h2>
-                </div>
-                <div className="flex items-center gap-3 flex-shrink-0">
-                  <div className="hidden sm:flex items-center gap-2 text-xs lg:text-sm">
-                    <span className="rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-2.5 py-0.5 font-medium">{qs.length} questions</span>
-                    <span className="rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-2.5 py-0.5 font-medium">{totalMarks} marks</span>
-                    <span className="rounded-full bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-400 px-2.5 py-0.5 font-medium">{withSolution}/{qs.length} solved</span>
-                  </div>
-                  {isExamOpen ? (
-                    <ChevronDown className="h-5 w-5 text-gray-400 dark:text-gray-500" />
-                  ) : (
-                    <ChevronRight className="h-5 w-5 text-gray-400 dark:text-gray-500" />
-                  )}
-                </div>
-              </button>
-              {isExamOpen && (() => {
-                const isExam2 = examType === "EXAM_2";
-                if (isExam2) {
-                  // Section A = MCQs (part === null), Section B = extended response (part !== null)
-                  const sectionA = qs.filter((q) => !q.part);
-                  const sectionB = qs.filter((q) => q.part);
-                  return (
-                    <div className="border-t border-gray-100 dark:border-gray-800">
-                      {/* Section A */}
-                      <div>
-                        <div className="px-5 lg:px-6 py-3 bg-gray-50/80 dark:bg-gray-950/60 border-b border-gray-100 dark:border-gray-800">
-                          <h3 className="text-sm lg:text-base font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wide">
-                            Section A <span className="text-xs font-normal text-gray-500 dark:text-gray-400 ml-2">{sectionA.length} multiple choice</span>
-                          </h3>
-                        </div>
-                        <div className="divide-y divide-gray-50 dark:divide-gray-800">
-                          {sectionA.map((q) => renderQuestionRow(q))}
-                        </div>
-                      </div>
-                      {/* Section B */}
-                      {sectionB.length > 0 && (
-                        <div className="border-t border-gray-100 dark:border-gray-800">
-                          <div className="px-5 lg:px-6 py-3 bg-gray-50/80 dark:bg-gray-950/60 border-b border-gray-100 dark:border-gray-800">
-                            <h3 className="text-sm lg:text-base font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wide">
-                              Section B <span className="text-xs font-normal text-gray-500 dark:text-gray-400 ml-2">extended response</span>
-                            </h3>
-                          </div>
-                          {renderMultiPartGroups(sectionB)}
-                        </div>
-                      )}
-                    </div>
-                  );
-                }
-                // Exam 1: all extended response, group by question number
-                return (
-                  <div className="border-t border-gray-100 dark:border-gray-800">
-                    {renderMultiPartGroups(qs)}
-                  </div>
-                );
-              })()}
-            </div>
-            );
-          })}
+          No question sets yet. Create your first set to get started.
         </div>
       )}
     </div>
