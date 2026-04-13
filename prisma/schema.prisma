@@ -34,13 +34,14 @@ model Subtopic {
 }
 
 model Exam {
-  id        String     @id @default(cuid())
-  year      Int
-  examType  ExamType
-  createdAt DateTime   @default(now())
-  answerUrl String?
-  pdfUrl    String?
-  questions Question[]
+  id          String           @id @default(cuid())
+  year        Int
+  examType    ExamType
+  createdAt   DateTime         @default(now())
+  answerUrl   String?
+  pdfUrl      String?
+  questions   Question[]
+  completions ExamCompletion[]
 
   @@unique([year, examType])
 }
@@ -92,11 +93,24 @@ model User {
   questionSetAttempts  QuestionSetAttempt[]
   examSessions         ExamSession[]
   extractionSessions   ExtractionSession[]
+  examCompletions      ExamCompletion[]
   enrolments           SubjectEnrolment[]
   affiliate            Affiliate?
   referral             Referral?            @relation("ReferredUser")
 
   @@index([referredByCode])
+}
+
+model ExamCompletion {
+  id        String   @id @default(cuid())
+  userId    String
+  examId    String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exam      Exam     @relation(fields: [examId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, examId])
+  @@index([userId])
 }
 
 model Subject {

@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import QuestionGroup from "@/components/QuestionGroup";
 import Link from "next/link";
 import { ChevronLeft, FileText } from "lucide-react";
+import ExamCompleteButton from "@/components/ExamCompleteButton";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -42,6 +43,13 @@ export default async function ExamPage({ params }: PageProps) {
     },
     orderBy: [{ questionNumber: "asc" }, { part: "asc" }],
   });
+
+  // Check if user has completed this exam
+  const isCompleted = user
+    ? !!(await prisma.examCompletion.findUnique({
+        where: { userId_examId: { userId: user.id, examId: id } },
+      }))
+    : false;
 
   // Section A: standalone MCQs (part === null)
   const sectionA = questions.filter((q) => q.part === null);
@@ -198,6 +206,11 @@ export default async function ExamPage({ params }: PageProps) {
         <div className="rounded-2xl border border-dashed border-gray-200 dark:border-gray-700 p-12 text-center text-gray-400 dark:text-gray-500">
           No questions found for this exam.
         </div>
+      )}
+
+      {/* Complete button */}
+      {(sectionA.length > 0 || sectionBGroups.length > 0) && (
+        <ExamCompleteButton examId={id} initialCompleted={isCompleted} />
       )}
     </div>
   );
