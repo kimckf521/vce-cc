@@ -89,6 +89,7 @@ model User {
   referredByCode       String?              // Referral code used at signup (immutable record)
   activeSessionId      String?              // Single-active-session enforcement — new logins rotate this, stale sessions get kicked
   attempts             Attempt[]
+  questionSetAttempts  QuestionSetAttempt[]
   examSessions         ExamSession[]
   extractionSessions   ExtractionSession[]
   enrolments           SubjectEnrolment[]
@@ -164,6 +165,7 @@ model Attempt {
   userId      String
   questionId  String
   status      AttemptStatus @default(ATTEMPTED)
+  bookmarked  Boolean       @default(false)
   marksEarned Int?
   createdAt   DateTime      @default(now())
   question    Question      @relation(fields: [questionId], references: [id], onDelete: Cascade)
@@ -236,9 +238,25 @@ model QuestionSetItem {
   questionSet   QuestionSet         @relation(fields: [questionSetId], references: [id], onDelete: Cascade)
   topic         Topic               @relation(fields: [topicId], references: [id])
   subtopics     Subtopic[]          @relation("QuestionSetItemToSubtopic")
+  attempts      QuestionSetAttempt[]
 
   @@index([questionSetId])
   @@index([topicId])
+}
+
+model QuestionSetAttempt {
+  id                String              @id @default(cuid())
+  userId            String
+  questionSetItemId String
+  status            AttemptStatus       @default(ATTEMPTED)
+  bookmarked        Boolean             @default(false)
+  createdAt         DateTime            @default(now())
+  questionSetItem   QuestionSetItem     @relation(fields: [questionSetItemId], references: [id], onDelete: Cascade)
+  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, questionSetItemId])
+  @@index([userId])
+  @@index([questionSetItemId])
 }
 
 enum QuestionSetItemType {

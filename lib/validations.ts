@@ -44,7 +44,8 @@ export const practiceQuerySchema = z.object({
 // POST /api/attempts
 export const createAttemptSchema = z.object({
   questionId: z.string().min(1),
-  status: AttemptStatus,
+  status: AttemptStatus.optional(),
+  bookmarked: z.boolean().optional(),
 });
 
 // DELETE /api/attempts

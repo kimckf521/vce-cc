@@ -19,6 +19,7 @@ export interface QuestionGroupPart {
   difficulty: "EASY" | "MEDIUM" | "HARD";
   solution: { content: string; imageUrl: string | null; videoUrl: string | null } | null;
   initialStatus: "ATTEMPTED" | "CORRECT" | "INCORRECT" | "NEEDS_REVIEW" | null;
+  initialBookmarked?: boolean;
 }
 
 export interface QuestionGroupData {
@@ -224,7 +225,7 @@ async function hydrateGroups(
           subtopics: { select: { name: true } },
           solution: { select: { content: true, imageUrl: true, videoUrl: true } },
           attempts: userId
-            ? ({ where: { userId }, select: { status: true } } as const)
+            ? ({ where: { userId }, select: { status: true, bookmarked: true } } as const)
             : (false as const),
         },
         orderBy: [{ questionNumber: "asc" }, { part: "asc" }],
@@ -278,6 +279,7 @@ async function hydrateGroups(
         difficulty: q.difficulty as "EASY" | "MEDIUM" | "HARD",
         solution: q.solution,
         initialStatus: (q.attempts && Array.isArray(q.attempts) ? q.attempts[0]?.status : null) ?? null,
+        initialBookmarked: (q.attempts && Array.isArray(q.attempts) ? q.attempts[0]?.bookmarked : false) ?? false,
       })),
     };
   });

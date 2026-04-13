@@ -38,7 +38,7 @@ export default async function ExamPage({ params }: PageProps) {
       topic: { select: { name: true } },
       subtopics: { select: { name: true } },
       solution: { select: { content: true, imageUrl: true, videoUrl: true } },
-      attempts: user ? { where: { userId: user.id }, select: { status: true } } : false,
+      attempts: user ? { where: { userId: user.id }, select: { status: true, bookmarked: true } } : false,
     },
     orderBy: [{ questionNumber: "asc" }, { part: "asc" }],
   });
@@ -71,6 +71,7 @@ export default async function ExamPage({ params }: PageProps) {
       difficulty: q.difficulty,
       solution: q.solution,
       initialStatus: q.attempts?.[0]?.status ?? null,
+      initialBookmarked: q.attempts?.[0]?.bookmarked ?? false,
     }));
   }
 

@@ -23,6 +23,7 @@ interface QuestionPart {
   difficulty: "EASY" | "MEDIUM" | "HARD";
   solution?: { content: string; imageUrl?: string | null; videoUrl?: string | null } | null;
   initialStatus?: AttemptStatus;
+  initialBookmarked?: boolean;
 }
 
 function QuestionVisual({ imageUrl }: { imageUrl?: string | null }) {
@@ -218,9 +219,16 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
   const [statuses, setStatuses] = useState<Record<string, AttemptStatus>>(
     Object.fromEntries(parts.map((p) => [p.id, p.initialStatus ?? null]))
   );
+  const [bookmarks, setBookmarks] = useState<Record<string, boolean>>(
+    Object.fromEntries(parts.map((p) => [p.id, p.initialBookmarked ?? false]))
+  );
   const [mcqSelections, setMcqSelections] = useState<Record<string, string | null>>({});
   const [saveError, setSaveError] = useState<string | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  // Generated items (year === 0) have no matching Question row,
+  // so attempt tracking is unavailable — skip API calls and hide status buttons.
+  const isGenerated = year === 0;
 
   const questionNumber = parts[0].questionNumber;
   const totalMarks = parts.reduce((sum, p) => sum + p.marks, 0);
@@ -252,17 +260,20 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
     setStatuses((cur) => ({ ...cur, [id]: next }));
     setSaveError(null);
 
+    const endpoint = isGenerated ? "/api/generated-attempts" : "/api/attempts";
+    const idField = isGenerated ? "questionSetItemId" : "questionId";
+
     try {
       const res = next === null
-        ? await fetch("/api/attempts", {
+        ? await fetch(endpoint, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ questionId: id }),
+            body: JSON.stringify({ [idField]: id }),
           })
-        : await fetch("/api/attempts", {
+        : await fetch(endpoint, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ questionId: id, status: next }),
+            body: JSON.stringify({ [idField]: id, status: next }),
           });
 
       if (!res.ok) {
@@ -277,6 +288,48 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
     } catch {
       // Network error — revert
       setStatuses((cur) => ({ ...cur, [id]: prev }));
+      setSaveError("Network error. Please check your connection.");
+    }
+  }
+
+  async function toggleBookmark(id: string) {
+    const prev = bookmarks[id];
+    const next = !prev;
+    setBookmarks((cur) => ({ ...cur, [id]: next }));
+    setSaveError(null);
+
+    // For generated items, persist via the generated-attempts endpoint
+    if (isGenerated) {
+      try {
+        const res = await fetch("/api/generated-attempts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ questionSetItemId: id, bookmarked: next }),
+        });
+        if (!res.ok) {
+          setBookmarks((cur) => ({ ...cur, [id]: prev }));
+          setSaveError(res.status === 401 ? "Please log in to save your progress." : "Failed to save. Please try again.");
+        }
+      } catch {
+        setBookmarks((cur) => ({ ...cur, [id]: prev }));
+        setSaveError("Network error. Please check your connection.");
+      }
+      return;
+    }
+
+    // For exam questions, bookmark is independent of status
+    try {
+      const res = await fetch("/api/attempts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ questionId: id, bookmarked: next }),
+      });
+      if (!res.ok) {
+        setBookmarks((cur) => ({ ...cur, [id]: prev }));
+        setSaveError(res.status === 401 ? "Please log in to save your progress." : "Failed to save. Please try again.");
+      }
+    } catch {
+      setBookmarks((cur) => ({ ...cur, [id]: prev }));
       setSaveError("Network error. Please check your connection.");
     }
   }
@@ -298,7 +351,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
           toggleStatus(firstPartId, "INCORRECT");
           break;
         case "r":
-          toggleStatus(firstPartId, "NEEDS_REVIEW");
+          toggleBookmark(firstPartId);
           break;
         case "s":
           if (hasSolution) setShowSolution(true);
@@ -399,8 +452,8 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
                 className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[parts[0].id] === "INCORRECT" ? "bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400" : "text-gray-400 dark:text-gray-500 hover:text-red-500")}>
                 <XCircle className="h-4 w-4 lg:h-5 lg:w-5" />
               </button>
-              <button onClick={() => toggleStatus(parts[0].id, "NEEDS_REVIEW")} title="Needs review"
-                className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[parts[0].id] === "NEEDS_REVIEW" ? "bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400" : "text-gray-400 dark:text-gray-500 hover:text-yellow-500")}>
+              <button onClick={() => toggleBookmark(parts[0].id)} title="Bookmark for review"
+                className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", bookmarks[parts[0].id] ? "bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400" : "text-gray-400 dark:text-gray-500 hover:text-yellow-500")}>
                 <BookmarkIcon className="h-4 w-4 lg:h-5 lg:w-5" />
               </button>
             </>
@@ -438,8 +491,8 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
                     className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[p.id] === "INCORRECT" ? "bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400" : "text-gray-400 dark:text-gray-500 hover:text-red-500")}>
                     <XCircle className="h-4 w-4 lg:h-5 lg:w-5" />
                   </button>
-                  <button onClick={() => toggleStatus(p.id, "NEEDS_REVIEW")} title="Needs review"
-                    className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[p.id] === "NEEDS_REVIEW" ? "bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400" : "text-gray-400 dark:text-gray-500 hover:text-yellow-500")}>
+                  <button onClick={() => toggleBookmark(p.id)} title="Bookmark for review"
+                    className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", bookmarks[p.id] ? "bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400" : "text-gray-400 dark:text-gray-500 hover:text-yellow-500")}>
                     <BookmarkIcon className="h-4 w-4 lg:h-5 lg:w-5" />
                   </button>
                 </div>

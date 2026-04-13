@@ -18,12 +18,24 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid input", details: parsed.error.flatten().fieldErrors }, { status: 400 });
   }
 
-  const { questionId, status } = parsed.data;
+  const { questionId, status, bookmarked } = parsed.data;
+
+  const update: Record<string, unknown> = {};
+  const create: Record<string, unknown> = { userId: user.id, questionId };
+
+  if (status !== undefined) {
+    update.status = status;
+    create.status = status;
+  }
+  if (bookmarked !== undefined) {
+    update.bookmarked = bookmarked;
+    create.bookmarked = bookmarked;
+  }
 
   const attempt = await prisma.attempt.upsert({
     where: { userId_questionId: { userId: user.id, questionId } },
-    update: { status },
-    create: { userId: user.id, questionId, status },
+    update,
+    create,
   });
 
   return NextResponse.json({ attempt });

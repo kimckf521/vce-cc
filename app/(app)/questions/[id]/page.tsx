@@ -25,7 +25,7 @@ const questionSelect = (userId?: string) => ({
   subtopics: { select: { name: true } },
   solution: { select: { content: true, imageUrl: true, videoUrl: true } },
   attempts: userId
-    ? ({ where: { userId }, select: { status: true } } as const)
+    ? ({ where: { userId }, select: { status: true, bookmarked: true } } as const)
     : (false as const),
 } as const);
 
@@ -85,6 +85,7 @@ export default async function QuestionPage({ params }: PageProps) {
       difficulty: q.difficulty,
       solution: q.solution,
       initialStatus: q.attempts?.[0]?.status ?? null,
+      initialBookmarked: q.attempts?.[0]?.bookmarked ?? false,
     }));
   }
 
