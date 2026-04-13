@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import type React from "react";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { CheckCircle, XCircle, BookmarkIcon, BookOpen, CalendarDays } from "lucide-react";
 import { cn } from "@/lib/utils";
 import MathContent from "@/components/MathContent";
@@ -215,6 +216,7 @@ const FREQ_LABEL: Record<"rare" | "normal" | "often", string> = {
 };
 
 export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts, showSolutionButton = true, examMode, revealAnswers, onMcqSelect, isAdmin }: QuestionGroupProps) {
+  const router = useRouter();
   const [showSolution, setShowSolution] = useState(false);
   const [statuses, setStatuses] = useState<Record<string, AttemptStatus>>(
     Object.fromEntries(parts.map((p) => [p.id, p.initialStatus ?? null]))
@@ -256,7 +258,10 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
 
   async function toggleStatus(id: string, s: AttemptStatus) {
     const prev = statuses[id];
-    const next: AttemptStatus = prev === s ? null : s;
+    // When clicking same status to un-toggle, clear to null visually
+    // but send ATTEMPTED to API (preserves bookmark in DB)
+    const isClearing = prev === s;
+    const next: AttemptStatus = isClearing ? null : s;
     setStatuses((cur) => ({ ...cur, [id]: next }));
     setSaveError(null);
 
@@ -264,17 +269,12 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
     const idField = isGenerated ? "questionSetItemId" : "questionId";
 
     try {
-      const res = next === null
-        ? await fetch(endpoint, {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ [idField]: id }),
-          })
-        : await fetch(endpoint, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ [idField]: id, status: next }),
-          });
+      // When clearing status, use ATTEMPTED instead of DELETE to preserve bookmarks
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ [idField]: id, status: next ?? "ATTEMPTED" }),
+      });
 
       if (!res.ok) {
         // Revert optimistic update on failure
@@ -284,6 +284,8 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
         } else {
           setSaveError("Failed to save. Please try again.");
         }
+      } else {
+        router.refresh();
       }
     } catch {
       // Network error — revert
@@ -309,6 +311,8 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
         if (!res.ok) {
           setBookmarks((cur) => ({ ...cur, [id]: prev }));
           setSaveError(res.status === 401 ? "Please log in to save your progress." : "Failed to save. Please try again.");
+        } else {
+          router.refresh();
         }
       } catch {
         setBookmarks((cur) => ({ ...cur, [id]: prev }));
@@ -327,6 +331,8 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
       if (!res.ok) {
         setBookmarks((cur) => ({ ...cur, [id]: prev }));
         setSaveError(res.status === 401 ? "Please log in to save your progress." : "Failed to save. Please try again.");
+      } else {
+        router.refresh();
       }
     } catch {
       setBookmarks((cur) => ({ ...cur, [id]: prev }));
