@@ -1,8 +1,12 @@
 import Link from "next/link";
-import { PenLine, Calculator } from "lucide-react";
+import { PenLine, Calculator, CheckCircle } from "lucide-react";
 import { prisma } from "@/lib/prisma";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function ExamsPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
   const exams = await prisma.exam.findMany({
     where: { year: { not: 9999 } },
     orderBy: [{ year: "desc" }, { examType: "asc" }],
@@ -14,10 +18,21 @@ export default async function ExamsPage() {
     },
   });
 
+  // Fetch user's completed exams
+  const completedExamIds = user
+    ? new Set(
+        (await prisma.examCompletion.findMany({
+          where: { userId: user.id },
+          select: { examId: true },
+        })).map((c) => c.examId)
+      )
+    : new Set<string>();
+
   const examList = exams.map((e) => ({
     id: e.id,
     year: e.year,
     examType: e.examType,
+    completed: completedExamIds.has(e.id),
     questionCount:
       e.questions.filter((q) => q.part === null).length +
       new Set(e.questions.filter((q) => q.part !== null).map((q) => q.questionNumber)).size,
@@ -74,13 +89,26 @@ export default async function ExamsPage() {
               <Link
                 key={exam.id}
                 href={`/exams/${exam.id}`}
-                className="group flex flex-col items-center justify-center rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 lg:p-7 text-center shadow-sm transition-all hover:shadow-md hover:border-brand-200 dark:hover:border-brand-800"
+                className={`group relative flex flex-col items-center justify-center rounded-2xl border p-5 lg:p-7 text-center shadow-sm transition-all hover:shadow-md ${
+                  exam.completed
+                    ? "border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-950/30"
+                    : "border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-brand-200 dark:hover:border-brand-800"
+                }`}
               >
+                {exam.completed && (
+                  <CheckCircle className="absolute top-2.5 right-2.5 h-4 w-4 text-green-500 dark:text-green-400" />
+                )}
                 <span className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">{exam.year}</span>
                 <span className="text-xs lg:text-sm text-gray-400 dark:text-gray-500">{exam.questionCount} questions</span>
-                <span className="mt-3 text-xs lg:text-sm font-semibold text-brand-400 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
-                  Open →
-                </span>
+                {exam.completed ? (
+                  <span className="mt-3 text-xs lg:text-sm font-semibold text-green-600 dark:text-green-400">
+                    Completed
+                  </span>
+                ) : (
+                  <span className="mt-3 text-xs lg:text-sm font-semibold text-brand-400 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+                    Open →
+                  </span>
+                )}
               </Link>
             ))}
           </div>
@@ -106,13 +134,26 @@ export default async function ExamsPage() {
               <Link
                 key={exam.id}
                 href={`/exams/${exam.id}`}
-                className="group flex flex-col items-center justify-center rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 lg:p-7 text-center shadow-sm transition-all hover:shadow-md hover:border-violet-200 dark:hover:border-violet-800"
+                className={`group relative flex flex-col items-center justify-center rounded-2xl border p-5 lg:p-7 text-center shadow-sm transition-all hover:shadow-md ${
+                  exam.completed
+                    ? "border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-950/30"
+                    : "border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-violet-200 dark:hover:border-violet-800"
+                }`}
               >
+                {exam.completed && (
+                  <CheckCircle className="absolute top-2.5 right-2.5 h-4 w-4 text-green-500 dark:text-green-400" />
+                )}
                 <span className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">{exam.year}</span>
                 <span className="text-xs lg:text-sm text-gray-400 dark:text-gray-500">{exam.questionCount} questions</span>
-                <span className="mt-3 text-xs lg:text-sm font-semibold text-violet-400 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
-                  Open →
-                </span>
+                {exam.completed ? (
+                  <span className="mt-3 text-xs lg:text-sm font-semibold text-green-600 dark:text-green-400">
+                    Completed
+                  </span>
+                ) : (
+                  <span className="mt-3 text-xs lg:text-sm font-semibold text-violet-400 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+                    Open →
+                  </span>
+                )}
               </Link>
             ))}
           </div>
