@@ -20,22 +20,18 @@ export async function POST(req: NextRequest) {
 
   const { questionId, status, bookmarked } = parsed.data;
 
-  const update: Record<string, unknown> = {};
-  const create: Record<string, unknown> = { userId: user.id, questionId };
-
-  if (status !== undefined) {
-    update.status = status;
-    create.status = status;
-  }
-  if (bookmarked !== undefined) {
-    update.bookmarked = bookmarked;
-    create.bookmarked = bookmarked;
-  }
-
   const attempt = await prisma.attempt.upsert({
     where: { userId_questionId: { userId: user.id, questionId } },
-    update,
-    create,
+    update: {
+      ...(status !== undefined && { status }),
+      ...(bookmarked !== undefined && { bookmarked }),
+    },
+    create: {
+      userId: user.id,
+      questionId,
+      ...(status !== undefined && { status }),
+      ...(bookmarked !== undefined && { bookmarked }),
+    },
   });
 
   return NextResponse.json({ attempt });

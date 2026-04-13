@@ -134,7 +134,7 @@ export async function fetchQuestionSetGroupsPaginated(
   const byId = new Map(fullItems.map((it) => [it.id, it] as const));
 
   // Build groups in the paginated order
-  const groups: QuestionGroupData[] = sliceIds
+  const groups = sliceIds
     .map((id, idx) => {
       const it = byId.get(id);
       if (!it) return null;
@@ -155,7 +155,7 @@ export async function fetchQuestionSetGroupsPaginated(
       return {
         key: `qset-${it.id}`,
         year: 0, // sentinel — QuestionGroup will hide year when 0
-        examType: "EXAM_1" as const, // placeholder; not rendered
+        examType: "EXAM_1" as "EXAM_1" | "EXAM_2", // placeholder; not rendered
         sectionLabel: TYPE_LABEL[it.type as keyof typeof TYPE_LABEL],
         frequency: undefined,
         topicName,
@@ -179,7 +179,7 @@ export async function fetchQuestionSetGroupsPaginated(
         ],
       } satisfies QuestionGroupData;
     })
-    .filter((g): g is QuestionGroupData => g !== null);
+    .filter((g) => g !== null) as QuestionGroupData[];
 
   return { groups, totalCount, hasMore: offset + limit < totalCount };
 }

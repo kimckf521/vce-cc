@@ -893,7 +893,7 @@ export default function AdminQuestionsPage() {
                               No subtopics yet for this topic.
                             </div>
                           )}
-                          {Array.from(topic.subtopics.values()).map((sub) => {
+                          {Array.from(topic.subtopics.values()).map((sub: { name: string; items: QuestionSetItem[] }) => {
                             const subMcq = sub.items.filter((i) => i.type === "MCQ");
                             const subShort = sub.items.filter((i) => i.type === "SHORT_ANSWER");
                             const subExt = sub.items.filter((i) => i.type === "EXTENDED_RESPONSE");
