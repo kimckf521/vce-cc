@@ -1,8 +1,11 @@
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
-import { TrendingUp, Clock, Trophy, BarChart2, FileText } from "lucide-react";
+import { TrendingUp, Clock, Trophy, BarChart2, Flame, Bookmark } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import ScoreTrendChart from "@/components/ScoreTrendChart";
+import EditableScoreBadge from "@/components/EditableScoreBadge";
+import { getStudyStreak } from "@/lib/streak";
 
 function formatElapsed(seconds: number): string {
   const h = Math.floor(seconds / 3600);
@@ -35,15 +38,64 @@ export default async function HistoryPage() {
     );
   }
 
-  const sessions = await prisma.examSession.findMany({
-    where: { userId: user.id },
-    orderBy: { completedAt: "desc" },
-    take: 50,
-  });
+  const [sessions, bookmarkedAttempts, bookmarkedSetAttempts] = await Promise.all([
+    prisma.examSession.findMany({
+      where: { userId: user.id },
+      orderBy: { completedAt: "desc" },
+      take: 50,
+    }),
+    prisma.attempt.findMany({
+      where: { userId: user.id, bookmarked: true },
+      orderBy: { createdAt: "desc" },
+      include: {
+        question: {
+          select: {
+            questionNumber: true,
+            part: true,
+            marks: true,
+            exam: { select: { year: true, examType: true } },
+            topic: { select: { name: true, slug: true } },
+          },
+        },
+      },
+    }),
+    prisma.questionSetAttempt.findMany({
+      where: { userId: user.id, bookmarked: true },
+      orderBy: { createdAt: "desc" },
+      include: {
+        questionSetItem: {
+          select: {
+            questionNumber: true,
+            part: true,
+            marks: true,
+            questionSet: {
+              select: {
+                year: true,
+                examType: true,
+                topic: { select: { name: true, slug: true } },
+              },
+            },
+          },
+        },
+      },
+    }),
+  ]);
 
   // Only graded sessions contribute to score stats. Ungraded sessions
   // (Exam 1, Exam 2B) are still listed but excluded from averages/trends.
   const gradedSessions = sessions.filter((s) => s.graded);
+
+  const streak = await getStudyStreak(user.id);
+  const chartData = gradedSessions
+    .slice()
+    .reverse()
+    .slice(-20)
+    .map((s) => ({
+      id: s.id,
+      score: s.score,
+      mode: s.mode,
+      completedAt: s.completedAt.toISOString(),
+    }));
 
   // Compute stats (graded only)
   const totalSessions = sessions.length;
@@ -73,6 +125,29 @@ export default async function HistoryPage() {
         <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">Exam History</h1>
         <p className="text-sm text-gray-500 dark:text-gray-400">Track your performance across practice exams.</p>
       </div>
+
+      {/* Streak banner */}
+      {totalSessions > 0 && streak > 0 && (
+        <div className="rounded-2xl border border-orange-200 dark:border-orange-900 bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/40 dark:to-amber-950/40 shadow-sm px-5 py-4 flex items-center gap-4">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-100 dark:bg-orange-900">
+            <Flame className="h-5 w-5 text-orange-500" />
+          </div>
+          <div>
+            <p className="text-lg font-bold text-gray-900 dark:text-gray-100">
+              {streak} day streak
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              {streak === 1
+                ? "Great start! Keep it going tomorrow."
+                : streak < 5
+                  ? "Keep it up!"
+                  : streak < 10
+                    ? "You're on fire!"
+                    : "Unstoppable!"}
+            </p>
+          </div>
+        </div>
+      )}
 
       {totalSessions === 0 ? (
         <div className="rounded-2xl border border-dashed border-gray-200 dark:border-gray-700 p-12 text-center">
@@ -149,23 +224,7 @@ export default async function HistoryPage() {
           {totalGraded > 0 && (
             <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm p-6">
               <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-4">Score Trend</h2>
-              <div className="flex items-end gap-1.5 h-32">
-                {gradedSessions.slice().reverse().slice(-20).map((s) => (
-                  <div key={s.id} className="flex-1 flex flex-col items-center gap-1" title={`${s.mode}: ${Math.round(s.score)}% — ${formatDate(s.completedAt)}`}>
-                    <div
-                      className={cn(
-                        "w-full rounded-t-md min-h-[4px] transition-all",
-                        s.score >= 80 ? "bg-green-400" : s.score >= 50 ? "bg-yellow-400" : "bg-red-400"
-                      )}
-                      style={{ height: `${Math.max(s.score, 4)}%` }}
-                    />
-                  </div>
-                ))}
-              </div>
-              <div className="flex justify-between mt-2 text-xs text-gray-400 dark:text-gray-500">
-                <span>Oldest</span>
-                <span>Latest</span>
-              </div>
+              <ScoreTrendChart data={chartData} />
             </div>
           )}
 
@@ -179,20 +238,11 @@ export default async function HistoryPage() {
                   className="flex items-center justify-between rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 px-5 py-4"
                 >
                   <div className="flex items-center gap-4">
-                    {s.graded ? (
-                      <div className={cn(
-                        "flex items-center justify-center h-10 w-10 rounded-xl text-sm font-bold",
-                        s.score >= 80 ? "bg-green-50 dark:bg-green-950 text-green-600 dark:text-green-400" :
-                        s.score >= 50 ? "bg-yellow-50 dark:bg-yellow-950 text-yellow-600 dark:text-yellow-400" :
-                        "bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400"
-                      )}>
-                        {Math.round(s.score)}%
-                      </div>
-                    ) : (
-                      <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
-                        <FileText className="h-4 w-4" />
-                      </div>
-                    )}
+                    <EditableScoreBadge
+                      sessionId={s.id}
+                      initialScore={s.score}
+                      totalQuestions={s.totalQuestions}
+                    />
                     <div>
                       <div className="flex items-center gap-2">
                         <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">{s.mode}</p>
@@ -216,6 +266,88 @@ export default async function HistoryPage() {
             </div>
           </div>
         </>
+      )}
+
+      {/* Bookmarked questions — from both exam attempts and topic question sets */}
+      {(bookmarkedAttempts.length > 0 || bookmarkedSetAttempts.length > 0) && (
+        <div>
+          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-4">
+            Bookmarked Questions
+          </h2>
+          <div className="space-y-2">
+            {/* From exam papers */}
+            {bookmarkedAttempts.map((a) => {
+              const q = a.question;
+              const examLabel = q.exam.examType === "EXAM_1" ? "Exam 1" : "Exam 2";
+              const qLabel = `Q${q.questionNumber}${q.part ?? ""}`;
+              return (
+                <Link
+                  key={a.id}
+                  href={`/topics/${q.topic.slug}`}
+                  className="flex items-center justify-between rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 px-5 py-4 hover:border-brand-300 dark:hover:border-brand-700 transition-colors"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-yellow-50 dark:bg-yellow-950 text-yellow-600 dark:text-yellow-400">
+                      <Bookmark className="h-4 w-4 fill-current" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                        {q.exam.year} {examLabel} · {qLabel}
+                      </p>
+                      <p className="text-xs text-gray-400 dark:text-gray-500">
+                        {q.topic.name} · {q.marks} mark{q.marks !== 1 ? "s" : ""}
+                      </p>
+                    </div>
+                  </div>
+                  <span className={cn(
+                    "text-xs font-medium px-2 py-0.5 rounded-full",
+                    a.status === "CORRECT" ? "bg-green-50 dark:bg-green-950 text-green-600 dark:text-green-400" :
+                    a.status === "INCORRECT" ? "bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400" :
+                    "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
+                  )}>
+                    {a.status === "CORRECT" ? "Correct" : a.status === "INCORRECT" ? "Incorrect" : "Review"}
+                  </span>
+                </Link>
+              );
+            })}
+            {/* From topic question sets */}
+            {bookmarkedSetAttempts.map((a) => {
+              const item = a.questionSetItem;
+              const qs = item.questionSet;
+              const examLabel = qs.examType === "EXAM_1" ? "Exam 1" : "Exam 2";
+              const qLabel = `Q${item.questionNumber}${item.part ?? ""}`;
+              return (
+                <Link
+                  key={a.id}
+                  href={`/topics/${qs.topic.slug}`}
+                  className="flex items-center justify-between rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 px-5 py-4 hover:border-brand-300 dark:hover:border-brand-700 transition-colors"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-yellow-50 dark:bg-yellow-950 text-yellow-600 dark:text-yellow-400">
+                      <Bookmark className="h-4 w-4 fill-current" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                        {qs.year} {examLabel} · {qLabel}
+                      </p>
+                      <p className="text-xs text-gray-400 dark:text-gray-500">
+                        {qs.topic.name} · {item.marks} mark{item.marks !== 1 ? "s" : ""}
+                      </p>
+                    </div>
+                  </div>
+                  <span className={cn(
+                    "text-xs font-medium px-2 py-0.5 rounded-full",
+                    a.status === "CORRECT" ? "bg-green-50 dark:bg-green-950 text-green-600 dark:text-green-400" :
+                    a.status === "INCORRECT" ? "bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400" :
+                    "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
+                  )}>
+                    {a.status === "CORRECT" ? "Correct" : a.status === "INCORRECT" ? "Incorrect" : "Review"}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
       )}
     </div>
   );
