@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 import { rateLimit } from "@/lib/rate-limit";
 import { requireAuthenticatedUser } from "@/lib/auth";
 import { canAccessFeature } from "@/lib/subscription";
@@ -8,7 +9,7 @@ import { z } from "zod";
 
 const searchSchema = z.object({
   q: z.string().min(1).max(200),
-  limit: z.coerce.number().int().min(1).max(50).default(20),
+  limit: z.coerce.number().int().min(1).max(100).default(50),
 });
 
 export async function GET(req: NextRequest) {
@@ -44,12 +45,37 @@ export async function GET(req: NextRequest) {
 
   const { q, limit } = parsed.data;
 
-  // Build OR conditions: search content, topic name, subtopic name, and year
-  const orConditions: Record<string, unknown>[] = [
-    { content: { contains: q, mode: "insensitive" } },
+  // Split query into individual terms for partial matching.
+  // "solution 2^x 16" → each term must appear somewhere in the content (any order).
+  const terms = q.split(/\s+/).filter((t) => t.length > 0);
+
+  // Build a raw SQL AND clause: every term must match the $-stripped content.
+  // This handles both LaTeX delimiters and multi-word partial matching.
+  const termConditions = terms.map(
+    (term) => Prisma.sql`LOWER(REPLACE(q.content, '$', '')) LIKE LOWER(${`%${term}%`})`
+  );
+  const contentWhereClause =
+    termConditions.length > 0
+      ? Prisma.join(termConditions, " AND ")
+      : Prisma.sql`TRUE`;
+
+  const contentMatches = await prisma.$queryRaw<{ id: string }[]>`
+    SELECT q.id FROM "Question" q
+    JOIN "Exam" e ON e.id = q."examId"
+    WHERE e.year != 9999
+    AND ${contentWhereClause}
+  `;
+  const contentIds = contentMatches.map((r) => r.id);
+
+  // Build OR conditions: content matches, topic name, subtopic name, year, exam type
+  const orConditions: Record<string, unknown>[] = [];
+  if (contentIds.length > 0) {
+    orConditions.push({ id: { in: contentIds } });
+  }
+  orConditions.push(
     { topic: { name: { contains: q, mode: "insensitive" } } },
     { subtopics: { some: { name: { contains: q, mode: "insensitive" } } } },
-  ];
+  );
 
   // If query looks like a year (4 digits), also match exam year
   const yearMatch = q.match(/^(\d{4})$/);
@@ -65,28 +91,33 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  const questions = await prisma.question.findMany({
-    where: {
-      exam: { year: { not: 9999 } },
-      OR: orConditions,
-    },
-    take: limit,
-    orderBy: [
-      { exam: { year: "desc" } },
-      { questionNumber: "asc" },
-    ],
-    select: {
-      id: true,
-      questionNumber: true,
-      part: true,
-      marks: true,
-      content: true,
-      difficulty: true,
-      topic: { select: { name: true, slug: true } },
-      exam: { select: { year: true, examType: true } },
-      subtopics: { select: { name: true } },
-    },
-  });
+  const where = {
+    exam: { year: { not: 9999 } },
+    OR: orConditions,
+  };
 
-  return NextResponse.json({ questions, total: questions.length });
+  const [questions, totalCount] = await Promise.all([
+    prisma.question.findMany({
+      where,
+      take: limit,
+      orderBy: [
+        { exam: { year: "desc" } },
+        { questionNumber: "asc" },
+      ],
+      select: {
+        id: true,
+        questionNumber: true,
+        part: true,
+        marks: true,
+        content: true,
+        difficulty: true,
+        topic: { select: { name: true, slug: true } },
+        exam: { select: { year: true, examType: true } },
+        subtopics: { select: { name: true } },
+      },
+    }),
+    prisma.question.count({ where }),
+  ]);
+
+  return NextResponse.json({ questions, total: totalCount });
 }

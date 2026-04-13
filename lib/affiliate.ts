@@ -9,6 +9,10 @@ export const INFLUENCER_REFERRAL_REWARD = 1000; // $10 cash
 // Minimum payout threshold for cash payouts
 export const MIN_PAYOUT_AMOUNT = 2000; // $20
 
+// Referral discount for referred users — 50% off first month
+export const REFERRAL_DISCOUNT_PERCENT = 50;
+export const REFERRAL_COUPON_ID = "REFERRAL50";
+
 /** Reward (in cents) for a given affiliate type's per-referral commission. */
 export function rewardForType(type: AffiliateType): number {
   switch (type) {
@@ -65,6 +69,30 @@ export async function generateReferralCode(seed: string | null | undefined): Pro
 
   // Fallback — extremely unlikely
   return `${base}-${Date.now().toString(36)}`;
+}
+
+/**
+ * Ensure the referral discount coupon exists in Stripe.
+ * Creates it on first call; subsequent calls are no-ops.
+ * Returns the coupon ID.
+ */
+export async function ensureReferralCoupon(): Promise<string> {
+  const { getStripe } = await import("@/lib/stripe");
+  const stripe = getStripe();
+
+  try {
+    await stripe.coupons.retrieve(REFERRAL_COUPON_ID);
+  } catch {
+    await stripe.coupons.create({
+      id: REFERRAL_COUPON_ID,
+      percent_off: REFERRAL_DISCOUNT_PERCENT,
+      duration: "once",
+      name: "Referral Discount — 50% off first month",
+      currency: "aud",
+    });
+  }
+
+  return REFERRAL_COUPON_ID;
 }
 
 /** Validate Australian Business Number (ABN) — 11 digits. */

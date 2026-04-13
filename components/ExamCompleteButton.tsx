@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { CheckCircle } from "lucide-react";
 
 export default function ExamCompleteButton({
@@ -10,6 +11,7 @@ export default function ExamCompleteButton({
   examId: string;
   initialCompleted: boolean;
 }) {
+  const router = useRouter();
   const [completed, setCompleted] = useState(initialCompleted);
   const [saving, setSaving] = useState(false);
 
@@ -24,7 +26,11 @@ export default function ExamCompleteButton({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ examId, completed: next }),
       });
-      if (!res.ok) setCompleted(!next);
+      if (!res.ok) {
+        setCompleted(!next);
+      } else {
+        router.refresh();
+      }
     } catch {
       setCompleted(!next);
     } finally {

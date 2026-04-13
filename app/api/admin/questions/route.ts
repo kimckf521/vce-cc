@@ -5,12 +5,15 @@ import { createQuestionSchema } from "@/lib/validations";
 import { rateLimit } from "@/lib/rate-limit";
 import { isAdminRole } from "@/lib/utils";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   const auth = await requireAuthenticatedUser();
   if (auth.response) return auth.response;
   if (!isAdminRole(auth.dbUser.role)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
+  const examId = req.nextUrl.searchParams.get("examId");
+
   const questions = await prisma.question.findMany({
+    where: examId ? { examId } : undefined,
     orderBy: [{ exam: { year: "desc" } }, { exam: { examType: "asc" } }, { questionNumber: "asc" }, { part: "asc" }],
     include: {
       exam: { select: { year: true, examType: true } },

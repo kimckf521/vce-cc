@@ -97,7 +97,7 @@ function SignupForm() {
 
         {referralCode && (
           <div className="mb-5 rounded-xl bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
-            🎉 Referred by <strong>{referralCode}</strong> — you&apos;ll be linked when you sign up.
+            Referred by <strong>{referralCode}</strong> — you&apos;ll get <strong>50% off your first month</strong> when you subscribe!
           </div>
         )}
 

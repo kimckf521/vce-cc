@@ -17,22 +17,47 @@ import "katex/dist/katex.min.css";
 // so GFM table parsing works.
 function preserveNewlines(content: string): string {
   const out: string[] = [];
+  // 1. Protect $$...$$ display-math blocks from newline processing.
   const segments = content.split(/(\$\$[\s\S]*?\$\$)/g);
   for (const seg of segments) {
     if (seg.startsWith("$$") && seg.endsWith("$$")) {
       out.push(seg);
       continue;
     }
-    // Split into paragraph blocks (separated by blank lines). Process each
-    // block independently so table blocks remain delimited by real blank lines.
-    const blocks = seg.split(/\n\s*\n/);
-    const processed = blocks.map((block) => {
-      const lines = block.split("\n");
-      const isTable = lines.some((l) => /^\s*\|/.test(l));
-      if (isTable) return block; // leave tables untouched
-      return lines.map((l) => (l.length === 0 ? "\u00A0" : l)).join("  \n");
-    });
-    out.push(processed.join("\n\n"));
+    // 2. Split into lines and process each one.
+    //    - Table lines (starting with |) are kept verbatim with real \n so
+    //      remark-gfm can parse them. A blank line is inserted before/after
+    //      table blocks to ensure GFM separation.
+    //    - Empty lines become a non-breaking space (visible blank line).
+    //    - All other lines get a trailing "  " (markdown hard break).
+    const lines = seg.split("\n");
+    const result: string[] = [];
+    let prevWasTable = false;
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const isTable = /^\s*\|/.test(line);
+      if (isTable) {
+        if (!prevWasTable && result.length > 0) {
+          // Insert blank line before table to ensure GFM parsing
+          result.push("");
+        }
+        result.push(line);
+        prevWasTable = true;
+      } else {
+        if (prevWasTable) {
+          // Insert blank line after table
+          result.push("");
+          prevWasTable = false;
+        }
+        if (line.trim().length === 0) {
+          // Empty line → non-breaking space so it renders as a visible blank line
+          result.push("\u00A0  ");
+        } else {
+          result.push(line + "  ");
+        }
+      }
+    }
+    out.push(result.join("\n"));
   }
   return out.join("");
 }

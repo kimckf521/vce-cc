@@ -84,7 +84,8 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
     topic.name,
     filters,
     0,
-    INITIAL_BATCH
+    INITIAL_BATCH,
+    user?.id
   );
 
   return (

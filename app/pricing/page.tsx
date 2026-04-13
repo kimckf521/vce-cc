@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Check, Sparkles } from "lucide-react";
+import { Check, Sparkles, Tag } from "lucide-react";
 import MarketingNav from "@/components/MarketingNav";
 import MarketingFooter from "@/components/MarketingFooter";
 import CheckoutButton from "@/components/CheckoutButton";
+import { createClient } from "@/lib/supabase/server";
+import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
   title: "Pricing — Free & Standard Plans",
@@ -104,7 +106,23 @@ const faqJsonLd = {
   })),
 };
 
-export default function PricingPage() {
+export default async function PricingPage() {
+  // Check if the logged-in user was referred — show discount banner if so
+  let isReferred = false;
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const dbUser = await prisma.user.findUnique({
+        where: { id: user.id },
+        select: { referredByCode: true },
+      });
+      isReferred = Boolean(dbUser?.referredByCode);
+    }
+  } catch {
+    // Not logged in or DB error — no banner
+  }
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       {/* FAQPage structured data — surfaces FAQs as rich results in Google */}
@@ -135,6 +153,14 @@ export default function PricingPage() {
       {/* Pricing cards */}
       <section className="py-12 lg:py-16 px-5 sm:px-8 lg:px-12">
         <div className="max-w-5xl mx-auto">
+          {isReferred && (
+            <div className="mb-6 lg:mb-8 rounded-2xl bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-5 py-4 flex items-center gap-3">
+              <Tag className="h-5 w-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+              <p className="text-sm lg:text-base text-emerald-700 dark:text-emerald-400">
+                <strong>Referral discount applied!</strong> You&apos;ll get 50% off your first month — pay just <strong>$4.99</strong> instead of $9.99.
+              </p>
+            </div>
+          )}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             {plans.map((plan) => (
               <div
@@ -164,14 +190,31 @@ export default function PricingPage() {
                 </div>
 
                 <div className="mb-6 flex items-baseline gap-1">
-                  <span className="text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-gray-100">
-                    {plan.price}
-                  </span>
-                  <span className="text-sm lg:text-base text-gray-500 dark:text-gray-400">
-                    {plan.period}
-                  </span>
-                  {plan.name === "Standard" && (
-                    <span className="text-xs text-gray-400 dark:text-gray-500 ml-1">AUD</span>
+                  {isReferred && plan.name === "Standard" ? (
+                    <>
+                      <span className="text-2xl lg:text-3xl font-bold text-gray-400 dark:text-gray-500 line-through mr-2">
+                        $9.99
+                      </span>
+                      <span className="text-4xl lg:text-5xl font-extrabold text-emerald-600 dark:text-emerald-400">
+                        $4.99
+                      </span>
+                      <span className="text-sm lg:text-base text-gray-500 dark:text-gray-400">
+                        /1st month
+                      </span>
+                      <span className="text-xs text-gray-400 dark:text-gray-500 ml-1">AUD</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-gray-100">
+                        {plan.price}
+                      </span>
+                      <span className="text-sm lg:text-base text-gray-500 dark:text-gray-400">
+                        {plan.period}
+                      </span>
+                      {plan.name === "Standard" && (
+                        <span className="text-xs text-gray-400 dark:text-gray-500 ml-1">AUD</span>
+                      )}
+                    </>
                   )}
                 </div>
 

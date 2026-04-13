@@ -26,6 +26,7 @@ const difficultyStyles = {
 export default function SearchPage() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
@@ -33,6 +34,7 @@ export default function SearchPage() {
   useEffect(() => {
     if (!query.trim()) {
       setResults([]);
+      setTotal(0);
       setSearched(false);
       return;
     }
@@ -45,6 +47,7 @@ export default function SearchPage() {
         if (res.ok) {
           const data = await res.json();
           setResults(data.questions);
+          setTotal(data.total);
         }
       } catch {
         // silently fail
@@ -89,7 +92,11 @@ export default function SearchPage() {
 
       {results.length > 0 && (
         <div className="space-y-3 lg:space-y-4">
-          <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-4">{results.length} result{results.length !== 1 ? "s" : ""}</p>
+          <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-4">
+            {total > results.length
+              ? `Showing ${results.length} of ${total} results`
+              : `${total} result${total !== 1 ? "s" : ""}`}
+          </p>
           {results.map((q) => {
             const examLabel = q.exam.examType === "EXAM_1" ? "Exam 1" : "Exam 2";
             const label = `${q.exam.year} · ${examLabel} · Q${q.questionNumber}${q.part ? q.part : ""}`;

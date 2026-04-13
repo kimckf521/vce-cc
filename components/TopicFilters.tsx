@@ -58,95 +58,174 @@ export default function TopicFilters({ slug, subtopics }: Props) {
   }
 
   return (
-    <div className="flex flex-nowrap overflow-x-auto items-center gap-x-4 lg:gap-x-5 rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 lg:px-5 py-3 lg:py-3.5 shadow-sm mb-6 scrollbar-hide">
+    <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm mb-6">
+      {/* ── Mobile/Tablet: stacked layout ─────────────────────── */}
+      <div className="lg:hidden">
+        {/* Subtopic dropdown — full width */}
+        {subtopics.length > 0 && (
+          <div className="px-4 pt-3 pb-2.5">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1.5 block">
+              Subtopic
+            </span>
+            <select
+              value={currentSubtopic}
+              onChange={(e) =>
+                router.push(buildUrl({ subtopic: e.target.value || null }))
+              }
+              className="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 py-2 pl-3 pr-7 text-sm text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-500 cursor-pointer"
+            >
+              <option value="">All subtopics</option>
+              {subtopics.map((sub) => (
+                <option key={sub.id} value={sub.slug}>
+                  {sub.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
-      {/* ── Subtopic dropdown ─────────────────────────────────── */}
-      {subtopics.length > 0 && (
-        <div className="flex items-center gap-2 shrink-0">
-          <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 whitespace-nowrap">
-            Subtopic
-          </span>
-          <select
-            value={currentSubtopic}
-            onChange={(e) =>
-              router.push(buildUrl({ subtopic: e.target.value || null }))
-            }
-            className="rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 py-1.5 pl-3 pr-7 text-sm lg:text-base text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-500 cursor-pointer"
-          >
-            <option value="">All subtopics</option>
-            {subtopics.map((sub) => (
-              <option key={sub.id} value={sub.slug}>
-                {sub.name}
-              </option>
-            ))}
-          </select>
+        {/* Exam + Difficulty pills row */}
+        <div className="px-4 pb-3 pt-1 flex flex-wrap items-center gap-x-3 gap-y-2">
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">Exam</span>
+          {EXAM_OPTIONS.map(({ value, label }) => {
+            const active = currentExams.includes(value);
+            return (
+              <button
+                key={value}
+                onClick={() => toggleMulti("exam", currentExams, value)}
+                className={cn(
+                  "rounded-full border px-2.5 py-0.5 text-xs font-medium transition-colors",
+                  active
+                    ? "border-brand-300 dark:border-brand-700 bg-brand-100 dark:bg-brand-900 text-brand-700 dark:text-brand-400"
+                    : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
+                )}
+              >
+                {label}
+              </button>
+            );
+          })}
+
+          <div className="h-4 w-px bg-gray-200 dark:bg-gray-700" />
+
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">Difficulty</span>
+          {DIFFICULTY_OPTIONS.map(({ value, label, active: activeStyle }) => {
+            const active = currentDifficulties.includes(value);
+            return (
+              <button
+                key={value}
+                onClick={() => toggleMulti("difficulty", currentDifficulties, value)}
+                className={cn(
+                  "rounded-full border px-2.5 py-0.5 text-xs font-medium transition-colors",
+                  active
+                    ? `border ${activeStyle}`
+                    : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
+                )}
+              >
+                {label}
+              </button>
+            );
+          })}
+
+          {hasFilters && (
+            <>
+              <div className="h-4 w-px bg-gray-200 dark:bg-gray-700" />
+              <Link
+                href={`/topics/${slug}`}
+                className="text-xs font-medium text-brand-600 hover:underline"
+              >
+                Clear all
+              </Link>
+            </>
+          )}
         </div>
-      )}
-
-      <div className="h-5 w-px bg-gray-200 dark:bg-gray-700 shrink-0" />
-
-      {/* ── Exam pills ────────────────────────────────────────── */}
-      <div className="flex items-center gap-1.5 shrink-0">
-        <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 whitespace-nowrap">
-          Exam
-        </span>
-        {EXAM_OPTIONS.map(({ value, label }) => {
-          const active = currentExams.includes(value);
-          return (
-            <button
-              key={value}
-              onClick={() => toggleMulti("exam", currentExams, value)}
-              className={cn(
-                "rounded-full border px-3 py-1 text-xs lg:text-sm font-medium transition-colors whitespace-nowrap",
-                active
-                  ? "border-brand-300 dark:border-brand-700 bg-brand-100 dark:bg-brand-900 text-brand-700 dark:text-brand-400"
-                  : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800"
-              )}
-            >
-              {label}
-            </button>
-          );
-        })}
       </div>
 
-      <div className="h-5 w-px bg-gray-200 dark:bg-gray-700 shrink-0" />
-
-      {/* ── Difficulty pills ──────────────────────────────────── */}
-      <div className="flex items-center gap-1.5 shrink-0">
-        <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 whitespace-nowrap">
-          Difficulty
-        </span>
-        {DIFFICULTY_OPTIONS.map(({ value, label, active: activeStyle }) => {
-          const active = currentDifficulties.includes(value);
-          return (
-            <button
-              key={value}
-              onClick={() => toggleMulti("difficulty", currentDifficulties, value)}
-              className={cn(
-                "rounded-full border px-3 py-1 text-xs lg:text-sm font-medium transition-colors whitespace-nowrap",
-                active
-                  ? `border ${activeStyle}`
-                  : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800"
-              )}
+      {/* ── Desktop: single-row inline layout ─────────────────── */}
+      <div className="hidden lg:flex flex-wrap items-center gap-x-5 gap-y-2.5 px-5 py-3.5">
+        {subtopics.length > 0 && (
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 whitespace-nowrap">
+              Subtopic
+            </span>
+            <select
+              value={currentSubtopic}
+              onChange={(e) =>
+                router.push(buildUrl({ subtopic: e.target.value || null }))
+              }
+              className="rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 py-1.5 pl-3 pr-7 text-base text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-500 cursor-pointer"
             >
-              {label}
-            </button>
-          );
-        })}
-      </div>
+              <option value="">All subtopics</option>
+              {subtopics.map((sub) => (
+                <option key={sub.id} value={sub.slug}>
+                  {sub.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
-      {/* ── Clear all ─────────────────────────────────────────── */}
-      {hasFilters && (
-        <>
-          <div className="h-5 w-px bg-gray-200 dark:bg-gray-700 shrink-0" />
-          <Link
-            href={`/topics/${slug}`}
-            className="text-xs lg:text-sm font-medium text-brand-600 hover:underline whitespace-nowrap shrink-0"
-          >
-            Clear all
-          </Link>
-        </>
-      )}
+        <div className="h-5 w-px bg-gray-200 dark:bg-gray-700" />
+
+        <div className="flex items-center gap-1.5">
+          <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 whitespace-nowrap">
+            Exam
+          </span>
+          {EXAM_OPTIONS.map(({ value, label }) => {
+            const active = currentExams.includes(value);
+            return (
+              <button
+                key={value}
+                onClick={() => toggleMulti("exam", currentExams, value)}
+                className={cn(
+                  "rounded-full border px-3 py-1 text-sm font-medium transition-colors whitespace-nowrap",
+                  active
+                    ? "border-brand-300 dark:border-brand-700 bg-brand-100 dark:bg-brand-900 text-brand-700 dark:text-brand-400"
+                    : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800"
+                )}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="h-5 w-px bg-gray-200 dark:bg-gray-700" />
+
+        <div className="flex items-center gap-1.5">
+          <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 whitespace-nowrap">
+            Difficulty
+          </span>
+          {DIFFICULTY_OPTIONS.map(({ value, label, active: activeStyle }) => {
+            const active = currentDifficulties.includes(value);
+            return (
+              <button
+                key={value}
+                onClick={() => toggleMulti("difficulty", currentDifficulties, value)}
+                className={cn(
+                  "rounded-full border px-3 py-1 text-sm font-medium transition-colors whitespace-nowrap",
+                  active
+                    ? `border ${activeStyle}`
+                    : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800"
+                )}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+
+        {hasFilters && (
+          <>
+            <div className="h-5 w-px bg-gray-200 dark:bg-gray-700" />
+            <Link
+              href={`/topics/${slug}`}
+              className="text-sm font-medium text-brand-600 hover:underline whitespace-nowrap"
+            >
+              Clear all
+            </Link>
+          </>
+        )}
+      </div>
     </div>
   );
 }

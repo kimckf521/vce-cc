@@ -135,42 +135,21 @@ function getSubtopicDescription(name: string): string {
   return SUBTOPIC_DESCRIPTIONS[name] ?? "Practice questions for this topic area.";
 }
 
-const GENERATED_QUESTION_SET_NAME = "1st Generated Question Set";
-
 export default async function TopicsPage() {
-  // Resolve the active generated question set (single row lookup; safe if it's missing)
-  const generatedSet = await prisma.questionSet.findFirst({
-    where: { name: GENERATED_QUESTION_SET_NAME },
-    select: { id: true },
-  });
-  const generatedSetId = generatedSet?.id ?? "";
-
-  const [topics, topicStats] = await Promise.all([
-    // Lightweight topic + subtopic metadata (no questions)
-    prisma.topic.findMany({
-      orderBy: { order: "asc" },
-      select: {
-        id: true,
-        name: true,
-        slug: true,
-        order: true,
-        description: true,
-        subtopics: {
-          orderBy: { name: "asc" },
-          select: { id: true, name: true, slug: true },
-        },
+  const topics = await prisma.topic.findMany({
+    orderBy: { order: "asc" },
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      order: true,
+      description: true,
+      subtopics: {
+        orderBy: { name: "asc" },
+        select: { id: true, name: true, slug: true },
       },
-    }),
-    // Per-topic totals from the generated question set
-    prisma.$queryRaw<{ topicId: string; total: bigint }[]>`
-      SELECT "topicId", COUNT(*) AS "total"
-      FROM "QuestionSetItem"
-      WHERE "questionSetId" = ${generatedSetId}
-      GROUP BY "topicId"
-    `,
-  ]);
-
-  const topicTotalMap = new Map(topicStats.map((r) => [r.topicId, Number(r.total)]));
+    },
+  });
 
   // Compute lock state per topic for the current user.
   // Admins see no locks. PAID users see no locks. FREE users see locks on every
@@ -202,7 +181,6 @@ export default async function TopicsPage() {
       <div className="space-y-6 lg:space-y-8">
         {topics.map((topic) => {
           const theme = topicThemes[topic.order] ?? topicThemes[1];
-          const topicTotal = topicTotalMap.get(topic.id) ?? 0;
           const isLocked = lockedSlugs.has(topic.slug);
 
           return (
@@ -227,9 +205,6 @@ export default async function TopicsPage() {
                   {topic.description && (
                     <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mt-1">{topic.description}</p>
                   )}
-                  <p className={`text-sm lg:text-base font-semibold mt-1.5 ${theme.accent}`}>
-                    {topicTotal} questions
-                  </p>
                 </div>
                 <ChevronRight className="h-5 w-5 lg:h-6 lg:w-6 text-gray-300 dark:text-gray-600 shrink-0" />
               </LockedTopicLink>

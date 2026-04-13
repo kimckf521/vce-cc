@@ -21,7 +21,7 @@ function getTitle(pathname: string): string {
   return "VCE Methods";
 }
 
-export default function TopBar() {
+export default function TopBar({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname();
   const title = getTitle(pathname);
 
@@ -33,9 +33,11 @@ export default function TopBar() {
       </Link>
       <span className="text-gray-300 dark:text-gray-600">·</span>
       <span className="font-semibold text-gray-700 dark:text-gray-300 text-sm truncate flex-1">{title}</span>
-      <Link href="/search" className="rounded-lg p-2 text-gray-400 dark:text-gray-500 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-        <Search className="h-5 w-5" />
-      </Link>
+      {isAdmin && (
+        <Link href="/search" className="rounded-lg p-2 text-gray-400 dark:text-gray-500 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+          <Search className="h-5 w-5" />
+        </Link>
+      )}
     </header>
   );
 }

@@ -25,7 +25,7 @@ function LoginForm() {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
-      setError(error.message);
+      setError(error.message === "Invalid login credentials" ? "Incorrect email or password" : error.message);
       setLoading(false);
     } else {
       // Ensure User row exists in our DB
@@ -109,8 +109,14 @@ function LoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-brand-600 py-3 lg:py-3.5 text-sm lg:text-base font-semibold text-white hover:bg-brand-700 transition-colors disabled:opacity-60"
+            className="w-full rounded-xl bg-brand-600 py-3 lg:py-3.5 text-sm lg:text-base font-semibold text-white hover:bg-brand-700 transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
           >
+            {loading && (
+              <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+            )}
             {loading ? "Signing in…" : "Sign in"}
           </button>
         </form>

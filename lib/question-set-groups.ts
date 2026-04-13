@@ -34,7 +34,8 @@ export async function fetchQuestionSetGroupsPaginated(
   topicName: string,
   filters: TopicQuestionFilters,
   offset: number,
-  limit: number
+  limit: number,
+  userId?: string
 ): Promise<{ groups: QuestionGroupData[]; totalCount: number; hasMore: boolean }> {
   const setId = await getGeneratedQuestionSetId();
   if (!setId) return { groups: [], totalCount: 0, hasMore: false };
@@ -98,26 +99,36 @@ export async function fetchQuestionSetGroupsPaginated(
   const totalCount = allItems.length;
   const sliceIds = allItems.slice(offset, offset + limit).map((i) => i.id);
 
-  // Hydrate only the displayed slice with full content
-  const fullItems = sliceIds.length > 0
-    ? await prisma.questionSetItem.findMany({
-        where: { id: { in: sliceIds } },
-        select: {
-          id: true,
-          type: true,
-          marks: true,
-          content: true,
-          difficulty: true,
-          solutionContent: true,
-          optionA: true,
-          optionB: true,
-          optionC: true,
-          optionD: true,
-          correctOption: true,
-          subtopics: { select: { name: true } },
-        },
-      })
-    : [];
+  // Hydrate only the displayed slice with full content + user attempt statuses
+  const [fullItems, userAttempts] = await Promise.all([
+    sliceIds.length > 0
+      ? prisma.questionSetItem.findMany({
+          where: { id: { in: sliceIds } },
+          select: {
+            id: true,
+            type: true,
+            marks: true,
+            content: true,
+            difficulty: true,
+            solutionContent: true,
+            optionA: true,
+            optionB: true,
+            optionC: true,
+            optionD: true,
+            correctOption: true,
+            subtopics: { select: { name: true } },
+          },
+        })
+      : [],
+    sliceIds.length > 0 && userId
+      ? prisma.questionSetAttempt.findMany({
+          where: { userId, questionSetItemId: { in: sliceIds } },
+          select: { questionSetItemId: true, status: true, bookmarked: true },
+        })
+      : [],
+  ]);
+
+  const attemptMap = new Map(userAttempts.map((a) => [a.questionSetItemId, { status: a.status, bookmarked: a.bookmarked }]));
 
   // Index for ordered retrieval
   const byId = new Map(fullItems.map((it) => [it.id, it] as const));
@@ -162,7 +173,8 @@ export async function fetchQuestionSetGroupsPaginated(
             solution: solutionContent
               ? { content: solutionContent, imageUrl: null, videoUrl: null }
               : null,
-            initialStatus: null,
+            initialStatus: (attemptMap.get(it.id)?.status as "ATTEMPTED" | "CORRECT" | "INCORRECT" | "NEEDS_REVIEW") ?? null,
+            initialBookmarked: attemptMap.get(it.id)?.bookmarked ?? false,
           },
         ],
       } satisfies QuestionGroupData;

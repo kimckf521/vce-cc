@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/utils";
 import Link from "next/link";
-import { FileText, BookOpen, HelpCircle, Users, FlaskConical, ImageIcon, Gift } from "lucide-react";
+import { FileText, HelpCircle, Users, FlaskConical, ImageIcon, Gift } from "lucide-react";
 
 export default async function AdminPage() {
   const supabase = await createClient();
@@ -13,18 +13,16 @@ export default async function AdminPage() {
   const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
   if (!isAdminRole(dbUser?.role)) redirect("/dashboard");
 
-  const [examCount, questionCount, userCount, solutionCount, affiliateCount] = await Promise.all([
+  const [examCount, questionCount, userCount, affiliateCount] = await Promise.all([
     prisma.exam.count(),
     prisma.question.count(),
     prisma.user.count(),
-    prisma.solution.count(),
     prisma.affiliate.count(),
   ]);
 
   const stats = [
     { label: "Exams", value: examCount, icon: FileText, href: "/admin/exams" },
     { label: "Questions", value: questionCount, icon: HelpCircle, href: "/admin/questions" },
-    { label: "Solutions", value: solutionCount, icon: BookOpen, href: "/admin/questions" },
     { label: "Users", value: userCount, icon: Users, href: "/admin/users" },
     { label: "Affiliates", value: affiliateCount, icon: Gift, href: "/admin/affiliates" },
   ];
@@ -32,7 +30,7 @@ export default async function AdminPage() {
   return (
     <div className="max-w-4xl">
       <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Admin Panel</h1>
-      <p className="text-gray-500 dark:text-gray-400 mb-8">Manage exams, questions, solutions, and users.</p>
+      <p className="text-gray-500 dark:text-gray-400 mb-8">Manage exams, questions, users, and affiliates.</p>
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">

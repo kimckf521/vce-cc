@@ -6,6 +6,7 @@ import Link from "next/link";
 import ScoreTrendChart from "@/components/ScoreTrendChart";
 import EditableScoreBadge from "@/components/EditableScoreBadge";
 import { getStudyStreak } from "@/lib/streak";
+import BookmarkedSection from "@/components/BookmarkedSection";
 
 function formatElapsed(seconds: number): string {
   const h = Math.floor(seconds / 3600);
@@ -65,16 +66,11 @@ export default async function HistoryPage() {
       include: {
         questionSetItem: {
           select: {
-            questionNumber: true,
-            part: true,
+            order: true,
             marks: true,
-            questionSet: {
-              select: {
-                year: true,
-                examType: true,
-                topic: { select: { name: true, slug: true } },
-              },
-            },
+            content: true,
+            topic: { select: { name: true, slug: true } },
+            questionSet: { select: { name: true } },
           },
         },
       },
@@ -270,84 +266,28 @@ export default async function HistoryPage() {
 
       {/* Bookmarked questions — from both exam attempts and topic question sets */}
       {(bookmarkedAttempts.length > 0 || bookmarkedSetAttempts.length > 0) && (
-        <div>
-          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-4">
-            Bookmarked Questions
-          </h2>
-          <div className="space-y-2">
-            {/* From exam papers */}
-            {bookmarkedAttempts.map((a) => {
-              const q = a.question;
-              const examLabel = q.exam.examType === "EXAM_1" ? "Exam 1" : "Exam 2";
-              const qLabel = `Q${q.questionNumber}${q.part ?? ""}`;
-              return (
-                <Link
-                  key={a.id}
-                  href={`/topics/${q.topic.slug}`}
-                  className="flex items-center justify-between rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 px-5 py-4 hover:border-brand-300 dark:hover:border-brand-700 transition-colors"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-yellow-50 dark:bg-yellow-950 text-yellow-600 dark:text-yellow-400">
-                      <Bookmark className="h-4 w-4 fill-current" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
-                        {q.exam.year} {examLabel} · {qLabel}
-                      </p>
-                      <p className="text-xs text-gray-400 dark:text-gray-500">
-                        {q.topic.name} · {q.marks} mark{q.marks !== 1 ? "s" : ""}
-                      </p>
-                    </div>
-                  </div>
-                  <span className={cn(
-                    "text-xs font-medium px-2 py-0.5 rounded-full",
-                    a.status === "CORRECT" ? "bg-green-50 dark:bg-green-950 text-green-600 dark:text-green-400" :
-                    a.status === "INCORRECT" ? "bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400" :
-                    "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
-                  )}>
-                    {a.status === "CORRECT" ? "Correct" : a.status === "INCORRECT" ? "Incorrect" : "Review"}
-                  </span>
-                </Link>
-              );
-            })}
-            {/* From topic question sets */}
-            {bookmarkedSetAttempts.map((a) => {
-              const item = a.questionSetItem;
-              const qs = item.questionSet;
-              const examLabel = qs.examType === "EXAM_1" ? "Exam 1" : "Exam 2";
-              const qLabel = `Q${item.questionNumber}${item.part ?? ""}`;
-              return (
-                <Link
-                  key={a.id}
-                  href={`/topics/${qs.topic.slug}`}
-                  className="flex items-center justify-between rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 px-5 py-4 hover:border-brand-300 dark:hover:border-brand-700 transition-colors"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-yellow-50 dark:bg-yellow-950 text-yellow-600 dark:text-yellow-400">
-                      <Bookmark className="h-4 w-4 fill-current" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
-                        {qs.year} {examLabel} · {qLabel}
-                      </p>
-                      <p className="text-xs text-gray-400 dark:text-gray-500">
-                        {qs.topic.name} · {item.marks} mark{item.marks !== 1 ? "s" : ""}
-                      </p>
-                    </div>
-                  </div>
-                  <span className={cn(
-                    "text-xs font-medium px-2 py-0.5 rounded-full",
-                    a.status === "CORRECT" ? "bg-green-50 dark:bg-green-950 text-green-600 dark:text-green-400" :
-                    a.status === "INCORRECT" ? "bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400" :
-                    "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
-                  )}>
-                    {a.status === "CORRECT" ? "Correct" : a.status === "INCORRECT" ? "Incorrect" : "Review"}
-                  </span>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
+        <BookmarkedSection
+          examAttempts={bookmarkedAttempts.map((a) => ({
+            id: a.id,
+            questionId: a.questionId,
+            status: a.status,
+            year: a.question.exam.year,
+            examType: a.question.exam.examType,
+            questionNumber: a.question.questionNumber,
+            part: a.question.part,
+            topicName: a.question.topic.name,
+            marks: a.question.marks,
+          }))}
+          setAttempts={bookmarkedSetAttempts.map((a) => ({
+            id: a.id,
+            questionSetItemId: a.questionSetItemId,
+            status: a.status,
+            content: a.questionSetItem.content.split("\n")[0],
+            topicName: a.questionSetItem.topic.name,
+            topicSlug: a.questionSetItem.topic.slug,
+            marks: a.questionSetItem.marks,
+          }))}
+        />
       )}
     </div>
   );

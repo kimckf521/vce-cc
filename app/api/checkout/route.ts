@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getStripe, getStandardPriceId } from "@/lib/stripe";
 import { ensureMathMethodsSubject } from "@/lib/subscription";
 import { rateLimit } from "@/lib/rate-limit";
+import { ensureReferralCoupon } from "@/lib/affiliate";
 
 /**
  * POST /api/checkout
@@ -37,6 +38,7 @@ export async function POST(request: NextRequest) {
       email: true,
       name: true,
       stripeCustomerId: true,
+      referredByCode: true,
     },
   });
 
@@ -62,6 +64,12 @@ export async function POST(request: NextRequest) {
     });
   }
 
+  // Check if this user was referred — auto-apply 50% off first month
+  const isReferred = Boolean(dbUser.referredByCode);
+  if (isReferred) {
+    await ensureReferralCoupon();
+  }
+
   // Build success/cancel URLs from the request origin
   const origin =
     request.headers.get("origin") ??
@@ -69,6 +77,8 @@ export async function POST(request: NextRequest) {
     "http://localhost:3000";
 
   // Create the Checkout Session
+  // Stripe doesn't allow both `discounts` and `allow_promotion_codes`,
+  // so referred users get the auto-applied coupon, others can enter promo codes.
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
     customer: customerId,
@@ -78,7 +88,9 @@ export async function POST(request: NextRequest) {
         quantity: 1,
       },
     ],
-    allow_promotion_codes: true,
+    ...(isReferred
+      ? { discounts: [{ coupon: "REFERRAL50" }] }
+      : { allow_promotion_codes: true }),
     billing_address_collection: "auto",
     subscription_data: {
       metadata: {

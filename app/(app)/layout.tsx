@@ -53,7 +53,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <Navbar isAdmin={isAdmin} />
 
       {/* Mobile top bar */}
-      <TopBar />
+      <TopBar isAdmin={isAdmin} />
 
       {/* Main content
           - Mobile:  full width, top padding for TopBar (56px), bottom padding for BottomNav (64px)

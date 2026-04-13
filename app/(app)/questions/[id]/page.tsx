@@ -9,6 +9,7 @@ import { ChevronLeft } from "lucide-react";
 
 interface PageProps {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ from?: string }>;
 }
 
 const questionSelect = (userId?: string) => ({
@@ -29,8 +30,11 @@ const questionSelect = (userId?: string) => ({
     : (false as const),
 } as const);
 
-export default async function QuestionPage({ params }: PageProps) {
+export default async function QuestionPage({ params, searchParams }: PageProps) {
   const { id } = await params;
+  const { from } = await searchParams;
+  const backHref = from === "history" ? "/history" : "/search";
+  const backLabel = from === "history" ? "Back to History" : "Back to Search";
 
   // Parallel: fetch question metadata (lightweight) + auth
   const [questionMeta, supabaseResult] = await Promise.all([
@@ -92,10 +96,10 @@ export default async function QuestionPage({ params }: PageProps) {
   return (
     <div>
       <Link
-        href="/search"
+        href={backHref}
         className="inline-flex items-center gap-1 text-sm lg:text-base text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 mb-6 transition-colors"
       >
-        <ChevronLeft className="h-4 w-4 lg:h-5 lg:w-5" /> Back to Search
+        <ChevronLeft className="h-4 w-4 lg:h-5 lg:w-5" /> {backLabel}
       </Link>
 
       <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">{title}</h1>
