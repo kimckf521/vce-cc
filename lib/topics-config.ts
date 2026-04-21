@@ -1,4 +1,4 @@
-// Static VCE Methods topics — these match the DB and don't change.
+// Static VCE Mathematical Methods topics — these match the DB and don't change.
 // Used by practice pages to avoid Prisma calls at build time.
 // NOTE: Names/slugs must stay in sync with VCE_TOPICS in lib/utils.ts (used for seeding).
 export const TOPICS = [

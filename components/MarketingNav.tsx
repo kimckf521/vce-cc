@@ -24,7 +24,7 @@ export default async function MarketingNav({ active = null }: { active?: NavKey 
           className="flex items-center gap-2 font-bold text-xl lg:text-2xl text-brand-700 dark:text-brand-400"
         >
           <BookOpen className="h-6 w-6 lg:h-7 lg:w-7" />
-          VCE Methods
+          ATAR Hero
         </Link>
         <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm lg:text-base text-gray-600 dark:text-gray-400">
           <Link href="/topics" className={linkClass("topics")}>

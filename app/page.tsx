@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookOpen, BarChart2, FileText, CheckCircle, Clock, ArrowRight } from "lucide-react";
+import { BookOpen, BarChart2, FileText, CheckCircle, Clock, ArrowRight, Sparkles, Target, TrendingUp, Trophy } from "lucide-react";
 import MarketingNav from "@/components/MarketingNav";
 import MarketingFooter from "@/components/MarketingFooter";
 import { createClient } from "@/lib/supabase/server";
@@ -28,6 +28,30 @@ const features = [
     title: "Track Progress",
     description:
       "Mark questions as correct, incorrect, or needs review. See your strengths and weaknesses at a glance.",
+  },
+];
+
+const journey = [
+  {
+    icon: Target,
+    label: "Zero",
+    title: "Start where you are",
+    description:
+      "No matter where you're at — overwhelmed, behind, or just starting out — your hero journey begins here.",
+  },
+  {
+    icon: TrendingUp,
+    label: "Grow",
+    title: "Build skill, one question at a time",
+    description:
+      "Practise real VCAA past exam questions with worked solutions. Track every correct, incorrect and review.",
+  },
+  {
+    icon: Trophy,
+    label: "Hero",
+    title: "Walk into the exam ready",
+    description:
+      "Timed practice exams, exam-day strategy, and confidence built from doing the work — not just reading it.",
   },
 ];
 
@@ -61,31 +85,107 @@ export default async function HomePage() {
       <MarketingNav />
 
       {/* Hero */}
-      <section className="py-24 lg:py-36 xl:py-44 px-5 sm:px-8 lg:px-12 text-center bg-gradient-to-b from-brand-50 to-white dark:from-gray-950 dark:to-gray-900">
+      <section className="relative overflow-hidden py-24 lg:py-36 xl:py-44 px-5 sm:px-8 lg:px-12 text-center bg-gradient-to-b from-brand-50 via-white to-white dark:from-brand-950 dark:via-gray-950 dark:to-gray-900">
+        {/* Soft background glow */}
+        <div className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute left-1/2 top-0 -translate-x-1/2 h-[500px] w-[500px] rounded-full bg-brand-200/40 dark:bg-brand-700/20 blur-3xl" />
+        </div>
+
         <div className="max-w-4xl mx-auto">
-          <span className="inline-block rounded-full bg-brand-100 dark:bg-brand-900 px-4 py-1.5 text-sm lg:text-base font-medium text-brand-700 dark:text-brand-400 mb-6 lg:mb-8">
-            VCE Mathematical Methods
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-100 dark:bg-brand-900 px-4 py-1.5 text-sm lg:text-base font-medium text-brand-700 dark:text-brand-300 mb-6 lg:mb-8">
+            <Sparkles className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
+            Your VCE journey starts here
           </span>
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100 leading-tight">
-            Ace your Methods exam
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100 leading-[1.05]">
+            From{" "}
+            <span className="text-gray-400 dark:text-gray-500 line-through decoration-4 decoration-red-400/70">
+              zero
+            </span>
+            <br className="sm:hidden" />{" "}
+            to{" "}
+            <span className="bg-gradient-to-r from-brand-600 via-brand-500 to-brand-700 dark:from-brand-400 dark:via-brand-300 dark:to-brand-500 bg-clip-text text-transparent">
+              hero
+            </span>
+            .
           </h1>
-          <p className="mt-6 lg:mt-8 text-xl lg:text-2xl text-gray-500 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto">
-            Practice with real VCAA past exam questions, organised by topic. See worked solutions,
-            track your progress, and build exam confidence.
+          <p className="mt-6 lg:mt-8 text-lg sm:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto">
+            Wherever you&apos;re starting from, ATAR Hero takes you all the way. Real VCAA past
+            exam questions, worked solutions, and timed practice — built to turn study into a
+            top ATAR.
           </p>
           <div className="mt-10 lg:mt-12 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href={user ? "/dashboard" : "/signup"}
-              className="rounded-2xl bg-brand-600 px-8 lg:px-10 py-4 lg:py-5 text-base lg:text-lg font-semibold text-white shadow-sm hover:bg-brand-700 transition-colors"
+              className="group rounded-2xl bg-brand-600 px-8 lg:px-10 py-4 lg:py-5 text-base lg:text-lg font-semibold text-white shadow-lg shadow-brand-600/20 hover:bg-brand-700 hover:shadow-brand-600/30 hover:-translate-y-0.5 transition-all"
             >
-              {user ? "Go to dashboard" : "Start practising — it's free"}
+              {user ? "Go to dashboard" : "Begin your hero journey — free"}
+              <ArrowRight className="inline-block h-4 w-4 lg:h-5 lg:w-5 ml-2 group-hover:translate-x-0.5 transition-transform" />
             </Link>
             <Link
               href="/topics"
-              className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-8 lg:px-10 py-4 lg:py-5 text-base lg:text-lg font-semibold text-gray-700 dark:text-gray-300 shadow-sm hover:border-brand-300 transition-colors"
+              className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-8 lg:px-10 py-4 lg:py-5 text-base lg:text-lg font-semibold text-gray-700 dark:text-gray-300 shadow-sm hover:border-brand-300 dark:hover:border-brand-600 transition-colors"
             >
               Browse topics
             </Link>
+          </div>
+          <p className="mt-6 text-sm text-gray-400 dark:text-gray-500">
+            No credit card. Free to start.
+          </p>
+        </div>
+      </section>
+
+      {/* Zero → Hero journey */}
+      <section className="py-16 lg:py-24 px-5 sm:px-8 lg:px-12 bg-white dark:bg-gray-900">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12 lg:mb-16">
+            <h2 className="text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-3 lg:mb-4">
+              Every hero starts somewhere
+            </h2>
+            <p className="text-base lg:text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+              The gap between you and a top ATAR isn&apos;t talent — it&apos;s reps. Here&apos;s
+              how ATAR Hero gets you across.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 relative">
+            {/* Connecting line on desktop */}
+            <div className="hidden md:block absolute top-8 left-[16.66%] right-[16.66%] h-px bg-gradient-to-r from-gray-200 via-brand-300 to-amber-300 dark:from-gray-700 dark:via-brand-700 dark:to-amber-700" />
+
+            {journey.map((step, i) => (
+              <div key={step.label} className="relative text-center">
+                {/* Step circle with icon */}
+                <div className="relative mx-auto mb-5 inline-flex">
+                  <div
+                    className={`flex h-16 w-16 lg:h-20 lg:w-20 items-center justify-center rounded-full ring-4 ring-white dark:ring-gray-900 ${
+                      i === 0
+                        ? "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
+                        : i === 1
+                          ? "bg-brand-100 dark:bg-brand-900 text-brand-600 dark:text-brand-300"
+                          : "bg-gradient-to-br from-amber-400 to-amber-500 text-white shadow-lg shadow-amber-500/30"
+                    }`}
+                  >
+                    <step.icon className="h-7 w-7 lg:h-9 lg:w-9" />
+                  </div>
+                </div>
+                <p
+                  className={`text-xs lg:text-sm font-bold uppercase tracking-widest mb-2 ${
+                    i === 0
+                      ? "text-gray-400 dark:text-gray-500"
+                      : i === 1
+                        ? "text-brand-600 dark:text-brand-400"
+                        : "text-amber-600 dark:text-amber-400"
+                  }`}
+                >
+                  {step.label}
+                </p>
+                <h3 className="text-lg lg:text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                  {step.title}
+                </h3>
+                <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-xs mx-auto">
+                  {step.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -97,7 +197,7 @@ export default async function HomePage() {
             VCE Subjects
           </h2>
           <p className="text-base lg:text-lg text-gray-500 dark:text-gray-400 text-center mb-10 lg:mb-14 max-w-2xl mx-auto">
-            We&apos;re building comprehensive revision tools for every VCE subject. Start with Mathematical Methods today.
+            ATAR Hero is building revision tools for every VCE subject. Mathematical Methods is live now — more on the way.
           </p>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
@@ -193,17 +293,21 @@ export default async function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 lg:py-36 px-5 sm:px-8 text-center">
+      <section className="py-24 lg:py-36 px-5 sm:px-8 text-center bg-gradient-to-b from-white to-brand-50 dark:from-gray-900 dark:to-brand-950">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 dark:text-gray-100">Ready to start?</h2>
+          <Trophy className="h-10 w-10 lg:h-12 lg:w-12 text-amber-500 dark:text-amber-400 mx-auto mb-5" />
+          <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 dark:text-gray-100">
+            Your hero arc starts today.
+          </h2>
           <p className="mt-4 lg:mt-6 text-base lg:text-xl text-gray-500 dark:text-gray-400">
-            Create a free account and start practising VCE past exam questions today. More subjects are on the way.
+            Create a free account and take the first step from zero to hero. More VCE subjects are on the way.
           </p>
           <Link
             href={user ? "/dashboard" : "/signup"}
-            className="mt-8 lg:mt-10 inline-block rounded-2xl bg-brand-600 px-8 lg:px-12 py-4 lg:py-5 text-base lg:text-lg font-semibold text-white hover:bg-brand-700 transition-colors"
+            className="group mt-8 lg:mt-10 inline-flex items-center gap-2 rounded-2xl bg-brand-600 px-8 lg:px-12 py-4 lg:py-5 text-base lg:text-lg font-semibold text-white shadow-lg shadow-brand-600/20 hover:bg-brand-700 hover:shadow-brand-600/30 hover:-translate-y-0.5 transition-all"
           >
             {user ? "Go to dashboard" : "Create free account"}
+            <ArrowRight className="h-4 w-4 lg:h-5 lg:w-5 group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
       </section>

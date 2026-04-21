@@ -77,7 +77,7 @@ export default async function ReferralsPage() {
           Refer &amp; Earn
         </h1>
         <p className="text-gray-500 dark:text-gray-400 mb-8 lg:text-base">
-          Earn rewards by referring others to VCE Methods.
+          Earn rewards by referring others to ATAR Hero.
         </p>
         <RegisterAffiliateForm availableTracks={availableTracks} />
       </div>

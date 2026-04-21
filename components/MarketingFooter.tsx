@@ -14,11 +14,11 @@ export default function MarketingFooter() {
               className="flex items-center gap-2 font-bold text-xl text-brand-700 dark:text-brand-400"
             >
               <BookOpen className="h-6 w-6" />
-              VCE Methods
+              ATAR Hero
             </Link>
             <p className="mt-3 text-sm lg:text-base text-gray-500 dark:text-gray-400 max-w-sm leading-relaxed">
-              Practice with real VCAA past exam questions, organised by topic. Worked solutions
-              and progress tracking built for VCE Year 12 students.
+              From zero to hero — master VCE with real VCAA past exam questions, worked
+              solutions, and progress tracking built for Year 12 students.
             </p>
             <p className="mt-4 text-xs lg:text-sm text-gray-400 dark:text-gray-500">
               Not affiliated with, endorsed by, or sponsored by VCAA.
@@ -102,7 +102,7 @@ export default function MarketingFooter() {
 
         {/* Bottom bar */}
         <div className="mt-12 lg:mt-16 pt-6 border-t border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs lg:text-sm text-gray-400 dark:text-gray-500">
-          <p>© {year} VCE Methods. Made for Victorian Year 12 students.</p>
+          <p>© {year} ATAR Hero. Made for Victorian Year 12 students.</p>
           <p>VCAA® is a registered trademark of the Victorian Curriculum and Assessment Authority.</p>
         </div>
       </div>

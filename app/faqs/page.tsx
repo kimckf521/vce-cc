@@ -3,20 +3,20 @@ import MarketingNav from "@/components/MarketingNav";
 import MarketingFooter from "@/components/MarketingFooter";
 
 export const metadata: Metadata = {
-  title: "FAQs — VCE Methods",
+  title: "FAQs — ATAR Hero",
   description:
-    "Answers to common questions about VCE Methods: free vs Standard plans, subscriptions, VCAA past papers, progress tracking, and more.",
+    "Answers to common questions about ATAR Hero: free vs Standard plans, subscriptions, VCAA past papers, progress tracking, and more.",
   alternates: { canonical: "/faqs" },
 };
 
 const faqs: { q: string; a: string }[] = [
   {
-    q: "What is VCE Methods?",
-    a: "VCE Methods is an independent revision hub for Victorian Year 12 students studying VCE Mathematical Methods. It gives you past VCAA exam questions organised by topic, step-by-step worked solutions, timed practice exams, and progress tracking.",
+    q: "What is ATAR Hero?",
+    a: "ATAR Hero is an independent revision hub for Victorian Year 12 students studying VCE Mathematical Methods. It gives you past VCAA exam questions organised by topic, step-by-step worked solutions, timed practice exams, and progress tracking.",
   },
   {
-    q: "Is VCE Methods affiliated with VCAA?",
-    a: "No. VCE Methods is an independent study platform built by students, for students. We are not affiliated with, endorsed by, or sponsored by the Victorian Curriculum and Assessment Authority (VCAA). Past exam content is sourced from publicly available VCAA materials and is used for educational revision purposes only.",
+    q: "Is ATAR Hero affiliated with VCAA?",
+    a: "No. ATAR Hero is an independent study platform built by students, for students. We are not affiliated with, endorsed by, or sponsored by the Victorian Curriculum and Assessment Authority (VCAA). Past exam content is sourced from publicly available VCAA materials and is used for educational revision purposes only.",
   },
   {
     q: "What's included in the Free plan?",
@@ -93,7 +93,7 @@ export default function FAQsPage() {
             Frequently asked questions
           </h1>
           <p className="mt-5 text-lg lg:text-xl text-gray-500 dark:text-gray-400">
-            Everything you need to know about VCE Methods, plans, and billing.
+            Everything you need to know about ATAR Hero, plans, and billing.
           </p>
         </div>
       </section>

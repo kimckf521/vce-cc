@@ -10,10 +10,10 @@ import { prisma } from "@/lib/prisma";
 export const metadata: Metadata = {
   title: "Pricing — Free & Standard Plans",
   description:
-    "Try VCE Methods free with a topic preview and every VCAA past paper. Upgrade to Standard ($9.99/month AUD) for full access to every topic, every question, and worked solutions.",
+    "Try ATAR Hero free with a topic preview and every VCAA past paper. Upgrade to Standard ($9.99/month AUD) for full access to every topic, every question, and worked solutions.",
   alternates: { canonical: "/pricing" },
   openGraph: {
-    title: "VCE Methods Pricing — Free & Standard Plans",
+    title: "ATAR Hero Pricing — Free & Standard Plans",
     description:
       "Free plan with VCAA past papers, or Standard at $9.99/month AUD for full Methods access.",
     url: "/pricing",
@@ -89,7 +89,7 @@ const faqs = [
   },
   {
     q: "Is this affiliated with VCAA?",
-    a: "No. VCE Methods is an independent revision platform. Past exam content is sourced from publicly available VCAA materials.",
+    a: "No. ATAR Hero is an independent revision platform. Past exam content is sourced from publicly available VCAA materials.",
   },
 ];
 

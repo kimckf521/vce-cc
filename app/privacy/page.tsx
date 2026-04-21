@@ -3,9 +3,9 @@ import MarketingNav from "@/components/MarketingNav";
 import MarketingFooter from "@/components/MarketingFooter";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — VCE Methods",
+  title: "Privacy Policy — ATAR Hero",
   description:
-    "How VCE Methods collects, uses, and protects your personal information in accordance with the Australian Privacy Principles.",
+    "How ATAR Hero collects, uses, and protects your personal information in accordance with the Australian Privacy Principles.",
   alternates: { canonical: "/privacy" },
 };
 
@@ -30,7 +30,7 @@ export default function PrivacyPage() {
       <section className="py-16 lg:py-20 px-5 sm:px-8 lg:px-12">
         <article className="max-w-3xl mx-auto space-y-5 text-sm lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed [&_h2]:text-xl [&_h2]:lg:text-2xl [&_h2]:font-bold [&_h2]:text-gray-900 [&_h2]:dark:text-gray-100 [&_h2]:mt-10 [&_h2]:mb-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_li]:leading-relaxed [&_a]:text-brand-600 [&_a]:dark:text-brand-400 [&_a]:hover:underline [&_strong]:text-gray-900 [&_strong]:dark:text-gray-100">
           <p>
-            VCE Methods (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) is an independent revision
+            ATAR Hero (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) is an independent revision
             platform for Victorian VCE students. We take your privacy seriously and handle your
             personal information in accordance with the{" "}
             <em>Privacy Act 1988</em> (Cth) and the Australian Privacy Principles (APPs).
@@ -144,7 +144,7 @@ export default function PrivacyPage() {
 
           <h2>7. Children and minors</h2>
           <p>
-            VCE Methods is intended for senior-secondary students, who are typically 16–18 years
+            ATAR Hero is intended for senior-secondary students, who are typically 16–18 years
             old. If you are under 18, please use the Service with the knowledge and consent of a
             parent or guardian. We do not knowingly collect information from children under 13. If
             you believe a child under 13 has created an account, contact us and we will delete the

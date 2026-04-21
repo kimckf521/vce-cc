@@ -76,7 +76,7 @@ export default async function AdminPage() {
           className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm p-5 hover:border-brand-300 dark:hover:border-brand-700 transition-all"
         >
           <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">Seed topics</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Populate the database with VCE Methods syllabus topics.</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Populate the database with VCE Mathematical Methods syllabus topics.</p>
         </Link>
         <Link
           href="/admin/extraction"

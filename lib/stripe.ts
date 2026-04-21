@@ -20,7 +20,7 @@ export function getStripe(): Stripe {
     apiVersion: "2024-11-20.acacia",
     typescript: true,
     appInfo: {
-      name: "VCE Methods",
+      name: "ATAR Hero",
       version: "1.0.0",
     },
   });

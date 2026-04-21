@@ -35,7 +35,7 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
       <div className="h-20 flex items-center px-8 border-b border-gray-100 dark:border-gray-800">
         <Link href="/" className="flex items-center gap-2.5 font-bold text-xl text-brand-700 dark:text-brand-400">
           <BookOpen className="h-6 w-6" />
-          VCE Methods
+          ATAR Hero
         </Link>
       </div>
 

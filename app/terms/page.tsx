@@ -3,9 +3,9 @@ import MarketingNav from "@/components/MarketingNav";
 import MarketingFooter from "@/components/MarketingFooter";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions — VCE Methods",
+  title: "Terms & Conditions — ATAR Hero",
   description:
-    "The terms that govern your use of VCE Methods, including accounts, subscriptions, acceptable use, and intellectual property.",
+    "The terms that govern your use of ATAR Hero, including accounts, subscriptions, acceptable use, and intellectual property.",
   alternates: { canonical: "/terms" },
 };
 
@@ -31,14 +31,14 @@ export default function TermsPage() {
         <article className="max-w-3xl mx-auto space-y-5 text-sm lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed [&_h2]:text-xl [&_h2]:lg:text-2xl [&_h2]:font-bold [&_h2]:text-gray-900 [&_h2]:dark:text-gray-100 [&_h2]:mt-10 [&_h2]:mb-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_li]:leading-relaxed [&_a]:text-brand-600 [&_a]:dark:text-brand-400 [&_a]:hover:underline [&_strong]:text-gray-900 [&_strong]:dark:text-gray-100">
           <p>
             These Terms &amp; Conditions (&ldquo;Terms&rdquo;) govern your access to and use of
-            VCE Methods (the &ldquo;Service&rdquo;), operated from Victoria, Australia. By creating
+            ATAR Hero (the &ldquo;Service&rdquo;), operated from Victoria, Australia. By creating
             an account or using the Service you agree to be bound by these Terms. If you do not
             agree, you must not use the Service.
           </p>
 
           <h2>1. Who we are</h2>
           <p>
-            VCE Methods is an independent VCE revision platform. We are not affiliated with,
+            ATAR Hero is an independent VCE revision platform. We are not affiliated with,
             endorsed by, or sponsored by the Victorian Curriculum and Assessment Authority (VCAA).
             VCAA&reg; is a registered trademark of the Victorian Curriculum and Assessment
             Authority and is used here only to refer to publicly available past examinations for
@@ -119,7 +119,7 @@ export default function TermsPage() {
           <ul>
             <li>
               The Service, including our code, interface design, original explanations, worked
-              solutions, progress-tracking tools, and branding, is owned by VCE Methods and is
+              solutions, progress-tracking tools, and branding, is owned by ATAR Hero and is
               protected by Australian and international copyright and trademark law.
             </li>
             <li>
