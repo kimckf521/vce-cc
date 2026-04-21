@@ -169,9 +169,31 @@ model ExamSession {
   graded         Boolean  @default(true)
   completedAt    DateTime @default(now())
   user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questions      ExamSessionQuestion[]
 
   @@index([userId])
   @@index([userId, completedAt])
+}
+
+/// Records the exact list of generated-set questions that were practiced
+/// in a given ExamSession, plus the user's selection (for MCQ).
+model ExamSessionQuestion {
+  id                String          @id @default(cuid())
+  examSessionId     String
+  questionSetItemId String
+  /// Display order of this question within the session (0-based).
+  order             Int
+  /// "A" / "B" — Section label for exam2ab. Null for single-mode sessions.
+  section           String?
+  /// User's MCQ selection (A–D). Null for non-MCQ or unanswered.
+  selectedOption    String?
+  /// Whether this answer was correct (only set for graded MCQ items).
+  correct           Boolean?
+  examSession       ExamSession     @relation(fields: [examSessionId], references: [id], onDelete: Cascade)
+  questionSetItem   QuestionSetItem @relation(fields: [questionSetItemId], references: [id], onDelete: Cascade)
+
+  @@index([examSessionId])
+  @@index([questionSetItemId])
 }
 
 model Attempt {
@@ -253,6 +275,7 @@ model QuestionSetItem {
   topic         Topic               @relation(fields: [topicId], references: [id])
   subtopics     Subtopic[]          @relation("QuestionSetItemToSubtopic")
   attempts      QuestionSetAttempt[]
+  examSessionQuestions ExamSessionQuestion[]
 
   @@index([questionSetId])
   @@index([topicId])

@@ -64,6 +64,13 @@ interface QuestionGroupProps {
   onMcqSelect?: (questionId: string, letter: string) => void;
   /** Whether the current user is an admin (enables solution editing) */
   isAdmin?: boolean;
+  /**
+   * Skip `router.refresh()` after status/bookmark saves. Use this when the
+   * parent server component would re-randomise its data on refresh (e.g. the
+   * practice session page, which re-shuffles the question pool on every
+   * server render). The optimistic local state is sufficient.
+   */
+  disableServerRefresh?: boolean;
 }
 
 const difficultyStyles = {
@@ -215,7 +222,7 @@ const FREQ_LABEL: Record<"rare" | "normal" | "often", string> = {
   often: "Every year",
 };
 
-export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts, showSolutionButton = true, examMode, revealAnswers, onMcqSelect, isAdmin }: QuestionGroupProps) {
+export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts, showSolutionButton = true, examMode, revealAnswers, onMcqSelect, isAdmin, disableServerRefresh }: QuestionGroupProps) {
   const router = useRouter();
   const [showSolution, setShowSolution] = useState(false);
   const [statuses, setStatuses] = useState<Record<string, AttemptStatus>>(
@@ -284,7 +291,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
         } else {
           setSaveError("Failed to save. Please try again.");
         }
-      } else {
+      } else if (!disableServerRefresh) {
         router.refresh();
       }
     } catch {
@@ -311,7 +318,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
         if (!res.ok) {
           setBookmarks((cur) => ({ ...cur, [id]: prev }));
           setSaveError(res.status === 401 ? "Please log in to save your progress." : "Failed to save. Please try again.");
-        } else {
+        } else if (!disableServerRefresh) {
           router.refresh();
         }
       } catch {
@@ -331,7 +338,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
       if (!res.ok) {
         setBookmarks((cur) => ({ ...cur, [id]: prev }));
         setSaveError(res.status === 401 ? "Please log in to save your progress." : "Failed to save. Please try again.");
-      } else {
+      } else if (!disableServerRefresh) {
         router.refresh();
       }
     } catch {

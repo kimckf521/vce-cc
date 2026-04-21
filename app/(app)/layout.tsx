@@ -35,17 +35,21 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     where: { id: user.id },
     select: { role: true, activeSessionId: true },
   });
-  const cookieStore = await cookies();
-  const cookieSid = cookieStore.get(SESSION_COOKIE)?.value;
+  const isAdmin = isAdminRole(dbUser?.role);
   // If a session ID has been issued for this user in the DB AND either the
   // browser has no cookie or it doesn't match, this browser has been
   // superseded by a newer login. Sign out of Supabase and redirect to login
   // with a reason so the user sees a friendly message.
-  if (dbUser?.activeSessionId && dbUser.activeSessionId !== cookieSid) {
-    await supabase.auth.signOut();
-    redirect("/login?reason=other-device");
+  //
+  // Admins and super admins are exempt — they may log in on multiple devices.
+  if (!isAdmin && dbUser?.activeSessionId) {
+    const cookieStore = await cookies();
+    const cookieSid = cookieStore.get(SESSION_COOKIE)?.value;
+    if (dbUser.activeSessionId !== cookieSid) {
+      await supabase.auth.signOut();
+      redirect("/login?reason=other-device");
+    }
   }
-  const isAdmin = isAdminRole(dbUser?.role);
 
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">

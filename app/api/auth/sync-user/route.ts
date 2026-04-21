@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { ensureMathMethodsSubject, ensureFreeEnrolment } from "@/lib/subscription";
 import { syncUserSchema } from "@/lib/validations";
 import { SESSION_COOKIE, sessionCookieOptions } from "@/lib/session";
+import { isAdminRole } from "@/lib/utils";
 
 // Called after signup/login to ensure a User row exists in our DB
 // and that the user has a FREE enrolment for Mathematical Methods so
@@ -47,13 +48,21 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  // Mint a fresh session ID for this login. Any other browser currently logged
-  // into the same account will be signed out by the middleware the next time
-  // it sends a request, because its cookie won't match activeSessionId.
-  const newSessionId = randomUUID();
+  // Look up the existing row (if any) to decide whether to rotate the
+  // single-active-session ID. Admins and super admins are exempt — they may
+  // log in on multiple devices, so we don't rotate their activeSessionId and
+  // instead clear it to null so the layout/API mismatch checks always skip.
+  const existing = await prisma.user.findUnique({
+    where: { id: user.id },
+    select: { role: true },
+  });
+  const isAdmin = isAdminRole(existing?.role);
+
+  // Non-admins get a fresh session ID that invalidates any other browser
+  // currently logged into the same account.
+  const newSessionId = isAdmin ? null : randomUUID();
 
   // Upsert the user. Only set referredByCode on first creation — never overwrite.
-  // Always rotate activeSessionId, whether this is a new user or an existing one.
   const dbUser = await prisma.user.upsert({
     where: { id: user.id },
     update: { activeSessionId: newSessionId },
@@ -91,6 +100,14 @@ export async function POST(request: NextRequest) {
   await ensureFreeEnrolment(user.id);
 
   const response = NextResponse.json({ ok: true });
-  response.cookies.set(SESSION_COOKIE, newSessionId, sessionCookieOptions);
+  if (newSessionId) {
+    // Only set the single-session cookie for non-admin users; admins are
+    // exempt from single-active-session enforcement.
+    response.cookies.set(SESSION_COOKIE, newSessionId, sessionCookieOptions);
+  } else {
+    // Admin login — clear any stale cookie from a previous non-admin session
+    // (e.g. a student who was just promoted to admin).
+    response.cookies.delete(SESSION_COOKIE);
+  }
   return response;
 }

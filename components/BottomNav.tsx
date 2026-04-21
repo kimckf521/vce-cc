@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BookOpen, BarChart2, FileText, LayoutDashboard, UserCircle, ShieldCheck } from "lucide-react";
+import { BookOpen, BarChart2, FileText, LayoutDashboard, UserCircle, ShieldCheck, History } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -10,6 +10,7 @@ const navItems = [
   { href: "/topics",    label: "Topics",    icon: BookOpen      },
   { href: "/exams",     label: "Papers",    icon: FileText      },
   { href: "/practice",  label: "Practice",  icon: BarChart2     },
+  { href: "/history",   label: "History",   icon: History       },
   { href: "/profile",   label: "Profile",   icon: UserCircle    },
 ];
 

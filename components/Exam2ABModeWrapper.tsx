@@ -6,6 +6,7 @@ import QuestionGroup from "@/components/QuestionGroup";
 import PracticeTimer from "@/components/PracticeTimer";
 import { useSessionRefresh } from "@/hooks/useSessionRefresh";
 import { useAutoSave } from "@/hooks/useAutoSave";
+import { trackEvent } from "@/lib/analytics";
 
 interface QuestionGroupData {
   examId: string;
@@ -90,6 +91,54 @@ export default function Exam2ABModeWrapper({
     setSubmitted(true);
     autoSave.markSubmitted();
     window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // Persist the session + per-question manifest. Exam 2A & 2B is open-ended
+    // (the MCQ section is bundled with extended response), so it's flagged
+    // ungraded — the score column stays at 0 until the user marks it.
+    const totalQuestions = groupsA.length + groupsB.length;
+    const sessionQuestions = [
+      ...groupsA.flatMap((group, gIdx) =>
+        group.parts.map((p, pIdx) => ({
+          questionSetItemId: p.id,
+          order: gIdx * 100 + pIdx,
+          section: "A",
+          selectedOption: null,
+          correct: null,
+        }))
+      ),
+      ...groupsB.flatMap((group, gIdx) =>
+        group.parts.map((p, pIdx) => ({
+          questionSetItemId: p.id,
+          order: 10000 + gIdx * 100 + pIdx,
+          section: "B",
+          selectedOption: null,
+          correct: null,
+        }))
+      ),
+    ];
+
+    fetch("/api/exam-sessions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        mode: "Exam 2A & 2B",
+        totalQuestions,
+        correctCount: 0,
+        incorrectCount: 0,
+        score: 0,
+        elapsedSeconds,
+        graded: false,
+        questions: sessionQuestions,
+      }),
+    }).catch(() => {});
+
+    trackEvent("exam_submitted", {
+      mode: "Exam 2A & 2B",
+      totalQuestions,
+      correctCount: 0,
+      score: 0,
+      elapsedSeconds,
+    });
   }
 
   const shouldShowSolutions = submitted || showSolutionsAsYouGo;
@@ -139,7 +188,12 @@ export default function Exam2ABModeWrapper({
       {/* Section A — Multiple Choice */}
       <div className="space-y-5 lg:space-y-6">
         <h2 className="text-lg lg:text-xl font-bold text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700 pb-2 lg:pb-3">
-          Section A — Multiple Choice ({groupsA.length} questions)
+          Section A — Multiple Choice ({groupsA.length} questions ·{" "}
+          {groupsA.reduce(
+            (acc, g) => acc + g.parts.reduce((p, part) => p + part.marks, 0),
+            0
+          )}{" "}
+          marks)
         </h2>
         <div className="space-y-4 lg:space-y-5">
           {groupsA.map((group, idx) => (
@@ -164,7 +218,12 @@ export default function Exam2ABModeWrapper({
       {/* Section B — Extended Response */}
       <div className="space-y-5 lg:space-y-6">
         <h2 className="text-lg lg:text-xl font-bold text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700 pb-2 lg:pb-3">
-          Section B — Extended Response ({groupsB.length} questions)
+          Section B — Extended Response ({groupsB.length} questions ·{" "}
+          {groupsB.reduce(
+            (acc, g) => acc + g.parts.reduce((p, part) => p + part.marks, 0),
+            0
+          )}{" "}
+          marks)
         </h2>
         <div className="space-y-4 lg:space-y-5">
           {groupsB.map((group, idx) => (

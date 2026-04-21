@@ -40,10 +40,11 @@ export const EXAM_CONFIG: Record<ExamMode, ExamModeConfig> = {
     freedomMax: 40,
     freedomStep: 5,
     freedomDefault: 10,
-    examDescription: "8–9 short answer questions, matching real Exam 1 format.",
+    examDescription:
+      "8–9 short-answer questions worth 40 marks total — matches the real VCE Exam 1 format.",
     readingSeconds: 15 * 60,
     writingSeconds: 60 * 60,
-    timerDescription: "15 min reading time + 1 hour writing time",
+    timerDescription: "15 min reading time + 1 hour writing time (matches VCE Exam 1)",
     calculatorAllowed: false,
   },
   exam2a: {
@@ -52,10 +53,12 @@ export const EXAM_CONFIG: Record<ExamMode, ExamModeConfig> = {
     freedomMax: 100,
     freedomStep: 5,
     freedomDefault: 20,
-    examDescription: "20 multiple choice questions, matching real Exam 2A format.",
+    examDescription:
+      "20 multiple-choice questions worth 20 marks (1 mark each) — matches Section A of VCE Exam 2.",
     readingSeconds: 15 * 60,
     writingSeconds: 30 * 60,
-    timerDescription: "15 min reading time + 30 min writing time",
+    timerDescription:
+      "15 min reading + 30 min writing (Section A's share of the 2-hour Exam 2 budget)",
     calculatorAllowed: true,
   },
   exam2b: {
@@ -65,10 +68,12 @@ export const EXAM_CONFIG: Record<ExamMode, ExamModeConfig> = {
     freedomMax: 100,
     freedomStep: 5,
     freedomDefault: 10,
-    examDescription: "4–5 extended response questions, matching real Exam 2B format.",
+    examDescription:
+      "4–5 extended-response questions worth 60 marks total — matches Section B of VCE Exam 2.",
     readingSeconds: 15 * 60,
     writingSeconds: 90 * 60,
-    timerDescription: "15 min reading time + 1.5 hour writing time",
+    timerDescription:
+      "15 min reading + 1.5 hour writing (Section B's share of the 2-hour Exam 2 budget)",
     calculatorAllowed: true,
   },
   exam2ab: {
@@ -77,10 +82,11 @@ export const EXAM_CONFIG: Record<ExamMode, ExamModeConfig> = {
     freedomMax: 100,
     freedomStep: 5,
     freedomDefault: 25,
-    examDescription: "Complete Exam 2 — 20 MCQs followed by 4–5 extended response questions.",
+    examDescription:
+      "Full VCE Exam 2: Section A (20 MCQ · 20 marks) + Section B (4–5 extended response · 60 marks). 80 marks total.",
     readingSeconds: 15 * 60,
     writingSeconds: 2 * 60 * 60,
-    timerDescription: "15 min reading time + 2 hour writing time",
+    timerDescription: "15 min reading + 2 hour writing (matches VCE Exam 2)",
     calculatorAllowed: true,
   },
 };

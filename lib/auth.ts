@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { SESSION_COOKIE } from "@/lib/session";
+import { isAdminRole } from "@/lib/utils";
 
 /**
  * Result of {@link requireAuthenticatedUser}. Either:
@@ -69,10 +70,10 @@ export async function requireAuthenticatedUser(): Promise<AuthResult> {
     };
   }
 
-  // Single-active-session enforcement. If the DB has no active session ID
-  // (e.g. a pre-feature user whose row predates this column), skip the
-  // comparison — the layout-level check handles interactive page loads.
-  if (dbUser.activeSessionId) {
+  // Single-active-session enforcement. Skipped for:
+  //   - ADMIN / SUPER_ADMIN roles (may log in on multiple devices)
+  //   - users with no active session ID in the DB (e.g. pre-feature users)
+  if (dbUser.activeSessionId && !isAdminRole(dbUser.role)) {
     const cookieStore = await cookies();
     const cookieSid = cookieStore.get(SESSION_COOKIE)?.value;
     if (cookieSid !== dbUser.activeSessionId) {

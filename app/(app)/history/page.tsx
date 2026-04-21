@@ -1,31 +1,18 @@
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
-import { TrendingUp, Clock, Trophy, BarChart2, Flame, Bookmark } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Trophy, Flame } from "lucide-react";
 import Link from "next/link";
 import ScoreTrendChart from "@/components/ScoreTrendChart";
-import EditableScoreBadge from "@/components/EditableScoreBadge";
+import ExamTypeCard from "@/components/ExamTypeCard";
 import { getStudyStreak } from "@/lib/streak";
 import BookmarkedSection from "@/components/BookmarkedSection";
 
-function formatElapsed(seconds: number): string {
-  const h = Math.floor(seconds / 3600);
-  const m = Math.floor((seconds % 3600) / 60);
-  const s = seconds % 60;
-  if (h > 0) return `${h}h ${m}m`;
-  if (m > 0) return `${m}m ${s}s`;
-  return `${s}s`;
-}
-
-function formatDate(date: Date): string {
-  return new Date(date).toLocaleDateString("en-AU", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
+const EXAM_TYPES = [
+  { mode: "Exam 1", label: "Exam 1 Practice", iconName: "FileText", color: "brand" },
+  { mode: "Exam 2A", label: "Exam 2A Practice", iconName: "ClipboardList", color: "blue" },
+  { mode: "Exam 2B", label: "Exam 2B Practice", iconName: "Target", color: "green" },
+  { mode: "Exam 2A & 2B", label: "Exam 2A & 2B Practice", iconName: "Layers", color: "purple" },
+] as const;
 
 export default async function HistoryPage() {
   const supabase = await createClient();
@@ -93,27 +80,32 @@ export default async function HistoryPage() {
       completedAt: s.completedAt.toISOString(),
     }));
 
-  // Compute stats (graded only)
   const totalSessions = sessions.length;
   const totalGraded = gradedSessions.length;
-  const avgScore = totalGraded > 0
-    ? Math.round(gradedSessions.reduce((sum, s) => sum + s.score, 0) / totalGraded)
-    : 0;
-  const bestScore = totalGraded > 0
-    ? Math.round(Math.max(...gradedSessions.map((s) => s.score)))
-    : 0;
-  const recentTrend = gradedSessions.length >= 2
-    ? Math.round(gradedSessions[0].score - gradedSessions[gradedSessions.length - 1].score)
-    : 0;
 
-  // Group by mode for breakdown (graded only)
-  const modeMap = new Map<string, { count: number; totalScore: number }>();
-  for (const s of gradedSessions) {
-    const entry = modeMap.get(s.mode) ?? { count: 0, totalScore: 0 };
-    entry.count++;
-    entry.totalScore += s.score;
-    modeMap.set(s.mode, entry);
-  }
+  // Build per-mode stats for each exam type card
+  const modeStats = EXAM_TYPES.map((type) => {
+    const forMode = sessions.filter((s) => s.mode === type.mode);
+    const gradedForMode = forMode.filter((s) => s.graded);
+    const latest = forMode[0]; // sessions are desc by completedAt
+    return {
+      ...type,
+      count: forMode.length,
+      avgScore:
+        gradedForMode.length > 0
+          ? Math.round(
+              gradedForMode.reduce((sum, s) => sum + s.score, 0) /
+                gradedForMode.length
+            )
+          : null,
+      bestScore:
+        gradedForMode.length > 0
+          ? Math.round(Math.max(...gradedForMode.map((s) => s.score)))
+          : null,
+      latestAt: latest ? latest.completedAt.toISOString() : null,
+      latestSessionId: latest?.id ?? null,
+    };
+  });
 
   return (
     <div className="space-y-8">
@@ -158,63 +150,23 @@ export default async function HistoryPage() {
         </div>
       ) : (
         <>
-          {/* Stats overview */}
+          {/* Per-mode history cards */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm p-5">
-              <div className="inline-flex rounded-xl bg-brand-50 dark:bg-brand-950 p-2.5 mb-3">
-                <BarChart2 className="h-5 w-5 text-brand-600 dark:text-brand-400" />
-              </div>
-              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{totalSessions}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Total Exams
-                {totalGraded !== totalSessions && (
-                  <span className="block text-xs text-gray-400 dark:text-gray-500">
-                    {totalGraded} graded
-                  </span>
-                )}
-              </p>
-            </div>
-            <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm p-5">
-              <div className="inline-flex rounded-xl bg-blue-50 dark:bg-blue-950 p-2.5 mb-3">
-                <TrendingUp className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              </div>
-              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{avgScore}%</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Average Score</p>
-            </div>
-            <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm p-5">
-              <div className="inline-flex rounded-xl bg-green-50 dark:bg-green-950 p-2.5 mb-3">
-                <Trophy className="h-5 w-5 text-green-600 dark:text-green-400" />
-              </div>
-              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{bestScore}%</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Best Score</p>
-            </div>
-            <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm p-5">
-              <div className="inline-flex rounded-xl bg-purple-50 dark:bg-purple-950 p-2.5 mb-3">
-                <Clock className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-              </div>
-              <p className={cn("text-2xl font-bold", recentTrend >= 0 ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400")}>
-                {recentTrend >= 0 ? "+" : ""}{recentTrend}%
-              </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Trend (first→latest)</p>
-            </div>
+            {modeStats.map((s) => (
+              <ExamTypeCard
+                key={s.mode}
+                mode={s.mode}
+                label={s.label}
+                iconName={s.iconName}
+                color={s.color}
+                count={s.count}
+                avgScore={s.avgScore}
+                bestScore={s.bestScore}
+                latestAt={s.latestAt}
+                latestSessionId={s.latestSessionId}
+              />
+            ))}
           </div>
-
-          {/* Mode breakdown */}
-          {modeMap.size > 1 && (
-            <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm p-6">
-              <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-4">By Exam Type</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {Array.from(modeMap.entries()).map(([mode, data]) => (
-                  <div key={mode} className="rounded-xl bg-gray-50 dark:bg-gray-800 p-4">
-                    <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">{mode}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                      {data.count} exam{data.count !== 1 ? "s" : ""} · Avg {Math.round(data.totalScore / data.count)}%
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
 
           {/* Score trend chart (graded sessions only) */}
           {totalGraded > 0 && (
@@ -223,44 +175,6 @@ export default async function HistoryPage() {
               <ScoreTrendChart data={chartData} />
             </div>
           )}
-
-          {/* Session list */}
-          <div>
-            <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-4">Recent Sessions</h2>
-            <div className="space-y-2">
-              {sessions.map((s) => (
-                <div
-                  key={s.id}
-                  className="flex items-center justify-between rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 px-5 py-4"
-                >
-                  <div className="flex items-center gap-4">
-                    <EditableScoreBadge
-                      sessionId={s.id}
-                      initialScore={s.score}
-                      totalQuestions={s.totalQuestions}
-                    />
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">{s.mode}</p>
-                        {!s.graded && (
-                          <span className="rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide">
-                            Not marked yet
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-xs text-gray-400 dark:text-gray-500">
-                        {s.graded
-                          ? `${s.correctCount}/${s.totalQuestions} correct`
-                          : `${s.totalQuestions} questions`}
-                        {s.elapsedSeconds ? ` · ${formatElapsed(s.elapsedSeconds)}` : ""}
-                      </p>
-                    </div>
-                  </div>
-                  <span className="text-xs text-gray-400 dark:text-gray-500">{formatDate(s.completedAt)}</span>
-                </div>
-              ))}
-            </div>
-          </div>
         </>
       )}
 

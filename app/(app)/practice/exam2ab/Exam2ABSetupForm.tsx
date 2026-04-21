@@ -53,7 +53,7 @@ export default function Exam2ABSetupForm({ topics }: Props) {
           </svg>
         </div>
         <span>
-          20 multiple choice questions · 4–5 extended response questions · CAS Calculator allowed
+          Section A: 20 MCQ (20 marks) · Section B: 4–5 extended response (60 marks) · 80 marks total · CAS Calculator allowed — matches the real VCE Exam 2.
         </span>
       </div>
 

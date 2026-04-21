@@ -5,6 +5,7 @@ import PracticeTimer from "@/components/PracticeTimer";
 import ExamModeWrapper from "@/components/ExamModeWrapper";
 import Exam2ABModeWrapper from "@/components/Exam2ABModeWrapper";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import FreedomModeEnd from "@/components/FreedomModeEnd";
 import { EXAM_CONFIG, type ExamMode } from "@/lib/exam-config";
 import { getGeneratedQuestionSetId } from "@/lib/question-set-groups";
 
@@ -284,6 +285,15 @@ export default async function SessionPage({ searchParams }: PageProps) {
     const totalQuestions = shuffledA.length + shuffledB.length;
     const isExam2ABExamMode = version === "exam";
 
+    const sumMarks = (groups: QuestionGroupData[]) =>
+      groups.reduce(
+        (acc, g) => acc + g.parts.reduce((p, part) => p + part.marks, 0),
+        0
+      );
+    const marksA = sumMarks(shuffledA);
+    const marksB = sumMarks(shuffledB);
+    const totalMarksAB = marksA + marksB;
+
     return (
       <div className="space-y-8">
         {/* Timer — only for non-exam-mode (Exam2ABModeWrapper manages its own timer) */}
@@ -299,7 +309,13 @@ export default async function SessionPage({ searchParams }: PageProps) {
             <span className="ml-2 text-lg lg:text-xl font-normal text-gray-400 dark:text-gray-500">— {versionLabel}</span>
           </h1>
           <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            {totalQuestions} questions · CAS Calculator allowed
+            {totalQuestions} questions · {totalMarksAB} marks
+            {totalMarksAB !== 80 && (
+              <span className="text-gray-400 dark:text-gray-500">
+                {" "}(VCE target: 80)
+              </span>
+            )}
+            {" · CAS Calculator allowed"}
           </p>
         </div>
 
@@ -319,7 +335,7 @@ export default async function SessionPage({ searchParams }: PageProps) {
             {/* Section A */}
             <div className="space-y-5 lg:space-y-6">
               <h2 className="text-lg lg:text-xl font-bold text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700 pb-2 lg:pb-3">
-                Section A — Multiple Choice ({shuffledA.length} questions)
+                Section A — Multiple Choice ({shuffledA.length} questions · {marksA} marks)
               </h2>
               <div className="space-y-4 lg:space-y-5">
                 {shuffledA.map((group, idx) => (
@@ -334,6 +350,7 @@ export default async function SessionPage({ searchParams }: PageProps) {
                     calculatorAllowed={true}
                     parts={group.parts}
                     showSolutionButton={showSolutionButton}
+                    disableServerRefresh
                   />
                 ))}
               </div>
@@ -342,7 +359,7 @@ export default async function SessionPage({ searchParams }: PageProps) {
             {/* Section B */}
             <div className="space-y-5 lg:space-y-6">
               <h2 className="text-lg lg:text-xl font-bold text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700 pb-2 lg:pb-3">
-                Section B — Extended Response ({shuffledB.length} questions)
+                Section B — Extended Response ({shuffledB.length} questions · {marksB} marks)
               </h2>
               <div className="space-y-4 lg:space-y-5">
                 {shuffledB.map((group, idx) => (
@@ -357,6 +374,7 @@ export default async function SessionPage({ searchParams }: PageProps) {
                     calculatorAllowed={true}
                     parts={group.parts}
                     showSolutionButton={showSolutionButton}
+                    disableServerRefresh
                   />
                 ))}
               </div>
@@ -399,6 +417,16 @@ export default async function SessionPage({ searchParams }: PageProps) {
 
   const finalGroups = shuffle(allGroups);
 
+  // Sum the marks across every part of every group — used to surface the
+  // total in the header so users can compare against the real VCAA target
+  // (40 for Exam 1, 20 for Exam 2A, 60 for Exam 2B).
+  const totalMarks = finalGroups.reduce(
+    (acc, g) => acc + g.parts.reduce((p, part) => p + part.marks, 0),
+    0
+  );
+  const realTotal =
+    mode === "exam1" ? 40 : mode === "exam2a" ? 20 : mode === "exam2b" ? 60 : null;
+
   const isExamMode = (mode === "exam1" || mode === "exam2a" || mode === "exam2b") && version === "exam";
 
   return (
@@ -416,7 +444,14 @@ export default async function SessionPage({ searchParams }: PageProps) {
           <span className="ml-2 text-lg lg:text-xl font-normal text-gray-400 dark:text-gray-500">— {versionLabel}</span>
         </h1>
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          {finalGroups.length} questions · {calcInfo}
+          {finalGroups.length} questions · {totalMarks} marks
+          {isExamMode && realTotal !== null && totalMarks !== realTotal && (
+            <span className="text-gray-400 dark:text-gray-500">
+              {" "}(VCE target: {realTotal})
+            </span>
+          )}
+          {" · "}
+          {calcInfo}
         </p>
       </div>
 
@@ -434,6 +469,7 @@ export default async function SessionPage({ searchParams }: PageProps) {
             writingSeconds={writingSeconds}
             isMcqMode={mode !== "exam2b"}
             showScore={mode === "exam2a"}
+            enableSelfMarking={mode === "exam1" || mode === "exam2b"}
           />
         </ErrorBoundary>
       ) : (
@@ -450,8 +486,10 @@ export default async function SessionPage({ searchParams }: PageProps) {
               calculatorAllowed={calculatorAllowed}
               parts={group.parts}
               showSolutionButton={showSolutionButton}
+              disableServerRefresh
             />
           ))}
+          <FreedomModeEnd setupHref={backHref} />
         </div>
       )}
     </div>
