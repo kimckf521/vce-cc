@@ -1,34 +1,66 @@
 import Link from "next/link";
-import { BookOpen, BarChart2, FileText, CheckCircle, Clock, ArrowRight, Sparkles, Target, TrendingUp, Trophy, HelpCircle, Award } from "lucide-react";
+import { FileText, CheckCircle, Clock, ArrowRight, Sparkles, Target, TrendingUp, Trophy, HelpCircle, Award, Smartphone, Timer, LineChart } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 import MarketingNav from "@/components/MarketingNav";
 import MarketingFooter from "@/components/MarketingFooter";
 import { createClient } from "@/lib/supabase/server";
+import { cn } from "@/lib/utils";
+
+const stats = [
+  { value: "800+",   label: "Past exam questions" },
+  { value: "10 yrs", label: "Of VCAA papers" },
+  { value: "4",      label: "Practice exam modes" },
+  { value: "100%",   label: "With worked solutions" },
+];
 
 const features = [
   {
-    icon: BookOpen,
-    title: "Question Bank",
-    description:
-      "Browse hundreds of past exam questions organised by topic and subtopic — from Functions to Probability.",
-  },
-  {
     icon: FileText,
-    title: "Past Papers",
+    title: "Real VCAA past exams",
     description:
-      "Access every VCAA Mathematical Methods Exam 1 and Exam 2 in one place, with official and worked solutions.",
+      "Every VCAA Mathematical Methods Exam 1 and Exam 2 from 2016 onwards — actual questions, not lookalikes.",
+    iconBg: "bg-brand-100 dark:bg-brand-900/60",
+    iconColor: "text-brand-600 dark:text-brand-400",
   },
   {
     icon: CheckCircle,
-    title: "Worked Solutions",
+    title: "Step-by-step solutions",
     description:
-      "Step-by-step solutions for every question so you can understand exactly where marks come from.",
+      "Every answer is broken down so you understand the why, not just the what. Learn how marks are earned.",
+    iconBg: "bg-green-100 dark:bg-green-900/60",
+    iconColor: "text-green-600 dark:text-green-400",
   },
   {
-    icon: BarChart2,
-    title: "Track Progress",
+    icon: Timer,
+    title: "Timed exam practice",
     description:
-      "Mark questions as correct, incorrect, or needs review. See your strengths and weaknesses at a glance.",
+      "Mirror real exam conditions — Exam 1 (no calculator), Exam 2A (MCQ), Exam 2B (extended), or full Exam 2.",
+    iconBg: "bg-amber-100 dark:bg-amber-900/60",
+    iconColor: "text-amber-600 dark:text-amber-400",
+  },
+  {
+    icon: Target,
+    title: "Topic-by-topic drill",
+    description:
+      "Browse by topic and subtopic. Find your weak spots and grind them into strengths, one question at a time.",
+    iconBg: "bg-violet-100 dark:bg-violet-900/60",
+    iconColor: "text-violet-600 dark:text-violet-400",
+  },
+  {
+    icon: LineChart,
+    title: "Smart progress tracking",
+    description:
+      "Mark questions correct, incorrect or needs-review. Bookmark anything. See your trend over time.",
+    iconBg: "bg-sky-100 dark:bg-sky-900/60",
+    iconColor: "text-sky-600 dark:text-sky-400",
+  },
+  {
+    icon: Smartphone,
+    title: "Works everywhere you do",
+    description:
+      "Mobile, tablet, desktop. Light, dark or system theme. Study on the bus or at your desk — same beautiful UI.",
+    iconBg: "bg-rose-100 dark:bg-rose-900/60",
+    iconColor: "text-rose-600 dark:text-rose-400",
   },
 ];
 
@@ -272,23 +304,73 @@ export default async function HomePage() {
       </section>
 
       {/* Features */}
-      <section className="py-16 lg:py-24 px-5 sm:px-8 lg:px-12 bg-gray-50 dark:bg-gray-800">
+      <section className="relative overflow-hidden py-20 lg:py-28 px-5 sm:px-8 lg:px-12 bg-gray-50 dark:bg-gray-950/60">
+        {/* Soft accent glow */}
+        <div className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 h-72 w-[60%] rounded-full bg-brand-200/30 dark:bg-brand-800/15 blur-3xl" />
+        </div>
+
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-12 lg:mb-16 text-center">
-            Everything you need to prepare
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-10">
-            {features.map((f) => (
-              <div key={f.title} className="flex gap-5 lg:gap-6">
-                <div className="flex-shrink-0 rounded-2xl bg-brand-100 dark:bg-brand-900 p-3.5 lg:p-4 h-fit">
-                  <f.icon className="h-6 w-6 lg:h-7 lg:w-7 text-brand-600 dark:text-brand-400" />
-                </div>
-                <div>
-                  <h3 className="font-semibold lg:text-lg text-gray-900 dark:text-gray-100">{f.title}</h3>
-                  <p className="mt-1.5 text-sm lg:text-base text-gray-500 dark:text-gray-400 leading-relaxed">{f.description}</p>
-                </div>
+          {/* Header */}
+          <div className="text-center mb-12 lg:mb-16">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-100 dark:bg-brand-900/60 px-3 py-1 text-xs lg:text-sm font-medium text-brand-700 dark:text-brand-300 mb-4">
+              <Sparkles className="h-3 w-3 lg:h-3.5 lg:w-3.5" />
+              Why ATAR Hero
+            </span>
+            <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-3 lg:mb-4 tracking-tight">
+              Everything you need to ace VCE
+            </h2>
+            <p className="text-base lg:text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
+              Built by VCE students, for VCE students. Real exam content, smart tools, and a UX that doesn&apos;t get in your way.
+            </p>
+          </div>
+
+          {/* Stats strip */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-5 mb-14 lg:mb-20">
+            {stats.map((s) => (
+              <div
+                key={s.label}
+                className="rounded-2xl border border-gray-200/70 dark:border-gray-800 bg-white dark:bg-gray-900 px-5 py-5 lg:px-6 lg:py-6 text-center shadow-sm"
+              >
+                <p className="text-2xl lg:text-3xl xl:text-4xl font-extrabold bg-gradient-to-br from-brand-600 to-brand-500 dark:from-brand-400 dark:to-brand-300 bg-clip-text text-transparent">
+                  {s.value}
+                </p>
+                <p className="mt-1 text-xs lg:text-sm text-gray-500 dark:text-gray-400">
+                  {s.label}
+                </p>
               </div>
             ))}
+          </div>
+
+          {/* Feature grid — 6 cards, 1/2/3 columns responsive */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+            {features.map((f) => (
+              <div
+                key={f.title}
+                className="group rounded-2xl border border-gray-200/80 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 lg:p-7 shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700 hover:-translate-y-0.5 transition-all"
+              >
+                <div className={cn("inline-flex rounded-2xl p-3 lg:p-3.5 mb-5", f.iconBg)}>
+                  <f.icon className={cn("h-6 w-6 lg:h-7 lg:w-7", f.iconColor)} />
+                </div>
+                <h3 className="text-lg lg:text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                  {f.title}
+                </h3>
+                <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 leading-relaxed">
+                  {f.description}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Inline secondary CTA */}
+          <div className="mt-12 lg:mt-14 text-center">
+            <Link
+              href={user ? "/dashboard" : "/signup"}
+              className="group inline-flex items-center gap-2 text-sm lg:text-base font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors"
+            >
+              {user ? "Jump back to your dashboard" : "Try every feature for free"}
+              <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+            </Link>
           </div>
         </div>
       </section>
