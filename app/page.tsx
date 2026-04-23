@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookOpen, BarChart2, FileText, CheckCircle, Clock, ArrowRight, Sparkles, Target, TrendingUp, Trophy, Mail, HelpCircle, Award } from "lucide-react";
+import { BookOpen, BarChart2, FileText, CheckCircle, Clock, ArrowRight, Sparkles, Target, TrendingUp, Trophy, HelpCircle, Award } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 import MarketingNav from "@/components/MarketingNav";
 import MarketingFooter from "@/components/MarketingFooter";
@@ -311,26 +311,8 @@ export default async function HomePage() {
               <ContactForm />
             </div>
 
-            {/* Side info: direct email + FAQs */}
-            <div className="space-y-5 lg:space-y-6">
-              <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 p-6 lg:p-7">
-                <div className="inline-flex rounded-2xl bg-brand-100 dark:bg-brand-900 p-2.5 lg:p-3 mb-4">
-                  <Mail className="h-5 w-5 lg:h-6 lg:w-6 text-brand-600 dark:text-brand-400" />
-                </div>
-                <h3 className="text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">
-                  Prefer email?
-                </h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 leading-relaxed">
-                  Reach us directly at:
-                </p>
-                <a
-                  href="mailto:support@vcemethods.com.au"
-                  className="text-sm font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors break-all"
-                >
-                  support@vcemethods.com.au
-                </a>
-              </div>
-
+            {/* Sidebar: FAQs */}
+            <div>
               <Link
                 href="/faqs"
                 className="group block rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 hover:border-brand-300 dark:hover:border-brand-700 p-6 lg:p-7 transition-all"
