@@ -203,7 +203,7 @@ export default function TermsPage() {
           <h2>13. Contact us</h2>
           <p>
             Questions about these Terms? Email us at{" "}
-            <a href="mailto:support@vcemethods.com.au">support@vcemethods.com.au</a>.
+            <a href="mailto:support@atarhero.com.au">support@atarhero.com.au</a>.
           </p>
         </article>
       </section>

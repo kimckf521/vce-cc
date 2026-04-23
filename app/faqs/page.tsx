@@ -64,7 +64,7 @@ const faqs: { q: string; a: string }[] = [
   },
   {
     q: "How do I contact support?",
-    a: "You can reach us by email at support@vcemethods.com.au. We aim to respond within two business days.",
+    a: "You can reach us by email at support@atarhero.com.au. We aim to respond within two business days.",
   },
 ];
 
@@ -122,7 +122,7 @@ export default function FAQsPage() {
           <p>
             Still have a question?{" "}
             <a
-              href="mailto:support@vcemethods.com.au"
+              href="mailto:support@atarhero.com.au"
               className="text-brand-600 dark:text-brand-400 font-medium hover:underline"
             >
               Email our support team

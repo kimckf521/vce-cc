@@ -130,7 +130,7 @@ export default function PrivacyPage() {
           </ul>
           <p>
             To exercise any of these rights, email us at{" "}
-            <a href="mailto:privacy@vcemethods.com.au">privacy@vcemethods.com.au</a>. We will
+            <a href="mailto:support@atarhero.com.au">support@atarhero.com.au</a>. We will
             respond within a reasonable period, usually within 30 days.
           </p>
 
@@ -162,7 +162,7 @@ export default function PrivacyPage() {
           <p>
             If you have any questions about this policy or how we handle your personal information,
             please contact us at{" "}
-            <a href="mailto:privacy@vcemethods.com.au">privacy@vcemethods.com.au</a>.
+            <a href="mailto:support@atarhero.com.au">support@atarhero.com.au</a>.
           </p>
         </article>
       </section>
