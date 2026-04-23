@@ -294,44 +294,41 @@ export default async function HomePage() {
       </section>
 
       {/* Contact Us */}
-      <section id="contact" className="py-16 lg:py-24 px-5 sm:px-8 lg:px-12 bg-white dark:bg-gray-900">
-        <div className="max-w-6xl mx-auto">
+      <section
+        id="contact"
+        className="relative overflow-hidden py-20 lg:py-28 px-5 sm:px-8 lg:px-12 bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900"
+      >
+        {/* Subtle grid texture */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10 opacity-40 dark:opacity-25 [background-image:linear-gradient(to_right,rgb(0_0_0/0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgb(0_0_0/0.04)_1px,transparent_1px)] dark:[background-image:linear-gradient(to_right,rgb(255_255_255/0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgb(255_255_255/0.04)_1px,transparent_1px)] [background-size:48px_48px]"
+        />
+
+        <div className="max-w-3xl mx-auto">
           <div className="text-center mb-10 lg:mb-14">
-            <h2 className="text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-3 lg:mb-4">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-100 dark:bg-brand-900/60 px-3 py-1 text-xs lg:text-sm font-medium text-brand-700 dark:text-brand-300 mb-4">
+              We&apos;d love to hear from you
+            </span>
+            <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-3 lg:mb-4 tracking-tight">
               Get in touch
             </h2>
-            <p className="text-base lg:text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
-              Questions about plans, content suggestions, found a bug, or just want to say hi? We&apos;d love to hear from you.
+            <p className="text-base lg:text-lg text-gray-500 dark:text-gray-400 max-w-xl mx-auto leading-relaxed">
+              Have a question about plans, a content suggestion, or found a bug? Drop us a line.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6">
-            {/* Contact form — wider column */}
-            <div className="lg:col-span-2">
-              <ContactForm />
-            </div>
+          <ContactForm />
 
-            {/* Sidebar: FAQs */}
-            <div>
-              <Link
-                href="/faqs"
-                className="group block rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 hover:border-brand-300 dark:hover:border-brand-700 p-6 lg:p-7 transition-all"
-              >
-                <div className="inline-flex rounded-2xl bg-amber-100 dark:bg-amber-900/40 p-2.5 lg:p-3 mb-4">
-                  <HelpCircle className="h-5 w-5 lg:h-6 lg:w-6 text-amber-600 dark:text-amber-400" />
-                </div>
-                <h3 className="text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">
-                  Browse FAQs
-                </h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 leading-relaxed">
-                  Quick answers about plans, billing, and how ATAR Hero works.
-                </p>
-                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 dark:text-brand-400 group-hover:text-brand-700 dark:group-hover:text-brand-300 transition-colors">
-                  See common questions
-                  <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
-                </span>
-              </Link>
-            </div>
+          {/* Inline FAQs nudge */}
+          <div className="mt-8 lg:mt-10 text-center">
+            <Link
+              href="/faqs"
+              className="group inline-flex items-center gap-2 text-sm lg:text-base text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+            >
+              <HelpCircle className="h-4 w-4" />
+              Looking for quick answers? Browse our FAQs
+              <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </Link>
           </div>
         </div>
       </section>
