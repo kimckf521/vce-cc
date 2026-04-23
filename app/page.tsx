@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookOpen, BarChart2, FileText, CheckCircle, Clock, ArrowRight, Sparkles, Target, TrendingUp, Trophy, Mail, HelpCircle } from "lucide-react";
+import { BookOpen, BarChart2, FileText, CheckCircle, Clock, ArrowRight, Sparkles, Target, TrendingUp, Trophy, Mail, HelpCircle, Award } from "lucide-react";
 import MarketingNav from "@/components/MarketingNav";
 import MarketingFooter from "@/components/MarketingFooter";
 import { createClient } from "@/lib/supabase/server";
@@ -365,6 +365,22 @@ export default async function HomePage() {
             {user ? "Go to dashboard" : "Create free account"}
             <ArrowRight className="h-4 w-4 lg:h-5 lg:w-5 group-hover:translate-x-0.5 transition-transform" />
           </Link>
+        </div>
+      </section>
+
+      {/* Independence disclaimer */}
+      <section className="py-14 lg:py-20 px-5 sm:px-8 lg:px-12 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
+        <div className="max-w-3xl mx-auto text-center">
+          <div className="inline-flex h-12 w-12 lg:h-14 lg:w-14 items-center justify-center rounded-full border-2 border-gray-300 dark:border-gray-700 mb-5 lg:mb-6">
+            <Award className="h-5 w-5 lg:h-6 lg:w-6 text-gray-500 dark:text-gray-400" />
+          </div>
+          <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 leading-relaxed">
+            All content on this website has been developed independently from and is not endorsed
+            by the Victorian Curriculum and Assessment Authority (VCAA). VCAA<sup>®</sup> is a
+            registered trademark of the Victorian Curriculum and Assessment Authority. Past exam
+            content is sourced from publicly available VCAA materials and is used for educational
+            revision purposes only.
+          </p>
         </div>
       </section>
 
