@@ -82,6 +82,14 @@ export default function MarketingFooter() {
               </li>
               <li>
                 <Link
+                  href="/#contact"
+                  className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                >
+                  Contact us
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/privacy"
                   className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
