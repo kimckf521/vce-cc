@@ -101,7 +101,7 @@ export async function POST(req: NextRequest) {
   // Fire-and-forget — don't block the response on email delivery
   void sendEmail({
     to: CONTACT_TO,
-    subject: `New contact form: ${name}`,
+    subject: `ATAR Hero Contact Form: ${name}`,
     text: textBody,
     html: htmlBody,
     replyTo: email, // Hitting "Reply" sends back to the customer
