@@ -189,6 +189,9 @@ model ExamSessionQuestion {
   selectedOption    String?
   /// Whether this answer was correct (only set for graded MCQ items).
   correct           Boolean?
+  /// Manually-entered marks earned for this question (user self-marks
+  /// their open-ended exam answers). Null means not yet marked.
+  marksEarned       Int?
   examSession       ExamSession     @relation(fields: [examSessionId], references: [id], onDelete: Cascade)
   questionSetItem   QuestionSetItem @relation(fields: [questionSetItemId], references: [id], onDelete: Cascade)
 
@@ -210,6 +213,26 @@ model Attempt {
   @@unique([userId, questionId])
   @@index([userId])
   @@index([questionId])
+}
+
+/// Public contact-form submissions from the marketing site.
+model ContactMessage {
+  id        String              @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  status    ContactMessageStatus @default(NEW)
+  createdAt DateTime            @default(now())
+
+  @@index([status, createdAt])
+  @@index([createdAt])
+}
+
+enum ContactMessageStatus {
+  NEW
+  READ
+  REPLIED
+  ARCHIVED
 }
 
 enum ExamType {

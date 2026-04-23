@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BookOpen, BarChart2, FileText, CheckCircle, Clock, ArrowRight, Sparkles, Target, TrendingUp, Trophy, Mail, HelpCircle, Award } from "lucide-react";
+import ContactForm from "@/components/ContactForm";
 import MarketingNav from "@/components/MarketingNav";
 import MarketingFooter from "@/components/MarketingFooter";
 import { createClient } from "@/lib/supabase/server";
@@ -294,7 +295,7 @@ export default async function HomePage() {
 
       {/* Contact Us */}
       <section id="contact" className="py-16 lg:py-24 px-5 sm:px-8 lg:px-12 bg-white dark:bg-gray-900">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10 lg:mb-14">
             <h2 className="text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-3 lg:mb-4">
               Get in touch
@@ -304,46 +305,51 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6">
-            {/* Email card */}
-            <a
-              href="mailto:support@vcemethods.com.au"
-              className="group rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-brand-300 dark:hover:border-brand-700 hover:shadow-md p-6 lg:p-7 transition-all"
-            >
-              <div className="inline-flex rounded-2xl bg-brand-100 dark:bg-brand-900 p-3 lg:p-3.5 mb-4">
-                <Mail className="h-6 w-6 lg:h-7 lg:w-7 text-brand-600 dark:text-brand-400" />
-              </div>
-              <h3 className="text-lg lg:text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">
-                Email us
-              </h3>
-              <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">
-                We typically reply within two business days.
-              </p>
-              <span className="inline-flex items-center gap-1.5 text-sm lg:text-base font-semibold text-brand-600 dark:text-brand-400 group-hover:text-brand-700 dark:group-hover:text-brand-300 transition-colors">
-                support@vcemethods.com.au
-                <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-              </span>
-            </a>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6">
+            {/* Contact form — wider column */}
+            <div className="lg:col-span-2">
+              <ContactForm />
+            </div>
 
-            {/* FAQs card */}
-            <Link
-              href="/faqs"
-              className="group rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-brand-300 dark:hover:border-brand-700 hover:shadow-md p-6 lg:p-7 transition-all"
-            >
-              <div className="inline-flex rounded-2xl bg-amber-100 dark:bg-amber-900/40 p-3 lg:p-3.5 mb-4">
-                <HelpCircle className="h-6 w-6 lg:h-7 lg:w-7 text-amber-600 dark:text-amber-400" />
+            {/* Side info: direct email + FAQs */}
+            <div className="space-y-5 lg:space-y-6">
+              <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 p-6 lg:p-7">
+                <div className="inline-flex rounded-2xl bg-brand-100 dark:bg-brand-900 p-2.5 lg:p-3 mb-4">
+                  <Mail className="h-5 w-5 lg:h-6 lg:w-6 text-brand-600 dark:text-brand-400" />
+                </div>
+                <h3 className="text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">
+                  Prefer email?
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 leading-relaxed">
+                  Reach us directly at:
+                </p>
+                <a
+                  href="mailto:support@vcemethods.com.au"
+                  className="text-sm font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors break-all"
+                >
+                  support@vcemethods.com.au
+                </a>
               </div>
-              <h3 className="text-lg lg:text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">
-                Browse FAQs
-              </h3>
-              <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">
-                Quick answers about plans, billing, and how ATAR Hero works.
-              </p>
-              <span className="inline-flex items-center gap-1.5 text-sm lg:text-base font-semibold text-brand-600 dark:text-brand-400 group-hover:text-brand-700 dark:group-hover:text-brand-300 transition-colors">
-                See common questions
-                <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-              </span>
-            </Link>
+
+              <Link
+                href="/faqs"
+                className="group block rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 hover:border-brand-300 dark:hover:border-brand-700 p-6 lg:p-7 transition-all"
+              >
+                <div className="inline-flex rounded-2xl bg-amber-100 dark:bg-amber-900/40 p-2.5 lg:p-3 mb-4">
+                  <HelpCircle className="h-5 w-5 lg:h-6 lg:w-6 text-amber-600 dark:text-amber-400" />
+                </div>
+                <h3 className="text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">
+                  Browse FAQs
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 leading-relaxed">
+                  Quick answers about plans, billing, and how ATAR Hero works.
+                </p>
+                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 dark:text-brand-400 group-hover:text-brand-700 dark:group-hover:text-brand-300 transition-colors">
+                  See common questions
+                  <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
+                </span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
