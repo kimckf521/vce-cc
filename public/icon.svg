@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none">
+  <!-- ATAR Hero icon: a 5-point hero star on a rounded navy badge. Works from 16×16 (favicon) to 2000×2000 (banner). -->
+  <rect width="256" height="256" rx="56" fill="#172554"/>
+  <!-- Hero star -->
+  <path d="M128 44
+           L152 110
+           L222 110
+           L166 150
+           L188 218
+           L128 176
+           L68 218
+           L90 150
+           L34 110
+           L104 110
+           Z"
+        fill="#FBBF24"
+        stroke="#FCD34D"
+        stroke-width="3"
+        stroke-linejoin="round"/>
+  <!-- Inner highlight on star -->
+  <path d="M128 80
+           L140 112
+           L174 112
+           L146 132
+           L156 164
+           L128 145
+           L100 164
+           L110 132
+           L82 112
+           L116 112
+           Z"
+        fill="#F59E0B"
+        opacity="0.35"/>
+</svg>

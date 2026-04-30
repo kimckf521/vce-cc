@@ -649,6 +649,7 @@ export interface FR {
 export interface GeneratedSet {
   mcq: MCQ[];
   shortAnswer: FR[];
+  extendedAnswer?: FR[];
   extendedResponse: FR[];
 }
 

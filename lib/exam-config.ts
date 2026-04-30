@@ -7,6 +7,27 @@
 
 export type ExamMode = "exam1" | "exam2a" | "exam2b" | "exam2ab";
 
+/**
+ * Topic weights reflecting recent VCAA Mathematical Methods averages across
+ * Exam 1 + Exam 2 (rounded). Exam Version uses these as fixed defaults so
+ * the simulation matches what a real paper actually covers rather than
+ * letting students dial themselves away from their weaker topics.
+ *
+ * Order matches the 4 VCE topics in `lib/topics-config.ts`:
+ *   [0] Algebra, Number, and Structure
+ *   [1] Functions, Relations, and Graphs
+ *   [2] Calculus
+ *   [3] Data Analysis, Probability, and Statistics
+ */
+export const VCAA_TOPIC_DIST: [number, number, number, number] = [20, 30, 30, 20];
+
+/**
+ * Difficulty spread typical of real VCAA Math Methods papers — medium-heavy
+ * with a meaningful chunk of hard questions for top-ATAR discrimination.
+ * Order: [easy, medium, hard].
+ */
+export const VCAA_DIFFICULTY_DIST: [number, number, number] = [25, 55, 20];
+
 export interface ExamModeConfig {
   /** Number of questions in a standard exam */
   examCount: number;
@@ -41,7 +62,7 @@ export const EXAM_CONFIG: Record<ExamMode, ExamModeConfig> = {
     freedomStep: 5,
     freedomDefault: 10,
     examDescription:
-      "8–9 short-answer questions worth 40 marks total — matches the real VCE Exam 1 format.",
+      "Short-answer questions totalling 40 marks — matches the real VCE Exam 1.",
     readingSeconds: 15 * 60,
     writingSeconds: 60 * 60,
     timerDescription: "15 min reading time + 1 hour writing time (matches VCE Exam 1)",
@@ -69,7 +90,7 @@ export const EXAM_CONFIG: Record<ExamMode, ExamModeConfig> = {
     freedomStep: 5,
     freedomDefault: 10,
     examDescription:
-      "4–5 extended-response questions worth 60 marks total — matches Section B of VCE Exam 2.",
+      "Extended-response questions totalling 60 marks — matches Section B of VCE Exam 2.",
     readingSeconds: 15 * 60,
     writingSeconds: 90 * 60,
     timerDescription:
@@ -83,7 +104,7 @@ export const EXAM_CONFIG: Record<ExamMode, ExamModeConfig> = {
     freedomStep: 5,
     freedomDefault: 25,
     examDescription:
-      "Full VCE Exam 2: Section A (20 MCQ · 20 marks) + Section B (4–5 extended response · 60 marks). 80 marks total.",
+      "Full VCE Exam 2: Section A (20 MCQ · 20 marks) + Section B (extended response · 60 marks). 80 marks total.",
     readingSeconds: 15 * 60,
     writingSeconds: 2 * 60 * 60,
     timerDescription: "15 min reading + 2 hour writing (matches VCE Exam 2)",

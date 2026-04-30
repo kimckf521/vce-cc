@@ -50,6 +50,7 @@ interface GeneratedFR {
 interface GeneratedSet {
   mcq: GeneratedMCQ[];
   shortAnswer: GeneratedFR[];
+  extendedAnswer?: GeneratedFR[];
   // New canonical key. `longResponse` still accepted for backwards compatibility.
   extendedResponse?: GeneratedFR[];
   longResponse?: GeneratedFR[];
@@ -72,9 +73,10 @@ async function main() {
 
   console.log(`📚 Topic: ${topic.name}`);
   console.log(`🎯 Subtopic: ${subtopic.name}`);
+  const extendedAnswer = data.extendedAnswer ?? [];
   const extended = data.extendedResponse ?? data.longResponse ?? [];
   console.log(
-    `📝 Loaded ${data.mcq?.length ?? 0} MCQ, ${data.shortAnswer?.length ?? 0} short, ${extended.length} extended from ${filePath}`
+    `📝 Loaded ${data.mcq?.length ?? 0} MCQ, ${data.shortAnswer?.length ?? 0} short, ${extendedAnswer.length} ext-ans, ${extended.length} ext-resp from ${filePath}`
   );
 
   let questionSet = await prisma.questionSet.findFirst({ where: { name: SET_NAME } });
@@ -143,6 +145,25 @@ async function main() {
         difficulty: sa.difficulty ?? "MEDIUM",
         subtopics: {
           connect: resolveSubtopicIds(sa.subtopicSlugs ?? []).map((id) => ({ id })),
+        },
+      },
+    });
+    inserted++;
+  }
+
+  for (const ea of extendedAnswer) {
+    await prisma.questionSetItem.create({
+      data: {
+        questionSetId: questionSet.id,
+        topicId: topic.id,
+        type: "EXTENDED_ANSWER",
+        order: order++,
+        marks: ea.marks ?? 6,
+        content: ea.content,
+        solutionContent: ea.solutionContent,
+        difficulty: ea.difficulty ?? "MEDIUM",
+        subtopics: {
+          connect: resolveSubtopicIds(ea.subtopicSlugs ?? []).map((id) => ({ id })),
         },
       },
     });

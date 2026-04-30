@@ -58,6 +58,24 @@ export const updateNameSchema = z.object({
   name: z.string().trim().min(1, "Name cannot be empty").max(100, "Name is too long"),
 });
 
+// POST /api/report
+export const ReportCategory = z.enum([
+  "BUG",
+  "FEATURE_REQUEST",
+  "CONTENT_ERROR",
+  "ACCOUNT_BILLING",
+  "OTHER",
+]);
+
+export const createReportSchema = z.object({
+  category: ReportCategory,
+  description: z
+    .string()
+    .trim()
+    .min(10, "Please provide at least 10 characters")
+    .max(4000, "Description is too long (max 4000 characters)"),
+});
+
 // =====================================================
 // Affiliate Program
 // =====================================================

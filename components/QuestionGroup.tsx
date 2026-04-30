@@ -193,10 +193,20 @@ function InteractiveMCQOptions({
   );
 }
 
+// Rewrite inline sub-part labels from "**a.** <body>. (N marks)" to "**a (N marks).** <body>."
+// Handles both top-level parts (a, b, c…) and indented sub-parts (i, ii, iii…).
+function rewritePartLabels(content: string): string {
+  return content.replace(
+    /^([ \t]*)\*\*([a-z]+)\.\*\*\s+((?:(?!\*\*[a-z]+\.\*\*)[\s\S])*?)\s*\((\d+)\s+(marks?)\)(?=\s*(?:\n|$))/gm,
+    (_m, indent, letter, body, num, unit) => `${indent}**${letter} (${num} ${unit}).** ${body}`
+  );
+}
+
 // Render content that may contain [GRAPH] placeholder (non-MCQ only)
 function PartContent({ content, imageUrl }: { content: string; imageUrl?: string | null }) {
-  if (content.includes("[GRAPH]")) {
-    const segments = content.split("[GRAPH]");
+  const transformed = rewritePartLabels(content);
+  if (transformed.includes("[GRAPH]")) {
+    const segments = transformed.split("[GRAPH]");
     return (
       <>
         {segments.map((seg, si) => (
@@ -210,7 +220,7 @@ function PartContent({ content, imageUrl }: { content: string; imageUrl?: string
   }
   return (
     <>
-      <div className="text-base leading-relaxed"><MathContent content={content} /></div>
+      <div className="text-base leading-relaxed"><MathContent content={transformed} /></div>
       <QuestionVisual imageUrl={imageUrl} />
     </>
   );
@@ -239,6 +249,22 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
   // so attempt tracking is unavailable — skip API calls and hide status buttons.
   const isGenerated = year === 0;
 
+  // For multi-part generated items (Exam 2B Practice), each visible part has
+  // a synthetic id `${itemId}::a`, `::b`, ... so React keys and per-part
+  // self-marking work. Status & bookmark always live on the parent
+  // QuestionSetItem though, so API calls strip the suffix and visual state
+  // propagates across every sibling sharing the same parent.
+  function getParentId(id: string): string {
+    const i = id.indexOf("::");
+    return i === -1 ? id : id.slice(0, i);
+  }
+  function siblingPartIds(id: string): string[] {
+    const parent = getParentId(id);
+    return parts
+      .filter((p) => getParentId(p.id) === parent)
+      .map((p) => p.id);
+  }
+
   const questionNumber = parts[0].questionNumber;
   const totalMarks = parts.reduce((sum, p) => sum + p.marks, 0);
   const hasParts = parts.length > 1 || parts.some((p) => p.part !== null);
@@ -253,11 +279,24 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
     : `${year} · ${derivedSectionLabel} · Q${questionNumber}`;
   const questionLabel = `${referenceTag}`;
 
-  // Extract shared preamble from first part if present
+  // Extract shared preamble from the first part — renders once above all
+  // parts as a "shared context" header for the whole question.
   const { preamble, question: firstPartQuestion } = parsePreamble(parts[0].content);
-  const renderedParts = preamble
-    ? [{ ...parts[0], content: firstPartQuestion }, ...parts.slice(1)]
-    : parts;
+
+  // Strip preamble markers from every other part too. When a compound is
+  // built from multiple source items (Exam 1), each item's first sub-part
+  // may carry its own preamble. We can't render those in the shared header
+  // (it's only one slot), so we inline them at the start of that part's
+  // content with a paragraph break — the marker text never leaks.
+  const renderedParts = parts.map((p, i) => {
+    if (i === 0 && preamble) {
+      return { ...p, content: firstPartQuestion };
+    }
+    if (i === 0) return p;
+    const inner = parsePreamble(p.content);
+    if (!inner.preamble) return p;
+    return { ...p, content: `${inner.preamble}\n\n${inner.question}` };
+  });
 
   const combinedSolutions = parts
     .filter((p) => p.solution)
@@ -269,23 +308,39 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
     // but send ATTEMPTED to API (preserves bookmark in DB)
     const isClearing = prev === s;
     const next: AttemptStatus = isClearing ? null : s;
-    setStatuses((cur) => ({ ...cur, [id]: next }));
+    const siblings = siblingPartIds(id);
+    // Propagate visual state to every sibling part sharing the same parent
+    // QuestionSetItem so the row icons stay in sync with the saved state.
+    setStatuses((cur) => {
+      const updated = { ...cur };
+      siblings.forEach((sid) => {
+        updated[sid] = next;
+      });
+      return updated;
+    });
     setSaveError(null);
 
     const endpoint = isGenerated ? "/api/generated-attempts" : "/api/attempts";
     const idField = isGenerated ? "questionSetItemId" : "questionId";
+    const apiId = getParentId(id);
 
     try {
       // When clearing status, use ATTEMPTED instead of DELETE to preserve bookmarks
       const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ [idField]: id, status: next ?? "ATTEMPTED" }),
+        body: JSON.stringify({ [idField]: apiId, status: next ?? "ATTEMPTED" }),
       });
 
       if (!res.ok) {
-        // Revert optimistic update on failure
-        setStatuses((cur) => ({ ...cur, [id]: prev }));
+        // Revert optimistic update on failure across all siblings
+        setStatuses((cur) => {
+          const updated = { ...cur };
+          siblings.forEach((sid) => {
+            updated[sid] = prev;
+          });
+          return updated;
+        });
         if (res.status === 401) {
           setSaveError("Please log in to save your progress.");
         } else {
@@ -296,7 +351,13 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
       }
     } catch {
       // Network error — revert
-      setStatuses((cur) => ({ ...cur, [id]: prev }));
+      setStatuses((cur) => {
+        const updated = { ...cur };
+        siblings.forEach((sid) => {
+          updated[sid] = prev;
+        });
+        return updated;
+      });
       setSaveError("Network error. Please check your connection.");
     }
   }
@@ -304,25 +365,45 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
   async function toggleBookmark(id: string) {
     const prev = bookmarks[id];
     const next = !prev;
-    setBookmarks((cur) => ({ ...cur, [id]: next }));
+    const siblings = siblingPartIds(id);
+    setBookmarks((cur) => {
+      const updated = { ...cur };
+      siblings.forEach((sid) => {
+        updated[sid] = next;
+      });
+      return updated;
+    });
     setSaveError(null);
 
     // For generated items, persist via the generated-attempts endpoint
     if (isGenerated) {
+      const apiId = getParentId(id);
       try {
         const res = await fetch("/api/generated-attempts", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ questionSetItemId: id, bookmarked: next }),
+          body: JSON.stringify({ questionSetItemId: apiId, bookmarked: next }),
         });
         if (!res.ok) {
-          setBookmarks((cur) => ({ ...cur, [id]: prev }));
+          setBookmarks((cur) => {
+            const updated = { ...cur };
+            siblings.forEach((sid) => {
+              updated[sid] = prev;
+            });
+            return updated;
+          });
           setSaveError(res.status === 401 ? "Please log in to save your progress." : "Failed to save. Please try again.");
         } else if (!disableServerRefresh) {
           router.refresh();
         }
       } catch {
-        setBookmarks((cur) => ({ ...cur, [id]: prev }));
+        setBookmarks((cur) => {
+          const updated = { ...cur };
+          siblings.forEach((sid) => {
+            updated[sid] = prev;
+          });
+          return updated;
+        });
         setSaveError("Network error. Please check your connection.");
       }
       return;
@@ -490,9 +571,15 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
               <div className="flex items-center justify-between mb-1">
                 <div className="flex items-center gap-2">
                   {p.part && (
-                    <span className="text-base lg:text-lg font-bold text-gray-800 dark:text-gray-200">({p.part.toLowerCase()})</span>
+                    <span className="text-base lg:text-lg font-bold text-gray-800 dark:text-gray-200">
+                      {p.part.toLowerCase()} ({p.marks} {p.marks === 1 ? "mark" : "marks"}).
+                    </span>
                   )}
-                  <span className="text-sm lg:text-base text-gray-400 dark:text-gray-500">{p.marks} {p.marks === 1 ? "mark" : "marks"}</span>
+                  {!p.part && (
+                    <span className="text-sm lg:text-base text-gray-400 dark:text-gray-500">
+                      {p.marks} {p.marks === 1 ? "mark" : "marks"}
+                    </span>
+                  )}
                 </div>
                 {!examMode && (
                 <div className="flex items-center gap-0.5">

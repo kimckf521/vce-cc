@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { User, CreditCard } from "lucide-react";
+import { User, CreditCard, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 import EditDisplayName from "@/components/EditDisplayName";
 import ChangePassword from "@/components/ChangePassword";
 import ThemeToggle from "@/components/ThemeToggle";
 import BillingSection from "@/components/BillingSection";
+import ReportForm from "@/components/ReportForm";
 
 /* ─── types ──────────────────────────────────────────────────────────── */
 
@@ -29,6 +30,7 @@ type ProfileTabsProps = {
 const TABS = [
   { key: "account", label: "Account", icon: User },
   { key: "billing", label: "Billing", icon: CreditCard },
+  { key: "report", label: "Report", icon: MessageSquare },
 ] as const;
 
 type TabKey = (typeof TABS)[number]["key"];
@@ -133,6 +135,8 @@ export default function ProfileTabs({
             hideTitle
           />
         )}
+
+        {activeTab === "report" && <ReportForm />}
       </div>
     </div>
   );

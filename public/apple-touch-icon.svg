@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" fill="none">
+  <!-- iOS home screen icon — 180×180, iOS will round the corners automatically, so no rounded rect needed -->
+  <rect width="180" height="180" fill="#172554"/>
+  <path d="M90 30
+           L108 78
+           L160 78
+           L118 106
+           L134 156
+           L90 124
+           L46 156
+           L62 106
+           L20 78
+           L72 78
+           Z"
+        fill="#FBBF24"
+        stroke="#FCD34D"
+        stroke-width="2"
+        stroke-linejoin="round"/>
+  <path d="M90 58
+           L100 84
+           L128 84
+           L106 100
+           L115 128
+           L90 112
+           L65 128
+           L74 100
+           L52 84
+           L80 84
+           Z"
+        fill="#F59E0B"
+        opacity="0.35"/>
+</svg>

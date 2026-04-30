@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8"/>
+  <title>ATAR Hero — Logo Preview</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <style>
+    :root {
+      --navy: #172554;
+      --blue: #2563eb;
+      --gold: #fbbf24;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 40px 24px;
+      background: var(--bg);
+      color: var(--text);
+    }
+    h1 { font-size: 32px; margin: 0 0 8px; }
+    .sub { color: var(--muted); margin-bottom: 40px; font-size: 15px; }
+    .wrap { max-width: 1200px; margin: 0 auto; }
+    h2 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      margin: 48px 0 12px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 180px;
+      gap: 18px;
+    }
+    .card.dark {
+      background: var(--navy);
+      border-color: var(--navy);
+    }
+    .card .caption {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+    .card.dark .caption { color: #94a3b8; }
+    .card img { max-width: 100%; height: auto; }
+    .fav-row {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .fav-row .size-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 6px;
+    }
+    .fav-slot { display: flex; flex-direction: column; align-items: center; }
+    .social-mock {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      background: var(--bg);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .social-mock .handle {
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .social-mock .handle small {
+      display: block;
+      font-weight: 400;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .og-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      max-width: 600px;
+    }
+    .og-card img { display: block; width: 100%; }
+    .og-card .meta {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+    }
+    .og-card .meta .domain {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .og-card .meta .title {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    footer {
+      margin-top: 80px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    code {
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>ATAR Hero — Logo System</h1>
+    <p class="sub">All variants use navy <code>#172554</code>, blue <code>#2563EB</code>, gold <code>#FBBF24</code>. All are SVGs — infinitely scalable.</p>
+
+    <h2>1 · Primary logo (stacked)</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="../public/logo.svg" alt="ATAR Hero primary logo (stacked)" style="max-width: 360px;"/>
+        <div class="caption">logo.svg — for website header, print, documents</div>
+      </div>
+    </div>
+
+    <h2>2 · Inline logo (one line)</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="../public/logo-inline.svg" alt="ATAR Hero inline logo" style="max-width: 460px;"/>
+        <div class="caption">logo-inline.svg — for narrow headers, email signatures</div>
+      </div>
+    </div>
+
+    <h2>3 · Dark mode</h2>
+    <div class="grid">
+      <div class="card dark">
+        <img src="../public/logo-dark.svg" alt="ATAR Hero dark mode logo" style="max-width: 460px;"/>
+        <div class="caption">logo-dark.svg — for dark backgrounds</div>
+      </div>
+    </div>
+
+    <h2>4 · Icon only (square)</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="../public/icon.svg" alt="ATAR Hero icon" style="width: 160px; height: 160px;"/>
+        <div class="caption">icon.svg — 1:1 square, for social avatars</div>
+      </div>
+      <div class="card">
+        <img src="../public/apple-touch-icon.svg" alt="iOS home screen icon" style="width: 160px; height: 160px; border-radius: 36px;"/>
+        <div class="caption">apple-touch-icon.svg — iOS home screen</div>
+      </div>
+    </div>
+
+    <h2>5 · Favicon at actual sizes</h2>
+    <div class="card fav-row">
+      <div class="fav-slot">
+        <img src="../public/favicon.svg" alt="16px" width="16" height="16"/>
+        <div class="size-label">16 × 16 (browser tab)</div>
+      </div>
+      <div class="fav-slot">
+        <img src="../public/favicon.svg" alt="32px" width="32" height="32"/>
+        <div class="size-label">32 × 32</div>
+      </div>
+      <div class="fav-slot">
+        <img src="../public/favicon.svg" alt="48px" width="48" height="48"/>
+        <div class="size-label">48 × 48 (bookmarks)</div>
+      </div>
+      <div class="fav-slot">
+        <img src="../public/favicon.svg" alt="64px" width="64" height="64"/>
+        <div class="size-label">64 × 64</div>
+      </div>
+      <div class="fav-slot">
+        <img src="../public/favicon.svg" alt="128px" width="128" height="128"/>
+        <div class="size-label">128 × 128</div>
+      </div>
+    </div>
+
+    <h2>6 · Social avatar mockups</h2>
+    <div class="grid">
+      <div class="card" style="align-items: flex-start;">
+        <div class="social-mock" style="width: 100%;">
+          <img src="../public/icon.svg" width="48" height="48" style="border-radius: 50%;" alt=""/>
+          <div class="handle">
+            ATAR Hero
+            <small>@atarhero · Ace your ATAR.</small>
+          </div>
+        </div>
+        <div class="social-mock" style="width: 100%;">
+          <img src="../public/icon.svg" width="48" height="48" style="border-radius: 12px;" alt=""/>
+          <div class="handle">
+            ATAR Hero
+            <small>@atarhero · 1.2M likes</small>
+          </div>
+        </div>
+        <div class="caption">TikTok / Instagram / YouTube header preview</div>
+      </div>
+    </div>
+
+    <h2>7 · Open Graph / social share card</h2>
+    <div class="grid">
+      <div class="card" style="padding: 0; overflow: hidden;">
+        <div class="og-card">
+          <img src="../public/og-image.svg" alt="Open Graph card"/>
+          <div class="meta">
+            <div class="domain">atarhero.com.au</div>
+            <div class="title">ATAR Hero — Ace your ATAR with VCAA past exams</div>
+          </div>
+        </div>
+        <div class="caption" style="padding: 16px;">og-image.svg — shown when shared on Discord, Slack, Facebook, LinkedIn, iMessage</div>
+      </div>
+    </div>
+
+    <footer>
+      <p>All files live in <code>vce-methods/public/</code>. Edit directly in VS Code or any SVG tool (Figma, Illustrator, Inkscape). The Open Graph image needs to be converted to PNG before production use — I can guide you through that, or convert via <code>rsvg-convert</code> / Figma / any online SVG-to-PNG tool.</p>
+      <p>To regenerate a specific colour, find-and-replace the hex codes across all files:<br>
+      Navy → <code>#172554</code> · Blue → <code>#2563EB</code> · Gold → <code>#FBBF24</code></p>
+    </footer>
+  </div>
+</body>
+</html>

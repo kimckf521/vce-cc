@@ -3,9 +3,15 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { EXAM_CONFIG, getExamQuestionCount, type ExamMode } from "@/lib/exam-config";
+import {
+  EXAM_CONFIG,
+  VCAA_TOPIC_DIST,
+  VCAA_DIFFICULTY_DIST,
+  getExamQuestionCount,
+  type ExamMode,
+} from "@/lib/exam-config";
 import TopicDistributionControl from "./TopicDistributionControl";
 import DifficultyDistributionControl, { type DiffDist } from "./DifficultyDistributionControl";
 
@@ -27,16 +33,33 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
   const [timerEnabled, setTimerEnabled] = useState(true);
   const [focusWeakAreas, setFocusWeakAreas] = useState(false);
 
+  // Freedom Version is for relaxed practice — solutions are always available
+  // as you go regardless of the toggle's local state.
+  const isFreedom = version === "freedom";
+  const effectiveShowSolutions = isFreedom || showSolutions;
+
+  // Exam Version simulates a real VCAA paper — topic/difficulty mix and
+  // "focus on weak areas" are locked to the real exam's characteristics.
+  // Freedom Version lets the student customise everything.
+  const effectiveDistribution = isFreedom
+    ? distribution
+    : [...VCAA_TOPIC_DIST];
+  const effectiveDiffDist: DiffDist = isFreedom
+    ? diffDist
+    : [...VCAA_DIFFICULTY_DIST];
+  const effectiveFocusWeakAreas = isFreedom && focusWeakAreas;
+
+  // Validation only applies to the Freedom Version's user-editable controls.
   const topicTotal = distribution.reduce((a, b) => a + b, 0);
   const diffTotal = diffDist[0] + diffDist[1] + diffDist[2];
-  const isValid = topicTotal === 100 && diffTotal === 100;
+  const isValid = isFreedom ? topicTotal === 100 && diffTotal === 100 : true;
 
   function handleStart() {
     if (!isValid) return;
     const finalCount = version === "exam" ? getExamQuestionCount(mode) : count;
     const timerParam = version === "exam" && timerEnabled ? "&timer=1" : "";
-    const weakParam = focusWeakAreas ? "&weak=1" : "";
-    const url = `/practice/session?mode=${mode}&version=${version}&count=${finalCount}&dist=${distribution.join(",")}&diff=${diffDist.join(",")}&solutions=${showSolutions ? "1" : "0"}${timerParam}${weakParam}`;
+    const weakParam = effectiveFocusWeakAreas ? "&weak=1" : "";
+    const url = `/practice/session?mode=${mode}&version=${version}&count=${finalCount}&dist=${effectiveDistribution.join(",")}&diff=${effectiveDiffDist.join(",")}&solutions=${effectiveShowSolutions ? "1" : "0"}${timerParam}${weakParam}`;
     router.push(url);
   }
 
@@ -119,66 +142,107 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
         )}
       </div>
 
-      {/* Topic distribution */}
-      <div className="space-y-3 lg:space-y-4">
-        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Topic Distribution</h2>
-        <TopicDistributionControl
-          topics={topics}
-          distribution={distribution}
-          onChange={setDistribution}
-        />
-      </div>
+      {/* Exam Version: show a VCAA-reality info card instead of the
+          distribution controls, so the simulation can't be tilted by the
+          student toward topics they're already comfortable with. */}
+      {!isFreedom && (
+        <div className="rounded-xl border border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-950/40 px-5 lg:px-6 py-4 lg:py-5 flex items-start gap-3">
+          <Info className="h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400 mt-0.5" />
+          <div className="text-sm lg:text-base text-gray-700 dark:text-gray-200 space-y-1">
+            <p className="font-semibold">Matches a real VCAA paper</p>
+            <p className="text-gray-600 dark:text-gray-300">
+              Topic mix (~{VCAA_TOPIC_DIST.join(" / ")}%) and difficulty
+              spread ({VCAA_DIFFICULTY_DIST[0]}% easy ·{" "}
+              {VCAA_DIFFICULTY_DIST[1]}% medium ·{" "}
+              {VCAA_DIFFICULTY_DIST[2]}% hard) are locked to real VCAA
+              averages. Switch to{" "}
+              <button
+                type="button"
+                onClick={() => setVersion("freedom")}
+                className="underline font-medium text-blue-700 dark:text-blue-300 hover:text-blue-900 dark:hover:text-blue-200"
+              >
+                Freedom Version
+              </button>{" "}
+              to set them yourself.
+            </p>
+          </div>
+        </div>
+      )}
 
-      {/* Difficulty distribution */}
-      <div className="space-y-3 lg:space-y-4">
-        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Difficulty Distribution</h2>
-        <DifficultyDistributionControl
-          distribution={diffDist}
-          onChange={setDiffDist}
-        />
-      </div>
+      {/* Freedom Version controls: topic + difficulty + focus-on-weak-areas
+          are all user-editable here. */}
+      {isFreedom && (
+        <>
+          <div className="space-y-3 lg:space-y-4">
+            <h2 className="text-xs lg:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Topic Distribution</h2>
+            <TopicDistributionControl
+              topics={topics}
+              distribution={distribution}
+              onChange={setDistribution}
+            />
+          </div>
 
-      {/* Show solutions toggle */}
+          <div className="space-y-3 lg:space-y-4">
+            <h2 className="text-xs lg:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Difficulty Distribution</h2>
+            <DifficultyDistributionControl
+              distribution={diffDist}
+              onChange={setDiffDist}
+            />
+          </div>
+        </>
+      )}
+
+      {/* Show solutions toggle — locked on in Freedom Version */}
       <div className="flex items-center justify-between rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-5 lg:px-6 py-4 lg:py-5">
         <div>
           <p className="text-sm lg:text-base font-semibold text-gray-800 dark:text-gray-200">Show solutions as I go</p>
-          <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 mt-0.5">Display a solution button on each question</p>
+          <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+            {isFreedom
+              ? "Always on in Freedom Version"
+              : "Display a solution button on each question"}
+          </p>
         </div>
         <button
           type="button"
-          onClick={() => setShowSolutions((v) => !v)}
+          onClick={() => !isFreedom && setShowSolutions((v) => !v)}
+          disabled={isFreedom}
           className={cn(
-            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200",
-            showSolutions ? "bg-brand-600" : "bg-gray-200 dark:bg-gray-700"
+            "relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200",
+            isFreedom ? "cursor-not-allowed opacity-80" : "cursor-pointer",
+            effectiveShowSolutions ? "bg-brand-600" : "bg-gray-200 dark:bg-gray-700"
           )}
+          aria-label={isFreedom ? "Show solutions as I go (locked on in Freedom Version)" : "Show solutions as I go"}
         >
           <span className={cn(
             "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200",
-            showSolutions ? "translate-x-5" : "translate-x-0"
+            effectiveShowSolutions ? "translate-x-5" : "translate-x-0"
           )} />
         </button>
       </div>
 
-      {/* Focus on weak areas toggle */}
-      <div className="flex items-center justify-between rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-5 lg:px-6 py-4 lg:py-5">
-        <div>
-          <p className="text-sm lg:text-base font-semibold text-gray-800 dark:text-gray-200">Focus on weak areas</p>
-          <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 mt-0.5">Prioritize questions you got wrong or marked for review</p>
+      {/* Focus on weak areas toggle — Freedom Version only. Exam Version
+          is meant to simulate an unseen paper, not cater to weaknesses. */}
+      {isFreedom && (
+        <div className="flex items-center justify-between rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-5 lg:px-6 py-4 lg:py-5">
+          <div>
+            <p className="text-sm lg:text-base font-semibold text-gray-800 dark:text-gray-200">Focus on weak areas</p>
+            <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 mt-0.5">Prioritize questions you got wrong or marked for review</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setFocusWeakAreas((v) => !v)}
+            className={cn(
+              "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200",
+              focusWeakAreas ? "bg-brand-600" : "bg-gray-200 dark:bg-gray-700"
+            )}
+          >
+            <span className={cn(
+              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200",
+              focusWeakAreas ? "translate-x-5" : "translate-x-0"
+            )} />
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={() => setFocusWeakAreas((v) => !v)}
-          className={cn(
-            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200",
-            focusWeakAreas ? "bg-brand-600" : "bg-gray-200 dark:bg-gray-700"
-          )}
-        >
-          <span className={cn(
-            "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200",
-            focusWeakAreas ? "translate-x-5" : "translate-x-0"
-          )} />
-        </button>
-      </div>
+      )}
 
       {/* Timer toggle — only for exam version */}
       {version === "exam" && (

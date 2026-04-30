@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- ATAR Hero favicon: simplified star badge, readable at 16×16. -->
+  <rect width="32" height="32" rx="7" fill="#172554"/>
+  <path d="M16 6
+           L19 14
+           L27.5 14
+           L20.7 19
+           L23.5 27
+           L16 22
+           L8.5 27
+           L11.3 19
+           L4.5 14
+           L13 14
+           Z"
+        fill="#FBBF24"
+        stroke-linejoin="round"/>
+</svg>

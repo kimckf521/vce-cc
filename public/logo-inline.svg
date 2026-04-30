@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 160" fill="none">
+  <!-- ATAR Hero inline/horizontal wordmark variant: icon + ATAR HERO on a single line. -->
+
+  <!-- Icon badge -->
+  <rect x="0" y="0" width="160" height="160" rx="36" fill="#172554"/>
+  <path d="M80 30
+           L96 74
+           L142 74
+           L105 101
+           L120 146
+           L80 117
+           L40 146
+           L55 101
+           L18 74
+           L64 74
+           Z"
+        fill="#FBBF24"
+        stroke="#FCD34D"
+        stroke-width="2"
+        stroke-linejoin="round"/>
+
+  <!-- Wordmark on one line -->
+  <g transform="translate(196, 0)" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="0" y="108" font-size="72" font-weight="800" letter-spacing="-2">
+      <tspan fill="#172554">ATAR</tspan><tspan fill="#2563EB"> HERO</tspan>
+    </text>
+  </g>
+</svg>

@@ -183,6 +183,11 @@ model ExamSessionQuestion {
   questionSetItemId String
   /// Display order of this question within the session (0-based).
   order             Int
+  /// When multiple source items are bundled into one visible compound
+  /// question (e.g. Exam 1 compounds 14–16 items into 8–9 questions),
+  /// this records the index of the parent compound group. Items with
+  /// the same groupIndex render as sub-parts of the same card.
+  groupIndex        Int?
   /// "A" / "B" — Section label for exam2ab. Null for single-mode sessions.
   section           String?
   /// User's MCQ selection (A–D). Null for non-MCQ or unanswered.
@@ -192,6 +197,10 @@ model ExamSessionQuestion {
   /// Manually-entered marks earned for this question (user self-marks
   /// their open-ended exam answers). Null means not yet marked.
   marksEarned       Int?
+  /// Per-sub-part marks for multi-part questions. Shape:
+  ///   { "a": 2, "b": 1, "c": null, ... }
+  /// When set, `marksEarned` is the sum of the defined sub-part values.
+  subPartMarks      Json?
   examSession       ExamSession     @relation(fields: [examSessionId], references: [id], onDelete: Cascade)
   questionSetItem   QuestionSetItem @relation(fields: [questionSetItemId], references: [id], onDelete: Cascade)
 
@@ -270,9 +279,12 @@ model QuestionSet {
   id          String            @id @default(cuid())
   name        String
   description String?
+  isDefault   Boolean           @default(false) // Exactly one row should be true at any time
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
   items       QuestionSetItem[]
+
+  @@index([isDefault])
 }
 
 model QuestionSetItem {
@@ -280,8 +292,14 @@ model QuestionSetItem {
   questionSetId String
   topicId       String
   type          QuestionSetItemType
+  status        QuestionSetItemStatus @default(PENDING)
   order         Int                 @default(0)
   marks         Int
+  // Shared scenario paragraph for multi-part items; null for MCQ / SHORT_ANSWER
+  preamble      String?
+  // Array of { label, marks, content, solution, subParts?: [{ label, marks, content, solution }] }
+  // Null for single-part items (MCQ, SHORT_ANSWER)
+  parts         Json?
   content       String
   // MCQ-only fields (4 options A–D)
   optionA       String?
@@ -302,6 +320,7 @@ model QuestionSetItem {
 
   @@index([questionSetId])
   @@index([topicId])
+  @@index([status])
 }
 
 model QuestionSetAttempt {
@@ -322,7 +341,14 @@ model QuestionSetAttempt {
 enum QuestionSetItemType {
   MCQ
   SHORT_ANSWER
+  EXTENDED_ANSWER
   EXTENDED_RESPONSE
+}
+
+enum QuestionSetItemStatus {
+  PENDING   // Just generated, awaiting review
+  APPROVED  // Reviewer has OK'd it — visible to the picker
+  REJECTED  // Reviewer said no — kept for training data, not shown
 }
 
 enum SubscriptionStatus {

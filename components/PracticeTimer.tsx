@@ -41,12 +41,32 @@ export default function PracticeTimer({
   const dragOffset = useRef({ x: 0, y: 0 });
   const pillRef = useRef<HTMLDivElement>(null);
 
-  // Initialise position to top-right on mount (clamped for small screens)
+  // Whether we've measured the pill's real width and snapped it dead-centre.
+  // The pill is hidden (returns null) until position.x is set, so we need a
+  // second effect that fires *after* the pill is in the DOM.
+  const [measured, setMeasured] = useState(false);
+
+  // Pass 1: drop the pill in roughly the right spot so it becomes visible.
   useEffect(() => {
-    const pillWidth = 210;
-    const x = Math.max(8, window.innerWidth - pillWidth - 12);
-    setPosition({ x, y: 80 });
+    const estimate = 260;
+    const x = Math.max(
+      8,
+      Math.round((window.innerWidth - estimate) / 2)
+    );
+    setPosition({ x, y: 16 });
   }, []);
+
+  // Pass 2: once the pill is rendered, measure its real width and re-centre
+  // so the result is pixel-accurate regardless of the icon set / font.
+  useEffect(() => {
+    if (measured) return;
+    if (position.x < 0) return;
+    const actual = pillRef.current?.offsetWidth;
+    if (!actual) return;
+    const x = Math.max(8, Math.round((window.innerWidth - actual) / 2));
+    setPosition({ x, y: 16 });
+    setMeasured(true);
+  }, [position.x, measured]);
 
   // Show a temporary banner notification
   const showBanner = useCallback((msg: string, durationMs = 8000) => {

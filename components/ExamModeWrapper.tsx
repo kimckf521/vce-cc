@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef, useMemo } from "react";
-import { CheckCircle, XCircle, Clock, Trophy } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { CheckCircle, XCircle, Clock, Trophy, ArrowRight } from "lucide-react";
+import SelfMarkStepper from "@/components/SelfMarkStepper";
 import { cn } from "@/lib/utils";
 import QuestionGroup, { parseMCQAnswer } from "@/components/QuestionGroup";
 import PracticeTimer from "@/components/PracticeTimer";
@@ -94,10 +96,13 @@ export default function ExamModeWrapper({
   const [finalTime, setFinalTime] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  const router = useRouter();
+
   // Self-marking (Exam 1 / Exam 2B — modes without auto-grading).
   // Keyed by part id; value is the marks the user awarded themselves.
   const [selfMarks, setSelfMarks] = useState<Record<string, number>>({});
   const [sessionId, setSessionId] = useState<string | null>(null);
+  const [finalising, setFinalising] = useState(false);
 
   // Total max marks across all parts, used as the denominator for self-mark %.
   const totalMaxMarks = useMemo(
@@ -114,7 +119,16 @@ export default function ExamModeWrapper({
   );
   const selfMarksPercentage =
     totalMaxMarks > 0 ? Math.round((selfMarksTotal / totalMaxMarks) * 100) : 0;
-  const questionsMarked = Object.keys(selfMarks).length;
+  const totalParts = useMemo(
+    () => groups.reduce((sum, g) => sum + g.parts.length, 0),
+    [groups]
+  );
+  const partsMarked = Object.keys(selfMarks).length;
+  // "Questions marked" = groups where every part has a self-mark assigned.
+  const questionsMarked = groups.filter((g) =>
+    g.parts.every((p) => selfMarks[p.id] !== undefined)
+  ).length;
+  const allMarked = partsMarked === totalParts && totalParts > 0;
 
   // Start elapsed timer on mount
   useEffect(() => {
@@ -172,20 +186,47 @@ export default function ExamModeWrapper({
     const isGraded = sectionLabel === "Exam 2A";
 
     // Build the per-question record so the history detail page can show
-    // exactly which generated-set items were practiced (and the user's MCQ
-    // selections, when applicable).
-    const sessionQuestions = groups.flatMap((group, groupIdx) =>
-      group.parts.map((p, partIdx) => {
-        const selected = selections[p.id] ?? null;
-        const ans = answerKey[p.id];
-        return {
-          questionSetItemId: p.id,
-          order: groupIdx * 100 + partIdx, // stable display order
+    // exactly which generated-set items were practiced.
+    //
+    // Each visible "part" has either a real QuestionSetItem id (single-part
+    // MCQ / short-answer) or a synthetic id `${itemId}::label` (multi-part
+    // EXTENDED_RESPONSE or Exam 1 sub-parts). Collapse to ONE row per
+    // parent QuestionSetItem so:
+    //   - The FK to QuestionSetItem is always valid.
+    //   - An Exam 1 compound made of two source items posts TWO rows
+    //     (one per item), not one — previously the second was dropped.
+    //   - An Exam 1 source item with multiple sub-parts (a.i, a.ii, …)
+    //     posts ONE row representing the whole item.
+    const stripSuffix = (id: string) => {
+      const sep = id.indexOf("::");
+      return sep === -1 ? id : id.slice(0, sep);
+    };
+    const seenParents = new Set<string>();
+    const sessionQuestions: {
+      questionSetItemId: string;
+      order: number;
+      groupIndex: number;
+      selectedOption: string | null;
+      correct: boolean | null;
+    }[] = [];
+    let manifestOrder = 0;
+    for (let gIdx = 0; gIdx < groups.length; gIdx++) {
+      const group = groups[gIdx];
+      for (const part of group.parts) {
+        const parentId = stripSuffix(part.id);
+        if (seenParents.has(parentId)) continue;
+        seenParents.add(parentId);
+        const selected = selections[part.id] ?? null;
+        const ans = answerKey[part.id];
+        sessionQuestions.push({
+          questionSetItemId: parentId,
+          order: manifestOrder++ * 100,
+          groupIndex: gIdx,
           selectedOption: selected,
           correct: isMcqMode && ans ? selected === ans : null,
-        };
-      })
-    );
+        });
+      }
+    }
 
     // Capture the session id so subsequent self-mark edits can PATCH the
     // same row (fire-and-forget; any failure leaves sessionId null and the
@@ -458,77 +499,80 @@ export default function ExamModeWrapper({
           </button>
         </div>
       )}
-    </div>
-  );
-}
 
-// ---------------------------------------------------------------------------
-// Self-mark stepper — rendered beneath each question after submit for short-
-// answer / extended-response modes. One row per part, with buttons 0…marks
-// so students can award themselves partial credit. The parent owns the
-// selfMarks state; this component is purely presentational.
-// ---------------------------------------------------------------------------
-
-function SelfMarkStepper({
-  parts,
-  selfMarks,
-  onChange,
-}: {
-  parts: QuestionGroupData["parts"];
-  selfMarks: Record<string, number>;
-  onChange: (partId: string, earned: number) => void;
-}) {
-  return (
-    <div className="mt-3 rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 px-4 py-3 lg:px-5 lg:py-4">
-      <p className="text-[10px] lg:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2.5">
-        Self-Mark
-      </p>
-      <div className="space-y-2.5">
-        {parts.map((p) => {
-          const current = selfMarks[p.id];
-          return (
-            <div
-              key={p.id}
-              className="flex flex-wrap items-center gap-x-3 gap-y-2"
-            >
-              {parts.length > 1 && (
-                <span className="text-sm font-semibold text-gray-600 dark:text-gray-300 shrink-0">
-                  {p.part ? `(${p.part.toLowerCase()})` : "Question"}
-                </span>
-              )}
-              <div className="flex flex-wrap items-center gap-1.5">
-                {Array.from({ length: p.marks + 1 }, (_, i) => i).map((n) => {
-                  const selected = current === n;
-                  const isFull = n === p.marks;
-                  const isZero = n === 0;
-                  return (
-                    <button
-                      key={n}
-                      type="button"
-                      onClick={() => onChange(p.id, n)}
-                      className={cn(
-                        "rounded-lg px-3 py-1 text-sm font-semibold tabular-nums transition-colors border",
-                        selected
-                          ? isFull
-                            ? "bg-green-600 border-green-600 text-white"
-                            : isZero
-                              ? "bg-red-600 border-red-600 text-white"
-                              : "bg-yellow-500 border-yellow-500 text-white"
-                          : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                      )}
-                    >
-                      {n}
-                    </button>
+      {/* Finish-marking footer — only after submit, in self-marking modes */}
+      {submitted && enableSelfMarking && (
+        <div className="pt-2 pb-2 space-y-2">
+          {!allMarked && (
+            <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+              Mark every question to finish — {questionsMarked}/{groups.length} done.
+            </p>
+          )}
+          <button
+            type="button"
+            disabled={!allMarked || finalising}
+            onClick={async () => {
+              setFinalising(true);
+              // Cancel the pending debounced PATCH and send the final state
+              // synchronously so the user lands on /history with the latest
+              // score already persisted.
+              if (sessionId) {
+                const earnedTotal = Object.values(selfMarks).reduce(
+                  (a, b) => a + b,
+                  0
+                );
+                const pct =
+                  totalMaxMarks > 0
+                    ? Math.round((earnedTotal / totalMaxMarks) * 100)
+                    : 0;
+                let correctCountLocal = 0;
+                let incorrectCountLocal = 0;
+                for (const g of groups) {
+                  const max = g.parts.reduce((s, p) => s + p.marks, 0);
+                  const earnedForGroup = g.parts.reduce(
+                    (s, p) => s + (selfMarks[p.id] ?? 0),
+                    0
                   );
-                })}
-                <span className="ml-1 text-xs text-gray-400 dark:text-gray-500">
-                  / {p.marks} {p.marks === 1 ? "mark" : "marks"}
-                </span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+                  if (g.parts.every((p) => selfMarks[p.id] !== undefined)) {
+                    if (earnedForGroup === max) correctCountLocal++;
+                    else if (earnedForGroup === 0) incorrectCountLocal++;
+                  }
+                }
+                try {
+                  await fetch(`/api/exam-sessions/${sessionId}`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      score: pct,
+                      correctCount: correctCountLocal,
+                      incorrectCount: incorrectCountLocal,
+                    }),
+                  });
+                } catch {
+                  // Even if the final PATCH fails, the most recent debounced
+                  // PATCH has already saved a near-current score. Continue
+                  // to history rather than block the user.
+                }
+              }
+              router.push(sessionId ? `/history/${sessionId}` : "/history");
+            }}
+            className={cn(
+              "w-full rounded-2xl px-8 py-4 lg:py-5 text-base lg:text-lg font-bold text-white shadow-lg transition-colors flex items-center justify-center gap-2",
+              !allMarked || finalising
+                ? "bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed shadow-none"
+                : "bg-brand-600 hover:bg-brand-700"
+            )}
+          >
+            {finalising
+              ? "Saving…"
+              : allMarked
+                ? `Finish Marking (${selfMarksTotal}/${totalMaxMarks} marks)`
+                : "Finish Marking"}
+            {allMarked && !finalising && <ArrowRight className="h-5 w-5" />}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
+

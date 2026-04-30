@@ -2,7 +2,9 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { headers } from "next/headers";
-import { Users, DollarSign, CheckCircle, Clock } from "lucide-react";
+import Link from "next/link";
+import { Users, DollarSign, CheckCircle, Clock, FileText } from "lucide-react";
+import type { AffiliateType } from "@prisma/client";
 import {
   affiliateTypeLabel,
   buildReferralUrl,
@@ -12,6 +14,7 @@ import {
 import ReferralLinkCard from "./ReferralLinkCard";
 import RegisterAffiliateForm from "./RegisterAffiliateForm";
 import { isAdminRole } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import RequestPayoutButton from "./RequestPayoutButton";
 
 export const dynamic = "force-dynamic";
@@ -23,7 +26,11 @@ function maskEmail(email: string): string {
   return `${name.slice(0, 2)}${"*".repeat(Math.min(name.length - 2, 5))}@${domain}`;
 }
 
-export default async function ReferralsPage() {
+interface PageProps {
+  searchParams: Promise<{ view?: string }>;
+}
+
+export default async function ReferralsPage({ searchParams }: PageProps) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
@@ -33,6 +40,20 @@ export default async function ReferralsPage() {
     select: { id: true, name: true, email: true, role: true },
   });
   if (!dbUser) redirect("/login");
+
+  const isAdmin = isAdminRole(dbUser.role);
+  const { view } = await searchParams;
+
+  // Admin-only: allow previewing other track dashboards via ?view=tutor|influencer|student
+  const viewOverride: AffiliateType | null = isAdmin
+    ? view === "tutor"
+      ? "TUTOR_AFFILIATE"
+      : view === "influencer"
+        ? "INFLUENCER_AFFILIATE"
+        : view === "student"
+          ? "STUDENT_REFERRAL"
+          : null
+    : null;
 
   const affiliate = await prisma.affiliate.findUnique({
     where: { userId: user.id },
@@ -60,8 +81,8 @@ export default async function ReferralsPage() {
   //   TUTOR → tutor card only
   //   INFLUENCER → influencer card only
   //   ADMIN/SUPER_ADMIN → all three (for testing)
-  if (!affiliate) {
-    const isAdmin = isAdminRole(dbUser.role);
+  // EXCEPTION: if admin uses ?view=X, synthesize a demo affiliate for preview
+  if (!affiliate && !viewOverride) {
     const availableTracks: Array<"STUDENT_REFERRAL" | "TUTOR_AFFILIATE" | "INFLUENCER_AFFILIATE"> =
       isAdmin
         ? ["STUDENT_REFERRAL", "TUTOR_AFFILIATE", "INFLUENCER_AFFILIATE"]
@@ -72,36 +93,82 @@ export default async function ReferralsPage() {
             : ["STUDENT_REFERRAL"];
 
     return (
-      <div className="max-w-4xl">
+      <div className="max-w-6xl">
         <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
           Refer &amp; Earn
         </h1>
         <p className="text-gray-500 dark:text-gray-400 mb-8 lg:text-base">
           Earn rewards by referring others to ATAR Hero.
         </p>
+        {isAdmin && (
+          <div className="mb-6 rounded-2xl border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-950 p-4">
+            <p className="text-xs font-semibold uppercase tracking-wide text-purple-700 dark:text-purple-300 mb-2">
+              Admin — Preview dashboards (without registering)
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <Link href="/referrals?view=student" className="rounded-full px-4 py-1.5 text-sm font-medium bg-white dark:bg-gray-900 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 hover:bg-purple-100 dark:hover:bg-purple-900">
+                Student view
+              </Link>
+              <Link href="/referrals?view=tutor" className="rounded-full px-4 py-1.5 text-sm font-medium bg-white dark:bg-gray-900 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 hover:bg-purple-100 dark:hover:bg-purple-900">
+                Tutor view
+              </Link>
+              <Link href="/referrals?view=influencer" className="rounded-full px-4 py-1.5 text-sm font-medium bg-white dark:bg-gray-900 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 hover:bg-purple-100 dark:hover:bg-purple-900">
+                Influencer view
+              </Link>
+            </div>
+          </div>
+        )}
         <RegisterAffiliateForm availableTracks={availableTracks} />
       </div>
     );
   }
 
-  const totalReferrals = affiliate.referrals.length;
-  const pendingCount = affiliate.referrals.filter((r) => r.status === "PENDING").length;
-  const convertedCount = affiliate.referrals.filter((r) => r.status === "CONVERTED").length;
-  const totalEarned = affiliate.referrals
+  // Admin preview without a real affiliate — synthesize an empty one
+  // Type-cast is safe because this only runs when viewOverride is set (admin preview).
+  type AffiliateData = NonNullable<typeof affiliate>;
+  const effectiveAffiliate: AffiliateData = affiliate ?? ({
+    id: "demo",
+    userId: user.id,
+    type: viewOverride!,
+    referralCode: "demo-preview",
+    approved: true,
+    active: true,
+    creditBalance: 0,
+    totalEarned: 0,
+    abn: null,
+    platform: null,
+    handle: null,
+    followerCount: null,
+    adminNotes: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    referrals: [],
+    payouts: [],
+    contracts: [],
+  } as unknown as AffiliateData);
+
+  const totalReferrals = effectiveAffiliate.referrals.length;
+  const pendingCount = effectiveAffiliate.referrals.filter((r) => r.status === "PENDING").length;
+  const convertedCount = effectiveAffiliate.referrals.filter((r) => r.status === "CONVERTED").length;
+  const totalEarned = effectiveAffiliate.referrals
     .filter((r) => r.status === "CONVERTED")
     .reduce((s, r) => s + r.rewardAmount, 0);
 
   // For tutors/influencers: calculate available cash payout
-  const paidOut = affiliate.payouts
+  const paidOut = effectiveAffiliate.payouts
     .filter((p) => p.type === "COMMISSION" && p.status !== "FAILED")
     .reduce((s, p) => s + p.amount, 0);
   const availableCash = totalEarned - paidOut;
 
-  const referralUrl = buildReferralUrl(affiliate.referralCode, baseUrl);
-  const isStudentTrack = affiliate.type === "STUDENT_REFERRAL";
+  const referralUrl = buildReferralUrl(effectiveAffiliate.referralCode, baseUrl);
+  // Admin can preview other track dashboards via ?view=X — use effectiveType for display
+  const effectiveType = viewOverride ?? effectiveAffiliate.type;
+  const isStudentTrack = effectiveType === "STUDENT_REFERRAL";
+  const isInfluencerTrack = effectiveType === "INFLUENCER_AFFILIATE";
+  const isPreviewing = viewOverride !== null && (!affiliate || viewOverride !== affiliate.type);
 
   return (
-    <div className="max-w-4xl">
+    <div className="max-w-6xl">
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-1">
@@ -109,30 +176,79 @@ export default async function ReferralsPage() {
             Refer &amp; Earn
           </h1>
           <span className="rounded-full bg-brand-100 dark:bg-brand-900 text-brand-700 dark:text-brand-300 text-xs font-medium px-2.5 py-0.5">
-            {affiliateTypeLabel(affiliate.type)}
+            {affiliateTypeLabel(effectiveType)}
           </span>
-          {!affiliate.approved && (
+          {!effectiveAffiliate.approved && !isPreviewing && (
             <span className="rounded-full bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300 text-xs font-medium px-2.5 py-0.5">
               Pending approval
+            </span>
+          )}
+          {isPreviewing && (
+            <span className="rounded-full bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 text-xs font-medium px-2.5 py-0.5">
+              Admin preview
             </span>
           )}
         </div>
         <p className="text-gray-500 dark:text-gray-400 lg:text-base">
           {isStudentTrack
             ? "Earn $5 platform credit for each friend who subscribes."
-            : "Earn $10 cash commission for each referred student who subscribes."}
+            : isInfluencerTrack
+              ? "Earn $10 cash commission + upfront content fee for each video you publish."
+              : "Earn $10 cash commission for each referred student who subscribes."}
         </p>
       </div>
 
-      {!affiliate.approved && (
+      {/* Admin-only view switcher */}
+      {isAdmin && (
+        <div className="mb-6 rounded-2xl border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-950 p-4">
+          <p className="text-xs font-semibold uppercase tracking-wide text-purple-700 dark:text-purple-300 mb-2">
+            Admin — Preview dashboards
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {(
+              [
+                { key: "student", label: "Student view", type: "STUDENT_REFERRAL" },
+                { key: "tutor", label: "Tutor view", type: "TUTOR_AFFILIATE" },
+                { key: "influencer", label: "Influencer view", type: "INFLUENCER_AFFILIATE" },
+              ] as const
+            ).map((tab) => {
+              const isActive = effectiveType === tab.type;
+              return (
+                <Link
+                  key={tab.key}
+                  href={`/referrals?view=${tab.key}`}
+                  className={cn(
+                    "rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
+                    isActive
+                      ? "bg-purple-600 text-white"
+                      : "bg-white dark:bg-gray-900 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 hover:bg-purple-100 dark:hover:bg-purple-900"
+                  )}
+                >
+                  {tab.label}
+                </Link>
+              );
+            })}
+            {viewOverride && (
+              <Link
+                href="/referrals"
+                className="rounded-full px-4 py-1.5 text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
+              >
+                Back to my view
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
+
+      {!effectiveAffiliate.approved && !isPreviewing && (
         <div className="mb-6 rounded-2xl bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 p-5 text-amber-800 dark:text-amber-300">
           Your application is awaiting admin approval. You&apos;ll be able to share your referral link once approved.
         </div>
       )}
 
       {/* Referral link */}
-      {affiliate.approved && (
-        <ReferralLinkCard url={referralUrl} code={affiliate.referralCode} />
+      {(effectiveAffiliate.approved || isPreviewing) && (
+        <ReferralLinkCard url={referralUrl} code={effectiveAffiliate.referralCode} />
       )}
 
       {/* Stats grid */}
@@ -143,12 +259,12 @@ export default async function ReferralsPage() {
         <StatCard
           icon={DollarSign}
           label={isStudentTrack ? "Credit Balance" : "Total Earned"}
-          value={formatCents(isStudentTrack ? affiliate.creditBalance : totalEarned)}
+          value={formatCents(isStudentTrack ? effectiveAffiliate.creditBalance : totalEarned)}
         />
       </div>
 
       {/* Cash payout panel for tutors/influencers */}
-      {!isStudentTrack && affiliate.approved && (
+      {!isStudentTrack && (effectiveAffiliate.approved || isPreviewing) && (
         <div className="mb-8 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-6">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
@@ -165,9 +281,65 @@ export default async function ReferralsPage() {
         </div>
       )}
 
+      {/* Influencer content contracts */}
+      {isInfluencerTrack && (effectiveAffiliate.approved || isPreviewing) && (
+        <div className="mb-8">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+            <FileText className="h-5 w-5" /> Content contracts
+          </h2>
+          {effectiveAffiliate.contracts.length === 0 ? (
+            <div className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-10 text-center text-gray-400 dark:text-gray-500">
+              No contracts yet. Our team will reach out to negotiate content fees for each video you publish.
+            </div>
+          ) : (
+            <div className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 overflow-hidden">
+              <table className="w-full">
+                <thead className="bg-gray-50 dark:bg-gray-800 text-left text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                  <tr>
+                    <th className="px-5 py-3">Platform</th>
+                    <th className="px-5 py-3">Video URL</th>
+                    <th className="px-5 py-3">Status</th>
+                    <th className="px-5 py-3 text-right">Fee</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100 dark:divide-gray-800 text-sm">
+                  {effectiveAffiliate.contracts.map((c) => (
+                    <tr key={c.id}>
+                      <td className="px-5 py-4 text-gray-900 dark:text-gray-100 capitalize">
+                        {c.platform.toLowerCase()}
+                      </td>
+                      <td className="px-5 py-4 text-gray-500 dark:text-gray-400 truncate max-w-xs">
+                        {c.contentUrl ?? <span className="italic">Not submitted</span>}
+                      </td>
+                      <td className="px-5 py-4">
+                        <span
+                          className={cn(
+                            "rounded-full px-2.5 py-0.5 text-xs font-medium",
+                            c.feePaid
+                              ? "bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-400"
+                              : c.contentVerified
+                                ? "bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-400"
+                                : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
+                          )}
+                        >
+                          {c.feePaid ? "Fee paid" : c.contentVerified ? "Verified" : "Pending"}
+                        </span>
+                      </td>
+                      <td className="px-5 py-4 text-right font-medium text-gray-900 dark:text-gray-100">
+                        {formatCents(c.contentFee)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Referrals table */}
       <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Your referrals</h2>
-      {affiliate.referrals.length === 0 ? (
+      {effectiveAffiliate.referrals.length === 0 ? (
         <div className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-10 text-center text-gray-400 dark:text-gray-500">
           No referrals yet. Share your link to get started!
         </div>
@@ -183,7 +355,7 @@ export default async function ReferralsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800 text-sm">
-              {affiliate.referrals.map((r) => (
+              {effectiveAffiliate.referrals.map((r) => (
                 <tr key={r.id}>
                   <td className="px-5 py-4 text-gray-900 dark:text-gray-100">
                     {maskEmail(r.referredUser.email)}
@@ -205,41 +377,47 @@ export default async function ReferralsPage() {
       )}
 
       {/* Payout history */}
-      {!isStudentTrack && affiliate.payouts.length > 0 && (
+      {!isStudentTrack && (effectiveAffiliate.payouts.length > 0 || isPreviewing) && (
         <>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 mt-10">
             Payout history
           </h2>
-          <div className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 overflow-hidden">
-            <table className="w-full">
-              <thead className="bg-gray-50 dark:bg-gray-800 text-left text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                <tr>
-                  <th className="px-5 py-3">Requested</th>
-                  <th className="px-5 py-3">Type</th>
-                  <th className="px-5 py-3">Status</th>
-                  <th className="px-5 py-3 text-right">Amount</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100 dark:divide-gray-800 text-sm">
-                {affiliate.payouts.map((p) => (
-                  <tr key={p.id}>
-                    <td className="px-5 py-4 text-gray-500 dark:text-gray-400">
-                      {p.createdAt.toLocaleDateString("en-AU")}
-                    </td>
-                    <td className="px-5 py-4 text-gray-900 dark:text-gray-100">
-                      {p.type === "CONTENT_FEE" ? "Content fee" : "Commission"}
-                    </td>
-                    <td className="px-5 py-4">
-                      <PayoutStatusBadge status={p.status} />
-                    </td>
-                    <td className="px-5 py-4 text-right font-medium text-gray-900 dark:text-gray-100">
-                      {formatCents(p.amount)}
-                    </td>
+          {effectiveAffiliate.payouts.length === 0 ? (
+            <div className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-10 text-center text-gray-400 dark:text-gray-500">
+              No payouts yet. Request a payout once you reach {formatCents(MIN_PAYOUT_AMOUNT)}.
+            </div>
+          ) : (
+            <div className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 overflow-hidden">
+              <table className="w-full">
+                <thead className="bg-gray-50 dark:bg-gray-800 text-left text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                  <tr>
+                    <th className="px-5 py-3">Requested</th>
+                    <th className="px-5 py-3">Type</th>
+                    <th className="px-5 py-3">Status</th>
+                    <th className="px-5 py-3 text-right">Amount</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-gray-100 dark:divide-gray-800 text-sm">
+                  {effectiveAffiliate.payouts.map((p) => (
+                    <tr key={p.id}>
+                      <td className="px-5 py-4 text-gray-500 dark:text-gray-400">
+                        {p.createdAt.toLocaleDateString("en-AU")}
+                      </td>
+                      <td className="px-5 py-4 text-gray-900 dark:text-gray-100">
+                        {p.type === "CONTENT_FEE" ? "Content fee" : "Commission"}
+                      </td>
+                      <td className="px-5 py-4">
+                        <PayoutStatusBadge status={p.status} />
+                      </td>
+                      <td className="px-5 py-4 text-right font-medium text-gray-900 dark:text-gray-100">
+                        {formatCents(p.amount)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </>
       )}
     </div>

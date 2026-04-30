@@ -3,32 +3,34 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Info } from "lucide-react";
 import { cn } from "@/lib/utils";
-import TopicDistributionControl, { type Topic } from "@/components/TopicDistributionControl";
-import DifficultyDistributionControl, { type DiffDist } from "@/components/DifficultyDistributionControl";
+import {
+  VCAA_TOPIC_DIST,
+  VCAA_DIFFICULTY_DIST,
+} from "@/lib/exam-config";
+import { type Topic } from "@/components/TopicDistributionControl";
 
 interface Props {
   topics: Topic[];
 }
 
-export default function Exam2ABSetupForm({ topics }: Props) {
+// Exam 2A & 2B is an exam simulation only — there is no Freedom Version for
+// the combined paper. All distribution / weak-area controls are therefore
+// locked to real VCAA averages, and the setup page just confirms what the
+// student is about to sit.
+export default function Exam2ABSetupForm({ topics: _topics }: Props) {
   const router = useRouter();
-  const [distA, setDistA] = useState<number[]>([25, 25, 25, 25]);
-  const [distB, setDistB] = useState<number[]>([25, 25, 25, 25]);
-  const [diffDist, setDiffDist] = useState<DiffDist>([50, 30, 20]);
   const [showSolutions, setShowSolutions] = useState(false);
   const [timerEnabled, setTimerEnabled] = useState(true);
 
-  const totalA = distA.reduce((a, b) => a + b, 0);
-  const totalB = distB.reduce((a, b) => a + b, 0);
-  const diffTotal = diffDist[0] + diffDist[1] + diffDist[2];
-  const isValid = totalA === 100 && totalB === 100 && diffTotal === 100;
-
   function handleStart() {
-    if (!isValid) return;
     const timerParam = timerEnabled ? "&timer=1" : "";
     const countB = Math.random() < 0.5 ? 4 : 5;
-    const url = `/practice/session?mode=exam2ab&version=exam&countA=20&countB=${countB}&dist=${distA.join(",")}&distB=${distB.join(",")}&diff=${diffDist.join(",")}&solutions=${showSolutions ? "1" : "0"}${timerParam}`;
+    const dist = [...VCAA_TOPIC_DIST].join(",");
+    const distB = [...VCAA_TOPIC_DIST].join(",");
+    const diff = [...VCAA_DIFFICULTY_DIST].join(",");
+    const url = `/practice/session?mode=exam2ab&version=exam&countA=20&countB=${countB}&dist=${dist}&distB=${distB}&diff=${diff}&solutions=${showSolutions ? "1" : "0"}${timerParam}`;
     router.push(url);
   }
 
@@ -45,7 +47,7 @@ export default function Exam2ABSetupForm({ topics }: Props) {
       {/* Heading */}
       <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">Exam 2A &amp; 2B Practice</h1>
 
-      {/* Info banner */}
+      {/* Info banner — format summary */}
       <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-5 lg:px-6 py-4 lg:py-5 text-sm lg:text-base text-gray-600 dark:text-gray-400 flex items-start gap-3">
         <div className="shrink-0 mt-0.5">
           <svg className="h-4 w-4 lg:h-5 lg:w-5 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -53,43 +55,19 @@ export default function Exam2ABSetupForm({ topics }: Props) {
           </svg>
         </div>
         <span>
-          Section A: 20 MCQ (20 marks) · Section B: 4–5 extended response (60 marks) · 80 marks total · CAS Calculator allowed — matches the real VCE Exam 2.
+          Section A: 20 MCQ (20 marks) · Section B: extended response (60 marks) · 80 marks total · CAS Calculator allowed — matches the real VCE Exam 2.
         </span>
       </div>
 
-      {/* Section A distribution */}
-      <div className="space-y-3 lg:space-y-4">
-        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
-          Section A — Multiple Choice Distribution
-        </h2>
-        <TopicDistributionControl
-          topics={topics}
-          distribution={distA}
-          onChange={setDistA}
-        />
-      </div>
-
-      {/* Section B distribution */}
-      <div className="space-y-3 lg:space-y-4">
-        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
-          Section B — Extended Response Distribution
-        </h2>
-        <TopicDistributionControl
-          topics={topics}
-          distribution={distB}
-          onChange={setDistB}
-        />
-      </div>
-
-      {/* Difficulty distribution */}
-      <div className="space-y-3 lg:space-y-4">
-        <h2 className="text-xs lg:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
-          Difficulty Distribution
-        </h2>
-        <DifficultyDistributionControl
-          distribution={diffDist}
-          onChange={setDiffDist}
-        />
+      {/* VCAA-locked mix */}
+      <div className="rounded-xl border border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-950/40 px-5 lg:px-6 py-4 lg:py-5 flex items-start gap-3">
+        <Info className="h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400 mt-0.5" />
+        <div className="text-sm lg:text-base text-gray-700 dark:text-gray-200 space-y-1">
+          <p className="font-semibold">Matches a real VCAA paper</p>
+          <p className="text-gray-600 dark:text-gray-300">
+            Topic mix (~{VCAA_TOPIC_DIST.join(" / ")}%) and difficulty spread ({VCAA_DIFFICULTY_DIST[0]}% easy · {VCAA_DIFFICULTY_DIST[1]}% medium · {VCAA_DIFFICULTY_DIST[2]}% hard) are locked to real VCAA averages. Customise them using Exam 1 / 2A / 2B&apos;s Freedom Version.
+          </p>
+        </div>
       </div>
 
       {/* Show solutions toggle */}
@@ -134,22 +112,11 @@ export default function Exam2ABSetupForm({ topics }: Props) {
         </button>
       </div>
 
-      {/* Validation errors */}
-      {!isValid && (
-        <p className="text-sm lg:text-base font-medium text-red-600 dark:text-red-400">
-          All distributions must add up to 100% before you can start.
-        </p>
-      )}
-
       {/* Start button */}
       <button
         type="button"
         onClick={handleStart}
-        disabled={!isValid}
-        className={cn(
-          "rounded-xl bg-brand-600 px-8 lg:px-10 py-3 lg:py-4 text-base lg:text-lg font-semibold text-white hover:bg-brand-700 transition-colors",
-          !isValid && "opacity-50 cursor-not-allowed"
-        )}
+        className="rounded-xl bg-brand-600 px-8 lg:px-10 py-3 lg:py-4 text-base lg:text-lg font-semibold text-white hover:bg-brand-700 transition-colors"
       >
         Start Practice →
       </button>

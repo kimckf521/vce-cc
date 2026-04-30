@@ -19,13 +19,30 @@ interface Question {
   solution: { id: string; content: string } | null;
 }
 
-type QuestionSetItemType = "MCQ" | "SHORT_ANSWER" | "EXTENDED_RESPONSE";
+type QuestionSetItemType = "MCQ" | "SHORT_ANSWER" | "EXTENDED_ANSWER" | "EXTENDED_RESPONSE";
+type QuestionSetItemStatus = "PENDING" | "APPROVED" | "REJECTED";
+
+interface PartJson {
+  label: string;
+  marks: number;
+  content: string;
+  solution: string | null;
+  subParts?: {
+    label: string;
+    marks: number;
+    content: string;
+    solution: string | null;
+  }[];
+}
 
 interface QuestionSetItem {
   id: string;
   type: QuestionSetItemType;
+  status: QuestionSetItemStatus;
   order: number;
   marks: number;
+  preamble: string | null;
+  parts: PartJson[] | null;
   content: string;
   optionA: string | null;
   optionB: string | null;
@@ -42,12 +59,67 @@ interface QuestionSet {
   id: string;
   name: string;
   description: string | null;
+  isDefault?: boolean;
   createdAt: string;
   items: QuestionSetItem[];
 }
 
+/** Name of the set that uses the type-first admin layout. */
+const EXAM_SET_NAME = "1st Generated Exam Set";
+const TYPE_FIRST_TYPES: { type: QuestionSetItemType; label: string }[] = [
+  { type: "MCQ", label: "MCQ" },
+  { type: "SHORT_ANSWER", label: "Short Answer" },
+  { type: "EXTENDED_ANSWER", label: "Extended Answer" },
+  { type: "EXTENDED_RESPONSE", label: "Extended Response" },
+];
+
 function formatExamType(type: string) {
   return type === "EXAM_1" ? "Exam 1" : "Exam 2";
+}
+
+/**
+ * Preview + code textarea pair used by the exam-set rich editor.
+ */
+function FieldEditor({
+  value,
+  onChange,
+  label,
+  rows = 4,
+}: {
+  value: string;
+  onChange: (next: string) => void;
+  label: string;
+  rows?: number;
+}) {
+  const minH = rows * 24;
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-stretch">
+      <div className="flex flex-col">
+        <div className="flex items-center gap-1.5 mb-1">
+          <Eye className="h-3 w-3 text-gray-400 dark:text-gray-500" />
+          <span className="text-xs text-gray-500 dark:text-gray-400">Preview</span>
+        </div>
+        <div
+          className="flex-1 rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm leading-relaxed overflow-auto"
+          style={{ minHeight: minH }}
+        >
+          {value ? <MathContent content={value} /> : <span className="text-gray-400 italic text-xs">empty</span>}
+        </div>
+      </div>
+      <div className="flex flex-col">
+        <div className="flex items-center gap-1.5 mb-1">
+          <Code2 className="h-3 w-3 text-gray-400 dark:text-gray-500" />
+          <span className="text-xs text-gray-500 dark:text-gray-400">{label}</span>
+        </div>
+        <textarea
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="flex-1 w-full rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-1.5 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none"
+          style={{ minHeight: minH }}
+        />
+      </div>
+    </div>
+  );
 }
 
 function difficultyBadge(d: string) {
@@ -213,6 +285,16 @@ export default function AdminQuestionsPage() {
   const [setItemDraftContent, setSetItemDraftContent] = useState<string>("");
   const [setItemDraftSolution, setSetItemDraftSolution] = useState<string>("");
   const [savingSetItem, setSavingSetItem] = useState(false);
+  // Rich-edit drafts (exam-set only — preamble, parts, MCQ options)
+  const [examDraftPreamble, setExamDraftPreamble] = useState<string | null>(null);
+  const [examDraftParts, setExamDraftParts] = useState<PartJson[] | null>(null);
+  const [examDraftMcq, setExamDraftMcq] = useState<{
+    A: string;
+    B: string;
+    C: string;
+    D: string;
+    correct: "A" | "B" | "C" | "D";
+  } | null>(null);
 
   useEffect(() => {
     fetch("/api/admin/question-sets")
@@ -289,30 +371,133 @@ export default function AdminQuestionsPage() {
     }
   }
 
-  async function handleSaveSetItem(itemId: string) {
+  function startEditingExamItem(item: QuestionSetItem) {
+    setEditingSetItemId(item.id);
+    setSetItemDraftContent(item.content);
+    setSetItemDraftSolution(item.solutionContent ?? "");
+    setExamDraftPreamble(item.preamble);
+    setExamDraftParts(item.parts ? (JSON.parse(JSON.stringify(item.parts)) as PartJson[]) : null);
+    if (item.type === "MCQ") {
+      setExamDraftMcq({
+        A: item.optionA ?? "",
+        B: item.optionB ?? "",
+        C: item.optionC ?? "",
+        D: item.optionD ?? "",
+        correct: (item.correctOption ?? "A") as "A" | "B" | "C" | "D",
+      });
+    } else {
+      setExamDraftMcq(null);
+    }
+  }
+
+  function cancelEditingSetItem() {
+    setEditingSetItemId(null);
+    setExamDraftPreamble(null);
+    setExamDraftParts(null);
+    setExamDraftMcq(null);
+  }
+
+  function updatePartDraft(
+    partIdx: number,
+    field: "content" | "solution" | "label" | "marks",
+    value: string | number
+  ) {
+    setExamDraftParts((prev) => {
+      if (!prev) return prev;
+      const next = prev.map((p, i) => (i === partIdx ? { ...p, [field]: value } : p));
+      return next;
+    });
+  }
+
+  function updateSubPartDraft(
+    partIdx: number,
+    subIdx: number,
+    field: "content" | "solution" | "label" | "marks",
+    value: string | number
+  ) {
+    setExamDraftParts((prev) => {
+      if (!prev) return prev;
+      const next = prev.map((p, i) => {
+        if (i !== partIdx || !p.subParts) return p;
+        const subParts = p.subParts.map((sp, si) => (si === subIdx ? { ...sp, [field]: value } : sp));
+        return { ...p, subParts };
+      });
+      return next;
+    });
+  }
+
+  async function handleSaveSetItem(itemId: string, opts: { exam?: boolean } = {}) {
     setSavingSetItem(true);
     try {
+      const body: Record<string, unknown> = {
+        itemId,
+        content: setItemDraftContent,
+        solutionContent: setItemDraftSolution,
+      };
+      if (opts.exam) {
+        if (examDraftPreamble !== null) body.preamble = examDraftPreamble;
+        if (examDraftParts !== null) body.parts = examDraftParts;
+        if (examDraftMcq) {
+          body.optionA = examDraftMcq.A;
+          body.optionB = examDraftMcq.B;
+          body.optionC = examDraftMcq.C;
+          body.optionD = examDraftMcq.D;
+          body.correctOption = examDraftMcq.correct;
+        }
+      }
       const res = await fetch("/api/admin/question-sets", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          itemId,
-          content: setItemDraftContent,
-          solutionContent: setItemDraftSolution,
-        }),
+        body: JSON.stringify(body),
       });
       if (res.ok) {
         setQuestionSets((prev) =>
           prev.map((s) => ({
             ...s,
-            items: s.items.map((it) =>
-              it.id === itemId
-                ? { ...it, content: setItemDraftContent, solutionContent: setItemDraftSolution }
-                : it
-            ),
+            items: s.items.map((it) => {
+              if (it.id !== itemId) return it;
+              const updated: QuestionSetItem = {
+                ...it,
+                content: setItemDraftContent,
+                solutionContent: setItemDraftSolution,
+              };
+              if (opts.exam) {
+                if (examDraftPreamble !== null) updated.preamble = examDraftPreamble;
+                if (examDraftParts !== null) updated.parts = examDraftParts;
+                if (examDraftMcq) {
+                  updated.optionA = examDraftMcq.A;
+                  updated.optionB = examDraftMcq.B;
+                  updated.optionC = examDraftMcq.C;
+                  updated.optionD = examDraftMcq.D;
+                  updated.correctOption = examDraftMcq.correct;
+                }
+              }
+              return updated;
+            }),
           }))
         );
-        setEditingSetItemId(null);
+        cancelEditingSetItem();
+      }
+    } finally {
+      setSavingSetItem(false);
+    }
+  }
+
+  async function handleSetItemStatus(itemId: string, status: QuestionSetItemStatus) {
+    setSavingSetItem(true);
+    try {
+      const res = await fetch("/api/admin/question-sets", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ itemId, status }),
+      });
+      if (res.ok) {
+        setQuestionSets((prev) =>
+          prev.map((s) => ({
+            ...s,
+            items: s.items.map((it) => (it.id === itemId ? { ...it, status } : it)),
+          }))
+        );
       }
     } finally {
       setSavingSetItem(false);
@@ -671,6 +856,7 @@ export default function AdminQuestionsPage() {
             const isOpen = openSetIds.has(set.id);
             const mcqs = set.items.filter((i) => i.type === "MCQ");
             const shortAns = set.items.filter((i) => i.type === "SHORT_ANSWER");
+            const extAns = set.items.filter((i) => i.type === "EXTENDED_ANSWER");
             const extResp = set.items.filter((i) => i.type === "EXTENDED_RESPONSE");
             // Group items by topic, then by primary subtopic
             const byTopic = new Map<
@@ -732,7 +918,8 @@ export default function AdminQuestionsPage() {
                   <div className="hidden sm:flex items-center justify-center gap-2 text-xs lg:text-sm">
                     <span className="rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-400 px-2.5 py-0.5 font-medium">{mcqs.length} MCQ</span>
                     <span className="rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400 px-2.5 py-0.5 font-medium">{shortAns.length} short</span>
-                    <span className="rounded-full bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-400 px-2.5 py-0.5 font-medium">{extResp.length} extended</span>
+                    <span className="rounded-full bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-400 px-2.5 py-0.5 font-medium">{extAns.length} ext-ans</span>
+                    <span className="rounded-full bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-400 px-2.5 py-0.5 font-medium">{extResp.length} ext-resp</span>
                   </div>
                   <div className="flex items-center justify-end gap-2">
                     {isOpen && (() => {
@@ -796,7 +983,351 @@ export default function AdminQuestionsPage() {
                   </div>
                 </div>
 
-                {isOpen && (
+                {isOpen && set.name === EXAM_SET_NAME && (
+                  <div className="px-5 lg:px-6 py-5 space-y-5">
+                    {TYPE_FIRST_TYPES.map(({ type, label }) => {
+                      const typeKey = `${set.id}::type::${type}`;
+                      const typeCollapsed = collapsedTopicKeys.has(typeKey);
+                      const typeItems = set.items.filter((i) => i.type === type);
+                      const pending = typeItems.filter((i) => i.status === "PENDING").length;
+                      const approved = typeItems.filter((i) => i.status === "APPROVED").length;
+                      const rejected = typeItems.filter((i) => i.status === "REJECTED").length;
+                      const typeBadgeColour =
+                        type === "MCQ"
+                          ? "bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-400"
+                          : type === "SHORT_ANSWER"
+                            ? "bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400"
+                            : type === "EXTENDED_ANSWER"
+                              ? "bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-400"
+                              : "bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-400";
+                      return (
+                        <div key={type} className="rounded-2xl border-2 border-purple-200 dark:border-purple-800 overflow-hidden">
+                          <div
+                            onClick={() => {
+                              const next = new Set(collapsedTopicKeys);
+                              next.has(typeKey) ? next.delete(typeKey) : next.add(typeKey);
+                              setCollapsedTopicKeys(next);
+                            }}
+                            className="px-4 lg:px-5 py-3 grid grid-cols-3 items-center gap-3 bg-purple-50/40 dark:bg-purple-950/20 hover:bg-purple-100/40 dark:hover:bg-purple-950/40 transition-colors cursor-pointer"
+                          >
+                            <div className="flex items-center gap-2 min-w-0">
+                              <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${typeBadgeColour}`}>{label}</span>
+                              <span className="text-sm text-gray-500 dark:text-gray-400">{typeItems.length} items</span>
+                            </div>
+                            <div className="hidden sm:flex items-center justify-center gap-1.5 text-xs">
+                              <span className="rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-2 py-0.5 font-medium">{pending} pending</span>
+                              <span className="rounded-full bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-400 px-2 py-0.5 font-medium">{approved} approved</span>
+                              <span className="rounded-full bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-400 px-2 py-0.5 font-medium">{rejected} rejected</span>
+                            </div>
+                            <div className="flex items-center justify-end gap-2">
+                              <span
+                                aria-label={typeCollapsed ? "Expand type" : "Collapse type"}
+                                className="inline-flex items-center justify-center rounded-lg border border-purple-200 dark:border-purple-800 bg-white dark:bg-gray-900 p-1.5 text-purple-700 dark:text-purple-400"
+                              >
+                                {typeCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                              </span>
+                            </div>
+                          </div>
+                          {!typeCollapsed && (
+                            <div className="px-4 lg:px-5 py-4 space-y-3">
+                              {typeItems.length === 0 ? (
+                                <div className="text-sm text-gray-400 dark:text-gray-500 italic py-6 text-center">
+                                  No {label.toLowerCase()} items yet. Use <span className="font-medium">Add question</span> to create one.
+                                </div>
+                              ) : (
+                                typeItems.map((item, idx) => {
+                                  const itemOpen = openItemIds.has(item.id);
+                                  const statusBadge =
+                                    item.status === "APPROVED"
+                                      ? "bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-400"
+                                      : item.status === "REJECTED"
+                                        ? "bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-400"
+                                        : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300";
+                                  return (
+                                    <div key={item.id} className="rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+                                      <button
+                                        onClick={() => {
+                                          const next = new Set(openItemIds);
+                                          next.has(item.id) ? next.delete(item.id) : next.add(item.id);
+                                          setOpenItemIds(next);
+                                        }}
+                                        className="w-full flex items-start justify-between gap-3 px-4 py-3 text-left group"
+                                      >
+                                        <div className="flex items-start gap-3 min-w-0 flex-1">
+                                          <span className="text-xs font-mono text-gray-400 dark:text-gray-500 mt-0.5 flex-shrink-0">{String(idx + 1).padStart(2, "0")}</span>
+                                          <span className={`rounded-full px-2 py-0.5 text-xs font-medium flex-shrink-0 ${statusBadge}`}>{item.status}</span>
+                                          <span className={`rounded-full px-2 py-0.5 text-xs font-medium border flex-shrink-0 ${difficultyBadge(item.difficulty)}`}>{item.difficulty.charAt(0) + item.difficulty.slice(1).toLowerCase()}</span>
+                                          <span className="text-xs text-gray-500 dark:text-gray-400 flex-shrink-0">{item.topic.name}</span>
+                                          <div className="text-sm text-gray-700 dark:text-gray-300 truncate min-w-0 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+                                            {(item.preamble || item.content).replace(/\$/g, "").slice(0, 110)}
+                                          </div>
+                                        </div>
+                                        <div className="flex items-center gap-2 flex-shrink-0">
+                                          <span className="text-xs text-gray-400 dark:text-gray-500">{item.marks}m</span>
+                                          {itemOpen ? <ChevronDown className="h-4 w-4 text-gray-400" /> : <ChevronRight className="h-4 w-4 text-gray-400" />}
+                                        </div>
+                                      </button>
+                                      {itemOpen && (
+                                        <div className="px-4 pb-4 space-y-3 border-t border-gray-100 dark:border-gray-800">
+                                          {(() => {
+                                            const isEditing = editingSetItemId === item.id;
+                                            const hasParts = isEditing
+                                              ? !!examDraftParts && examDraftParts.length > 0
+                                              : !!item.parts && item.parts.length > 0;
+                                            return (
+                                              <>
+                                                {/* Action row: Approve / Reject / Mark pending + Edit / Save / Cancel */}
+                                                <div className="flex items-center gap-2 pt-3 flex-wrap">
+                                                  <button
+                                                    disabled={item.status === "APPROVED" || savingSetItem}
+                                                    onClick={() => handleSetItemStatus(item.id, "APPROVED")}
+                                                    className="inline-flex items-center gap-1 rounded-lg bg-green-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                                  >
+                                                    <Check className="h-3 w-3" /> Approve
+                                                  </button>
+                                                  <button
+                                                    disabled={item.status === "REJECTED" || savingSetItem}
+                                                    onClick={() => handleSetItemStatus(item.id, "REJECTED")}
+                                                    className="inline-flex items-center gap-1 rounded-lg bg-rose-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-rose-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                                  >
+                                                    Reject
+                                                  </button>
+                                                  <button
+                                                    disabled={item.status === "PENDING" || savingSetItem}
+                                                    onClick={() => handleSetItemStatus(item.id, "PENDING")}
+                                                    className="inline-flex items-center gap-1 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                                  >
+                                                    Mark pending
+                                                  </button>
+                                                  <div className="ml-auto flex items-center gap-2">
+                                                    {!isEditing ? (
+                                                      <button
+                                                        onClick={() => startEditingExamItem(item)}
+                                                        className="inline-flex items-center gap-1 rounded-lg border border-brand-200 dark:border-brand-800 bg-white dark:bg-gray-900 px-3 py-1.5 text-xs font-medium text-brand-700 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950 transition-colors"
+                                                      >
+                                                        <Pencil className="h-3 w-3" /> Edit
+                                                      </button>
+                                                    ) : (
+                                                      <>
+                                                        <button
+                                                          onClick={() => handleSaveSetItem(item.id, { exam: true })}
+                                                          disabled={savingSetItem}
+                                                          className="inline-flex items-center gap-1 rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-brand-700 transition-colors disabled:opacity-50"
+                                                        >
+                                                          {savingSetItem ? <Loader2 className="h-3 w-3 animate-spin" /> : <Check className="h-3 w-3" />} Save
+                                                        </button>
+                                                        <button
+                                                          onClick={cancelEditingSetItem}
+                                                          disabled={savingSetItem}
+                                                          className="inline-flex items-center gap-1 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors disabled:opacity-50"
+                                                        >
+                                                          <X className="h-3 w-3" /> Cancel
+                                                        </button>
+                                                      </>
+                                                    )}
+                                                  </div>
+                                                </div>
+                                                {/* Body — read or edit */}
+                                                <div className="rounded-lg bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 p-4 space-y-3">
+                                                  <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                                                    {hasParts ? "Preamble + Parts" : "Question"}
+                                                  </div>
+                                                  {/* Preamble */}
+                                                  {isEditing && (examDraftPreamble !== null || item.preamble !== null) ? (
+                                                    <div className="space-y-1">
+                                                      <label className="text-xs text-gray-500 dark:text-gray-400 font-semibold">Preamble</label>
+                                                      <FieldEditor
+                                                        value={examDraftPreamble ?? ""}
+                                                        onChange={setExamDraftPreamble}
+                                                        label="Preamble (Markdown + LaTeX)"
+                                                        rows={4}
+                                                      />
+                                                    </div>
+                                                  ) : (
+                                                    item.preamble && (
+                                                      <div className="pb-3 border-b border-gray-200 dark:border-gray-800">
+                                                        <MathContent content={item.preamble} />
+                                                      </div>
+                                                    )
+                                                  )}
+                                                  {/* Single-part content (MCQ / SA) */}
+                                                  {!hasParts && (
+                                                    isEditing ? (
+                                                      <FieldEditor
+                                                        value={setItemDraftContent}
+                                                        onChange={setSetItemDraftContent}
+                                                        label="Question content"
+                                                        rows={3}
+                                                      />
+                                                    ) : (
+                                                      <MathContent content={item.content} />
+                                                    )
+                                                  )}
+                                                  {/* Parts (EA / ER) */}
+                                                  {hasParts && (
+                                                    <div className="space-y-3">
+                                                      {(isEditing ? examDraftParts! : item.parts!).map((p, pi) => (
+                                                        <div key={pi} className="rounded-md bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-3 space-y-2">
+                                                          <div className="text-xs font-semibold text-gray-600 dark:text-gray-400">
+                                                            {p.label}. ({p.marks} mark{p.marks === 1 ? "" : "s"})
+                                                          </div>
+                                                          {isEditing ? (
+                                                            <FieldEditor
+                                                              value={p.content}
+                                                              onChange={(v) => updatePartDraft(pi, "content", v)}
+                                                              label={`Part ${p.label} content`}
+                                                              rows={3}
+                                                            />
+                                                          ) : (
+                                                            <MathContent content={p.content} />
+                                                          )}
+                                                          {/* Part-level solution only when no sub-parts */}
+                                                          {(!p.subParts || p.subParts.length === 0) && (
+                                                            <div className="pt-1">
+                                                              <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">Solution</div>
+                                                              {isEditing ? (
+                                                                <FieldEditor
+                                                                  value={p.solution ?? ""}
+                                                                  onChange={(v) => updatePartDraft(pi, "solution", v)}
+                                                                  label={`Part ${p.label} solution`}
+                                                                  rows={5}
+                                                                />
+                                                              ) : p.solution ? (
+                                                                <MathContent content={p.solution} />
+                                                              ) : (
+                                                                <p className="text-sm text-gray-400 italic">No solution yet.</p>
+                                                              )}
+                                                            </div>
+                                                          )}
+                                                          {p.subParts && p.subParts.length > 0 && (
+                                                            <div className="mt-2 ml-4 space-y-2">
+                                                              {p.subParts.map((sp, spi) => (
+                                                                <div key={spi} className="rounded border border-gray-100 dark:border-gray-800 p-2 space-y-2">
+                                                                  <div className="text-xs font-semibold text-gray-600 dark:text-gray-400">
+                                                                    {sp.label}. ({sp.marks} mark{sp.marks === 1 ? "" : "s"})
+                                                                  </div>
+                                                                  {isEditing ? (
+                                                                    <FieldEditor
+                                                                      value={sp.content}
+                                                                      onChange={(v) => updateSubPartDraft(pi, spi, "content", v)}
+                                                                      label={`Sub-part ${sp.label} content`}
+                                                                      rows={2}
+                                                                    />
+                                                                  ) : (
+                                                                    <MathContent content={sp.content} />
+                                                                  )}
+                                                                  <div className="pt-1">
+                                                                    <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">Solution</div>
+                                                                    {isEditing ? (
+                                                                      <FieldEditor
+                                                                        value={sp.solution ?? ""}
+                                                                        onChange={(v) => updateSubPartDraft(pi, spi, "solution", v)}
+                                                                        label={`Sub-part ${sp.label} solution`}
+                                                                        rows={4}
+                                                                      />
+                                                                    ) : sp.solution ? (
+                                                                      <MathContent content={sp.solution} />
+                                                                    ) : (
+                                                                      <p className="text-sm text-gray-400 italic">No solution yet.</p>
+                                                                    )}
+                                                                  </div>
+                                                                </div>
+                                                              ))}
+                                                            </div>
+                                                          )}
+                                                        </div>
+                                                      ))}
+                                                    </div>
+                                                  )}
+                                                  {/* MCQ options */}
+                                                  {item.type === "MCQ" && (
+                                                    <div className="mt-3 space-y-1.5">
+                                                      {(["A", "B", "C", "D"] as const).map((letter) => {
+                                                        const text = isEditing && examDraftMcq ? examDraftMcq[letter] : (item[`option${letter}` as "optionA"] || "");
+                                                        const isCorrect = isEditing && examDraftMcq
+                                                          ? examDraftMcq.correct === letter
+                                                          : item.correctOption === letter;
+                                                        if (isEditing && examDraftMcq) {
+                                                          return (
+                                                            <div
+                                                              key={letter}
+                                                              className={`rounded px-2 py-2 text-sm ${isCorrect ? "bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800" : "bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800"}`}
+                                                            >
+                                                              <div className="flex items-center gap-2 mb-1.5">
+                                                                <span className={`font-semibold ${isCorrect ? "text-green-700 dark:text-green-400" : "text-gray-500 dark:text-gray-400"}`}>{letter}.</span>
+                                                                <label className="inline-flex items-center gap-1 text-xs cursor-pointer">
+                                                                  <input
+                                                                    type="radio"
+                                                                    name={`correct-${item.id}`}
+                                                                    checked={isCorrect}
+                                                                    onChange={() => setExamDraftMcq({ ...examDraftMcq, correct: letter })}
+                                                                  />
+                                                                  Correct answer
+                                                                </label>
+                                                              </div>
+                                                              <FieldEditor
+                                                                value={text}
+                                                                onChange={(v) => setExamDraftMcq({ ...examDraftMcq, [letter]: v })}
+                                                                label={`Option ${letter}`}
+                                                                rows={2}
+                                                              />
+                                                            </div>
+                                                          );
+                                                        }
+                                                        return (
+                                                          <div key={letter} className={`flex items-start gap-2 rounded px-2 py-1.5 text-sm ${isCorrect ? "bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800" : ""}`}>
+                                                            <span className={`font-semibold ${isCorrect ? "text-green-700 dark:text-green-400" : "text-gray-500 dark:text-gray-400"}`}>{letter}.</span>
+                                                            <div className="flex-1"><MathContent content={text} /></div>
+                                                            {isCorrect && <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />}
+                                                          </div>
+                                                        );
+                                                      })}
+                                                    </div>
+                                                  )}
+                                                </div>
+                                                {/* Solution (single-part only) */}
+                                                {!hasParts && (
+                                                  <div className="rounded-lg bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 p-4">
+                                                    <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">Solution</div>
+                                                    {isEditing ? (
+                                                      <FieldEditor
+                                                        value={setItemDraftSolution}
+                                                        onChange={setSetItemDraftSolution}
+                                                        label="Solution"
+                                                        rows={6}
+                                                      />
+                                                    ) : item.solutionContent ? (
+                                                      <MathContent content={item.solutionContent} />
+                                                    ) : (
+                                                      <p className="text-sm text-gray-400 dark:text-gray-500 italic">No solution yet.</p>
+                                                    )}
+                                                  </div>
+                                                )}
+                                                {item.subtopics.length > 0 && (
+                                                  <div className="flex flex-wrap gap-1.5">
+                                                    <span className="text-xs text-gray-500 dark:text-gray-400">Subtopics:</span>
+                                                    {item.subtopics.map((s) => (
+                                                      <span key={s.id} className="rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-2 py-0.5 text-xs">{s.name}</span>
+                                                    ))}
+                                                  </div>
+                                                )}
+                                              </>
+                                            );
+                                          })()}
+                                        </div>
+                                      )}
+                                    </div>
+                                  );
+                                })
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+                {isOpen && set.name !== EXAM_SET_NAME && (
                   <div className="px-5 lg:px-6 py-5 space-y-5">
                     {orderedTopicEntries.map((topic) => {
                       const topicKey = `${set.id}::${topic.topicName}`;
@@ -804,13 +1335,14 @@ export default function AdminQuestionsPage() {
                       const totalSubs = topicSubtopicCounts[topic.topicName] ?? 0;
                       const doneSubs = topic.subtopics.size;
                       // Sum item counts across all subtopics for this topic
-                      let topicMcq = 0, topicShort = 0, topicExt = 0;
+                      let topicMcq = 0, topicShort = 0, topicExtAns = 0, topicExt = 0;
                       const topicAllItems: QuestionSetItem[] = [];
                       for (const sub of Array.from(topic.subtopics.values())) {
                         for (const item of sub.items) {
                           topicAllItems.push(item);
                           if (item.type === "MCQ") topicMcq++;
                           else if (item.type === "SHORT_ANSWER") topicShort++;
+                          else if (item.type === "EXTENDED_ANSWER") topicExtAns++;
                           else if (item.type === "EXTENDED_RESPONSE") topicExt++;
                         }
                       }
@@ -835,7 +1367,8 @@ export default function AdminQuestionsPage() {
                           <div className="hidden sm:flex items-center justify-center gap-1.5 text-xs">
                             <span className="rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-400 px-2 py-0.5 font-medium">{topicMcq} MCQ</span>
                             <span className="rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400 px-2 py-0.5 font-medium">{topicShort} short</span>
-                            <span className="rounded-full bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-400 px-2 py-0.5 font-medium">{topicExt} extended</span>
+                            <span className="rounded-full bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-400 px-2 py-0.5 font-medium">{topicExtAns} ext-ans</span>
+                            <span className="rounded-full bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-400 px-2 py-0.5 font-medium">{topicExt} ext-resp</span>
                           </div>
                           <div className="flex items-center justify-end gap-2">
                             <span className="text-xs font-medium text-purple-700 dark:text-purple-400">
@@ -896,6 +1429,7 @@ export default function AdminQuestionsPage() {
                           {Array.from(topic.subtopics.values()).map((sub: { name: string; items: QuestionSetItem[] }) => {
                             const subMcq = sub.items.filter((i) => i.type === "MCQ");
                             const subShort = sub.items.filter((i) => i.type === "SHORT_ANSWER");
+                            const subExtAns = sub.items.filter((i) => i.type === "EXTENDED_ANSWER");
                             const subExt = sub.items.filter((i) => i.type === "EXTENDED_RESPONSE");
                             const subKey = `${set.id}::${topic.topicName}::${sub.name}`;
                             const subCollapsed = collapsedSubKeys.has(subKey);
@@ -911,7 +1445,8 @@ export default function AdminQuestionsPage() {
                                       <div className="flex items-center justify-center gap-1.5 text-xs">
                                         <span className="rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-400 px-2 py-0.5">{subMcq.length} MCQ</span>
                                         <span className="rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400 px-2 py-0.5">{subShort.length} short</span>
-                                        <span className="rounded-full bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-400 px-2 py-0.5">{subExt.length} extended</span>
+                                        <span className="rounded-full bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-400 px-2 py-0.5">{subExtAns.length} ext-ans</span>
+                                        <span className="rounded-full bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-400 px-2 py-0.5">{subExt.length} ext-resp</span>
                                       </div>
                                       <div className="flex items-center justify-end gap-2">
                                         {!subCollapsed && (
@@ -957,13 +1492,15 @@ export default function AdminQuestionsPage() {
                                   {sub.items.map((item, idx) => {
                                     const itemOpen = openItemIds.has(item.id);
                                     const typeLabel =
-                                      item.type === "MCQ" ? "MCQ" : item.type === "SHORT_ANSWER" ? "Short" : "Extended";
+                                      item.type === "MCQ" ? "MCQ" : item.type === "SHORT_ANSWER" ? "Short" : item.type === "EXTENDED_ANSWER" ? "Ext-Ans" : "Ext-Resp";
                                     const typeBadge =
                                       item.type === "MCQ"
                                         ? "bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-400"
                                         : item.type === "SHORT_ANSWER"
                                           ? "bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400"
-                                          : "bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-400";
+                                          : item.type === "EXTENDED_ANSWER"
+                                            ? "bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-400"
+                                            : "bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-400";
                                     return (
                                       <div key={item.id} className="py-2.5">
                                         <button

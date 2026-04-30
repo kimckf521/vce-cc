@@ -1,18 +1,30 @@
 import { prisma } from "@/lib/prisma";
 import type { QuestionGroupData, TopicQuestionFilters } from "@/lib/question-groups";
 
+/**
+ * Canonical name of the legacy question set used by the Topic page.
+ * The Topic page ALWAYS reads from this set — it does not honour isDefault.
+ */
 export const GENERATED_QUESTION_SET_NAME = "1st Generated Question Set";
 
-const TYPE_LABEL: Record<"MCQ" | "SHORT_ANSWER" | "EXTENDED_RESPONSE", string> = {
+type QSIType = "MCQ" | "SHORT_ANSWER" | "EXTENDED_ANSWER" | "EXTENDED_RESPONSE";
+
+const TYPE_LABEL: Record<QSIType, string> = {
   MCQ: "MCQ",
   SHORT_ANSWER: "Short Answer",
+  EXTENDED_ANSWER: "Extended Answer",
   EXTENDED_RESPONSE: "Extended Response",
 };
 
 const DIFFICULTY_ORDER = { EASY: 0, MEDIUM: 1, HARD: 2 } as const;
 
 /**
- * Resolve the active generated question set id (cached via module-level lookup).
+ * Resolve the question set id for the Topic page.
+ * The Topic page reads from the legacy "1st Generated Question Set" — it
+ * should NOT switch when the isDefault flag is flipped on a different set.
+ *
+ * Legacy export name kept for backwards compatibility with callers that
+ * still import `getGeneratedQuestionSetId`.
  */
 export async function getGeneratedQuestionSetId(): Promise<string | null> {
   const row = await prisma.questionSet.findFirst({
@@ -20,6 +32,41 @@ export async function getGeneratedQuestionSetId(): Promise<string | null> {
     select: { id: true },
   });
   return row?.id ?? null;
+}
+
+/**
+ * Resolve the question set id for the Practice page (exam-style sessions).
+ *
+ * Resolution order:
+ *   1. The `QuestionSet` row where `isDefault = true` (canonical selector).
+ *   2. Fallback to the legacy named set, for safety if no default is set yet.
+ */
+export async function getPracticeQuestionSetId(): Promise<string | null> {
+  const defaultRow = await prisma.questionSet.findFirst({
+    where: { isDefault: true },
+    select: { id: true },
+  });
+  if (defaultRow) return defaultRow.id;
+  const fallback = await prisma.questionSet.findFirst({
+    where: { name: GENERATED_QUESTION_SET_NAME },
+    select: { id: true },
+  });
+  return fallback?.id ?? null;
+}
+
+/**
+ * Central filter used by every query that reads questions for display.
+ * Guarantees we never serve PENDING or REJECTED items to the picker / topics pages.
+ *
+ * Usage:
+ *   const where = { ...approvedItemsFilter(setId), topicId };
+ *   await prisma.questionSetItem.findMany({ where });
+ */
+export function approvedItemsFilter(setId: string) {
+  return {
+    questionSetId: setId,
+    status: "APPROVED" as const,
+  };
 }
 
 /**
@@ -47,22 +94,25 @@ export async function fetchQuestionSetGroupsPaginated(
   // Repurpose the "exam" filter to select QuestionSetItem types:
   //   Exam 1  → SHORT_ANSWER
   //   Exam 2A → MCQ
-  //   Exam 2B → EXTENDED_RESPONSE
-  const EXAM_TO_TYPE: Record<string, "MCQ" | "SHORT_ANSWER" | "EXTENDED_RESPONSE"> = {
-    EXAM_1: "SHORT_ANSWER",
-    EXAM_2_MC: "MCQ",
-    EXAM_2_B: "EXTENDED_RESPONSE",
+  //   Exam 2B → EXTENDED_ANSWER + EXTENDED_RESPONSE (multi-part Section B)
+  const EXAM_TO_TYPES: Record<string, QSIType[]> = {
+    EXAM_1: ["SHORT_ANSWER"],
+    EXAM_2_MC: ["MCQ"],
+    EXAM_2_B: ["EXTENDED_ANSWER", "EXTENDED_RESPONSE"],
   };
   const typeValues = filters.exam
-    ? (filters.exam
-        .split(",")
-        .filter(Boolean)
-        .map((v) => EXAM_TO_TYPE[v])
-        .filter(Boolean) as ("MCQ" | "SHORT_ANSWER" | "EXTENDED_RESPONSE")[])
+    ? (Array.from(
+        new Set(
+          filters.exam
+            .split(",")
+            .filter(Boolean)
+            .flatMap((v) => EXAM_TO_TYPES[v] ?? [])
+        )
+      ) as QSIType[])
     : [];
 
   const where: Record<string, unknown> = {
-    questionSetId: setId,
+    ...approvedItemsFilter(setId),
     topicId,
   };
   if (filters.subtopic) {
@@ -156,7 +206,7 @@ export async function fetchQuestionSetGroupsPaginated(
         key: `qset-${it.id}`,
         year: 0, // sentinel — QuestionGroup will hide year when 0
         examType: "EXAM_1" as "EXAM_1" | "EXAM_2", // placeholder; not rendered
-        sectionLabel: TYPE_LABEL[it.type as keyof typeof TYPE_LABEL],
+        sectionLabel: TYPE_LABEL[it.type as QSIType],
         frequency: undefined,
         topicName,
         subtopics: it.subtopics.map((s) => s.name),

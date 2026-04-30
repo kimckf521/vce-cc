@@ -7,6 +7,7 @@ import { z } from "zod";
 const sessionQuestionSchema = z.object({
   questionSetItemId: z.string().min(1),
   order: z.number().int().min(0),
+  groupIndex: z.number().int().min(0).nullish(),
   section: z.string().max(2).nullish(),
   selectedOption: z.string().max(2).nullish(),
   correct: z.boolean().nullish(),
@@ -52,6 +53,7 @@ export async function POST(req: NextRequest) {
               create: questions.map((q) => ({
                 questionSetItemId: q.questionSetItemId,
                 order: q.order,
+                groupIndex: q.groupIndex ?? null,
                 section: q.section ?? null,
                 selectedOption: q.selectedOption ?? null,
                 correct: q.correct ?? null,
