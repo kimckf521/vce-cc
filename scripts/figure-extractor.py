@@ -208,7 +208,9 @@ def recrop_pdf_region(
         if rect.is_empty or rect.width < page.rect.width * 0.02 or rect.height < page.rect.height * 0.02:
             raise ValueError("Crop box is too small.")
 
-        export_kind = kind if kind in {"chart", "diagram", "table"} else "auto"
+        # "image" maps to the "Others" UI label; explicit user choice should be
+        # respected. Anything else (e.g. "auto") triggers auto-classification.
+        export_kind = kind if kind in {"chart", "diagram", "table", "image"} else "auto"
         confidence = 1.0
         table_rows = None
 
