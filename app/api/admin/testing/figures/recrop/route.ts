@@ -17,20 +17,39 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Proxy to remote extractor
-    const body = await req.json();
-    const headers: Record<string, string> = { "Content-Type": "application/json" };
-    const apiKey = process.env.EXTRACTOR_API_KEY;
-    if (apiKey) headers["Authorization"] = `Bearer ${apiKey}`;
+    // Proxy to remote extractor — wrapped so any network/parse error returns
+    // valid JSON instead of a Next.js HTML error page (which would crash the
+    // client's res.json() with "Unexpected end of JSON input").
+    try {
+      const body = await req.json();
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      const apiKey = process.env.EXTRACTOR_API_KEY;
+      if (apiKey) headers["Authorization"] = `Bearer ${apiKey}`;
 
-    const remoteRes = await fetch(`${extractorUrl}/api/recrop`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(body),
-    });
+      const remoteRes = await fetch(`${extractorUrl}/api/recrop`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(body),
+      });
 
-    const data = await remoteRes.json().catch(() => ({ error: "Remote recrop failed" }));
-    return NextResponse.json(data, { status: remoteRes.status });
+      const text = await remoteRes.text();
+      let data: unknown;
+      try {
+        data = text ? JSON.parse(text) : { error: "Remote recrop returned empty response" };
+      } catch {
+        data = { error: "Remote recrop returned non-JSON response", details: text.slice(0, 500) };
+      }
+      return NextResponse.json(data, { status: remoteRes.status });
+    } catch (err) {
+      console.error("[figure-recrop] proxy error:", err);
+      return NextResponse.json(
+        {
+          error: "Failed to reach remote extractor",
+          details: err instanceof Error ? err.message : String(err),
+        },
+        { status: 502 }
+      );
+    }
   }
 
   const auth = await requireAuthenticatedUser();

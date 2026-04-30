@@ -594,12 +594,22 @@ function PageEditorModal({
           }),
         });
 
-        if (!res.ok) {
-          const err = await res.json();
-          throw new Error(err.error || "Save failed");
+        // Parse response defensively — server may return an empty body or
+        // HTML on 500/502/504, which would crash res.json().
+        const text = await res.text();
+        let data: { item?: ItemResult; error?: string } = {};
+        if (text) {
+          try {
+            data = JSON.parse(text);
+          } catch {
+            data = { error: text.slice(0, 200) || "Server returned non-JSON response" };
+          }
         }
 
-        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || `Save failed (HTTP ${res.status})`);
+        }
+
         if (data.item) {
           onSave(data.item);
         }
