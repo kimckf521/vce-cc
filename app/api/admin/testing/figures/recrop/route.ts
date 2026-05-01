@@ -2,24 +2,24 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAuthenticatedUser } from "@/lib/auth";
 import { rateLimit } from "@/lib/rate-limit";
 import { isAdminRole } from "@/lib/utils";
+import { createClient as createSupabaseAdmin } from "@supabase/supabase-js";
 import { execFile } from "child_process";
+import { readFile } from "fs/promises";
 import { join } from "path";
 
 const ARTIFACTS_DIR = join(process.cwd(), ".figure-artifacts");
+const BUCKET = "extraction";
 
 export async function POST(req: NextRequest) {
-  if (process.env.VERCEL) {
-    const extractorUrl = process.env.EXTRACTOR_API_URL;
-    if (!extractorUrl) {
-      return NextResponse.json(
-        { error: "Recrop requires the remote extractor server." },
-        { status: 503 }
-      );
-    }
-
-    // Proxy to remote extractor — wrapped so any network/parse error returns
-    // valid JSON instead of a Next.js HTML error page (which would crash the
-    // client's res.json() with "Unexpected end of JSON input").
+  // Use the remote extractor ONLY when explicitly configured. This way:
+  //   - Self-hosted with Python available → leave EXTRACTOR_API_URL unset →
+  //     runs the local Python path below.
+  //   - Vercel/serverless without Python → set EXTRACTOR_API_URL to a server
+  //     that runs the figure-extractor module → proxy to it.
+  // (The previous auto-detect-Vercel path was forcing the proxy whenever
+  // Vercel set its built-in env var, even when no extractor was reachable.)
+  const extractorUrl = process.env.EXTRACTOR_API_URL;
+  if (extractorUrl) {
     try {
       const body = await req.json();
       const headers: Record<string, string> = { "Content-Type": "application/json" };
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
       const detail = cause ? `${message} (${cause})` : message;
       return NextResponse.json(
         {
-          error: `Failed to reach remote extractor: ${detail}`,
+          error: `Failed to reach remote extractor at ${extractorUrl}: ${detail}`,
           details: detail,
         },
         { status: 502 }
@@ -134,13 +134,66 @@ print(json.dumps({"item": result}))
       return NextResponse.json({ error: data.error }, { status: 500 });
     }
 
-    // Rewrite artifact URLs
     if (data.item) {
-      const rewrite = (url: string | null) =>
-        url?.replace(/^\/artifacts\//, "/api/admin/testing/figures/artifacts/") ?? null;
-      data.item.imageUrl = rewrite(data.item.imageUrl);
-      data.item.downloadUrl = rewrite(data.item.downloadUrl);
-      if (data.item.tableUrl) data.item.tableUrl = rewrite(data.item.tableUrl);
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+      const useSupabase = Boolean(supabaseUrl && serviceRoleKey);
+
+      if (useSupabase) {
+        const adminClient = createSupabaseAdmin(supabaseUrl!, serviceRoleKey!);
+        await adminClient.storage.createBucket(BUCKET, { public: true }).catch(() => {});
+
+        const uploadCache = new Map<string, string>();
+        const uploadAndRewrite = async (
+          url: string | null
+        ): Promise<string | null> => {
+          if (!url) return null;
+          const cached = uploadCache.get(url);
+          if (cached) return cached;
+
+          const match = url.match(/^\/artifacts\/(.+)$/);
+          if (!match) return url;
+          const relative = match[1];
+          const localPath = join(ARTIFACTS_DIR, relative);
+          const storagePath = `jobs/${relative}`;
+
+          try {
+            const fileData = await readFile(localPath);
+            const ext = localPath.substring(localPath.lastIndexOf(".")).toLowerCase();
+            const contentType =
+              ext === ".png" ? "image/png" :
+              ext === ".pdf" ? "application/pdf" :
+              ext === ".csv" ? "text/csv" :
+              ext === ".json" ? "application/json" :
+              "application/octet-stream";
+
+            await adminClient.storage
+              .from(BUCKET)
+              .upload(storagePath, fileData, { contentType, upsert: true });
+          } catch (err) {
+            console.error(`[figure-recrop] upload failed for ${storagePath}:`, err);
+            return url;
+          }
+
+          const { data: { publicUrl } } = adminClient.storage
+            .from(BUCKET)
+            .getPublicUrl(storagePath);
+          uploadCache.set(url, publicUrl);
+          return publicUrl;
+        };
+
+        data.item.imageUrl = await uploadAndRewrite(data.item.imageUrl);
+        data.item.downloadUrl = await uploadAndRewrite(data.item.downloadUrl);
+        if (data.item.tableUrl) {
+          data.item.tableUrl = await uploadAndRewrite(data.item.tableUrl);
+        }
+      } else {
+        const rewrite = (url: string | null) =>
+          url?.replace(/^\/artifacts\//, "/api/admin/testing/figures/artifacts/") ?? null;
+        data.item.imageUrl = rewrite(data.item.imageUrl);
+        data.item.downloadUrl = rewrite(data.item.downloadUrl);
+        if (data.item.tableUrl) data.item.tableUrl = rewrite(data.item.tableUrl);
+      }
     }
 
     return NextResponse.json(data);

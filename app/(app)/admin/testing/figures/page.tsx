@@ -597,7 +597,7 @@ function PageEditorModal({
         // Parse response defensively — server may return an empty body or
         // HTML on 500/502/504, which would crash res.json().
         const text = await res.text();
-        let data: { item?: ItemResult; error?: string } = {};
+        let data: { item?: ItemResult; error?: string; details?: string } = {};
         if (text) {
           try {
             data = JSON.parse(text);
@@ -607,7 +607,11 @@ function PageEditorModal({
         }
 
         if (!res.ok) {
-          throw new Error(data.error || `Save failed (HTTP ${res.status})`);
+          // Include details for actionable diagnostics (e.g. network/DNS error
+          // hitting EXTRACTOR_API_URL).
+          const msg = data.error || `Save failed (HTTP ${res.status})`;
+          const full = data.details && !msg.includes(data.details) ? `${msg} — ${data.details}` : msg;
+          throw new Error(full);
         }
 
         if (data.item) {
