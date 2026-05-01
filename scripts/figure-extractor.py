@@ -190,6 +190,7 @@ def recrop_pdf_region(
     item_id: str | None = None,
     label_override: str | None = None,
     existing_labels: list[str] | None = None,
+    document_label_contexts: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     job_dir = artifacts_root / job_id
     source_pdf = job_dir / SOURCE_PDF_NAME
@@ -201,7 +202,8 @@ def recrop_pdf_region(
         if page_number < 1 or page_number > pdf.page_count:
             raise ValueError("Invalid page number.")
 
-        document_label_contexts = _build_document_label_contexts(pdf)
+        if document_label_contexts is None:
+            document_label_contexts = _build_document_label_contexts(pdf)
         page = pdf[page_number - 1]
         rect = _rect_from_normalized_box(box, page.rect)
         rect = _clamp_rect(rect, page.rect)
