@@ -42,10 +42,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(data, { status: remoteRes.status });
     } catch (err) {
       console.error("[figure-recrop] proxy error:", err);
+      const message = err instanceof Error ? err.message : String(err);
+      const cause =
+        err instanceof Error && err.cause
+          ? err.cause instanceof Error
+            ? `${err.cause.name}: ${err.cause.message}`
+            : String(err.cause)
+          : null;
+      const detail = cause ? `${message} (${cause})` : message;
       return NextResponse.json(
         {
-          error: "Failed to reach remote extractor",
-          details: err instanceof Error ? err.message : String(err),
+          error: `Failed to reach remote extractor: ${detail}`,
+          details: detail,
         },
         { status: 502 }
       );
