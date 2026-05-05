@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { BookOpen, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import BrandMark from "@/components/BrandMark";
 import { createClient } from "@/lib/supabase/client";
 
 export default function ForgotPasswordPage() {
@@ -61,7 +62,7 @@ export default function ForgotPasswordPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-brand-50 to-white dark:from-gray-950 dark:to-gray-900 flex flex-col items-center justify-center px-5 sm:px-8 py-12">
       <Link href="/" className="flex items-center gap-2 font-bold text-xl lg:text-2xl text-brand-700 dark:text-brand-400 mb-10">
-        <BookOpen className="h-6 w-6 lg:h-7 lg:w-7" />
+        <BrandMark className="h-7 w-7 lg:h-8 lg:w-8" />
         ATAR Hero
       </Link>
 

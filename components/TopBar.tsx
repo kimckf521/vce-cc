@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Search } from "lucide-react";
+import { Search } from "lucide-react";
+import BrandMark from "@/components/BrandMark";
 
 const PAGE_TITLES: Record<string, string> = {
   "/dashboard": "Dashboard",
@@ -28,7 +29,7 @@ export default function TopBar({ isAdmin = false }: { isAdmin?: boolean }) {
   return (
     <header className="fixed top-0 inset-x-0 z-40 h-14 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 flex items-center px-4 gap-3 lg:hidden">
       <Link href="/" className="flex items-center gap-2 text-brand-700 dark:text-brand-400">
-        <BookOpen className="h-5 w-5 flex-shrink-0" />
+        <BrandMark className="h-6 w-6" />
         <span className="font-bold text-base">ATAR Hero</span>
       </Link>
       <span className="text-gray-300 dark:text-gray-600">·</span>

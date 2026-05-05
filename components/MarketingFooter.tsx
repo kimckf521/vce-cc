@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookOpen } from "lucide-react";
+import BrandMark from "@/components/BrandMark";
 
 export default function MarketingFooter() {
   const year = new Date().getFullYear();
@@ -13,7 +13,7 @@ export default function MarketingFooter() {
               href="/"
               className="flex items-center gap-2 font-bold text-xl text-brand-700 dark:text-brand-400"
             >
-              <BookOpen className="h-6 w-6" />
+              <BrandMark className="h-7 w-7" />
               ATAR Hero
             </Link>
             <p className="mt-3 text-sm lg:text-base text-gray-500 dark:text-gray-400 max-w-sm leading-relaxed">

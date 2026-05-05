@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { BookOpen, BarChart2, FileText, LogOut, LayoutDashboard, UserCircle, ShieldCheck, Search, History, Gift } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "@/components/ThemeToggle";
+import BrandMark from "@/components/BrandMark";
 
 const navLinks = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -34,7 +35,7 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
       {/* Logo */}
       <div className="h-20 flex items-center px-8 border-b border-gray-100 dark:border-gray-800">
         <Link href="/" className="flex items-center gap-2.5 font-bold text-xl text-brand-700 dark:text-brand-400">
-          <BookOpen className="h-6 w-6" />
+          <BrandMark className="h-7 w-7" />
           ATAR Hero
         </Link>
       </div>
