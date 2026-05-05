@@ -18,7 +18,7 @@ export default function BrandMark({ className, alt = "ATAR Hero" }: BrandMarkPro
     <img
       src="/logo.png"
       alt={alt}
-      width={481}
+      width={422}
       height={512}
       className={cn("flex-shrink-0 object-contain", className)}
     />
