@@ -13,7 +13,7 @@ export default function MarketingFooter() {
               href="/"
               className="flex items-center gap-2 font-bold text-xl text-brand-700 dark:text-brand-400"
             >
-              <BrandMark className="h-7 w-7" />
+              <BrandMark className="h-10 w-auto" />
               ATAR Hero
             </Link>
             <p className="mt-3 text-sm lg:text-base text-gray-500 dark:text-gray-400 max-w-sm leading-relaxed">

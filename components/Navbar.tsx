@@ -35,7 +35,7 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
       {/* Logo */}
       <div className="h-20 flex items-center px-8 border-b border-gray-100 dark:border-gray-800">
         <Link href="/" className="flex items-center gap-2.5 font-bold text-xl text-brand-700 dark:text-brand-400">
-          <BrandMark className="h-7 w-7" />
+          <BrandMark className="h-10 w-auto" />
           ATAR Hero
         </Link>
       </div>

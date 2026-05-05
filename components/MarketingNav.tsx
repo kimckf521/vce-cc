@@ -23,7 +23,7 @@ export default async function MarketingNav({ active = null }: { active?: NavKey 
           href="/"
           className="flex items-center gap-2 font-bold text-xl lg:text-2xl text-brand-700 dark:text-brand-400"
         >
-          <BrandMark className="h-7 w-7 lg:h-8 lg:w-8" />
+          <BrandMark className="h-10 w-auto lg:h-12" />
           ATAR Hero
         </Link>
         <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm lg:text-base text-gray-600 dark:text-gray-400">
