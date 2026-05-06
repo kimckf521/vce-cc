@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import dynamic from "next/dynamic";
+import { Analytics } from "@vercel/analytics/react";
 import ThemeProvider from "@/components/ThemeProvider";
 import "./globals.css";
 
@@ -156,6 +157,7 @@ export default function RootLayout({
           <PageViewTracker />
           {children}
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
