@@ -83,25 +83,22 @@ export async function sendEmail(args: SendEmailArgs): Promise<SendEmailResult> {
     });
 
     if (result.error) {
-      // Log the full Resend error here too so it shows up in runtime logs
-      // even if downstream callers truncate it.
+      // Log the full Resend error so it shows up in runtime logs even if
+      // downstream callers truncate it. Resend's error object actually
+      // exposes more than the typed surface (name, statusCode), so we
+      // serialise the whole thing alongside the typed message field.
+      const errorJson = JSON.stringify(result.error);
       // eslint-disable-next-line no-console
       console.error(
-        "[email] Resend API rejected send. from=%s to=%s name=%s status=%s message=%s",
+        "[email] Resend API rejected send. from=%s to=%s message=%s full=%s",
         from,
         args.to,
-        // @ts-expect-error — Resend error fields aren't in the public types
-        result.error.name,
-        // @ts-expect-error — Resend error fields aren't in the public types
-        result.error.statusCode,
         result.error.message,
+        errorJson,
       );
       return {
         ok: false,
-        error: `${
-          // @ts-expect-error — Resend error fields aren't in the public types
-          result.error.name ?? "ResendError"
-        }: ${result.error.message}`,
+        error: `${result.error.message} | ${errorJson}`,
       };
     }
     return { ok: true, id: result.data?.id ?? null };
