@@ -1,9 +1,13 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
-import { CheckCircle, XCircle, BookmarkIcon, TrendingUp, Users } from "lucide-react";
+import Link from "next/link";
+import { CheckCircle, XCircle, BookmarkIcon, TrendingUp, Users, ArrowLeft } from "lucide-react";
 import { isAdminRole, roleLabel } from "@/lib/utils";
+import { getStripe } from "@/lib/stripe";
+import { isResourceMissing } from "@/lib/stripe-customer";
 import CreateAccountForm from "./CreateAccountForm";
+import GiveCreditButton from "./GiveCreditButton";
 import RoleSelector from "./RoleSelector";
 
 function initials(name: string | null, email: string) {
@@ -34,6 +38,38 @@ function formatDate(date: Date) {
   return date.toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" });
 }
 
+/**
+ * Fetch each user's current Stripe customer balance (account credit).
+ * Skips users without a stripeCustomerId, returns 0 for them. Returns the
+ * absolute credit in cents (Stripe stores credits as negative balances).
+ *
+ * Errors per-customer are swallowed (returns 0) so a single bad customer
+ * doesn't break the whole list.
+ */
+async function fetchCreditBalances(
+  users: { id: string; stripeCustomerId: string | null }[]
+): Promise<Map<string, number>> {
+  const stripe = getStripe();
+  const entries = await Promise.all(
+    users.map(async (u): Promise<[string, number]> => {
+      if (!u.stripeCustomerId) return [u.id, 0];
+      try {
+        const c = await stripe.customers.retrieve(u.stripeCustomerId);
+        if (c.deleted) return [u.id, 0];
+        const balance = typeof c.balance === "number" ? c.balance : 0;
+        // Negative balance = credit. Return absolute cents, or 0 if positive.
+        return [u.id, balance < 0 ? Math.abs(balance) : 0];
+      } catch (err) {
+        if (!isResourceMissing(err)) {
+          console.error(`[admin-users] balance fetch failed for ${u.id}:`, err);
+        }
+        return [u.id, 0];
+      }
+    })
+  );
+  return new Map(entries);
+}
+
 export default async function AdminUsersPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -41,6 +77,7 @@ export default async function AdminUsersPage() {
 
   const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
   if (!isAdminRole(dbUser?.role)) redirect("/dashboard");
+  const isSuperAdmin = dbUser?.role === "SUPER_ADMIN";
 
   const [users, totalQuestions, attemptStats] = await Promise.all([
     prisma.user.findMany({
@@ -51,6 +88,7 @@ export default async function AdminUsersPage() {
         name: true,
         role: true,
         createdAt: true,
+        stripeCustomerId: true,
         enrolments: {
           select: {
             tier: true,
@@ -65,6 +103,12 @@ export default async function AdminUsersPage() {
       _count: true,
     }),
   ]);
+
+  // Fetch each user's current Stripe customer balance for display.
+  // Only super admins see the credit info; for others, skip the API calls.
+  const creditBalances = isSuperAdmin
+    ? await fetchCreditBalances(users.map((u) => ({ id: u.id, stripeCustomerId: u.stripeCustomerId })))
+    : new Map<string, number>();
 
   // Build a map: userId → { CORRECT: n, INCORRECT: n, ... }
   const statsMap = new Map<string, Record<string, number>>();
@@ -86,6 +130,15 @@ export default async function AdminUsersPage() {
 
   return (
     <div>
+      {/* Back to admin */}
+      <Link
+        href="/admin"
+        className="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 mb-4 transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to admin
+      </Link>
+
       {/* Header */}
       <div className="mb-8 lg:mb-10">
         <div className="flex items-center justify-between flex-wrap gap-4">
@@ -137,7 +190,7 @@ export default async function AdminUsersPage() {
         <div className="space-y-4 lg:space-y-5">
           {usersWithStats.map((u) => (
             <div key={u.id} className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm p-5 lg:p-7">
-              {/* Top row: avatar + info + role badge */}
+              {/* Top row: avatar + info + role badge + super-admin actions */}
               <div className="flex items-start gap-4 mb-5">
                 <div className={`flex-shrink-0 h-11 w-11 lg:h-13 lg:w-13 rounded-full flex items-center justify-center font-bold text-base lg:text-lg ${avatarColor(u.id)}`}>
                   {initials(u.name, u.email)}
@@ -193,6 +246,23 @@ export default async function AdminUsersPage() {
                     </div>
                   )}
                 </div>
+                {/* Super-admin: view + adjust credit (Stripe customer balance) */}
+                {isSuperAdmin && u.role === "STUDENT" && u.id !== user!.id && (
+                  <div className="shrink-0 flex flex-col items-end gap-1.5">
+                    {creditBalances.get(u.id) ? (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+                        Credit: ${(creditBalances.get(u.id)! / 100).toFixed(2)}
+                      </span>
+                    ) : (
+                      <span className="text-xs text-gray-400 dark:text-gray-500">No credit</span>
+                    )}
+                    <GiveCreditButton
+                      userId={u.id}
+                      userEmail={u.email}
+                      currentCreditCents={creditBalances.get(u.id) ?? 0}
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Progress bar */}

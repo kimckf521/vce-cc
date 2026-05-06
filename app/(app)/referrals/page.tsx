@@ -16,6 +16,8 @@ import RegisterAffiliateForm from "./RegisterAffiliateForm";
 import { isAdminRole } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import RequestPayoutButton from "./RequestPayoutButton";
+import { getStripe } from "@/lib/stripe";
+import { isResourceMissing } from "@/lib/stripe-customer";
 
 export const dynamic = "force-dynamic";
 
@@ -37,9 +39,27 @@ export default async function ReferralsPage({ searchParams }: PageProps) {
 
   const dbUser = await prisma.user.findUnique({
     where: { id: user.id },
-    select: { id: true, name: true, email: true, role: true },
+    select: { id: true, name: true, email: true, role: true, stripeCustomerId: true },
   });
   if (!dbUser) redirect("/login");
+
+  // Fetch the live Stripe customer balance — this is the source of truth for
+  // credit applied to the next invoice (covers both referral conversions and
+  // admin gifts; the DB affiliate.creditBalance only tracks referrals).
+  let stripeCreditCents = 0;
+  if (dbUser.stripeCustomerId) {
+    try {
+      const stripe = getStripe();
+      const c = await stripe.customers.retrieve(dbUser.stripeCustomerId);
+      if (!c.deleted && typeof c.balance === "number" && c.balance < 0) {
+        stripeCreditCents = Math.abs(c.balance);
+      }
+    } catch (err) {
+      if (!isResourceMissing(err)) {
+        console.error(`[referrals] Stripe balance fetch failed:`, err);
+      }
+    }
+  }
 
   const isAdmin = isAdminRole(dbUser.role);
   const { view } = await searchParams;
@@ -191,7 +211,7 @@ export default async function ReferralsPage({ searchParams }: PageProps) {
         </div>
         <p className="text-gray-500 dark:text-gray-400 lg:text-base">
           {isStudentTrack
-            ? "Earn $5 platform credit for each friend who subscribes."
+            ? "Earn $5 credit for each friend who subscribes — automatically applied to your next month's bill (50% off)."
             : isInfluencerTrack
               ? "Earn $10 cash commission + upfront content fee for each video you publish."
               : "Earn $10 cash commission for each referred student who subscribes."}
@@ -259,27 +279,58 @@ export default async function ReferralsPage({ searchParams }: PageProps) {
         <StatCard
           icon={DollarSign}
           label={isStudentTrack ? "Credit Balance" : "Total Earned"}
-          value={formatCents(isStudentTrack ? effectiveAffiliate.creditBalance : totalEarned)}
+          value={formatCents(isStudentTrack ? stripeCreditCents : totalEarned)}
         />
       </div>
 
       {/* Cash payout panel for tutors/influencers */}
-      {!isStudentTrack && (effectiveAffiliate.approved || isPreviewing) && (
+      {!isStudentTrack && (effectiveAffiliate.approved || isPreviewing) && (() => {
+        // For influencers, the source of truth for "Available for payout" is the
+        // admin-managed `creditBalance` (renamed to "Payout balance" in admin UI),
+        // minus any pending/processing payouts already in flight (so they can't
+        // double-request the same amount). Tutors still see the auto-calculated
+        // commission cash (totalEarned - paidOut, which already accounts for
+        // in-flight and completed payouts).
+        const inFlight = effectiveAffiliate.payouts
+          .filter(
+            (p) =>
+              p.type === "COMMISSION" &&
+              (p.status === "PENDING" || p.status === "PROCESSING")
+          )
+          .reduce((sum, p) => sum + p.amount, 0);
+        const payoutAmount = isInfluencerTrack
+          ? Math.max(0, effectiveAffiliate.creditBalance - inFlight)
+          : availableCash;
+        return (
         <div className="mb-8 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-6">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
               <p className="text-sm text-gray-500 dark:text-gray-400">Available for payout</p>
               <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                {formatCents(availableCash)}
+                {formatCents(payoutAmount)}
               </p>
               <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
                 Minimum payout: {formatCents(MIN_PAYOUT_AMOUNT)}
               </p>
             </div>
-            <RequestPayoutButton disabled={availableCash < MIN_PAYOUT_AMOUNT} />
+            <RequestPayoutButton disabled={payoutAmount < MIN_PAYOUT_AMOUNT} />
           </div>
+          {/* Platform credit — shown only for tutors when admin has issued any.
+              Influencers earn cash payouts only and never use platform credit,
+              so we hide it on their dashboard to avoid confusion. */}
+          {stripeCreditCents > 0 && !isInfluencerTrack && (
+            <div className="mt-5 pt-4 border-t border-gray-100 dark:border-gray-800">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Platform credit (applied to your next subscription invoice)
+              </p>
+              <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                {formatCents(stripeCreditCents)}
+              </p>
+            </div>
+          )}
         </div>
-      )}
+        );
+      })()}
 
       {/* Influencer content contracts */}
       {isInfluencerTrack && (effectiveAffiliate.approved || isPreviewing) && (
@@ -391,9 +442,11 @@ export default async function ReferralsPage({ searchParams }: PageProps) {
               <table className="w-full">
                 <thead className="bg-gray-50 dark:bg-gray-800 text-left text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
                   <tr>
-                    <th className="px-5 py-3">Requested</th>
+                    <th className="px-5 py-3">Paid Date</th>
+                    <th className="px-5 py-3">Paid Time</th>
                     <th className="px-5 py-3">Type</th>
                     <th className="px-5 py-3">Status</th>
+                    <th className="px-5 py-3">Proof</th>
                     <th className="px-5 py-3 text-right">Amount</th>
                   </tr>
                 </thead>
@@ -401,13 +454,37 @@ export default async function ReferralsPage({ searchParams }: PageProps) {
                   {effectiveAffiliate.payouts.map((p) => (
                     <tr key={p.id}>
                       <td className="px-5 py-4 text-gray-500 dark:text-gray-400">
-                        {p.createdAt.toLocaleDateString("en-AU")}
+                        {p.processedAt
+                          ? new Date(p.processedAt).toLocaleDateString("en-AU")
+                          : "—"}
+                      </td>
+                      <td className="px-5 py-4 text-gray-500 dark:text-gray-400">
+                        {p.processedAt
+                          ? new Date(p.processedAt).toLocaleTimeString("en-AU", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
+                          : "—"}
                       </td>
                       <td className="px-5 py-4 text-gray-900 dark:text-gray-100">
                         {p.type === "CONTENT_FEE" ? "Content fee" : "Commission"}
                       </td>
                       <td className="px-5 py-4">
                         <PayoutStatusBadge status={p.status} />
+                      </td>
+                      <td className="px-5 py-4">
+                        {p.proofUrl ? (
+                          <a
+                            href={p.proofUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-emerald-600 dark:text-emerald-400 hover:underline text-xs font-medium"
+                          >
+                            📎 View
+                          </a>
+                        ) : (
+                          <span className="text-gray-400 text-xs">—</span>
+                        )}
                       </td>
                       <td className="px-5 py-4 text-right font-medium text-gray-900 dark:text-gray-100">
                         {formatCents(p.amount)}

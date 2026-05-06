@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Minus, Plus, Info } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   EXAM_CONFIG,
@@ -142,35 +142,10 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
         )}
       </div>
 
-      {/* Exam Version: show a VCAA-reality info card instead of the
-          distribution controls, so the simulation can't be tilted by the
-          student toward topics they're already comfortable with. */}
-      {!isFreedom && (
-        <div className="rounded-xl border border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-950/40 px-5 lg:px-6 py-4 lg:py-5 flex items-start gap-3">
-          <Info className="h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400 mt-0.5" />
-          <div className="text-sm lg:text-base text-gray-700 dark:text-gray-200 space-y-1">
-            <p className="font-semibold">Matches a real VCAA paper</p>
-            <p className="text-gray-600 dark:text-gray-300">
-              Topic mix (~{VCAA_TOPIC_DIST.join(" / ")}%) and difficulty
-              spread ({VCAA_DIFFICULTY_DIST[0]}% easy ·{" "}
-              {VCAA_DIFFICULTY_DIST[1]}% medium ·{" "}
-              {VCAA_DIFFICULTY_DIST[2]}% hard) are locked to real VCAA
-              averages. Switch to{" "}
-              <button
-                type="button"
-                onClick={() => setVersion("freedom")}
-                className="underline font-medium text-blue-700 dark:text-blue-300 hover:text-blue-900 dark:hover:text-blue-200"
-              >
-                Freedom Version
-              </button>{" "}
-              to set them yourself.
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Freedom Version controls: topic + difficulty + focus-on-weak-areas
-          are all user-editable here. */}
+      {/* Exam Version intentionally hides the distribution controls — the
+          simulation is locked to real VCAA averages so the student can't
+          tilt it toward topics they're already comfortable with.
+          Freedom Version below exposes them as user-editable controls. */}
       {isFreedom && (
         <>
           <div className="space-y-3 lg:space-y-4">

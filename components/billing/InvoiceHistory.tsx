@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, Download } from "lucide-react";
+import { FileText, Download, ExternalLink } from "lucide-react";
 
 type Invoice = {
   id: string;
@@ -9,6 +9,7 @@ type Invoice = {
   currency: string;
   status: string;
   pdfUrl: string | null;
+  hostedUrl: string | null;
   productName: string;
 };
 
@@ -96,6 +97,18 @@ export default function InvoiceHistory({ invoices, loading }: Props) {
               >
                 {inv.status.charAt(0).toUpperCase() + inv.status.slice(1)}
               </span>
+
+              {inv.hostedUrl && (
+                <a
+                  href={inv.hostedUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-shrink-0 rounded-lg p-1.5 text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  title="View invoice online"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                </a>
+              )}
 
               {inv.pdfUrl && (
                 <a

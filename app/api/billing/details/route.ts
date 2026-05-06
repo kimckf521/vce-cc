@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { requireAuthenticatedUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getStripe } from "@/lib/stripe";
+import { isResourceMissing } from "@/lib/stripe-customer";
 import { rateLimit } from "@/lib/rate-limit";
 
 /**
@@ -31,12 +32,26 @@ export async function GET(request: NextRequest) {
 
   // Fetch the most recent subscription for this customer, expanding the
   // default payment method so we can show card details.
-  const subscriptions = await stripe.subscriptions.list({
-    customer: dbUser.stripeCustomerId,
-    limit: 1,
-    status: "all",
-    expand: ["data.default_payment_method"],
-  });
+  // If the stored stripeCustomerId is stale (different Stripe environment,
+  // deleted in dashboard, etc.), Stripe returns resource_missing — treat that
+  // as "no subscription" so the UI shows the upgrade CTA instead of a 500.
+  let subscriptions: Awaited<ReturnType<typeof stripe.subscriptions.list>>;
+  try {
+    subscriptions = await stripe.subscriptions.list({
+      customer: dbUser.stripeCustomerId,
+      limit: 1,
+      status: "all",
+      expand: ["data.default_payment_method"],
+    });
+  } catch (err) {
+    if (isResourceMissing(err)) {
+      console.warn(
+        `[billing-details] Stale stripeCustomerId ${dbUser.stripeCustomerId} for user ${user.id}; returning empty billing.`
+      );
+      return NextResponse.json({ subscription: null, paymentMethod: null });
+    }
+    throw err;
+  }
 
   const sub = subscriptions.data[0] ?? null;
 
@@ -75,14 +90,22 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // If no payment method on subscription, try the customer's default
-  if (!paymentMethod) {
-    try {
-      const customer = await stripe.customers.retrieve(
-        dbUser.stripeCustomerId,
-        { expand: ["invoice_settings.default_payment_method"] }
-      );
-      if (!customer.deleted) {
+  // Fetch the customer for balance info (and fallback payment method).
+  // Stripe customer.balance is in cents:
+  //   negative → customer credit (auto-applied to next invoice)
+  //   positive → customer owes additional amount
+  // We surface only the credit side here.
+  let accountCreditCents = 0;
+  try {
+    const customer = await stripe.customers.retrieve(dbUser.stripeCustomerId, {
+      expand: ["invoice_settings.default_payment_method"],
+    });
+    if (!customer.deleted) {
+      if (typeof customer.balance === "number" && customer.balance < 0) {
+        accountCreditCents = Math.abs(customer.balance);
+      }
+      // Fallback payment method from customer if subscription didn't provide one
+      if (!paymentMethod) {
         const pm = customer.invoice_settings?.default_payment_method;
         if (pm && typeof pm === "object" && "card" in pm && pm.card) {
           paymentMethod = {
@@ -93,10 +116,10 @@ export async function GET(request: NextRequest) {
           };
         }
       }
-    } catch {
-      // Non-critical — just won't show payment method
     }
+  } catch {
+    // Non-critical — just won't show payment method or credit
   }
 
-  return NextResponse.json({ subscription, paymentMethod });
+  return NextResponse.json({ subscription, paymentMethod, accountCreditCents });
 }

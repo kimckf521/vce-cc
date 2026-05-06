@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { HelpCircle, Plus, CheckCircle, Pencil, Trash2, X, Check, Loader2, Eye, Code2, FlaskConical, ChevronDown, ChevronRight, BookOpen } from "lucide-react";
+import { HelpCircle, Plus, CheckCircle, Pencil, Trash2, X, Check, Loader2, Eye, Code2, FlaskConical, ChevronDown, ChevronRight, BookOpen, ArrowLeft } from "lucide-react";
 import { cn, stripLatex } from "@/lib/utils";
 import MathContent from "@/components/MathContent";
 
@@ -821,6 +821,15 @@ export default function AdminQuestionsPage() {
 
   return (
     <div>
+      {/* Back to admin */}
+      <Link
+        href="/admin"
+        className="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 mb-4 transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to admin
+      </Link>
+
       {/* Header */}
       <div className="flex items-center justify-between mb-8 lg:mb-10">
         <div>
@@ -833,6 +842,12 @@ export default function AdminQuestionsPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
+          <Link
+            href="/admin/question-sets"
+            className="inline-flex items-center gap-2 rounded-xl bg-white dark:bg-gray-900 border border-brand-200 dark:border-brand-800 text-brand-700 dark:text-brand-400 px-4 py-2.5 text-sm font-medium hover:bg-brand-50 dark:hover:bg-brand-950 transition-colors"
+          >
+            Manage sets &amp; default
+          </Link>
           <Link
             href="/admin/questions/bulk"
             className="inline-flex items-center gap-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2.5 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
@@ -1051,20 +1066,31 @@ export default function AdminQuestionsPage() {
                                           next.has(item.id) ? next.delete(item.id) : next.add(item.id);
                                           setOpenItemIds(next);
                                         }}
-                                        className="w-full flex items-start justify-between gap-3 px-4 py-3 text-left group"
+                                        className="w-full px-4 py-3 text-left group"
                                       >
-                                        <div className="flex items-start gap-3 min-w-0 flex-1">
-                                          <span className="text-xs font-mono text-gray-400 dark:text-gray-500 mt-0.5 flex-shrink-0">{String(idx + 1).padStart(2, "0")}</span>
-                                          <span className={`rounded-full px-2 py-0.5 text-xs font-medium flex-shrink-0 ${statusBadge}`}>{item.status}</span>
-                                          <span className={`rounded-full px-2 py-0.5 text-xs font-medium border flex-shrink-0 ${difficultyBadge(item.difficulty)}`}>{item.difficulty.charAt(0) + item.difficulty.slice(1).toLowerCase()}</span>
-                                          <span className="text-xs text-gray-500 dark:text-gray-400 flex-shrink-0">{item.topic.name}</span>
-                                          <div className="text-sm text-gray-700 dark:text-gray-300 truncate min-w-0 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
-                                            {(item.preamble || item.content).replace(/\$/g, "").slice(0, 110)}
+                                        <div className="flex items-center justify-between gap-2 mb-1.5">
+                                          <div className="flex items-center gap-2 min-w-0">
+                                            <span className="text-xs font-mono text-gray-400 dark:text-gray-500 flex-shrink-0">{String(idx + 1).padStart(2, "0")}</span>
+                                            <span className={`rounded-full px-2 py-0.5 text-xs font-medium flex-shrink-0 ${statusBadge}`}>{item.status}</span>
+                                            <span className={`rounded-full px-2 py-0.5 text-xs font-medium border flex-shrink-0 ${difficultyBadge(item.difficulty)}`}>{item.difficulty.charAt(0) + item.difficulty.slice(1).toLowerCase()}</span>
+                                            <span className="text-xs text-gray-500 dark:text-gray-400 truncate min-w-0">{item.topic.name}</span>
+                                          </div>
+                                          <div className="flex items-center gap-2 flex-shrink-0">
+                                            <span className="text-xs text-gray-400 dark:text-gray-500">{item.marks}m</span>
+                                            {itemOpen ? <ChevronDown className="h-4 w-4 text-gray-400" /> : <ChevronRight className="h-4 w-4 text-gray-400" />}
                                           </div>
                                         </div>
-                                        <div className="flex items-center gap-2 flex-shrink-0">
-                                          <span className="text-xs text-gray-400 dark:text-gray-500">{item.marks}m</span>
-                                          {itemOpen ? <ChevronDown className="h-4 w-4 text-gray-400" /> : <ChevronRight className="h-4 w-4 text-gray-400" />}
+                                        <div
+                                          className="text-gray-700 dark:text-gray-300 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors overflow-hidden"
+                                          style={{
+                                            fontSize: "12px",
+                                            lineHeight: "1.4",
+                                            maxHeight: "2.8em",
+                                          }}
+                                        >
+                                          <div className="[&_.prose]:text-[12px] [&_.prose_*]:!text-[12px] [&_.katex]:!text-[1em] [&_.katex-display]:!text-[1em] [&_.katex-display]:!my-0 [&_p]:!my-0 [&_p]:!leading-snug [&_h1]:!text-[12px] [&_h2]:!text-[12px] [&_h3]:!text-[12px] [&_strong]:!font-semibold">
+                                            <MathContent content={(item.preamble || item.content).slice(0, 200)} />
+                                          </div>
                                         </div>
                                       </button>
                                       {itemOpen && (

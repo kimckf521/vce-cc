@@ -193,13 +193,65 @@ function InteractiveMCQOptions({
   );
 }
 
-// Rewrite inline sub-part labels from "**a.** <body>. (N marks)" to "**a (N marks).** <body>."
-// Handles both top-level parts (a, b, c…) and indented sub-parts (i, ii, iii…).
+// Rewrite inline part labels into the topic-page display format:
+//   "**a.** <body>. (N marks)"          → "**a (N marks).**\n\n<body>."
+//   "  **i.** <body>. (N marks)"        → "**parent.i (N marks).**\n\n<body>."
+// Top-level letters (a–z) at column 0 are tracked as the current parent so
+// indented sub-parts (i, ii, iii…) get rendered as combined labels (e.g. "b.i").
+// A horizontal rule is inserted between top-level parts for visual separation.
 function rewritePartLabels(content: string): string {
-  return content.replace(
-    /^([ \t]*)\*\*([a-z]+)\.\*\*\s+((?:(?!\*\*[a-z]+\.\*\*)[\s\S])*?)\s*\((\d+)\s+(marks?)\)(?=\s*(?:\n|$))/gm,
-    (_m, indent, letter, body, num, unit) => `${indent}**${letter} (${num} ${unit}).** ${body}`
-  );
+  const lines = content.split("\n");
+  const out: string[] = [];
+  let parentLetter = "";
+  let firstTopPartSeen = false;
+
+  // Match a top-level part at column 0: **a.** body... possibly followed by (N marks)
+  const TOP_RE = /^\*\*([a-z]+)\.\*\*\s+([\s\S]*?)\s*(?:\((\d+)\s+(marks?)\))?\s*$/;
+  // Match an indented sub-part: at least one leading space, **i.** body... (N marks)
+  const SUB_RE = /^([ \t]+)\*\*([a-z]+)\.\*\*\s+([\s\S]*?)\s*(?:\((\d+)\s+(marks?)\))?\s*$/;
+
+  for (const line of lines) {
+    // Indented sub-part takes precedence (matched first)
+    const subMatch = line.match(SUB_RE);
+    if (subMatch && /^[ \t]/.test(line)) {
+      const [, , letter, body, num, unit] = subMatch;
+      const combinedLetter = parentLetter ? `${parentLetter}.${letter}` : letter;
+      const label = num
+        ? `**${combinedLetter} (${num} ${unit}).**`
+        : `**${combinedLetter}.**`;
+      out.push(label);
+      if (body && body.trim()) {
+        out.push("");
+        out.push(body.trim());
+      }
+      continue;
+    }
+
+    const topMatch = line.match(TOP_RE);
+    if (topMatch) {
+      const [, letter, body, num, unit] = topMatch;
+      parentLetter = letter;
+      // Insert a divider between top-level parts (skip before the very first one)
+      if (firstTopPartSeen) {
+        out.push("");
+        out.push("---");
+      }
+      firstTopPartSeen = true;
+      const label = num
+        ? `**${letter} (${num} ${unit}).**`
+        : `**${letter}.**`;
+      out.push(label);
+      if (body && body.trim()) {
+        out.push("");
+        out.push(body.trim());
+      }
+      continue;
+    }
+
+    out.push(line);
+  }
+
+  return out.join("\n");
 }
 
 // Render content that may contain [GRAPH] placeholder (non-MCQ only)
@@ -482,7 +534,12 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
       {/* Card header */}
       <div className="flex items-start justify-between gap-4 px-5 pt-5 pb-3 lg:px-7 lg:pt-6 lg:pb-4">
         <div className="flex-1">
-          {/* Row 1: "Question N — M marks" · difficulty · frequency */}
+          {/* Row 1: "Question N — M marks" · difficulty · frequency.
+              In Exam Version (`examMode`), the difficulty / frequency badges
+              are hidden — real VCAA papers don't pre-label questions with
+              their difficulty, so showing them would leak strategic info to
+              the student during the exam. The Question/marks line stays
+              because real papers do print that. */}
           <div className="flex flex-wrap items-center gap-2 mb-2">
             {questionIndex !== undefined ? (
               <span className="text-lg lg:text-xl font-bold text-gray-900 dark:text-gray-100">
@@ -495,33 +552,42 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
                 {totalMarks} {totalMarks === 1 ? "mark" : "marks"}
               </span>
             )}
-            <span className={cn("rounded-full px-3 py-1 text-sm lg:text-base font-medium", difficultyStyles[overallDifficulty])}>
-              {difficultyLabel[overallDifficulty]}
-            </span>
-            {frequency && (
+            {!examMode && (
+              <span className={cn("rounded-full px-3 py-1 text-sm lg:text-base font-medium", difficultyStyles[overallDifficulty])}>
+                {difficultyLabel[overallDifficulty]}
+              </span>
+            )}
+            {!examMode && frequency && (
               <span className="flex items-center gap-1 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-0.5 text-xs lg:text-sm font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">
                 <CalendarDays className="h-3 w-3 lg:h-3.5 lg:w-3.5 text-gray-400 dark:text-gray-500" />
                 {FREQ_LABEL[frequency]}
               </span>
             )}
           </div>
-          {/* Row 2: Topic · subtopics · calculator */}
-          <div className="flex flex-wrap gap-2 items-center">
-            <span className="rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-400 px-3 py-1 text-sm lg:text-base font-medium">{topic}</span>
-            {subtopics?.map((s) => (
-              <span key={s} className="rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-3 py-1 text-sm lg:text-base font-medium">{s}</span>
-            ))}
-            {calculatorAllowed !== undefined && (
-              <span className={cn(
-                "rounded-full px-3 py-1 text-sm lg:text-base font-medium",
-                calculatorAllowed
-                  ? "bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-400"
-                  : "bg-orange-50 dark:bg-orange-950 text-orange-700 dark:text-orange-400"
-              )}>
-                {calculatorAllowed ? "Calculator" : "Non-calculator"}
-              </span>
-            )}
-          </div>
+          {/* Row 2: Topic · subtopics · calculator. Hidden in Exam Version
+              for the same reason — naming the topic / subtopic in advance
+              tells the student which technique to reach for. The calculator
+              badge is communicated at the section level instead (e.g. the
+              setup page header says "No calculator" / "CAS Calculator
+              allowed" for the whole paper). */}
+          {!examMode && (
+            <div className="flex flex-wrap gap-2 items-center">
+              <span className="rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-400 px-3 py-1 text-sm lg:text-base font-medium">{topic}</span>
+              {subtopics?.map((s) => (
+                <span key={s} className="rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-3 py-1 text-sm lg:text-base font-medium">{s}</span>
+              ))}
+              {calculatorAllowed !== undefined && (
+                <span className={cn(
+                  "rounded-full px-3 py-1 text-sm lg:text-base font-medium",
+                  calculatorAllowed
+                    ? "bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-400"
+                    : "bg-orange-50 dark:bg-orange-950 text-orange-700 dark:text-orange-400"
+                )}>
+                  {calculatorAllowed ? "Calculator" : "Non-calculator"}
+                </span>
+              )}
+            </div>
+          )}
         </div>
         {/* Icon row: BookOpen (reference) · Check · X · Bookmark */}
         <div className="flex items-center gap-0.5 shrink-0 mt-1">

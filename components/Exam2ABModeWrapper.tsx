@@ -439,6 +439,11 @@ export default function Exam2ABModeWrapper({
               revealAnswers={submitted}
               showSolutionButton={shouldShowSolutions}
               onMcqSelect={handleMcqSelect}
+              // The parent server component re-runs the random picker on
+              // every render, so a router.refresh() triggered by a status
+              // or bookmark save would silently swap the questions out
+              // from under the user. The optimistic local state is enough.
+              disableServerRefresh
             />
           ))}
         </div>
@@ -464,6 +469,10 @@ export default function Exam2ABModeWrapper({
                 examMode={true}
                 revealAnswers={false}
                 showSolutionButton={shouldShowSolutions}
+                // Same reason as Section A: the parent re-randomises on every
+                // server render, so any router.refresh() would shuffle the
+                // questions mid-exam. Use optimistic local state only.
+                disableServerRefresh
               />
               {submitted && (
                 <SelfMarkStepper

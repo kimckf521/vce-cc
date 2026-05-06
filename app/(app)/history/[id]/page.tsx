@@ -59,6 +59,8 @@ export default async function HistoryDetailPage({ params }: PageProps) {
               type: true,
               marks: true,
               content: true,
+              preamble: true,
+              parts: true,
               difficulty: true,
               optionA: true,
               optionB: true,
@@ -206,6 +208,52 @@ function StatCard({
   );
 }
 
+type PartJson = {
+  label: string;
+  marks: number;
+  content: string;
+  solution: string | null;
+  subParts?: {
+    label: string;
+    marks: number;
+    content: string;
+    solution: string | null;
+  }[];
+};
+
+/**
+ * Build a single labelled solution string for a multi-part item by walking
+ * the `parts` JSON and joining each leaf's solution under a heading like
+ * `**(a)**` or `**(a.i)**`. Falls back to the top-level `solutionContent`
+ * for single-part items, and returns null when neither source has any
+ * usable solution text. Used by the history page's per-question card so
+ * EXTENDED_ANSWER / EXTENDED_RESPONSE items show their worked solutions
+ * (which the picker stores per sub-part, not at the row level).
+ */
+function combineSolutions(
+  partsJson: PartJson[] | null,
+  fallback: string | null | undefined
+): string | null {
+  if (Array.isArray(partsJson) && partsJson.length > 0) {
+    const blocks: string[] = [];
+    for (const p of partsJson) {
+      const sub = Array.isArray(p.subParts) ? p.subParts : null;
+      if (sub && sub.length > 0) {
+        for (const sp of sub) {
+          if (sp.solution && sp.solution.trim().length > 0) {
+            blocks.push(`**(${p.label}.${sp.label})**\n\n${sp.solution.trim()}`);
+          }
+        }
+      } else if (p.solution && p.solution.trim().length > 0) {
+        blocks.push(`**(${p.label})**\n\n${p.solution.trim()}`);
+      }
+    }
+    if (blocks.length > 0) return blocks.join("\n\n");
+  }
+  if (fallback && fallback.trim().length > 0) return fallback;
+  return null;
+}
+
 type SessionQuestion = {
   id: string;
   order: number;
@@ -217,9 +265,11 @@ type SessionQuestion = {
   subPartMarks: Record<string, number | null> | null;
   questionSetItem: {
     id: string;
-    type: "MCQ" | "SHORT_ANSWER" | "EXTENDED_RESPONSE";
+    type: "MCQ" | "SHORT_ANSWER" | "EXTENDED_ANSWER" | "EXTENDED_RESPONSE";
     marks: number;
     content: string;
+    preamble: string | null;
+    parts: PartJson[] | null;
     difficulty: "EASY" | "MEDIUM" | "HARD";
     optionA: string | null;
     optionB: string | null;
@@ -391,16 +441,26 @@ function CompoundQuestionCard({
               />
             </div>
             <MathContent content={entry.questionSetItem.content} />
-            {entry.questionSetItem.solutionContent && (
-              <details className="mt-2 group rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50">
-                <summary className="cursor-pointer select-none px-4 py-2 text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/60 rounded-xl">
-                  Show solution
-                </summary>
-                <div className="px-4 pb-3 pt-1 text-sm text-gray-700 dark:text-gray-300">
-                  <MathContent content={entry.questionSetItem.solutionContent} />
-                </div>
-              </details>
-            )}
+            {(() => {
+              const partsJson = Array.isArray(entry.questionSetItem.parts)
+                ? (entry.questionSetItem.parts as PartJson[])
+                : null;
+              const combined = combineSolutions(
+                partsJson,
+                entry.questionSetItem.solutionContent
+              );
+              if (!combined) return null;
+              return (
+                <details className="mt-2 group rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50">
+                  <summary className="cursor-pointer select-none px-4 py-2 text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/60 rounded-xl">
+                    Show solution
+                  </summary>
+                  <div className="px-4 pb-3 pt-1 text-sm text-gray-700 dark:text-gray-300">
+                    <MathContent content={combined} />
+                  </div>
+                </details>
+              );
+            })()}
           </div>
         ))}
       </div>
@@ -428,14 +488,19 @@ function QuestionReviewCard({
     { letter: "D", text: it.optionD },
   ].filter((o) => o.text != null);
 
-  // Try to detect sub-parts in any non-MCQ question (Exam 1 short-answer
-  // and Exam 2B extended-response both use the same **a.**/**b.** markers).
-  const split = !isMcq
-    ? splitExtendedResponse(it.content, it.solutionContent, it.marks)
-    : null;
-  const hasSubParts = !!(
-    split && split.parts.length > 1 && split.parts.every((p) => p.part)
-  );
+  // Multi-part rendering. Prefer the structured `parts` JSON (used by
+  // EXTENDED_ANSWER and EXTENDED_RESPONSE items where content is empty).
+  // Fall back to parsing **a.**/**b.** markers in `content` for legacy
+  // SHORT_ANSWER items.
+  const partsJson = Array.isArray(it.parts) ? (it.parts as PartJson[]) : null;
+  const split =
+    !isMcq && (!partsJson || partsJson.length === 0)
+      ? splitExtendedResponse(it.content, it.solutionContent, it.marks)
+      : null;
+  const hasJsonParts = !!(partsJson && partsJson.length > 0);
+  const hasSubParts =
+    hasJsonParts ||
+    !!(split && split.parts.length > 1 && split.parts.every((p) => p.part));
 
   // Marks earned: prefer the manually-entered value; otherwise derive
   // from MCQ auto-grading (full marks / 0 / null for unanswered). If
@@ -494,7 +559,16 @@ function QuestionReviewCard({
 
       {/* Body */}
       <div className="p-5 space-y-4">
-        {hasSubParts && split ? (
+        {hasJsonParts && partsJson ? (
+          <JsonPartsBody
+            preamble={it.preamble}
+            parts={partsJson}
+            sessionId={sessionId}
+            questionId={entry.id}
+            subPartMarks={subPartMarks}
+            sessionPercent={sessionPercent}
+          />
+        ) : hasSubParts && split ? (
           <MultiPartBody
             split={split}
             sessionId={sessionId}
@@ -550,17 +624,108 @@ function QuestionReviewCard({
           </div>
         )}
 
-        {/* Solution */}
-        {it.solutionContent && (
-          <details className="group rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50">
-            <summary className="cursor-pointer select-none px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/60 rounded-xl">
-              Show solution
-            </summary>
-            <div className="px-4 pb-4 pt-1 text-sm text-gray-700 dark:text-gray-300">
-              <MathContent content={it.solutionContent} />
+        {/* Solution. Single-part items keep their solution in the top-level
+            `solutionContent` column; multi-part items (EXTENDED_ANSWER /
+            EXTENDED_RESPONSE) store one solution per leaf inside the `parts`
+            JSON. Stitch the latter into a labelled block so the toggle
+            shows every sub-part's worked solution. */}
+        {(() => {
+          const combined = combineSolutions(partsJson, it.solutionContent);
+          if (!combined) return null;
+          return (
+            <details className="group rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50">
+              <summary className="cursor-pointer select-none px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/60 rounded-xl">
+                Show solution
+              </summary>
+              <div className="px-4 pb-4 pt-1 text-sm text-gray-700 dark:text-gray-300">
+                <MathContent content={combined} />
+              </div>
+            </details>
+          );
+        })()}
+      </div>
+    </div>
+  );
+}
+
+// Renders an EXTENDED_ANSWER / EXTENDED_RESPONSE item from its native
+// `parts` JSON. Each top-level part (a, b, c) is one row with its own
+// editable mark badge; if a part has subParts (i, ii, ...) those become
+// nested rows, each with their own marks. Mark keys are flat strings
+// like "a", "a.i", "b" so they line up with the saved `subPartMarks`
+// JSON map.
+function JsonPartsBody({
+  preamble,
+  parts,
+  sessionId,
+  questionId,
+  subPartMarks,
+  sessionPercent,
+}: {
+  preamble: string | null;
+  parts: PartJson[];
+  sessionId: string;
+  questionId: string;
+  subPartMarks: Record<string, number | null>;
+  sessionPercent: number | null;
+}) {
+  // Flatten to (key, marks) pairs we can mark — sub-parts replace their
+  // parent when present.
+  type Leaf = { key: string; label: string; marks: number; content: string };
+  const leaves: Leaf[] = [];
+  for (const p of parts) {
+    if (Array.isArray(p.subParts) && p.subParts.length > 0) {
+      for (const sp of p.subParts) {
+        leaves.push({
+          key: `${p.label}.${sp.label}`,
+          label: `${p.label}.${sp.label}`,
+          marks: sp.marks,
+          content: sp.content,
+        });
+      }
+    } else {
+      leaves.push({
+        key: p.label,
+        label: p.label,
+        marks: p.marks,
+        content: p.content,
+      });
+    }
+  }
+
+  const fullMap: Record<string, number | null> = {};
+  for (const l of leaves) fullMap[l.key] = subPartMarks[l.key] ?? null;
+
+  return (
+    <div className="space-y-4">
+      {preamble && <MathContent content={preamble} />}
+      <div className="divide-y divide-dashed divide-gray-200 dark:divide-gray-700">
+        {leaves.map((l) => {
+          const actual = subPartMarks[l.key] ?? null;
+          const estimated =
+            actual === null && sessionPercent !== null
+              ? Math.round((sessionPercent / 100) * l.marks)
+              : null;
+          return (
+            <div key={l.key} className="py-3 first:pt-0 last:pb-0">
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="text-sm font-bold text-gray-700 dark:text-gray-200">
+                  ({l.label})
+                </span>
+                <EditablePartMark
+                  sessionId={sessionId}
+                  questionId={questionId}
+                  partKey={l.key}
+                  initialEarned={actual ?? estimated}
+                  totalMarks={l.marks}
+                  initialSubPartMarks={fullMap}
+                  isEstimated={actual === null && estimated !== null}
+                />
+              </div>
+              <MathContent content={l.content} />
             </div>
-          </details>
-        )}
+          );
+        })}
       </div>
     </div>
   );

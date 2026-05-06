@@ -433,6 +433,7 @@ model Payout {
   status      PayoutStatus @default(PENDING)
   method      String?      // e.g. "bank_transfer"
   reference   String?      // External payment reference
+  proofUrl    String?      // URL of uploaded transaction screenshot/receipt
   notes       String?
   createdAt   DateTime     @default(now())
   processedAt DateTime?
@@ -458,6 +459,8 @@ model InfluencerContract {
   contentUrl       String?   // Link to published video
   contentDeadline  DateTime?
   contentVerified  Boolean   @default(false)
+  views            Int?      // View count for the published video — manually entered
+  viewsUpdatedAt   DateTime? // When the view count was last updated
   notes            String?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt

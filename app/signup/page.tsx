@@ -1,11 +1,16 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
 import { createClient } from "@/lib/supabase/client";
+
+// Cookie name for persisting referral code across email-confirmation flow.
+// Read on the server in /api/auth/sync-user as a fallback when the body
+// doesn't contain a referralCode (e.g. user is logging in after confirming email).
+const REFERRAL_COOKIE = "ref_code";
 
 export default function SignupPage() {
   return (
@@ -19,6 +24,16 @@ function SignupForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const referralCode = searchParams.get("ref")?.trim() || null;
+
+  // Persist the referral code in a cookie so it survives the email-confirmation
+  // flow (signup → email link → login). The cookie is read by /api/auth/sync-user
+  // on subsequent calls and cleared once the user is attributed.
+  useEffect(() => {
+    if (referralCode) {
+      // 30 days, lax (works on third-party redirect from email link)
+      document.cookie = `${REFERRAL_COOKIE}=${encodeURIComponent(referralCode)}; max-age=2592000; path=/; SameSite=Lax`;
+    }
+  }, [referralCode]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

@@ -6,6 +6,7 @@ import { isAdminRole } from "@/lib/utils";
 import { affiliateTypeLabel, formatCents } from "@/lib/affiliate";
 import { ChevronLeft } from "lucide-react";
 import AffiliateActions from "./AffiliateActions";
+import AttributeReferralForm from "./AttributeReferralForm";
 import ReferralActions from "./ReferralActions";
 import PayoutActions from "./PayoutActions";
 import ContractsSection from "./ContractsSection";
@@ -28,7 +29,16 @@ export default async function AdminAffiliateDetailPage({
   const affiliate = await prisma.affiliate.findUnique({
     where: { id },
     include: {
-      user: { select: { id: true, name: true, email: true, role: true, createdAt: true } },
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true,
+          createdAt: true,
+          referredByCode: true,
+        },
+      },
       referrals: {
         orderBy: { createdAt: "desc" },
         include: { referredUser: { select: { email: true, name: true, createdAt: true } } },
@@ -39,6 +49,19 @@ export default async function AdminAffiliateDetailPage({
   });
 
   if (!affiliate) notFound();
+
+  // If this affiliate's user was themselves referred, look up who referred
+  // them so admins can see the chain (e.g. "Referred by Paul Chiu").
+  const referredBy = affiliate.user.referredByCode
+    ? await prisma.affiliate.findUnique({
+        where: { referralCode: affiliate.user.referredByCode },
+        select: {
+          id: true,
+          referralCode: true,
+          user: { select: { name: true, email: true } },
+        },
+      })
+    : null;
 
   const totalConverted = affiliate.referrals.filter((r) => r.status === "CONVERTED");
   const totalEarned = totalConverted.reduce((s, r) => s + r.rewardAmount, 0);
@@ -88,6 +111,25 @@ export default async function AdminAffiliateDetailPage({
         <div className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-5">
           <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">Profile</h3>
           <dl className="space-y-2 text-sm">
+            <div className="flex justify-between gap-3">
+              <dt className="text-gray-500 dark:text-gray-400 shrink-0">Referred by</dt>
+              <dd className="text-right min-w-0">
+                {referredBy ? (
+                  <Link
+                    href={`/admin/affiliates/${referredBy.id}`}
+                    className="text-brand-600 dark:text-brand-400 hover:underline truncate inline-block max-w-full"
+                    title={referredBy.user.email}
+                  >
+                    {referredBy.user.name ?? referredBy.user.email}
+                    <span className="text-gray-400 dark:text-gray-500 font-mono text-xs ml-1.5">
+                      ({referredBy.referralCode})
+                    </span>
+                  </Link>
+                ) : (
+                  <span className="text-gray-400 dark:text-gray-500">—</span>
+                )}
+              </dd>
+            </div>
             <div className="flex justify-between">
               <dt className="text-gray-500 dark:text-gray-400">Referral code</dt>
               <dd className="font-mono text-gray-900 dark:text-gray-100">{affiliate.referralCode}</dd>
@@ -103,7 +145,9 @@ export default async function AdminAffiliateDetailPage({
               </dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-gray-500 dark:text-gray-400">Credit balance</dt>
+              <dt className="text-gray-500 dark:text-gray-400">
+                {affiliate.type === "INFLUENCER_AFFILIATE" ? "Payout balance" : "Credit balance"}
+              </dt>
               <dd className="text-gray-900 dark:text-gray-100">{formatCents(affiliate.creditBalance)}</dd>
             </div>
           </dl>
@@ -141,10 +185,15 @@ export default async function AdminAffiliateDetailPage({
       {/* Admin actions */}
       <AffiliateActions
         affiliateId={affiliate.id}
+        affiliateType={affiliate.type}
         approved={affiliate.approved}
         active={affiliate.active}
         notes={affiliate.notes ?? ""}
+        referralCode={affiliate.referralCode}
       />
+
+      {/* Manual attribution (rescue tool for missed referrals) */}
+      <AttributeReferralForm affiliateId={affiliate.id} />
 
       {/* Influencer contracts */}
       {affiliate.type === "INFLUENCER_AFFILIATE" && (
@@ -228,12 +277,27 @@ export default async function AdminAffiliateDetailPage({
                   </td>
                   <td className="px-5 py-4 text-gray-900 dark:text-gray-100">{p.status}</td>
                   <td className="px-5 py-4 text-xs text-gray-500 dark:text-gray-400">
-                    {p.reference ?? "—"}
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span>{p.reference ?? "—"}</span>
+                      {p.proofUrl && (
+                        <a
+                          href={p.proofUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-emerald-600 dark:text-emerald-400 hover:underline text-xs font-medium"
+                          title="View transaction screenshot"
+                        >
+                          📎 Proof
+                        </a>
+                      )}
+                    </div>
                   </td>
                   <td className="px-5 py-4 text-right">
-                    {p.status !== "COMPLETED" && p.status !== "FAILED" && (
-                      <PayoutActions payoutId={p.id} currentStatus={p.status} />
-                    )}
+                    <PayoutActions
+                      payoutId={p.id}
+                      currentStatus={p.status}
+                      proofUrl={p.proofUrl}
+                    />
                   </td>
                 </tr>
               ))}

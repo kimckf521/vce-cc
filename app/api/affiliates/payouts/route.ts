@@ -56,25 +56,42 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // Calculate unpaid commission: sum of CONVERTED referrals minus already paid out.
-  const [convertedAgg, paidAgg] = await Promise.all([
-    prisma.referral.aggregate({
-      where: { affiliateId: affiliate.id, status: "CONVERTED" },
-      _sum: { rewardAmount: true },
-    }),
-    prisma.payout.aggregate({
-      where: {
-        affiliateId: affiliate.id,
-        type: "COMMISSION",
-        status: { in: ["PENDING", "PROCESSING", "COMPLETED"] },
-      },
-      _sum: { amount: true },
-    }),
-  ]);
+  // Calculate available payout. Sources differ by track:
+  // - Influencer: admin-managed `creditBalance` (renamed "Payout balance" in UI)
+  //               minus any pending/processing payouts already in flight.
+  // - Tutor:      sum of CONVERTED referrals minus already paid-out commissions.
+  // Pending/processing payouts are subtracted in both cases so users can't
+  // double-request while one is being processed.
+  const inFlightAgg = await prisma.payout.aggregate({
+    where: {
+      affiliateId: affiliate.id,
+      type: "COMMISSION",
+      status: { in: ["PENDING", "PROCESSING"] },
+    },
+    _sum: { amount: true },
+  });
+  const inFlight = inFlightAgg._sum.amount ?? 0;
 
-  const earned = convertedAgg._sum.rewardAmount ?? 0;
-  const alreadyPaid = paidAgg._sum.amount ?? 0;
-  const available = earned - alreadyPaid;
+  let available: number;
+  if (affiliate.type === "INFLUENCER_AFFILIATE") {
+    available = affiliate.creditBalance - inFlight;
+  } else {
+    const [convertedAgg, paidAgg] = await Promise.all([
+      prisma.referral.aggregate({
+        where: { affiliateId: affiliate.id, status: "CONVERTED" },
+        _sum: { rewardAmount: true },
+      }),
+      prisma.payout.aggregate({
+        where: {
+          affiliateId: affiliate.id,
+          type: "COMMISSION",
+          status: { in: ["PENDING", "PROCESSING", "COMPLETED"] },
+        },
+        _sum: { amount: true },
+      }),
+    ]);
+    available = (convertedAgg._sum.rewardAmount ?? 0) - (paidAgg._sum.amount ?? 0);
+  }
 
   if (available < MIN_PAYOUT_AMOUNT) {
     return NextResponse.json(

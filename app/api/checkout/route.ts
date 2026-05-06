@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { requireAuthenticatedUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getStripe, getStandardPriceId } from "@/lib/stripe";
+import { getOrCreateStripeCustomer } from "@/lib/stripe-customer";
 import { ensureMathMethodsSubject } from "@/lib/subscription";
 import { rateLimit } from "@/lib/rate-limit";
 import { ensureReferralCoupon } from "@/lib/affiliate";
@@ -47,22 +48,9 @@ export async function POST(request: NextRequest) {
 
   const stripe = getStripe();
 
-  // Create or reuse the Stripe customer
-  let customerId = dbUser.stripeCustomerId;
-  if (!customerId) {
-    const customer = await stripe.customers.create({
-      email: dbUser.email,
-      name: dbUser.name ?? undefined,
-      metadata: {
-        userId: dbUser.id,
-      },
-    });
-    customerId = customer.id;
-    await prisma.user.update({
-      where: { id: dbUser.id },
-      data: { stripeCustomerId: customerId },
-    });
-  }
+  // Resolve a usable Stripe customer ID, self-healing if the stored ID is
+  // stale (e.g. from a different Stripe environment after a project switch).
+  const customerId = await getOrCreateStripeCustomer(dbUser);
 
   // Check if this user was referred — auto-apply 50% off first month
   const isReferred = Boolean(dbUser.referredByCode);

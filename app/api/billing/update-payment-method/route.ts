@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { requireAuthenticatedUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getStripe } from "@/lib/stripe";
+import { getOrCreateStripeCustomer } from "@/lib/stripe-customer";
 import { rateLimit } from "@/lib/rate-limit";
 
 /**
@@ -20,15 +21,18 @@ export async function POST(request: NextRequest) {
 
   const dbUser = await prisma.user.findUnique({
     where: { id: user.id },
-    select: { stripeCustomerId: true },
+    select: { id: true, email: true, name: true, stripeCustomerId: true },
   });
 
-  if (!dbUser?.stripeCustomerId) {
+  if (!dbUser) {
     return NextResponse.json(
-      { error: "No billing account found." },
+      { error: "User not provisioned." },
       { status: 400 }
     );
   }
+
+  // Resolve a usable Stripe customer ID, self-healing if the stored ID is stale.
+  const customerId = await getOrCreateStripeCustomer(dbUser);
 
   const origin =
     request.headers.get("origin") ??
@@ -38,7 +42,7 @@ export async function POST(request: NextRequest) {
   const stripe = getStripe();
 
   const session = await stripe.billingPortal.sessions.create({
-    customer: dbUser.stripeCustomerId,
+    customer: customerId,
     return_url: `${origin}/profile`,
     flow_data: {
       type: "payment_method_update",

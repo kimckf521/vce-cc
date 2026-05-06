@@ -475,6 +475,11 @@ export default function ExamModeWrapper({
               revealAnswers={isMcqMode ? submitted : false}
               showSolutionButton={shouldShowSolutions}
               onMcqSelect={isMcqMode ? handleMcqSelect : undefined}
+              // Critical: the parent server component re-runs the random picker
+              // on every render, so a router.refresh() triggered by a bookmark
+              // or status save would silently swap the questions out from
+              // under the user. The optimistic local state is sufficient.
+              disableServerRefresh
             />
             {submitted && enableSelfMarking && (
               <SelfMarkStepper

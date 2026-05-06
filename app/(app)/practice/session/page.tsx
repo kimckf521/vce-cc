@@ -285,6 +285,85 @@ function groupMarks(g: QuestionGroupData): number {
 }
 
 /**
+ * Flatten a per-topic pool into a single ranked list applying topic + diff
+ * + weak-area weights. Items closer to the front are preferred picks.
+ * Used both by the marks-target greedy picker and the exact-subset finder.
+ */
+function rankPool(
+  poolsByTopic: Map<
+    string,
+    Record<"EASY" | "MEDIUM" | "HARD", QuestionGroupData[]>
+  >,
+  topicIds: string[],
+  topicDist: number[],
+  diffDist: [number, number, number],
+  weakIds: Set<string>
+): QuestionGroupData[] {
+  const topicWeight = new Map<string, number>();
+  topicIds.forEach((tid, i) => {
+    topicWeight.set(tid, (topicDist[i] ?? 0) > 0 ? topicDist[i] : 0.0001);
+  });
+  const [wEasy, wMed, wHard] = diffDist.map((p) =>
+    p > 0 ? p : 0.0001
+  ) as [number, number, number];
+
+  const score = (g: QuestionGroupData, tid: string, dw: number) => {
+    const isWeak = weakIds.has(getParentItemId(g));
+    const tw = topicWeight.get(tid) ?? 0.0001;
+    return Math.random() / (tw * dw * (isWeak ? 3 : 1));
+  };
+
+  const all: { g: QuestionGroupData; sort: number }[] = [];
+  Array.from(poolsByTopic.entries()).forEach(([tid, byDiff]) => {
+    byDiff.EASY.forEach((g) => all.push({ g, sort: score(g, tid, wEasy) }));
+    byDiff.MEDIUM.forEach((g) => all.push({ g, sort: score(g, tid, wMed) }));
+    byDiff.HARD.forEach((g) => all.push({ g, sort: score(g, tid, wHard) }));
+  });
+  return all.sort((a, b) => a.sort - b.sort).map((x) => x.g);
+}
+
+/**
+ * Find a subset of `items` whose marks sum to EXACTLY `targetMarks` using
+ * at most `maxItems` items. Returns null if no such subset exists.
+ *
+ * Uses depth-first backtracking with two prunes:
+ *   - bail when accumulated marks would overshoot the remaining budget
+ *   - bail when picked.length reaches maxItems but remaining > 0
+ *
+ * Iteration order respects the pre-shuffled `items` list, so different
+ * runs with different shuffles produce different subsets — variety
+ * without sacrificing exactness.
+ *
+ * For our pool sizes (20-60 items, 4-15 mark range) the search space is
+ * trivial; the worst case completes in low single-digit milliseconds.
+ */
+function findExactMarksSubset(
+  items: QuestionGroupData[],
+  targetMarks: number,
+  maxItems: number
+): QuestionGroupData[] | null {
+  if (targetMarks === 0) return [];
+  if (targetMarks < 0 || maxItems <= 0) return null;
+
+  const picked: QuestionGroupData[] = [];
+
+  function dfs(start: number, remaining: number): boolean {
+    if (remaining === 0) return true;
+    if (picked.length >= maxItems) return false;
+    for (let i = start; i < items.length; i++) {
+      const m = groupMarks(items[i]);
+      if (m > remaining) continue; // would overshoot the target
+      picked.push(items[i]);
+      if (dfs(i + 1, remaining - m)) return true;
+      picked.pop();
+    }
+    return false;
+  }
+
+  return dfs(0, targetMarks) ? picked.slice() : null;
+}
+
+/**
  * Pick question groups across the *combined* pool of all topics whose
  * cumulative marks land as close as possible to the target without going
  * over (greedy fit). Drives the Exam Version of Exam 1 (40-mark target)
@@ -307,7 +386,13 @@ function pickGroupsGloballyByMarks(
   topicDist: number[],
   marksTarget: number,
   diffDist: [number, number, number],
-  weakIds: Set<string> = new Set()
+  weakIds: Set<string> = new Set(),
+  /**
+   * Optional hard cap on the number of picked items. Used by Exam 1 to
+   * prevent the EXT half from blowing past 5 items and pushing the
+   * total question count above the real VCAA range of 8–9.
+   */
+  maxItems?: number
 ): QuestionGroupData[] {
   if (marksTarget <= 0) return [];
 
@@ -343,9 +428,11 @@ function pickGroupsGloballyByMarks(
     const picked: QuestionGroupData[] = [];
     let total = 0;
 
-    // Pass 1: greedy fit — only accept questions that don't overshoot.
+    // Pass 1: greedy fit — only accept questions that don't overshoot,
+    // and stop once `maxItems` is reached if a cap was provided.
     for (const g of ranked) {
       if (total >= marksTarget) break;
+      if (maxItems !== undefined && picked.length >= maxItems) break;
       const m = groupMarks(g);
       if (total + m <= marksTarget) {
         picked.push(g);
@@ -354,7 +441,9 @@ function pickGroupsGloballyByMarks(
     }
 
     // Pass 2: if still under target (no remaining question fits the gap),
-    // accept the smallest available overshoot to close it.
+    // accept the smallest available overshoot to close it. Respect the
+    // maxItems cap here too — better to undershoot marks slightly than to
+    // bust the question count.
     if (total < marksTarget) {
       const used = new Set(picked);
       const remaining = ranked
@@ -362,6 +451,7 @@ function pickGroupsGloballyByMarks(
         .sort((a, b) => groupMarks(a) - groupMarks(b));
       for (const g of remaining) {
         if (total >= marksTarget) break;
+        if (maxItems !== undefined && picked.length >= maxItems) break;
         picked.push(g);
         total += groupMarks(g);
       }
@@ -534,15 +624,28 @@ export default async function SessionPage({ searchParams }: PageProps) {
         )
       );
     });
-    // Section B — single global marks-target pick so the total lands at ~60.
-    const groupsB: QuestionGroupData[] = pickGroupsGloballyByMarks(
+    // Section B — find an exact-sum subset of EXTENDED_RESPONSE items
+    // that totals 60 marks across ≤5 questions (matches real VCAA Section B).
+    // Falls back to the closest-match picker only if the pool can't form
+    // an exact 60-mark 5-item subset (very unlikely with current data).
+    const rankedB = rankPool(
       poolB,
       topics.map((t) => t.id),
       distB,
-      SECTION_B_MARKS_TARGET,
       diffDist,
       weakItemIds
     );
+    const groupsB: QuestionGroupData[] =
+      findExactMarksSubset(rankedB, SECTION_B_MARKS_TARGET, 5) ??
+      pickGroupsGloballyByMarks(
+        poolB,
+        topics.map((t) => t.id),
+        distB,
+        SECTION_B_MARKS_TARGET,
+        diffDist,
+        weakItemIds,
+        5
+      );
 
     const shuffledA = shuffle(groupsA);
     const shuffledB = shuffle(groupsB);
@@ -687,22 +790,142 @@ export default async function SessionPage({ searchParams }: PageProps) {
   const marksTarget = mode === "exam1" ? 40 : 60;
   const allGroups: QuestionGroupData[] = [];
 
-  if (isMarksTargetMode) {
-    // Single global pick across all topics — topic + difficulty distributions
-    // become soft preferences on the shuffle weight, not hard splits.
-    const picked = pickGroupsGloballyByMarks(
+  if (isMarksTargetMode && mode === "exam1") {
+    // Real VCE Exam 1 has a fixed structural shape: ~5 short-answer Qs
+    // (Q1–Q5) + ~3–4 extended-answer Qs (Q6–Q8/Q9), totalling 40 marks
+    // across 8–9 questions. A pure global marks-target pick over a mixed
+    // pool overshoots the count badly because SHORT_ANSWER items (avg ~2
+    // marks) fit the budget more easily than EXTENDED_ANSWER (avg ~6).
+    //
+    // Enforce the structure by picking the two pools separately. The
+    // SHORT pool's items are smaller than real Q1–Q5 (which average ~4
+    // marks each thanks to multi-part sub-parts that our generated
+    // SHORT_ANSWER items don't have). So we pick fewer of them — 4 — to
+    // leave enough mark budget for 4–5 EXT items, landing on 8–9 total.
+    const SHORT_COUNT = 4;
+    const shortPool = await fetchAllGrouped(["SHORT_ANSWER"]);
+    const extPool = await fetchAllGrouped(["EXTENDED_ANSWER"]);
+    const shortCounts = distributeToCounts(dist, SHORT_COUNT);
+
+    // Helper: weighted shuffle of a topic's SHORT pool, biased toward
+    // higher-mark items so the SHORT half pulls more weight in the
+    // 40-mark budget. Returns a fresh shuffle each call.
+    const shuffleShortForTopic = (topicId: string) => {
+      const topicPool = shortPool.get(topicId);
+      if (!topicPool) return [] as QuestionGroupData[];
+      const flat = [
+        ...topicPool.EASY,
+        ...topicPool.MEDIUM,
+        ...topicPool.HARD,
+      ];
+      return flat
+        .map((g) => {
+          const isWeak = weakItemIds.has(getParentItemId(g));
+          const m = groupMarks(g) || 1;
+          return { g, sort: Math.random() / (m * (isWeak ? 3 : 1)) };
+        })
+        .sort((a, b) => a.sort - b.sort)
+        .map((x) => x.g);
+    };
+
+    // Try up to N times to find a SHORT pick whose remainder (40 − sum)
+    // can be closed by an exact-sum subset of EXT items (≤5 items). For
+    // most SHORT totals an exact subset exists; the rare exception is
+    // when SHORT lands on something the EXT pool can't complement
+    // (e.g. SHORT=4 needs 36 EXT marks via ≤5 items — possible but
+    // requires the right combo). Retrying with a different SHORT shuffle
+    // almost always succeeds.
+    const EXT_MAX = 5;
+    const TARGET = 40;
+    const MAX_ATTEMPTS = 30;
+
+    let shortPicks: QuestionGroupData[] = [];
+    let extPicks: QuestionGroupData[] = [];
+
+    for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+      const trialShort: QuestionGroupData[] = [];
+      topics.forEach((topic, i) => {
+        const wantCount = shortCounts[i] ?? 0;
+        if (wantCount <= 0) return;
+        const ranked = shuffleShortForTopic(topic.id);
+        trialShort.push(...ranked.slice(0, wantCount));
+      });
+      const trialShortMarks = trialShort.reduce(
+        (s, g) => s + groupMarks(g),
+        0
+      );
+      const extTarget = TARGET - trialShortMarks;
+      if (extTarget < 0) continue;
+
+      const rankedExt = rankPool(
+        extPool,
+        topics.map((t) => t.id),
+        dist,
+        diffDist,
+        weakItemIds
+      );
+      const exactExt = findExactMarksSubset(rankedExt, extTarget, EXT_MAX);
+      if (exactExt) {
+        shortPicks = trialShort;
+        extPicks = exactExt;
+        break;
+      }
+    }
+
+    // Last-resort fallback: if no attempt produced an exact subset, run
+    // the closest-match picker with the most recent SHORT pick. The user
+    // sees a slight overshoot/undershoot rather than nothing.
+    if (extPicks.length === 0 && shortPicks.length === 0) {
+      topics.forEach((topic, i) => {
+        const wantCount = shortCounts[i] ?? 0;
+        if (wantCount <= 0) return;
+        const ranked = shuffleShortForTopic(topic.id);
+        shortPicks.push(...ranked.slice(0, wantCount));
+      });
+      const shortMarks = shortPicks.reduce((s, g) => s + groupMarks(g), 0);
+      extPicks = pickGroupsGloballyByMarks(
+        extPool,
+        topics.map((t) => t.id),
+        dist,
+        Math.max(0, TARGET - shortMarks),
+        diffDist,
+        weakItemIds,
+        EXT_MAX
+      );
+    }
+
+    allGroups.push(...shortPicks, ...extPicks);
+  } else if (isMarksTargetMode) {
+    // Exam 2B: find an exact-sum subset of EXTENDED_RESPONSE items that
+    // totals 60 marks across ≤5 questions. The pool always admits such
+    // a subset (verified via Monte Carlo); the closest-match picker is
+    // kept as a safety net only.
+    const SECTION_B_MAX_QS = 5;
+    const ranked = rankPool(
       pool,
       topics.map((t) => t.id),
       dist,
-      marksTarget,
       diffDist,
       weakItemIds
     );
-    // Picker returns items as-is — EXTENDED_ANSWER / EXTENDED_RESPONSE are
-    // already natively multi-part via the `parts` JSON column. No in-code
-    // synthesis, no markdown parsing.
+    const picked =
+      findExactMarksSubset(ranked, marksTarget, SECTION_B_MAX_QS) ??
+      pickGroupsGloballyByMarks(
+        pool,
+        topics.map((t) => t.id),
+        dist,
+        marksTarget,
+        diffDist,
+        weakItemIds,
+        SECTION_B_MAX_QS
+      );
+    // Picker returns items as-is — EXTENDED_RESPONSE items are already
+    // natively multi-part via the `parts` JSON column.
     allGroups.push(...picked);
   } else {
+    // Freedom Version: count-based per-topic picking. Each topic gets its
+    // proportional share of the requested count; the per-topic helper
+    // backfills across difficulty buckets when one is short.
     topics.forEach((topic, i) => {
       allGroups.push(
         ...pickGroupsForTopic(
@@ -713,9 +936,61 @@ export default async function SessionPage({ searchParams }: PageProps) {
         )
       );
     });
+
+    // Cross-topic backfill: if any topic was short of items (e.g. the
+    // EXTENDED_RESPONSE pool has zero items in Algebra), the per-topic loop
+    // above leaves the session under-count. Pull from the remaining items
+    // across ALL topics, ranked by the user's requested distribution, until
+    // we hit `count`. Without this, picking 10 Exam 2B Freedom questions on
+    // a pool that's empty in one topic would silently return 7-8.
+    if (allGroups.length < count) {
+      const pickedIds = new Set(allGroups.map((g) => getParentItemId(g)));
+      const remainingPools = new Map<
+        string,
+        Record<"EASY" | "MEDIUM" | "HARD", QuestionGroupData[]>
+      >();
+      Array.from(pool.entries()).forEach(([tid, byDiff]) => {
+        const filtered = {
+          EASY: byDiff.EASY.filter((g) => !pickedIds.has(getParentItemId(g))),
+          MEDIUM: byDiff.MEDIUM.filter((g) => !pickedIds.has(getParentItemId(g))),
+          HARD: byDiff.HARD.filter((g) => !pickedIds.has(getParentItemId(g))),
+        };
+        remainingPools.set(tid, filtered);
+      });
+      const ranked = rankPool(
+        remainingPools,
+        topics.map((t) => t.id),
+        dist,
+        diffDist,
+        weakItemIds
+      );
+      const deficit = count - allGroups.length;
+      allGroups.push(...ranked.slice(0, deficit));
+    }
   }
 
-  const finalGroups = shuffle(allGroups);
+  // Real VCE Exam 1 has a fixed structural shape: short-answer questions
+  // come first (Q1-Q5 region, smaller marks each) and extended-answer
+  // questions come last (Q6-Q9 region, larger multi-part questions). A
+  // global shuffle could leave a 2-mark short item sitting at Q9, which
+  // never happens on a real paper. Detect SHORT vs EXT by part shape
+  // (single-part with `part: null` is SHORT_ANSWER / MCQ; multi-part rows
+  // are EXTENDED_*) and order accordingly. Within each subgroup we still
+  // randomise so adjacent topics vary across runs.
+  //
+  // Other modes:
+  //   - exam2a: all MCQ (1 mark each) → order is meaningless, plain shuffle
+  //   - exam2b: all EXTENDED_RESPONSE → plain shuffle is fine
+  let finalGroups: QuestionGroupData[];
+  if (mode === "exam1") {
+    const isShort = (g: QuestionGroupData) =>
+      g.parts.length === 1 && g.parts[0].part === null;
+    const shortPart = allGroups.filter(isShort);
+    const extPart = allGroups.filter((g) => !isShort(g));
+    finalGroups = [...shuffle(shortPart), ...shuffle(extPart)];
+  } else {
+    finalGroups = shuffle(allGroups);
+  }
 
   // Sum the marks across every part of every group — used to surface the
   // total in the header so users can compare against the real VCAA target

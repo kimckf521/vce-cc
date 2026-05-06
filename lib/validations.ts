@@ -120,15 +120,35 @@ export const updateAffiliateSchema = z.object({
   active: z.boolean().optional(),
   creditAdjustment: z.coerce.number().int().optional(), // Cents — positive or negative
   notes: z.string().max(2000).optional(),
+  // Custom referral code — only allowed for influencer accounts (enforced
+  // server-side). Slug format: 3-40 chars of lowercase letters, numbers, hyphens.
+  // Hyphens may not lead/trail or repeat.
+  referralCode: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .min(3, "Code must be at least 3 characters")
+    .max(40, "Code must be at most 40 characters")
+    .regex(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      "Use lowercase letters, numbers, and single hyphens (no leading/trailing/double hyphens)"
+    )
+    .optional(),
 });
 
 // POST /api/admin/affiliates/[id]/contracts
 export const createContractSchema = z.object({
   platform: z.string().trim().min(1).max(50),
-  platformHandle: z.string().trim().min(1).max(200),
+  // Optional — older flow captured channel handle; newer simplified form
+  // relies on the video URL alone.
+  platformHandle: z.string().trim().max(200).optional(),
   followerCount: z.coerce.number().int().min(0).optional(),
   contentFee: z.coerce.number().int().min(0),
+  // Renamed conceptually to "post date" but keeps the contentDeadline column
+  // since it still represents the content's publish date.
   contentDeadline: z.string().datetime().optional(),
+  // The published video URL — set at contract creation time in the new flow.
+  contentUrl: z.string().trim().url().optional(),
   notes: z.string().max(2000).optional(),
 });
 
@@ -138,6 +158,8 @@ export const updateContractSchema = z.object({
   contentVerified: z.boolean().optional(),
   feePaid: z.boolean().optional(),
   notes: z.string().max(2000).optional(),
+  // View count — manually entered by admins. Capped at 1B as a sanity check.
+  views: z.coerce.number().int().min(0).max(1_000_000_000).optional(),
 });
 
 // PATCH /api/admin/affiliates/payouts/[id]
@@ -151,3 +173,28 @@ export const updatePayoutSchema = z.object({
 export const markConvertedSchema = z.object({
   referralId: z.string().min(1),
 });
+
+// POST /api/admin/affiliates/[id]/attribute-referral — retroactive attribution
+// Accepts either a user ID or email to identify the referred user.
+export const attributeReferralSchema = z
+  .object({
+    userId: z.string().trim().min(1).optional(),
+    email: z.string().trim().email().optional(),
+  })
+  .refine((data) => data.userId || data.email, {
+    message: "Either userId or email is required",
+  });
+
+// POST /api/admin/users/[id]/credit — super-admin adjusts platform credit.
+// Amount is in dollars (form-friendly); converted to cents server-side.
+// Positive = add credit; negative = deduct credit (clawback). Range chosen
+// to be wide enough for normal use but reject obvious typos.
+export const giveCreditSchema = z
+  .object({
+    amountDollars: z.coerce.number().min(-1000).max(1000),
+    reason: z.string().trim().max(200).optional(),
+  })
+  .refine((d) => Math.abs(d.amountDollars) >= 0.5, {
+    message: "Amount must be at least $0.50 (positive or negative)",
+    path: ["amountDollars"],
+  });

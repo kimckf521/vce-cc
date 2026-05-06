@@ -3,8 +3,9 @@ import type Stripe from "stripe";
 import { Prisma } from "@prisma/client";
 import { getStripe } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
-import { ensureMathMethodsSubject } from "@/lib/subscription";
+import { ensureMathMethodsSubject, ACCESS_GRANTING_STATUSES } from "@/lib/subscription";
 import { rewardForType } from "@/lib/affiliate";
+import { sendPaymentFailedEmail } from "@/lib/billing-emails";
 
 // Stripe webhooks need the raw request body for signature verification.
 // Next.js App Router gives us that via request.text().
@@ -72,12 +73,21 @@ export async function POST(request: NextRequest) {
         break;
       }
 
-      case "invoice.payment_succeeded":
-      case "invoice.payment_failed": {
-        // These are handled via the subscription status change event that
-        // Stripe fires alongside payment events. Log for visibility.
+      case "invoice.payment_succeeded": {
+        // Subscription status change events handle the access logic — just log.
         const invoice = event.data.object as Stripe.Invoice;
         console.log(`[stripe-webhook] ${event.type} for invoice ${invoice.id}`);
+        break;
+      }
+
+      case "invoice.payment_failed": {
+        // Subscription status sync happens via customer.subscription.updated
+        // (which Stripe fires alongside this event). Here we just notify the
+        // user so they have a chance to update their card before retries
+        // are exhausted and access is revoked.
+        const invoice = event.data.object as Stripe.Invoice;
+        console.log(`[stripe-webhook] ${event.type} for invoice ${invoice.id}`);
+        await notifyPaymentFailed(invoice);
         break;
       }
 
@@ -152,10 +162,17 @@ async function syncSubscription(subscription: Stripe.Subscription) {
     ? new Date(periodEndSeconds * 1000)
     : new Date();
 
-  // Active or trialing → PAID tier. Everything else → FREE.
+  // Status determines whether the user keeps access. ACCESS_GRANTING_STATUSES
+  // includes `past_due` so users have a grace period to update their card
+  // before losing access (see lib/subscription.ts for full rationale).
+  const hasAccess = (ACCESS_GRANTING_STATUSES as readonly string[]).includes(
+    subscription.status
+  );
+  const tier = hasAccess ? "PAID" : "FREE";
+  // For affiliate conversion: only count true paid customers, not those in
+  // dunning. Affiliates shouldn't be credited for a payment that may bounce.
   const isActive =
     subscription.status === "active" || subscription.status === "trialing";
-  const tier = isActive ? "PAID" : "FREE";
 
   // Affiliate conversion: if this user has a PENDING referral and the subscription
   // just became active, mark it CONVERTED and credit/owe the affiliate.
@@ -232,12 +249,13 @@ async function syncSubscription(subscription: Stripe.Subscription) {
 async function convertReferralIfPending(userId: string): Promise<void> {
   const referral = await prisma.referral.findUnique({
     where: { referredUserId: userId },
-    include: { affiliate: true },
+    include: { affiliate: { include: { user: { select: { stripeCustomerId: true } } } } },
   });
 
   if (!referral || referral.status !== "PENDING") return;
 
   const reward = rewardForType(referral.affiliate.type);
+  let shouldApplyStripeCredit = false;
 
   await prisma.$transaction(async (tx) => {
     // Re-check inside the transaction to prevent double-credit races
@@ -263,10 +281,87 @@ async function convertReferralIfPending(userId: string): Promise<void> {
         where: { id: referral.affiliateId },
         data: { creditBalance: { increment: reward } },
       });
+      shouldApplyStripeCredit = true;
     }
   });
+
+  // After the DB transaction commits, push the credit to Stripe so it
+  // auto-applies to the referrer's next invoice (≈ 50% off their next month
+  // for a single $5 referral on the $9.99 plan).
+  if (shouldApplyStripeCredit && referral.affiliate.user.stripeCustomerId) {
+    try {
+      const stripe = getStripe();
+      await stripe.customers.createBalanceTransaction(
+        referral.affiliate.user.stripeCustomerId,
+        {
+          amount: -reward, // Negative = credit to customer
+          currency: "aud",
+          description: `Referral reward — converted referral ${referral.id}`,
+          metadata: {
+            referralId: referral.id,
+            affiliateId: referral.affiliateId,
+            type: "STUDENT_REFERRAL_CREDIT",
+          },
+        }
+      );
+      console.log(
+        `[stripe-webhook] Applied ${reward}c Stripe credit to referrer's customer balance`
+      );
+    } catch (err) {
+      // Don't fail the webhook — DB credit is the source of truth.
+      // An admin can reconcile if Stripe credit application fails.
+      console.error(
+        `[stripe-webhook] Failed to apply Stripe credit for referral ${referral.id}:`,
+        err
+      );
+    }
+  }
 
   console.log(
     `[stripe-webhook] Converted referral ${referral.id} for user ${userId} (reward=${reward}c)`
   );
+}
+
+/**
+ * Notify the user that a renewal payment failed. Looks up their email by the
+ * Stripe customer ID, then sends a templated email via Resend explaining that
+ * Stripe will retry and they should update their card.
+ *
+ * Failures here are logged but never thrown — email is best-effort and must
+ * not cause the webhook to retry (Stripe would replay the same event).
+ */
+async function notifyPaymentFailed(invoice: Stripe.Invoice) {
+  const customerId =
+    typeof invoice.customer === "string"
+      ? invoice.customer
+      : invoice.customer?.id;
+  if (!customerId) return;
+
+  const user = await prisma.user.findUnique({
+    where: { stripeCustomerId: customerId },
+    select: { email: true },
+  });
+  if (!user?.email) {
+    console.warn(
+      `[stripe-webhook] No user email found for failed invoice ${invoice.id} (customer ${customerId})`
+    );
+    return;
+  }
+
+  try {
+    await sendPaymentFailedEmail({
+      to: user.email,
+      amountCents: invoice.amount_due ?? invoice.total ?? 0,
+      currency: invoice.currency ?? "aud",
+      nextAttemptAt: invoice.next_payment_attempt,
+    });
+    console.log(
+      `[stripe-webhook] Sent payment-failed email to ${user.email} for invoice ${invoice.id}`
+    );
+  } catch (err) {
+    console.error(
+      `[stripe-webhook] Failed to send payment-failed email to ${user.email}:`,
+      err
+    );
+  }
 }

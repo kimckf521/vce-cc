@@ -5,6 +5,7 @@ import { isAdminRole } from "@/lib/utils";
 import { rateLimit } from "@/lib/rate-limit";
 import { markConvertedSchema } from "@/lib/validations";
 import { rewardForType } from "@/lib/affiliate";
+import { getStripe } from "@/lib/stripe";
 
 /**
  * POST /api/admin/affiliates/[id]/mark-converted
@@ -35,7 +36,7 @@ export async function POST(
 
   const referral = await prisma.referral.findUnique({
     where: { id: parsed.data.referralId },
-    include: { affiliate: true },
+    include: { affiliate: { include: { user: { select: { stripeCustomerId: true } } } } },
   });
   if (!referral || referral.affiliateId !== id) {
     return NextResponse.json({ error: "Referral not found" }, { status: 404 });
@@ -45,6 +46,7 @@ export async function POST(
   }
 
   const reward = rewardForType(referral.affiliate.type);
+  const isStudent = referral.affiliate.type === "STUDENT_REFERRAL";
 
   await prisma.$transaction(async (tx) => {
     await tx.referral.update({
@@ -55,13 +57,36 @@ export async function POST(
         convertedAt: new Date(),
       },
     });
-    if (referral.affiliate.type === "STUDENT_REFERRAL") {
+    if (isStudent) {
       await tx.affiliate.update({
         where: { id: referral.affiliateId },
         data: { creditBalance: { increment: reward } },
       });
     }
   });
+
+  // Push the credit to Stripe so it auto-applies to the referrer's next invoice
+  if (isStudent && referral.affiliate.user.stripeCustomerId) {
+    try {
+      const stripe = getStripe();
+      await stripe.customers.createBalanceTransaction(
+        referral.affiliate.user.stripeCustomerId,
+        {
+          amount: -reward,
+          currency: "aud",
+          description: `Referral reward (manual) — referral ${referral.id}`,
+          metadata: {
+            referralId: referral.id,
+            affiliateId: referral.affiliateId,
+            type: "STUDENT_REFERRAL_CREDIT",
+            manual: "true",
+          },
+        }
+      );
+    } catch (err) {
+      console.error(`[mark-converted] Failed to apply Stripe credit:`, err);
+    }
+  }
 
   return NextResponse.json({ ok: true });
 }

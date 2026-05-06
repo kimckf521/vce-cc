@@ -42,12 +42,15 @@ export async function POST(
     data: {
       affiliateId: id,
       platform: parsed.data.platform,
-      platformHandle: parsed.data.platformHandle,
+      // Default to empty string when not supplied (newer simplified form).
+      // The DB column is non-null; UI can render it as a dash.
+      platformHandle: parsed.data.platformHandle ?? "",
       followerCount: parsed.data.followerCount ?? null,
       contentFee: parsed.data.contentFee,
       contentDeadline: parsed.data.contentDeadline
         ? new Date(parsed.data.contentDeadline)
         : null,
+      contentUrl: parsed.data.contentUrl ?? null,
       notes: parsed.data.notes ?? null,
     },
   });

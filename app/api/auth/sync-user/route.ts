@@ -7,6 +7,11 @@ import { syncUserSchema } from "@/lib/validations";
 import { SESSION_COOKIE, sessionCookieOptions } from "@/lib/session";
 import { isAdminRole } from "@/lib/utils";
 
+// Cookie set by /signup?ref=CODE to persist the referral code across the
+// email-confirmation flow. Read here as a fallback when the body doesn't
+// include one (e.g. user logging in after confirming their email).
+const REFERRAL_COOKIE = "ref_code";
+
 // Called after signup/login to ensure a User row exists in our DB
 // and that the user has a FREE enrolment for Mathematical Methods so
 // gating logic always has something to read.
@@ -33,6 +38,20 @@ export async function POST(request: NextRequest) {
     }
   } catch {
     // Ignore body parse errors — referral code is optional
+  }
+
+  // Fallback: read the cookie set by /signup?ref=CODE. This handles the
+  // email-confirmation flow where the user lands here from /login (not /signup)
+  // and the body doesn't include a referralCode.
+  if (!referralCode) {
+    const cookieValue = request.cookies.get(REFERRAL_COOKIE)?.value;
+    if (cookieValue) {
+      try {
+        referralCode = decodeURIComponent(cookieValue).trim();
+      } catch {
+        // Bad cookie value — ignore
+      }
+    }
   }
 
   // Resolve the referring affiliate (if any) before creating the user.
@@ -108,6 +127,12 @@ export async function POST(request: NextRequest) {
     // Admin login — clear any stale cookie from a previous non-admin session
     // (e.g. a student who was just promoted to admin).
     response.cookies.delete(SESSION_COOKIE);
+  }
+
+  // Clear the referral cookie once we've processed it (whether attribution
+  // succeeded or the affiliate was invalid — either way, don't try again).
+  if (request.cookies.get(REFERRAL_COOKIE)) {
+    response.cookies.delete(REFERRAL_COOKIE);
   }
   return response;
 }

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Eye } from "lucide-react";
 import { formatCents } from "@/lib/affiliate";
 
 type Contract = {
@@ -14,8 +15,16 @@ type Contract = {
   contentUrl: string | null;
   contentDeadline: Date | null;
   contentVerified: boolean;
+  views: number | null;
+  viewsUpdatedAt: Date | null;
   notes: string | null;
 };
+
+function formatCount(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, "")}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(1).replace(/\.0$/, "")}K`;
+  return n.toLocaleString();
+}
 
 export default function ContractsSection({
   affiliateId,
@@ -29,23 +38,21 @@ export default function ContractsSection({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // New contract form state
+  // New contract form state — simplified to: type, video link, fee, post date.
   const [platform, setPlatform] = useState("YouTube");
-  const [handle, setHandle] = useState("");
-  const [followers, setFollowers] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
   const [feeDollars, setFeeDollars] = useState("");
-  const [deadline, setDeadline] = useState("");
+  const [postDate, setPostDate] = useState("");
 
   async function createContract() {
     setLoading(true);
     setError(null);
     const body: Record<string, unknown> = {
       platform,
-      platformHandle: handle,
       contentFee: Math.round(parseFloat(feeDollars) * 100),
+      contentUrl: videoUrl,
     };
-    if (followers) body.followerCount = parseInt(followers, 10);
-    if (deadline) body.contentDeadline = new Date(deadline).toISOString();
+    if (postDate) body.contentDeadline = new Date(postDate).toISOString();
 
     const res = await fetch(`/api/admin/affiliates/${affiliateId}/contracts`, {
       method: "POST",
@@ -59,10 +66,9 @@ export default function ContractsSection({
       return;
     }
     setShowForm(false);
-    setHandle("");
-    setFollowers("");
+    setVideoUrl("");
     setFeeDollars("");
-    setDeadline("");
+    setPostDate("");
     router.refresh();
   }
 
@@ -102,51 +108,58 @@ export default function ContractsSection({
             </div>
           )}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-            <select
-              value={platform}
-              onChange={(e) => setPlatform(e.target.value)}
-              className="rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm"
-            >
-              <option>YouTube</option>
-              <option>TikTok</option>
-              <option>Instagram</option>
-              <option>Other</option>
-            </select>
-            <input
-              value={handle}
-              onChange={(e) => setHandle(e.target.value)}
-              placeholder="Handle / channel URL"
-              className="rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm"
-            />
-            <input
-              type="number"
-              value={followers}
-              onChange={(e) => setFollowers(e.target.value)}
-              placeholder="Follower count"
-              className="rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm"
-            />
-            <input
-              type="number"
-              step="0.01"
-              value={feeDollars}
-              onChange={(e) => setFeeDollars(e.target.value)}
-              placeholder="Content fee ($AUD)"
-              className="rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm"
-            />
-            <input
-              type="date"
-              value={deadline}
-              onChange={(e) => setDeadline(e.target.value)}
-              className="rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm"
-            />
-            <button
-              onClick={createContract}
-              disabled={loading || !handle || !feeDollars}
-              className="rounded-xl bg-emerald-600 text-white text-sm font-medium px-4 py-2 hover:bg-emerald-700 disabled:opacity-50"
-            >
-              {loading ? "Saving…" : "Create contract"}
-            </button>
+            <div>
+              <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Type</label>
+              <select
+                value={platform}
+                onChange={(e) => setPlatform(e.target.value)}
+                className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm"
+              >
+                <option>YouTube</option>
+                <option>TikTok</option>
+                <option>Instagram</option>
+                <option>XHS</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Link of the video</label>
+              <input
+                type="url"
+                value={videoUrl}
+                onChange={(e) => setVideoUrl(e.target.value)}
+                placeholder="https://…"
+                className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Content fee ($AUD)</label>
+              <input
+                type="number"
+                step="0.01"
+                value={feeDollars}
+                onChange={(e) => setFeeDollars(e.target.value)}
+                placeholder="e.g. 50.00"
+                className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Post date</label>
+              <input
+                type="date"
+                value={postDate}
+                onChange={(e) => setPostDate(e.target.value)}
+                className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm"
+              />
+            </div>
           </div>
+          <button
+            onClick={createContract}
+            disabled={loading || !videoUrl || !feeDollars}
+            className="mt-3 w-full lg:w-auto rounded-xl bg-emerald-600 text-white text-sm font-medium px-4 py-2 hover:bg-emerald-700 disabled:opacity-50"
+          >
+            {loading ? "Saving…" : "Create contract"}
+          </button>
         </div>
       )}
 
@@ -162,19 +175,36 @@ export default function ContractsSection({
               className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-5"
             >
               <div className="flex items-start justify-between flex-wrap gap-3 mb-3">
-                <div>
+                <div className="min-w-0">
                   <p className="font-semibold text-gray-900 dark:text-gray-100">
-                    {c.platform} — {c.platformHandle}
+                    {c.platform}
+                    {c.platformHandle ? ` — ${c.platformHandle}` : ""}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  {c.contentUrl && (
+                    <a
+                      href={c.contentUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-brand-600 dark:text-brand-400 hover:underline break-all"
+                    >
+                      {c.contentUrl}
+                    </a>
+                  )}
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     {c.followerCount ? `${c.followerCount.toLocaleString()} followers · ` : ""}
                     Fee {formatCents(c.contentFee)}
                     {c.contentDeadline
-                      ? ` · Due ${new Date(c.contentDeadline).toLocaleDateString("en-AU")}`
+                      ? ` · Posted ${new Date(c.contentDeadline).toLocaleDateString("en-AU")}`
                       : ""}
                   </p>
                 </div>
-                <div className="flex gap-2 text-xs">
+                <div className="flex flex-wrap gap-2 text-xs">
+                  {c.views !== null && (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-300 px-2.5 py-0.5 font-medium">
+                      <Eye className="h-3 w-3" />
+                      {formatCount(c.views)} views
+                    </span>
+                  )}
                   <span
                     className={`rounded-full px-2.5 py-0.5 font-medium ${
                       c.contentVerified
@@ -182,7 +212,7 @@ export default function ContractsSection({
                         : "bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300"
                     }`}
                   >
-                    {c.contentVerified ? "Verified" : "Unverified"}
+                    {c.contentVerified ? "Posted" : "Not posted"}
                   </span>
                   <span
                     className={`rounded-full px-2.5 py-0.5 font-medium ${
@@ -213,6 +243,7 @@ function ContractActions({
   onPatch: (body: Record<string, unknown>) => Promise<void>;
 }) {
   const [url, setUrl] = useState(contract.contentUrl ?? "");
+  const [views, setViews] = useState(contract.views?.toString() ?? "");
 
   return (
     <div className="space-y-2">
@@ -231,13 +262,42 @@ function ContractActions({
           Save URL
         </button>
       </div>
+
+      {/* View count entry — manual for all platforms */}
+      <div className="flex gap-2 items-center">
+        <Eye className="h-4 w-4 text-gray-400 shrink-0" />
+        <input
+          type="number"
+          min="0"
+          value={views}
+          onChange={(e) => setViews(e.target.value)}
+          placeholder="View count"
+          className="flex-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-1.5 text-sm"
+        />
+        <button
+          onClick={() => {
+            const n = parseInt(views, 10);
+            if (isNaN(n) || n < 0) return;
+            onPatch({ views: n });
+          }}
+          disabled={!views || isNaN(parseInt(views, 10))}
+          className="rounded-lg bg-brand-600 text-white text-xs font-medium px-3 py-1.5 hover:bg-brand-700 disabled:opacity-50"
+        >
+          Save views
+        </button>
+        {contract.viewsUpdatedAt && (
+          <span className="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap">
+            Updated {new Date(contract.viewsUpdatedAt).toLocaleDateString("en-AU")}
+          </span>
+        )}
+      </div>
       <div className="flex gap-2 flex-wrap">
         {!contract.contentVerified && (
           <button
             onClick={() => onPatch({ contentVerified: true })}
             className="rounded-lg bg-emerald-600 text-white text-xs font-medium px-3 py-1.5 hover:bg-emerald-700"
           >
-            Mark verified
+            Mark Post
           </button>
         )}
         {!contract.feePaid && (

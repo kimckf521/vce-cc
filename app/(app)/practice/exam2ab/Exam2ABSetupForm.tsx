@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   VCAA_TOPIC_DIST,
@@ -59,16 +58,9 @@ export default function Exam2ABSetupForm({ topics: _topics }: Props) {
         </span>
       </div>
 
-      {/* VCAA-locked mix */}
-      <div className="rounded-xl border border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-950/40 px-5 lg:px-6 py-4 lg:py-5 flex items-start gap-3">
-        <Info className="h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400 mt-0.5" />
-        <div className="text-sm lg:text-base text-gray-700 dark:text-gray-200 space-y-1">
-          <p className="font-semibold">Matches a real VCAA paper</p>
-          <p className="text-gray-600 dark:text-gray-300">
-            Topic mix (~{VCAA_TOPIC_DIST.join(" / ")}%) and difficulty spread ({VCAA_DIFFICULTY_DIST[0]}% easy · {VCAA_DIFFICULTY_DIST[1]}% medium · {VCAA_DIFFICULTY_DIST[2]}% hard) are locked to real VCAA averages. Customise them using Exam 1 / 2A / 2B&apos;s Freedom Version.
-          </p>
-        </div>
-      </div>
+      {/* Distribution / difficulty mix is locked to real VCAA averages — there
+          is no Freedom Version for the combined paper. The locked values live
+          on the URL built in handleStart() above. */}
 
       {/* Show solutions toggle */}
       <div className="flex items-center justify-between rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-5 lg:px-6 py-4 lg:py-5">

@@ -272,7 +272,14 @@ async function main() {
         }
       }
       if (subIds.length === 0) {
-        throw new Error(`No valid subtopics for item in ${file} (primary ${item.topicSlug}, given [${item.subtopicSlugs.join(", ")}])`);
+        // Fall back to topic's first subtopic — happens when the agent only
+        // tagged cross-topic slugs that don't belong to the primary topic.
+        const fallback = topic.subtopics[0];
+        if (!fallback) {
+          throw new Error(`Topic ${item.topicSlug} has no subtopics; cannot fall back.`);
+        }
+        subIds.push(fallback.id);
+        console.log(`  ⚠ no valid subtopic in [${item.subtopicSlugs.join(", ")}]; falling back to "${fallback.slug}" for ${file}`);
       }
 
       await prisma.questionSetItem.create({

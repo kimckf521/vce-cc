@@ -43,10 +43,16 @@ export async function PATCH(
     return NextResponse.json({ error: "Contract not found" }, { status: 404 });
   }
 
+  // If `views` is being updated, also stamp `viewsUpdatedAt`
+  const data: Record<string, unknown> = { ...parsed.data };
+  if (parsed.data.views !== undefined) {
+    data.viewsUpdatedAt = new Date();
+  }
+
   const updated = await prisma.$transaction(async (tx) => {
     const contract = await tx.influencerContract.update({
       where: { id: contractId },
-      data: parsed.data,
+      data,
     });
 
     // Auto-create a Payout record the first time fee is marked paid

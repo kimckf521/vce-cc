@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { GraduationCap, Users, Sparkles } from "lucide-react";
+import { GraduationCap, Users, Sparkles, DollarSign, Gift, Heart, Infinity as InfinityIcon } from "lucide-react";
 
 type Track = "STUDENT_REFERRAL" | "TUTOR_AFFILIATE" | "INFLUENCER_AFFILIATE";
 
@@ -106,16 +106,50 @@ export default function RegisterAffiliateForm({
       )}
       <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">
         {track === "STUDENT_REFERRAL"
-          ? "Activate student referrals"
+          ? "Refer friends, earn credit"
           : track === "TUTOR_AFFILIATE"
             ? "Apply as a tutor"
             : "Apply as an influencer"}
       </h2>
       <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
         {track === "STUDENT_REFERRAL"
-          ? "You'll get a referral link straight away."
+          ? "Activate your referral link in one click — no application needed."
           : "Your application will be reviewed by our team. We'll notify you once approved."}
       </p>
+
+      {/* Student referral benefits */}
+      {track === "STUDENT_REFERRAL" && (
+        <div className="mb-6 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950 p-5">
+          <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-400 mb-4">
+            What you get
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <BenefitRow
+              icon={DollarSign}
+              title="$5 credit per referral"
+              detail="Whenever a friend signs up via your link and subscribes, you get $5 credit — that's roughly 50% off your next month."
+            />
+            <BenefitRow
+              icon={Gift}
+              title="Auto-applied to your next bill"
+              detail="No coupon codes to remember. Stripe automatically deducts your credit from your next invoice."
+            />
+            <BenefitRow
+              icon={Heart}
+              title="Your friend saves too"
+              detail="Friends who use your link get 50% off their first month — pay just $4.99 instead of $9.99."
+            />
+            <BenefitRow
+              icon={InfinityIcon}
+              title="No referral limit"
+              detail="Refer as many classmates as you want. Credits never expire and stack — 2 referrals = a free month."
+            />
+          </div>
+          <p className="text-xs text-emerald-700/80 dark:text-emerald-400/80 mt-4 leading-relaxed">
+            Track your referrals and credit balance from this page after activating.
+          </p>
+        </div>
+      )}
 
       {error && (
         <div className="mb-4 rounded-xl bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 px-4 py-3 text-sm text-red-700 dark:text-red-400">
@@ -222,5 +256,29 @@ function TrackCard({
         <p className="mt-2 text-xs text-amber-600 dark:text-amber-400">Requires admin approval</p>
       )}
     </button>
+  );
+}
+
+function BenefitRow({
+  icon: Icon,
+  title,
+  detail,
+}: {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  detail: string;
+}) {
+  return (
+    <div className="flex items-start gap-3">
+      <div className="flex-shrink-0 rounded-lg bg-emerald-100 dark:bg-emerald-900 p-2">
+        <Icon className="h-4 w-4 text-emerald-700 dark:text-emerald-300" />
+      </div>
+      <div className="min-w-0">
+        <p className="text-sm font-semibold text-emerald-900 dark:text-emerald-100">{title}</p>
+        <p className="text-xs text-emerald-800/80 dark:text-emerald-200/80 leading-relaxed mt-0.5">
+          {detail}
+        </p>
+      </div>
+    </div>
   );
 }

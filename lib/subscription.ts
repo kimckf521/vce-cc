@@ -2,10 +2,24 @@ import { prisma } from "@/lib/prisma";
 import { STANDARD_SUBJECT_SLUG } from "@/lib/stripe";
 
 /**
- * Subscription status values that grant access to paid content.
- * Trialing users also get full access.
+ * Subscription status values that grant the user access to paid content.
+ *
+ * Why `past_due` is included: when a renewal payment fails, Stripe marks the
+ * subscription as `past_due` and retries the charge over a 1–3 week dunning
+ * window (configurable in Stripe → Billing → Subscriptions → Manage failed
+ * payments). Locking the user out on the very first failed attempt would
+ * give them no chance to update their card before losing access. Once
+ * Stripe gives up retrying, the status flips to `unpaid` (or `canceled`)
+ * and access is revoked here.
+ *
+ * Statuses that DON'T grant access:
+ *   - `unpaid` — Stripe gave up retrying
+ *   - `canceled` — explicitly cancelled and period ended
+ *   - `incomplete` / `incomplete_expired` — initial payment never succeeded
+ *   - `paused` — subscription is paused by merchant
  */
-const ACTIVE_STATUSES = ["active", "trialing"] as const;
+export const ACCESS_GRANTING_STATUSES = ["active", "trialing", "past_due"] as const;
+export type AccessGrantingStatus = (typeof ACCESS_GRANTING_STATUSES)[number];
 
 /**
  * The single topic per subject that free users can access in full.
@@ -39,7 +53,7 @@ export async function hasActiveSubscription(
       userId,
       tier: "PAID",
       subject: { slug: subjectSlug },
-      subscriptionStatus: { in: [...ACTIVE_STATUSES] },
+      subscriptionStatus: { in: [...ACCESS_GRANTING_STATUSES] },
     },
     select: { id: true },
   });

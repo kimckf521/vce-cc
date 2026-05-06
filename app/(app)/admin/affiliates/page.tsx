@@ -3,10 +3,16 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/utils";
-import { Users, DollarSign, Clock, CheckCircle } from "lucide-react";
+import { Users, DollarSign, Clock, CheckCircle, AlertTriangle, ArrowLeft } from "lucide-react";
 import { affiliateTypeLabel, formatCents } from "@/lib/affiliate";
+import QuickDeactivateButton from "./QuickDeactivateButton";
+import AffiliateRow from "./AffiliateRow";
 
 export const dynamic = "force-dynamic";
+
+// Suspicious-activity threshold: 20+ referrals in the last 7 days flags an
+// affiliate as potentially abusing the referral program.
+const SUSPICIOUS_REFERRALS_PER_WEEK = 20;
 
 export default async function AdminAffiliatesPage() {
   const supabase = await createClient();
@@ -16,11 +22,14 @@ export default async function AdminAffiliatesPage() {
   const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
   if (!isAdminRole(dbUser?.role)) redirect("/dashboard");
 
+  // 7-day window for abuse detection
+  const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
   const affiliates = await prisma.affiliate.findMany({
     orderBy: [{ approved: "asc" }, { createdAt: "desc" }],
     include: {
       user: { select: { name: true, email: true } },
-      referrals: { select: { status: true, rewardAmount: true } },
+      referrals: { select: { status: true, rewardAmount: true, createdAt: true } },
       payouts: { select: { amount: true, status: true, type: true } },
     },
   });
@@ -47,16 +56,31 @@ export default async function AdminAffiliatesPage() {
   const rows = affiliates.map((a) => {
     const converted = a.referrals.filter((r) => r.status === "CONVERTED");
     const totalEarned = converted.reduce((s, r) => s + r.rewardAmount, 0);
+    const recentReferrals = a.referrals.filter((r) => r.createdAt >= oneWeekAgo).length;
+    const isSuspicious = a.active && recentReferrals >= SUSPICIOUS_REFERRALS_PER_WEEK;
     return {
       ...a,
       referralCount: a.referrals.length,
       convertedCount: converted.length,
       totalEarned,
+      recentReferrals,
+      isSuspicious,
     };
   });
 
+  const flagged = rows.filter((r) => r.isSuspicious);
+
   return (
     <div>
+      {/* Back to admin */}
+      <Link
+        href="/admin"
+        className="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 mb-4 transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to admin
+      </Link>
+
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-1">
           <Users className="h-6 w-6 lg:h-7 lg:w-7 text-brand-600 dark:text-brand-400" />
@@ -82,6 +106,44 @@ export default async function AdminAffiliatesPage() {
         <TypeCard label="Influencers" count={influencerCount} color="amber" />
       </div>
 
+      {/* Suspicious activity warning */}
+      {flagged.length > 0 && (
+        <div className="mb-8 rounded-2xl border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950 p-5">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h2 className="text-sm font-semibold text-red-800 dark:text-red-300">
+                {flagged.length} affiliate{flagged.length !== 1 ? "s" : ""} flagged for review
+              </h2>
+              <p className="text-sm text-red-700 dark:text-red-400 mt-1">
+                Each has {SUSPICIOUS_REFERRALS_PER_WEEK}+ referrals in the last 7 days — review for abuse.
+              </p>
+              <div className="mt-3 space-y-2">
+                {flagged.map((a) => (
+                  <div
+                    key={a.id}
+                    className="flex items-center justify-between gap-3 rounded-xl bg-white dark:bg-gray-900 border border-red-200 dark:border-red-800 px-4 py-3"
+                  >
+                    <Link
+                      href={`/admin/affiliates/${a.id}`}
+                      className="flex-1 min-w-0"
+                    >
+                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                        {a.user.name ?? a.user.email}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {a.recentReferrals} referrals in 7 days · {affiliateTypeLabel(a.type)} · {a.referralCode}
+                      </p>
+                    </Link>
+                    <QuickDeactivateButton affiliateId={a.id} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Affiliate list */}
       {rows.length === 0 ? (
         <div className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-10 text-center text-gray-400 dark:text-gray-500">
@@ -103,12 +165,25 @@ export default async function AdminAffiliatesPage() {
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800 text-sm">
               {rows.map((a) => (
-                <tr key={a.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                <AffiliateRow
+                  key={a.id}
+                  affiliateId={a.id}
+                  className={
+                    a.isSuspicious
+                      ? "bg-red-50/50 dark:bg-red-950/20 hover:bg-red-50 dark:hover:bg-red-950/40"
+                      : "hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                  }
+                >
                   <td className="px-5 py-4">
-                    <Link href={`/admin/affiliates/${a.id}`} className="block">
-                      <p className="font-medium text-gray-900 dark:text-gray-100">{a.user.name ?? "—"}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{a.user.email}</p>
-                    </Link>
+                    <p className="font-medium text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                      {a.user.name ?? "—"}
+                      {a.isSuspicious && (
+                        <span title={`${a.recentReferrals} referrals in 7 days`}>
+                          <AlertTriangle className="h-4 w-4 text-red-500" />
+                        </span>
+                      )}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{a.user.email}</p>
                   </td>
                   <td className="px-5 py-4 text-gray-600 dark:text-gray-400">
                     {affiliateTypeLabel(a.type)}
@@ -138,7 +213,7 @@ export default async function AdminAffiliatesPage() {
                       </span>
                     )}
                   </td>
-                </tr>
+                </AffiliateRow>
               ))}
             </tbody>
           </table>

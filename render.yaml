@@ -1,0 +1,33 @@
+# Render.com deployment manifest for the figure extractor server.
+#
+# How to deploy:
+#   1. Push this repo to GitHub (or connect your existing repo).
+#   2. Go to https://dashboard.render.com → New → Blueprint
+#   3. Point at this repo. Render reads this file and creates the service.
+#   4. Set the env vars in the Render dashboard:
+#        EXTRACTOR_API_KEY     = (generate a random 32-char string)
+#        SUPABASE_URL          = same as your Vercel NEXT_PUBLIC_SUPABASE_URL
+#        SUPABASE_SERVICE_KEY  = your Supabase service role key
+#   5. After deploy, copy the public URL (e.g. https://vce-extractor.onrender.com)
+#   6. On Vercel → Project → Settings → Environment Variables, set:
+#        EXTRACTOR_API_URL  = the Render URL from step 5
+#        EXTRACTOR_API_KEY  = same value as step 4
+#   7. Redeploy the Vercel project so it picks up the new env vars.
+#   8. The "Save crop" button on /admin/testing/figures will now work.
+
+services:
+  - type: web
+    name: vce-extractor
+    runtime: docker
+    dockerfilePath: ./scripts/Dockerfile.extractor
+    dockerContext: .
+    plan: free            # 750h/mo free, sleeps after 15min of inactivity
+    region: singapore     # closest to AU users; pick another if preferred
+    healthCheckPath: /health
+    envVars:
+      - key: EXTRACTOR_API_KEY
+        sync: false       # set in dashboard
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false

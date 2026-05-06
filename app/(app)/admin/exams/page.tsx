@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FileText, Plus, ExternalLink, Pencil, Trash2, X, Check, Loader2, ChevronDown, ChevronRight, Eye, Code2 } from "lucide-react";
+import { FileText, Plus, ExternalLink, Pencil, Trash2, X, Check, Loader2, ChevronDown, ChevronRight, Eye, Code2, ArrowLeft } from "lucide-react";
 import { cn, stripLatex } from "@/lib/utils";
 import MathContent from "@/components/MathContent";
 
@@ -137,6 +137,15 @@ export default function AdminExamsPage() {
 
   return (
     <div>
+      {/* Back to admin */}
+      <Link
+        href="/admin"
+        className="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 mb-4 transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to admin
+      </Link>
+
       {/* Header */}
       <div className="flex items-center justify-between mb-8 lg:mb-10">
         <div>

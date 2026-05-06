@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/utils";
 import Link from "next/link";
-import { FileText, HelpCircle, Users, FlaskConical, ImageIcon, Gift } from "lucide-react";
+import { FileText, HelpCircle, Users, FlaskConical, ImageIcon, Gift, Star } from "lucide-react";
 
 export default async function AdminPage() {
   const supabase = await createClient();
@@ -13,16 +13,18 @@ export default async function AdminPage() {
   const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
   if (!isAdminRole(dbUser?.role)) redirect("/dashboard");
 
-  const [examCount, questionCount, userCount, affiliateCount] = await Promise.all([
+  const [examCount, questionCount, userCount, affiliateCount, questionSetCount] = await Promise.all([
     prisma.exam.count(),
     prisma.question.count(),
     prisma.user.count(),
     prisma.affiliate.count(),
+    prisma.questionSet.count(),
   ]);
 
   const stats = [
     { label: "Exams", value: examCount, icon: FileText, href: "/admin/exams" },
     { label: "Questions", value: questionCount, icon: HelpCircle, href: "/admin/questions" },
+    { label: "Question sets", value: questionSetCount, icon: Star, href: "/admin/question-sets" },
     { label: "Users", value: userCount, icon: Users, href: "/admin/users" },
     { label: "Affiliates", value: affiliateCount, icon: Gift, href: "/admin/affiliates" },
   ];
@@ -33,7 +35,7 @@ export default async function AdminPage() {
       <p className="text-gray-500 dark:text-gray-400 mb-8">Manage exams, questions, users, and affiliates.</p>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-10">
         {stats.map(({ label, value, icon: Icon, href }) => (
           <Link
             key={label}
@@ -50,6 +52,16 @@ export default async function AdminPage() {
       {/* Quick actions */}
       <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Quick actions</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Link
+          href="/admin/question-sets"
+          className="rounded-2xl bg-white dark:bg-gray-900 border border-brand-200 dark:border-brand-800 shadow-sm p-5 hover:border-brand-400 dark:hover:border-brand-600 transition-all"
+        >
+          <div className="flex items-center gap-2 mb-1">
+            <Star className="h-4 w-4 text-brand-500 dark:text-brand-400" />
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100">Question sets &amp; default</h3>
+          </div>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Pick which set serves the Practice page; flip the default with one click.</p>
+        </Link>
         <Link
           href="/admin/exams/new"
           className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm p-5 hover:border-brand-300 dark:hover:border-brand-700 transition-all"
