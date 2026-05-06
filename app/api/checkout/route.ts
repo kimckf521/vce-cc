@@ -67,28 +67,49 @@ export async function POST(request: NextRequest) {
   // Create the Checkout Session
   // Stripe doesn't allow both `discounts` and `allow_promotion_codes`,
   // so referred users get the auto-applied coupon, others can enter promo codes.
-  const session = await stripe.checkout.sessions.create({
-    mode: "subscription",
-    customer: customerId,
-    line_items: [
-      {
-        price: getStandardPriceId(),
-        quantity: 1,
+  let session;
+  try {
+    session = await stripe.checkout.sessions.create({
+      mode: "subscription",
+      customer: customerId,
+      line_items: [
+        {
+          price: getStandardPriceId(),
+          quantity: 1,
+        },
+      ],
+      ...(isReferred
+        ? { discounts: [{ coupon: "REFERRAL50" }] }
+        : { allow_promotion_codes: true }),
+      billing_address_collection: "auto",
+      subscription_data: {
+        metadata: {
+          userId: dbUser.id,
+          subjectSlug: "mathematical-methods",
+        },
       },
-    ],
-    ...(isReferred
-      ? { discounts: [{ coupon: "REFERRAL50" }] }
-      : { allow_promotion_codes: true }),
-    billing_address_collection: "auto",
-    subscription_data: {
-      metadata: {
-        userId: dbUser.id,
-        subjectSlug: "mathematical-methods",
-      },
-    },
-    success_url: `${origin}/dashboard?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${origin}/pricing?checkout=cancelled`,
-  });
+      success_url: `${origin}/dashboard?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/pricing?checkout=cancelled`,
+    });
+  } catch (err) {
+    // Surface the real Stripe error so we can debug live-vs-test-mode
+    // mismatches, missing price IDs, deleted customers, etc.
+    const errorJson = JSON.stringify(err, Object.getOwnPropertyNames(err ?? {}));
+    const message = err instanceof Error ? err.message : "Unknown Stripe error";
+    // eslint-disable-next-line no-console
+    console.error(
+      "[checkout] Stripe rejected checkout.sessions.create. userId=%s priceId=%s customerId=%s message=%s full=%s",
+      user.id,
+      getStandardPriceId(),
+      customerId,
+      message,
+      errorJson,
+    );
+    return NextResponse.json(
+      { error: `Stripe error: ${message}` },
+      { status: 500 }
+    );
+  }
 
   if (!session.url) {
     return NextResponse.json(

@@ -43,10 +43,28 @@ export async function POST(request: NextRequest) {
     "http://localhost:3000";
 
   const stripe = getStripe();
-  const session = await stripe.billingPortal.sessions.create({
-    customer: customerId,
-    return_url: `${origin}/profile`,
-  });
+  let session;
+  try {
+    session = await stripe.billingPortal.sessions.create({
+      customer: customerId,
+      return_url: `${origin}/profile`,
+    });
+  } catch (err) {
+    const errorJson = JSON.stringify(err, Object.getOwnPropertyNames(err ?? {}));
+    const message = err instanceof Error ? err.message : "Unknown Stripe error";
+    // eslint-disable-next-line no-console
+    console.error(
+      "[billing-portal] Stripe rejected billingPortal.sessions.create. userId=%s customerId=%s message=%s full=%s",
+      user.id,
+      customerId,
+      message,
+      errorJson,
+    );
+    return NextResponse.json(
+      { error: `Stripe error: ${message}` },
+      { status: 500 }
+    );
+  }
 
   return NextResponse.json({ url: session.url });
 }
