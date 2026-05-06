@@ -75,7 +75,7 @@ export default function SearchPage() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="e.g. tangent, 2023, chain rule, binomial..."
-          className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 pl-12 lg:pl-14 pr-4 py-3 lg:py-4 text-sm lg:text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 pl-12 lg:pl-14 pr-4 py-3 lg:py-4 text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
           autoFocus
         />
         {loading && (
@@ -92,7 +92,7 @@ export default function SearchPage() {
 
       {results.length > 0 && (
         <div className="space-y-3 lg:space-y-4">
-          <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-4">
+          <p className="text-base text-gray-500 dark:text-gray-400 mb-4">
             {total > results.length
               ? `Showing ${results.length} of ${total} results`
               : `${total} result${total !== 1 ? "s" : ""}`}
@@ -119,7 +119,7 @@ export default function SearchPage() {
                   </span>
                   <span className="text-xs lg:text-sm text-gray-400 dark:text-gray-500">{q.marks} mark{q.marks !== 1 ? "s" : ""}</span>
                 </div>
-                <div className="text-sm lg:text-base text-gray-700 dark:text-gray-300 line-clamp-3">
+                <div className="text-base text-gray-700 dark:text-gray-300 line-clamp-3">
                   <MathContent content={preview} />
                 </div>
                 {q.subtopics.length > 0 && (

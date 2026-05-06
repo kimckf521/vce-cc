@@ -39,7 +39,7 @@ export default function BottomNav({ isAdmin = false }: { isAdmin?: boolean }) {
               )}
             >
               <Icon className={cn("h-5 w-5 flex-shrink-0", active && (href === "/admin" ? "text-violet-600 dark:text-violet-400" : "text-brand-600 dark:text-brand-400"))} />
-              <span className="text-[10px] sm:text-xs font-medium">{label}</span>
+              <span className="text-xs sm:text-sm font-medium">{label}</span>
             </Link>
           );
         })}

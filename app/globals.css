@@ -24,3 +24,19 @@
 .dark .katex .minner {
   color: inherit;
 }
+
+/* Mobile: long equations scroll within their container instead of pushing
+   the page wider and forcing a horizontal scroll on the whole viewport. */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* Allow horizontal scroll without clipping descenders */
+  padding: 4px 0;
+  /* Hide native scrollbar on touch devices to keep things clean */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Inline math that ends up too long for its container also scrolls */
+.katex {
+  max-width: 100%;
+}

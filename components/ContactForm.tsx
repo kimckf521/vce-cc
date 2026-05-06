@@ -54,7 +54,7 @@ export default function ContactForm() {
           <h3 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
             Message sent.
           </h3>
-          <p className="text-sm lg:text-base text-gray-600 dark:text-gray-400 max-w-md mx-auto leading-relaxed">
+          <p className="text-base text-gray-600 dark:text-gray-400 max-w-md mx-auto leading-relaxed">
             Thanks for reaching out — we&apos;ll get back to you within two business days.
           </p>
           <button
@@ -70,7 +70,7 @@ export default function ContactForm() {
   }
 
   const inputClass =
-    "w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/60 px-4 py-3 lg:py-3.5 text-sm lg:text-base text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 hover:border-gray-300 dark:hover:border-gray-600 transition-all";
+    "w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/60 px-4 py-3 lg:py-3.5 text-base text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 hover:border-gray-300 dark:hover:border-gray-600 transition-all";
 
   return (
     <div className="relative">
@@ -188,7 +188,7 @@ export default function ContactForm() {
             <button
               type="submit"
               disabled={submitting}
-              className="group inline-flex items-center gap-2 rounded-xl bg-brand-600 px-6 lg:px-7 py-3 lg:py-3.5 text-sm lg:text-base font-semibold text-white shadow-md shadow-brand-600/20 hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-600/30 hover:-translate-y-0.5 active:translate-y-0 transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-md"
+              className="group inline-flex items-center gap-2 rounded-xl bg-brand-600 px-6 lg:px-7 py-3 lg:py-3.5 text-base font-semibold text-white shadow-md shadow-brand-600/20 hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-600/30 hover:-translate-y-0.5 active:translate-y-0 transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-md"
             >
               {submitting ? (
                 <>

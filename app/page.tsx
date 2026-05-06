@@ -233,7 +233,7 @@ export default async function HomePage() {
             ATAR Hero is building revision tools for every VCE subject. Mathematical Methods is live now — more on the way.
           </p>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             {subjects.map((subject) => (
               <div
                 key={subject.name}

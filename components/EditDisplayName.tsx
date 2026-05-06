@@ -67,7 +67,7 @@ export default function EditDisplayName({ initialName }: Props) {
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter") save(); if (e.key === "Escape") cancel(); }}
-            className="flex-1 rounded-xl border border-brand-300 dark:border-brand-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-3 py-2 text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-brand-500 transition"
+            className="flex-1 rounded-xl border border-brand-300 dark:border-brand-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-brand-500 transition"
           />
           <button
             onClick={save}
@@ -96,7 +96,7 @@ export default function EditDisplayName({ initialName }: Props) {
         <p className="text-xs lg:text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-0.5">
           Display name
         </p>
-        <p className="text-sm lg:text-base font-medium text-gray-900 dark:text-gray-100">{name}</p>
+        <p className="text-base font-medium text-gray-900 dark:text-gray-100">{name}</p>
       </div>
       <button
         onClick={startEdit}

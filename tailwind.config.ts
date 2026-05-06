@@ -8,6 +8,17 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    screens: {
+      // Custom xs breakpoint for very narrow phones (iPhone SE: 375px) so we
+      // can hide the wordmark / less-essential UI before the next default
+      // breakpoint at sm (640px).
+      xs: "480px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
+    },
     extend: {
       colors: {
         brand: {

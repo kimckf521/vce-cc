@@ -45,36 +45,36 @@ function LoginForm() {
 
       <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-8 lg:p-12">
         <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">Welcome back</h1>
-        <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-8">Log in to continue practising</p>
+        <p className="text-base text-gray-500 dark:text-gray-400 mb-8">Log in to continue practising</p>
 
         {reason === "other-device" && !error && (
-          <div className="mb-5 rounded-xl bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-4 py-3 text-sm lg:text-base text-amber-800 dark:text-amber-300">
+          <div className="mb-5 rounded-xl bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-4 py-3 text-base text-amber-800 dark:text-amber-300">
             You were signed out because your account was used on another device.
             Only one device can be signed in at a time.
           </div>
         )}
 
         {error && (
-          <div className="mb-5 rounded-xl bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 px-4 py-3 text-sm lg:text-base text-red-700 dark:text-red-400">
+          <div className="mb-5 rounded-xl bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 px-4 py-3 text-base text-red-700 dark:text-red-400">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm lg:text-base font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email</label>
+            <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email</label>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-3 lg:py-3.5 text-sm lg:text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
+              className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-3 lg:py-3.5 text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
               placeholder="you@example.com"
             />
           </div>
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-sm lg:text-base font-medium text-gray-700 dark:text-gray-300">Password</label>
+              <label className="block text-base font-medium text-gray-700 dark:text-gray-300">Password</label>
               <Link href="/forgot-password" className="text-xs lg:text-sm text-brand-600 dark:text-brand-400 hover:underline font-medium">
                 Forgot password?
               </Link>
@@ -85,7 +85,7 @@ function LoginForm() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-3 lg:py-3.5 pr-12 text-sm lg:text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
+                className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-3 lg:py-3.5 pr-12 text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
                 placeholder="••••••••"
               />
               <button
@@ -103,14 +103,14 @@ function LoginForm() {
               id="remember"
               className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-brand-600 focus:ring-brand-500 cursor-pointer"
             />
-            <label htmlFor="remember" className="text-sm lg:text-base text-gray-600 dark:text-gray-400 cursor-pointer select-none">
+            <label htmlFor="remember" className="text-base text-gray-600 dark:text-gray-400 cursor-pointer select-none">
               Remember me
             </label>
           </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-brand-600 py-3 lg:py-3.5 text-sm lg:text-base font-semibold text-white hover:bg-brand-700 transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+            className="w-full rounded-xl bg-brand-600 py-3 lg:py-3.5 text-base font-semibold text-white hover:bg-brand-700 transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
           >
             {loading && (
               <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
@@ -122,7 +122,7 @@ function LoginForm() {
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm lg:text-base text-gray-500 dark:text-gray-400">
+        <p className="mt-6 text-center text-base text-gray-500 dark:text-gray-400">
           Don&apos;t have an account?{" "}
           <Link href="/signup" className="text-brand-600 dark:text-brand-400 font-medium hover:underline">
             Sign up

@@ -557,8 +557,9 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
                 {difficultyLabel[overallDifficulty]}
               </span>
             )}
+            {/* Frequency hidden on phone — saves a row of metadata clutter */}
             {!examMode && frequency && (
-              <span className="flex items-center gap-1 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-0.5 text-xs lg:text-sm font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">
+              <span className="hidden sm:flex items-center gap-1 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-0.5 text-xs lg:text-sm font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">
                 <CalendarDays className="h-3 w-3 lg:h-3.5 lg:w-3.5 text-gray-400 dark:text-gray-500" />
                 {FREQ_LABEL[frequency]}
               </span>
@@ -573,8 +574,19 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
           {!examMode && (
             <div className="flex flex-wrap gap-2 items-center">
               <span className="rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-400 px-3 py-1 text-sm lg:text-base font-medium">{topic}</span>
-              {subtopics?.map((s) => (
-                <span key={s} className="rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-3 py-1 text-sm lg:text-base font-medium">{s}</span>
+              {/* Subtopic pills hidden on phone after the first one to keep
+                  the card header from wrapping onto 3 rows. The first
+                  subtopic still gives context. */}
+              {subtopics?.map((s, i) => (
+                <span
+                  key={s}
+                  className={cn(
+                    "rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-3 py-1 text-sm lg:text-base font-medium",
+                    i > 0 && "hidden sm:inline"
+                  )}
+                >
+                  {s}
+                </span>
               ))}
               {calculatorAllowed !== undefined && (
                 <span className={cn(
@@ -605,15 +617,15 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
           {!hasParts && !examMode && (
             <>
               <button onClick={() => toggleStatus(parts[0].id, "CORRECT")} title="Mark correct"
-                className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[parts[0].id] === "CORRECT" ? "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400" : "text-gray-400 dark:text-gray-500 hover:text-green-500")}>
+                className={cn("rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center", statuses[parts[0].id] === "CORRECT" ? "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400" : "text-gray-400 dark:text-gray-500 hover:text-green-500")}>
                 <CheckCircle className="h-4 w-4 lg:h-5 lg:w-5" />
               </button>
               <button onClick={() => toggleStatus(parts[0].id, "INCORRECT")} title="Mark incorrect"
-                className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[parts[0].id] === "INCORRECT" ? "bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400" : "text-gray-400 dark:text-gray-500 hover:text-red-500")}>
+                className={cn("rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center", statuses[parts[0].id] === "INCORRECT" ? "bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400" : "text-gray-400 dark:text-gray-500 hover:text-red-500")}>
                 <XCircle className="h-4 w-4 lg:h-5 lg:w-5" />
               </button>
               <button onClick={() => toggleBookmark(parts[0].id)} title="Bookmark for review"
-                className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", bookmarks[parts[0].id] ? "bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400" : "text-gray-400 dark:text-gray-500 hover:text-yellow-500")}>
+                className={cn("rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center", bookmarks[parts[0].id] ? "bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400" : "text-gray-400 dark:text-gray-500 hover:text-yellow-500")}>
                 <BookmarkIcon className="h-4 w-4 lg:h-5 lg:w-5" />
               </button>
             </>
@@ -650,15 +662,15 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
                 {!examMode && (
                 <div className="flex items-center gap-0.5">
                   <button onClick={() => toggleStatus(p.id, "CORRECT")} title="Mark correct"
-                    className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[p.id] === "CORRECT" ? "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400" : "text-gray-400 dark:text-gray-500 hover:text-green-500")}>
+                    className={cn("rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center", statuses[p.id] === "CORRECT" ? "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400" : "text-gray-400 dark:text-gray-500 hover:text-green-500")}>
                     <CheckCircle className="h-4 w-4 lg:h-5 lg:w-5" />
                   </button>
                   <button onClick={() => toggleStatus(p.id, "INCORRECT")} title="Mark incorrect"
-                    className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", statuses[p.id] === "INCORRECT" ? "bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400" : "text-gray-400 dark:text-gray-500 hover:text-red-500")}>
+                    className={cn("rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center", statuses[p.id] === "INCORRECT" ? "bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400" : "text-gray-400 dark:text-gray-500 hover:text-red-500")}>
                     <XCircle className="h-4 w-4 lg:h-5 lg:w-5" />
                   </button>
                   <button onClick={() => toggleBookmark(p.id)} title="Bookmark for review"
-                    className={cn("rounded-lg p-1 lg:p-1.5 transition-colors", bookmarks[p.id] ? "bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400" : "text-gray-400 dark:text-gray-500 hover:text-yellow-500")}>
+                    className={cn("rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center", bookmarks[p.id] ? "bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400" : "text-gray-400 dark:text-gray-500 hover:text-yellow-500")}>
                     <BookmarkIcon className="h-4 w-4 lg:h-5 lg:w-5" />
                   </button>
                 </div>

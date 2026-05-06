@@ -86,12 +86,12 @@ function SignupForm() {
         <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-8 lg:p-12">
           <div className="text-5xl lg:text-6xl mb-5">📬</div>
           <h2 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100">Check your email</h2>
-          <p className="mt-3 text-sm lg:text-base text-gray-500 dark:text-gray-400 leading-relaxed">
+          <p className="mt-3 text-base text-gray-500 dark:text-gray-400 leading-relaxed">
             We sent a confirmation link to <strong>{email}</strong>. Click it to activate your account.
           </p>
           <Link
             href="/login"
-            className="mt-6 inline-block text-sm lg:text-base text-brand-600 dark:text-brand-400 font-medium hover:underline"
+            className="mt-6 inline-block text-base text-brand-600 dark:text-brand-400 font-medium hover:underline"
           >
             Back to login
           </Link>
@@ -109,7 +109,7 @@ function SignupForm() {
 
       <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-8 lg:p-12">
         <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">Create your account</h1>
-        <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-8">Free — no credit card needed</p>
+        <p className="text-base text-gray-500 dark:text-gray-400 mb-8">Free — no credit card needed</p>
 
         {referralCode && (
           <div className="mb-5 rounded-xl bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
@@ -118,7 +118,7 @@ function SignupForm() {
         )}
 
         {error && (
-          <div className="mb-5 rounded-xl bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 px-4 py-3 text-sm lg:text-base text-red-700 dark:text-red-400">
+          <div className="mb-5 rounded-xl bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 px-4 py-3 text-base text-red-700 dark:text-red-400">
             {error}
           </div>
         )}
@@ -126,33 +126,33 @@ function SignupForm() {
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Name */}
           <div>
-            <label className="block text-sm lg:text-base font-medium text-gray-700 dark:text-gray-300 mb-1.5">Name</label>
+            <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-1.5">Name</label>
             <input
               type="text"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-3 lg:py-3.5 text-sm lg:text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
+              className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-3 lg:py-3.5 text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
               placeholder="Your name"
             />
           </div>
 
           {/* Email */}
           <div>
-            <label className="block text-sm lg:text-base font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email</label>
+            <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email</label>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-3 lg:py-3.5 text-sm lg:text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
+              className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-3 lg:py-3.5 text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
               placeholder="you@example.com"
             />
           </div>
 
           {/* Password */}
           <div>
-            <label className="block text-sm lg:text-base font-medium text-gray-700 dark:text-gray-300 mb-1.5">Password</label>
+            <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-1.5">Password</label>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -160,7 +160,7 @@ function SignupForm() {
                 minLength={8}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 px-4 py-3 lg:py-3.5 pr-12 text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
+                className="w-full rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 px-4 py-3 lg:py-3.5 pr-12 text-base focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
                 placeholder="At least 8 characters"
               />
               <button
@@ -177,7 +177,7 @@ function SignupForm() {
 
           {/* Confirm Password */}
           <div>
-            <label className="block text-sm lg:text-base font-medium text-gray-700 dark:text-gray-300 mb-1.5">Confirm password</label>
+            <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-1.5">Confirm password</label>
             <div className="relative">
               <input
                 type={showConfirm ? "text" : "password"}
@@ -185,7 +185,7 @@ function SignupForm() {
                 minLength={8}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className={`w-full rounded-xl border px-4 py-3 lg:py-3.5 pr-12 text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition ${
+                className={`w-full rounded-xl border px-4 py-3 lg:py-3.5 pr-12 text-base focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition ${
                   confirmPassword && confirmPassword !== password
                     ? "border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-950"
                     : "border-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
@@ -210,13 +210,13 @@ function SignupForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-brand-600 py-3 lg:py-3.5 text-sm lg:text-base font-semibold text-white hover:bg-brand-700 transition-colors disabled:opacity-60 mt-2"
+            className="w-full rounded-xl bg-brand-600 py-3 lg:py-3.5 text-base font-semibold text-white hover:bg-brand-700 transition-colors disabled:opacity-60 mt-2"
           >
             {loading ? "Creating account…" : "Create account"}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm lg:text-base text-gray-500 dark:text-gray-400">
+        <p className="mt-6 text-center text-base text-gray-500 dark:text-gray-400">
           Already have an account?{" "}
           <Link href="/login" className="text-brand-600 dark:text-brand-400 font-medium hover:underline">
             Log in
