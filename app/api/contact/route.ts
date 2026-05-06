@@ -107,8 +107,15 @@ export async function POST(req: NextRequest) {
     replyTo: email, // Hitting "Reply" sends back to the customer
   }).then((result) => {
     if (!result.ok) {
+      // Use printf-style so Vercel keeps the full message instead of truncating
+      // an object spread. The DB row id lets you correlate back to the record.
       // eslint-disable-next-line no-console
-      console.error(`[contact] Email send failed for ${record.id}:`, result.error);
+      console.error(
+        "[contact] Email send failed. recordId=%s to=%s error=%s",
+        record.id,
+        CONTACT_TO,
+        result.error,
+      );
     }
   });
 

@@ -83,10 +83,36 @@ export async function sendEmail(args: SendEmailArgs): Promise<SendEmailResult> {
     });
 
     if (result.error) {
-      return { ok: false, error: result.error.message };
+      // Log the full Resend error here too so it shows up in runtime logs
+      // even if downstream callers truncate it.
+      // eslint-disable-next-line no-console
+      console.error(
+        "[email] Resend API rejected send. from=%s to=%s name=%s status=%s message=%s",
+        from,
+        args.to,
+        // @ts-expect-error — Resend error fields aren't in the public types
+        result.error.name,
+        // @ts-expect-error — Resend error fields aren't in the public types
+        result.error.statusCode,
+        result.error.message,
+      );
+      return {
+        ok: false,
+        error: `${
+          // @ts-expect-error — Resend error fields aren't in the public types
+          result.error.name ?? "ResendError"
+        }: ${result.error.message}`,
+      };
     }
     return { ok: true, id: result.data?.id ?? null };
   } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(
+      "[email] Unexpected exception calling Resend. from=%s to=%s err=%o",
+      from,
+      args.to,
+      err,
+    );
     return {
       ok: false,
       error: err instanceof Error ? err.message : "Unknown email error",
