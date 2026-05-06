@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
           subjectSlug: "mathematical-methods",
         },
       },
-      success_url: `${origin}/dashboard?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${origin}/welcome?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/pricing?checkout=cancelled`,
     });
   } catch (err) {

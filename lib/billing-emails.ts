@@ -62,3 +62,56 @@ export async function sendPaymentFailedEmail(args: {
     text: lines.join("\n"),
   });
 }
+
+/**
+ * Sent to the user when their charge has been refunded. Two flavours:
+ *   - Full refund: subscription is also being cancelled at period end → user
+ *     gets to use the rest of the billing period they paid for.
+ *   - Partial refund: subscription continues unchanged.
+ */
+export async function sendRefundEmail(args: {
+  to: string;
+  amountCents: number;
+  currency: string;
+  /** True if we just scheduled cancel_at_period_end on their subscription. */
+  subscriptionCancelled: boolean;
+  /** Unix seconds — last day they have access (only used when cancelled). */
+  accessUntil?: number | null;
+}): Promise<void> {
+  const amount = formatAmount(args.amountCents, args.currency);
+  const accessUntilLabel = formatDate(args.accessUntil);
+
+  const lines = args.subscriptionCancelled
+    ? [
+        `Hi,`,
+        ``,
+        `We've refunded ${amount} to your card. The refund should appear on your statement in 5–10 business days, depending on your bank.`,
+        ``,
+        `Your subscription has been cancelled — you won't be charged again.${accessUntilLabel ? ` You'll keep access until ${accessUntilLabel}.` : ""}`,
+        ``,
+        `If you change your mind, you can resubscribe anytime from your billing page:`,
+        BILLING_URL,
+        ``,
+        `Thanks for trying ${SITE_NAME}. If there's anything we could have done better, just reply to this email.`,
+        ``,
+        `— The ${SITE_NAME} team`,
+      ]
+    : [
+        `Hi,`,
+        ``,
+        `We've issued a partial refund of ${amount} to your card. The refund should appear on your statement in 5–10 business days, depending on your bank.`,
+        ``,
+        `Your subscription is still active and will renew as scheduled. To make changes, visit your billing page:`,
+        BILLING_URL,
+        ``,
+        `— The ${SITE_NAME} team`,
+      ];
+
+  await sendEmail({
+    to: args.to,
+    subject: args.subscriptionCancelled
+      ? `Refund processed — your ${SITE_NAME} subscription has been cancelled`
+      : `Partial refund processed for your ${SITE_NAME} subscription`,
+    text: lines.join("\n"),
+  });
+}

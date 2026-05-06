@@ -5,7 +5,7 @@ import { getStripe } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 import { ensureMathMethodsSubject, ACCESS_GRANTING_STATUSES } from "@/lib/subscription";
 import { rewardForType } from "@/lib/affiliate";
-import { sendPaymentFailedEmail } from "@/lib/billing-emails";
+import { sendPaymentFailedEmail, sendRefundEmail } from "@/lib/billing-emails";
 
 // Stripe webhooks need the raw request body for signature verification.
 // Next.js App Router gives us that via request.text().
@@ -88,6 +88,17 @@ export async function POST(request: NextRequest) {
         const invoice = event.data.object as Stripe.Invoice;
         console.log(`[stripe-webhook] ${event.type} for invoice ${invoice.id}`);
         await notifyPaymentFailed(invoice);
+        break;
+      }
+
+      case "charge.refunded": {
+        // A refund happened (likely from the Stripe dashboard). Refunds
+        // don't auto-cancel subscriptions — if we don't act, the user will
+        // be billed again at the next renewal. On full refund, schedule
+        // cancel_at_period_end so they keep what they paid for but no
+        // future billing happens. Email the user either way.
+        const charge = event.data.object as Stripe.Charge;
+        await handleChargeRefunded(charge);
         break;
       }
 
@@ -363,5 +374,146 @@ async function notifyPaymentFailed(invoice: Stripe.Invoice) {
       `[stripe-webhook] Failed to send payment-failed email to ${user.email}:`,
       err
     );
+  }
+}
+
+/**
+ * Handle a charge.refunded event. If the refund covers the full charge,
+ * schedule cancel_at_period_end on the customer's active subscription so
+ * they keep access through the period they already paid for, but never
+ * get charged again. Either way, email the user.
+ *
+ * Failures are logged but never thrown — we don't want Stripe to retry the
+ * webhook for email/cancel issues.
+ */
+async function handleChargeRefunded(charge: Stripe.Charge) {
+  const customerId =
+    typeof charge.customer === "string"
+      ? charge.customer
+      : charge.customer?.id;
+  if (!customerId) {
+    console.warn(
+      `[stripe-webhook] Refunded charge ${charge.id} has no customer; skipping`
+    );
+    return;
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { stripeCustomerId: customerId },
+    select: { id: true, email: true },
+  });
+  if (!user) {
+    console.warn(
+      `[stripe-webhook] No user found for refunded charge ${charge.id} (customer ${customerId})`
+    );
+    return;
+  }
+
+  const isFullRefund =
+    charge.refunded === true && charge.amount_refunded >= charge.amount;
+  const refundAmount = charge.amount_refunded;
+
+  let cancelledSubscriptionId: string | null = null;
+  let accessUntil: number | null = null;
+
+  if (isFullRefund) {
+    // Find the customer's active subscription. Most reliable path is via
+    // the invoice the charge paid (so we cancel the right one even if the
+    // user has multiple subs). Fall back to listing their active subs.
+    const stripe = getStripe();
+    let subscriptionId: string | null = null;
+
+    // `charge.invoice` is no longer in the typed Charge in API version
+    // 2024-11-20.acacia, but the underlying API still returns it. Cast through.
+    const chargeInvoice = (charge as unknown as { invoice?: string | { id: string } | null }).invoice;
+    if (chargeInvoice) {
+      const invoiceId =
+        typeof chargeInvoice === "string" ? chargeInvoice : chargeInvoice.id;
+      try {
+        const invoice = await stripe.invoices.retrieve(invoiceId);
+        // Stripe API 2024-11-20.acacia moved subscription off the top-level
+        // invoice. Read whichever shape is present.
+        subscriptionId =
+          (invoice as unknown as { subscription?: string }).subscription ??
+          (invoice as unknown as {
+            parent?: { subscription_details?: { subscription?: string } };
+          }).parent?.subscription_details?.subscription ??
+          null;
+      } catch (err) {
+        console.warn(
+          `[stripe-webhook] Could not retrieve invoice ${invoiceId} for refund:`,
+          err
+        );
+      }
+    }
+
+    if (!subscriptionId) {
+      try {
+        const subs = await stripe.subscriptions.list({
+          customer: customerId,
+          status: "active",
+          limit: 1,
+        });
+        subscriptionId = subs.data[0]?.id ?? null;
+      } catch (err) {
+        console.warn(
+          `[stripe-webhook] Could not list subscriptions for customer ${customerId}:`,
+          err
+        );
+      }
+    }
+
+    if (subscriptionId) {
+      try {
+        const updated = await stripe.subscriptions.update(subscriptionId, {
+          cancel_at_period_end: true,
+        });
+        cancelledSubscriptionId = subscriptionId;
+        const firstItem = updated.items.data[0];
+        accessUntil = firstItem?.current_period_end ?? null;
+        // Also flag locally so the UI updates immediately. The subsequent
+        // customer.subscription.updated webhook will sync the rest.
+        await prisma.subjectEnrolment.updateMany({
+          where: { stripeSubscriptionId: subscriptionId },
+          data: { cancelAtPeriodEnd: true },
+        });
+        console.log(
+          `[stripe-webhook] Scheduled cancel for subscription ${subscriptionId} after full refund of charge ${charge.id}`
+        );
+      } catch (err) {
+        console.error(
+          `[stripe-webhook] Failed to schedule cancel for subscription ${subscriptionId}:`,
+          err
+        );
+      }
+    } else {
+      console.warn(
+        `[stripe-webhook] Full refund on charge ${charge.id} but no active subscription found for customer ${customerId}`
+      );
+    }
+  } else {
+    console.log(
+      `[stripe-webhook] Partial refund of ${refundAmount}/${charge.amount} on charge ${charge.id} — subscription left active`
+    );
+  }
+
+  if (user.email) {
+    try {
+      await sendRefundEmail({
+        to: user.email,
+        amountCents: refundAmount,
+        currency: charge.currency ?? "aud",
+        subscriptionCancelled: cancelledSubscriptionId !== null,
+        accessUntil,
+      });
+      console.log(
+        `[stripe-webhook] Sent refund email to ${user.email} for charge ${charge.id}`
+      );
+    } catch (err) {
+      console.error(
+        `[stripe-webhook] Failed to send refund email to ${user.email}:`,
+        err
+      );
+    }
   }
 }
