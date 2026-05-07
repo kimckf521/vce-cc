@@ -226,7 +226,13 @@ export default async function AdminAffiliateDetailPage({
                     <p className="text-xs text-gray-500 dark:text-gray-400">{r.referredUser.email}</p>
                   </td>
                   <td className="px-5 py-4 text-gray-500 dark:text-gray-400">
-                    {r.referredUser.createdAt.toLocaleDateString("en-AU")}
+                    <p>{r.referredUser.createdAt.toLocaleDateString("en-AU")}</p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500">
+                      {r.referredUser.createdAt.toLocaleTimeString("en-AU", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </p>
                   </td>
                   <td className="px-5 py-4 text-gray-900 dark:text-gray-100">{r.status}</td>
                   <td className="px-5 py-4 text-right font-medium text-gray-900 dark:text-gray-100">
