@@ -16,10 +16,14 @@ export default function GiveCreditButton({
   userId,
   userEmail,
   currentCreditCents,
+  currentDebtCents = 0,
 }: {
   userId: string;
   userEmail: string;
   currentCreditCents: number;
+  /** Positive Stripe balance (customer owes this on next invoice). New
+   *  credits will cancel debt before showing as available credit. */
+  currentDebtCents?: number;
 }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -107,6 +111,14 @@ export default function GiveCreditButton({
           (current: ${(currentCreditCents / 100).toFixed(2)})
         </span>
       </p>
+      {currentDebtCents > 0 && (
+        <div className="mb-2 rounded-lg bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-3 py-1.5 text-xs text-amber-800 dark:text-amber-300">
+          ⚠️ This user has a <strong>${(currentDebtCents / 100).toFixed(2)} debt</strong> in
+          Stripe (positive balance). Any credit you add will first cancel out
+          this debt before becoming usable credit. To clear the debt and start
+          fresh, add at least <strong>${(currentDebtCents / 100).toFixed(2)}</strong>.
+        </div>
+      )}
       {error && (
         <div className="mb-2 rounded-lg bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 px-3 py-1.5 text-xs text-red-700 dark:text-red-400">
           {error}

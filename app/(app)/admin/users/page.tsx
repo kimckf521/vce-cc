@@ -39,12 +39,14 @@ function formatDate(date: Date) {
 }
 
 /**
- * Fetch each user's current Stripe customer balance (account credit).
- * Skips users without a stripeCustomerId, returns 0 for them. Returns the
- * absolute credit in cents (Stripe stores credits as negative balances).
+ * Fetch each user's current Stripe customer balance (signed cents).
+ * Returns the RAW Stripe balance:
+ *   - Negative → customer has credit (will be applied to next invoice)
+ *   - Positive → customer OWES that amount (will be charged on next invoice)
+ *   - 0       → no credit, no debt
  *
- * Errors per-customer are swallowed (returns 0) so a single bad customer
- * doesn't break the whole list.
+ * Skips users without a stripeCustomerId, returns 0 for them. Errors per-customer
+ * are swallowed so a single bad customer doesn't break the whole list.
  */
 async function fetchCreditBalances(
   users: { id: string; stripeCustomerId: string | null }[]
@@ -56,9 +58,7 @@ async function fetchCreditBalances(
       try {
         const c = await stripe.customers.retrieve(u.stripeCustomerId);
         if (c.deleted) return [u.id, 0];
-        const balance = typeof c.balance === "number" ? c.balance : 0;
-        // Negative balance = credit. Return absolute cents, or 0 if positive.
-        return [u.id, balance < 0 ? Math.abs(balance) : 0];
+        return [u.id, typeof c.balance === "number" ? c.balance : 0];
       } catch (err) {
         if (!isResourceMissing(err)) {
           console.error(`[admin-users] balance fetch failed for ${u.id}:`, err);
@@ -246,12 +246,26 @@ export default async function AdminUsersPage() {
                     </div>
                   )}
                 </div>
-                {/* Super-admin: view + adjust credit (Stripe customer balance) */}
-                {isSuperAdmin && u.role === "STUDENT" && u.id !== user!.id && (
+                {/* Super-admin: view + adjust credit (Stripe customer balance).
+                    Available for STUDENT, TUTOR, INFLUENCER — anyone who could
+                    receive a credit/payout. Excludes other admins. */}
+                {isSuperAdmin &&
+                  (u.role === "STUDENT" || u.role === "TUTOR" || u.role === "INFLUENCER") &&
+                  u.id !== user!.id && (() => {
+                    // Stripe balance: negative = credit, positive = customer owes
+                    const balance = creditBalances.get(u.id) ?? 0;
+                    return (
                   <div className="shrink-0 flex flex-col items-end gap-1.5">
-                    {creditBalances.get(u.id) ? (
+                    {balance < 0 ? (
                       <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
-                        Credit: ${(creditBalances.get(u.id)! / 100).toFixed(2)}
+                        Credit: ${(Math.abs(balance) / 100).toFixed(2)}
+                      </span>
+                    ) : balance > 0 ? (
+                      <span
+                        className="inline-flex items-center gap-1 rounded-full bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 px-2.5 py-0.5 text-xs font-semibold text-red-700 dark:text-red-400"
+                        title="Stripe customer balance is positive — they owe this on their next invoice. New credits cancel out the debt before showing as available credit."
+                      >
+                        Owes: ${(balance / 100).toFixed(2)}
                       </span>
                     ) : (
                       <span className="text-xs text-gray-400 dark:text-gray-500">No credit</span>
@@ -259,10 +273,12 @@ export default async function AdminUsersPage() {
                     <GiveCreditButton
                       userId={u.id}
                       userEmail={u.email}
-                      currentCreditCents={creditBalances.get(u.id) ?? 0}
+                      currentCreditCents={balance < 0 ? Math.abs(balance) : 0}
+                      currentDebtCents={balance > 0 ? balance : 0}
                     />
                   </div>
-                )}
+                    );
+                  })()}
               </div>
 
               {/* Progress bar */}
