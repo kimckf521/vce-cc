@@ -96,6 +96,7 @@ export async function GET(request: NextRequest) {
 
     // Hold passed AND referee is still subscribed — finalize the commission
     const isStudent = r.affiliate.type === "STUDENT_REFERRAL";
+    const isInfluencer = r.affiliate.type === "INFLUENCER_AFFILIATE";
     try {
       await prisma.$transaction(async (tx) => {
         // Re-check status inside the txn so reruns don't double-credit
@@ -110,7 +111,14 @@ export async function GET(request: NextRequest) {
           data: { status: "CONVERTED", finalizedAt: now },
         });
 
-        if (isStudent) {
+        // Auto-increment creditBalance:
+        //   - STUDENT: source of platform credit (also pushed to Stripe below)
+        //   - INFLUENCER: source of "Available for payout" — admin's payout
+        //                 panel reads this directly. Without this increment,
+        //                 finalized commissions wouldn't show up.
+        // TUTOR: skip — their "Available for payout" calc still uses
+        //        sum(CONVERTED) - sum(paid-out) so it picks up the new row.
+        if (isStudent || isInfluencer) {
           await tx.affiliate.update({
             where: { id: r.affiliateId },
             data: { creditBalance: { increment: r.rewardAmount } },

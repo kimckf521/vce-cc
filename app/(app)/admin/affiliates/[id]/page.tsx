@@ -3,7 +3,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/utils";
-import { affiliateTypeLabel, formatCents } from "@/lib/affiliate";
+import { affiliateTypeLabel, formatCents, rewardForType } from "@/lib/affiliate";
 import { ChevronLeft } from "lucide-react";
 import AffiliateActions from "./AffiliateActions";
 import AttributeReferralForm from "./AttributeReferralForm";
@@ -150,6 +150,19 @@ export default async function AdminAffiliateDetailPage({
               </dt>
               <dd className="text-gray-900 dark:text-gray-100">{formatCents(affiliate.creditBalance)}</dd>
             </div>
+            {affiliate.type === "INFLUENCER_AFFILIATE" && (
+              <div className="flex justify-between">
+                <dt className="text-gray-500 dark:text-gray-400">Commission rate</dt>
+                <dd className="text-gray-900 dark:text-gray-100">
+                  {formatCents(affiliate.commissionOverrideCents ?? rewardForType(affiliate.type))}
+                  {affiliate.commissionOverrideCents !== null && (
+                    <span className="ml-1.5 text-xs text-amber-600 dark:text-amber-400 font-medium">
+                      (custom)
+                    </span>
+                  )}
+                </dd>
+              </div>
+            )}
           </dl>
         </div>
 
@@ -190,6 +203,8 @@ export default async function AdminAffiliateDetailPage({
         active={affiliate.active}
         notes={affiliate.notes ?? ""}
         referralCode={affiliate.referralCode}
+        commissionOverrideCents={affiliate.commissionOverrideCents}
+        defaultCommissionCents={rewardForType(affiliate.type)}
       />
 
       {/* Manual attribution (rescue tool for missed referrals) */}

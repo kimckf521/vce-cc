@@ -4,7 +4,7 @@ import { Prisma } from "@prisma/client";
 import { getStripe } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 import { ensureMathMethodsSubject, ACCESS_GRANTING_STATUSES } from "@/lib/subscription";
-import { rewardForType, COMMISSION_HOLD_DAYS } from "@/lib/affiliate";
+import { rewardForAffiliate, COMMISSION_HOLD_DAYS } from "@/lib/affiliate";
 import { sendPaymentFailedEmail, sendRefundEmail } from "@/lib/billing-emails";
 
 // Stripe webhooks need the raw request body for signature verification.
@@ -268,12 +268,17 @@ async function syncSubscription(subscription: Stripe.Subscription) {
 async function convertReferralIfPending(userId: string): Promise<void> {
   const referral = await prisma.referral.findUnique({
     where: { referredUserId: userId },
-    select: { id: true, status: true, affiliateId: true, affiliate: { select: { type: true } } },
+    select: {
+      id: true,
+      status: true,
+      affiliateId: true,
+      affiliate: { select: { type: true, commissionOverrideCents: true } },
+    },
   });
 
   if (!referral || referral.status !== "PENDING") return;
 
-  const reward = rewardForType(referral.affiliate.type);
+  const reward = rewardForAffiliate(referral.affiliate);
   const now = new Date();
   const locksAt = new Date(now.getTime() + COMMISSION_HOLD_DAYS * 24 * 60 * 60 * 1000);
 

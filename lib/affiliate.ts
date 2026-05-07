@@ -30,6 +30,27 @@ export function rewardForType(type: AffiliateType): number {
   }
 }
 
+/**
+ * Effective per-referral reward (cents) for a specific affiliate, honouring
+ * any admin-set override on the Affiliate row. Falls back to the per-track
+ * default when no override is set.
+ *
+ * Use this anywhere we're paying or accruing commission. The bare
+ * `rewardForType` is fine for static defaults (e.g. UI labels).
+ */
+export function rewardForAffiliate(affiliate: {
+  type: AffiliateType;
+  commissionOverrideCents: number | null;
+}): number {
+  if (
+    affiliate.commissionOverrideCents !== null &&
+    affiliate.commissionOverrideCents !== undefined
+  ) {
+    return affiliate.commissionOverrideCents;
+  }
+  return rewardForType(affiliate.type);
+}
+
 /** Format a cent value as AUD currency. */
 export function formatCents(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;

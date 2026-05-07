@@ -41,6 +41,25 @@ export async function PATCH(
     data.creditBalance = { increment: parsed.data.creditAdjustment };
   }
 
+  // Per-affiliate commission rate override — only allowed for influencers.
+  // null = clear override; integer = override in cents per converted referral.
+  if (parsed.data.commissionOverrideCents !== undefined) {
+    const existing = await prisma.affiliate.findUnique({
+      where: { id },
+      select: { type: true },
+    });
+    if (!existing) {
+      return NextResponse.json({ error: "Affiliate not found" }, { status: 404 });
+    }
+    if (existing.type !== "INFLUENCER_AFFILIATE") {
+      return NextResponse.json(
+        { error: "Custom commission rates are only allowed for influencer accounts" },
+        { status: 400 }
+      );
+    }
+    data.commissionOverrideCents = parsed.data.commissionOverrideCents;
+  }
+
   // If credit is being adjusted, push a matching Stripe customer balance
   // transaction so the credit actually applies to the user's next invoice.
   // The DB `Affiliate.creditBalance` field alone is admin-display only — the

@@ -11,6 +11,8 @@ export default function AffiliateActions({
   active,
   notes,
   referralCode,
+  commissionOverrideCents,
+  defaultCommissionCents,
 }: {
   affiliateId: string;
   affiliateType: AffiliateType;
@@ -18,6 +20,10 @@ export default function AffiliateActions({
   active: boolean;
   notes: string;
   referralCode: string;
+  /** Current per-influencer commission override (cents). null = using default. */
+  commissionOverrideCents: number | null;
+  /** Per-track default rate in cents (e.g. 1000 = $10) for placeholder display. */
+  defaultCommissionCents: number;
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -26,8 +32,16 @@ export default function AffiliateActions({
   const [notesText, setNotesText] = useState(notes);
   const [codeText, setCodeText] = useState(referralCode);
   const [codeSuccess, setCodeSuccess] = useState<string | null>(null);
+  // Commission rate input is in DOLLARS for friendlier admin UX.
+  const [rateText, setRateText] = useState(
+    commissionOverrideCents !== null
+      ? (commissionOverrideCents / 100).toFixed(2)
+      : ""
+  );
+  const [rateSuccess, setRateSuccess] = useState<string | null>(null);
 
   const isInfluencer = affiliateType === "INFLUENCER_AFFILIATE";
+  const effectiveRateCents = commissionOverrideCents ?? defaultCommissionCents;
 
   async function patch(body: Record<string, unknown>) {
     setLoading(true);
@@ -136,6 +150,89 @@ export default function AffiliateActions({
           </div>
         </div>
       </div>
+
+      {/* Influencer-only: per-affiliate commission rate */}
+      {isInfluencer && (
+        <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+            Commission rate per referral
+            <span className="ml-2 text-xs font-normal text-gray-500 dark:text-gray-400">
+              Default ${(defaultCommissionCents / 100).toFixed(2)}. Override to negotiate higher rates with select influencers.
+            </span>
+          </label>
+          {rateSuccess && (
+            <div className="mb-2 rounded-lg bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-3 py-1.5 text-xs text-emerald-700 dark:text-emerald-400">
+              {rateSuccess}
+            </div>
+          )}
+          <div className="flex gap-2 items-center">
+            <div className="relative flex-1">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">
+                $
+              </span>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                max="1000"
+                value={rateText}
+                onChange={(e) => setRateText(e.target.value)}
+                placeholder={(defaultCommissionCents / 100).toFixed(2)}
+                className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 pl-7 pr-3 py-2 text-sm text-gray-900 dark:text-gray-100"
+              />
+            </div>
+            <button
+              onClick={async () => {
+                setRateSuccess(null);
+                setError(null);
+                setLoading(true);
+                const dollars = rateText.trim() === "" ? null : parseFloat(rateText);
+                const cents =
+                  dollars === null || isNaN(dollars)
+                    ? null
+                    : Math.round(dollars * 100);
+                const res = await fetch(`/api/admin/affiliates/${affiliateId}`, {
+                  method: "PATCH",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ commissionOverrideCents: cents }),
+                });
+                setLoading(false);
+                if (!res.ok) {
+                  const d = await res.json().catch(() => ({}));
+                  setError(d?.error ?? "Failed to update rate");
+                  return;
+                }
+                setRateSuccess(
+                  cents === null
+                    ? `Reverted to default rate ($${(defaultCommissionCents / 100).toFixed(2)}).`
+                    : `Commission rate updated to $${(cents / 100).toFixed(2)} per referral.`
+                );
+                router.refresh();
+                setTimeout(() => setRateSuccess(null), 5000);
+              }}
+              disabled={loading}
+              className="rounded-xl bg-brand-600 text-white text-sm font-medium px-4 py-2 hover:bg-brand-700 disabled:opacity-50 whitespace-nowrap"
+            >
+              Save rate
+            </button>
+            {commissionOverrideCents !== null && (
+              <button
+                onClick={() => setRateText("")}
+                disabled={loading}
+                className="rounded-xl text-xs text-gray-500 dark:text-gray-400 px-2 py-1.5 hover:underline disabled:opacity-50 whitespace-nowrap"
+                title="Clear the field and click Save rate to revert to the default."
+              >
+                Reset
+              </button>
+            )}
+          </div>
+          <p className="mt-1.5 text-xs text-gray-500 dark:text-gray-400">
+            Currently effective: <strong>${(effectiveRateCents / 100).toFixed(2)}</strong>
+            {commissionOverrideCents !== null && " (overridden)"}.
+            Applies to new conversions only — past commissions are unchanged.
+          </p>
+        </div>
+      )}
 
       {/* Influencer-only: rebrand referral code */}
       {isInfluencer && (

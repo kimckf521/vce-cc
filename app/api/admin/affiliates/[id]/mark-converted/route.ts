@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/utils";
 import { rateLimit } from "@/lib/rate-limit";
 import { markConvertedSchema } from "@/lib/validations";
-import { rewardForType } from "@/lib/affiliate";
+import { rewardForAffiliate } from "@/lib/affiliate";
 import { getStripe } from "@/lib/stripe";
 
 /**
@@ -45,8 +45,9 @@ export async function POST(
     return NextResponse.json({ error: "Referral is not pending" }, { status: 400 });
   }
 
-  const reward = rewardForType(referral.affiliate.type);
+  const reward = rewardForAffiliate(referral.affiliate);
   const isStudent = referral.affiliate.type === "STUDENT_REFERRAL";
+  const isInfluencer = referral.affiliate.type === "INFLUENCER_AFFILIATE";
 
   await prisma.$transaction(async (tx) => {
     await tx.referral.update({
@@ -57,7 +58,9 @@ export async function POST(
         convertedAt: new Date(),
       },
     });
-    if (isStudent) {
+    // Increment creditBalance for STUDENT and INFLUENCER — both rely on it
+    // for "Available" totals (TUTOR uses sum-of-converted-rewards instead).
+    if (isStudent || isInfluencer) {
       await tx.affiliate.update({
         where: { id: referral.affiliateId },
         data: { creditBalance: { increment: reward } },

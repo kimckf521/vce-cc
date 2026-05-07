@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/utils";
 import { rateLimit } from "@/lib/rate-limit";
 import { attributeReferralSchema } from "@/lib/validations";
-import { rewardForType } from "@/lib/affiliate";
+import { rewardForAffiliate } from "@/lib/affiliate";
 import { getStripe } from "@/lib/stripe";
 
 /**
@@ -100,8 +100,9 @@ export async function POST(
     enrolment?.subscriptionStatus === "active" ||
     enrolment?.subscriptionStatus === "trialing";
 
-  const reward = rewardForType(affiliate.type);
+  const reward = rewardForAffiliate(affiliate);
   const isStudent = affiliate.type === "STUDENT_REFERRAL";
+  const isInfluencer = affiliate.type === "INFLUENCER_AFFILIATE";
 
   // Create the Referral, optionally converting in the same transaction
   await prisma.$transaction(async (tx) => {
@@ -121,7 +122,8 @@ export async function POST(
           convertedAt: new Date(),
         },
       });
-      if (isStudent) {
+      // STUDENT and INFLUENCER both consume creditBalance for "Available"
+      if (isStudent || isInfluencer) {
         await tx.affiliate.update({
           where: { id: affiliate.id },
           data: { creditBalance: { increment: reward } },

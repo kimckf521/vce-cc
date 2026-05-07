@@ -16,6 +16,7 @@ import RegisterAffiliateForm from "./RegisterAffiliateForm";
 import { isAdminRole } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import RequestPayoutButton from "./RequestPayoutButton";
+import ProofViewer from "./ProofViewer";
 import { getStripe } from "@/lib/stripe";
 import { isResourceMissing } from "@/lib/stripe-customer";
 
@@ -417,8 +418,29 @@ export default async function ReferralsPage({ searchParams }: PageProps) {
                   <td className="px-5 py-4">
                     <StatusBadge status={r.status} commissionLocksAt={r.commissionLocksAt} />
                   </td>
-                  <td className="px-5 py-4 text-right font-medium text-gray-900 dark:text-gray-100">
-                    {r.status === "CONVERTED" ? formatCents(r.rewardAmount) : "—"}
+                  <td className="px-5 py-4 text-right font-medium">
+                    {r.status === "CONVERTED" ? (
+                      <span className="text-emerald-700 dark:text-emerald-400">
+                        {formatCents(r.rewardAmount)}
+                      </span>
+                    ) : r.status === "PENDING_HOLD" ? (
+                      <span
+                        className="text-gray-500 dark:text-gray-400"
+                        title="Held during the 30-day commission lock. Unlocks if the referee stays subscribed."
+                      >
+                        {formatCents(r.rewardAmount)}
+                        <span className="ml-1 text-xs font-normal opacity-70">(pending)</span>
+                      </span>
+                    ) : r.status === "CHURNED_NO_COMMISSION" ? (
+                      <span
+                        className="text-gray-400 dark:text-gray-500 line-through"
+                        title="Referee cancelled within the hold — no commission earned."
+                      >
+                        {formatCents(r.rewardAmount)}
+                      </span>
+                    ) : (
+                      <span className="text-gray-400 dark:text-gray-500">—</span>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -474,14 +496,7 @@ export default async function ReferralsPage({ searchParams }: PageProps) {
                       </td>
                       <td className="px-5 py-4">
                         {p.proofUrl ? (
-                          <a
-                            href={p.proofUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-emerald-600 dark:text-emerald-400 hover:underline text-xs font-medium"
-                          >
-                            📎 View
-                          </a>
+                          <ProofViewer url={p.proofUrl} />
                         ) : (
                           <span className="text-gray-400 text-xs">—</span>
                         )}

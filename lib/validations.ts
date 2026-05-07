@@ -120,6 +120,12 @@ export const updateAffiliateSchema = z.object({
   active: z.boolean().optional(),
   creditAdjustment: z.coerce.number().int().optional(), // Cents — positive or negative
   notes: z.string().max(2000).optional(),
+  // Per-affiliate commission rate override (cents). 0–100000 = $0–$1000 per
+  // referral. `null` clears the override and reverts to the per-track default.
+  // Currently only enforced for influencer accounts (server-side check).
+  commissionOverrideCents: z
+    .union([z.coerce.number().int().min(0).max(100_000), z.null()])
+    .optional(),
   // Custom referral code — only allowed for influencer accounts (enforced
   // server-side). Slug format: 3-40 chars of lowercase letters, numbers, hyphens.
   // Hyphens may not lead/trail or repeat.
