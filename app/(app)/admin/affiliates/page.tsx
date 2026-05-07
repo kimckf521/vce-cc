@@ -24,6 +24,9 @@ export default async function AdminAffiliatesPage() {
 
   // 7-day window for abuse detection
   const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  // 30-day window for retention analysis — referrals older than this are
+  // "ageable" (we know whether they survived past month 1).
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 
   const affiliates = await prisma.affiliate.findMany({
     orderBy: [{ approved: "asc" }, { createdAt: "desc" }],
@@ -33,6 +36,54 @@ export default async function AdminAffiliatesPage() {
       payouts: { select: { amount: true, status: true, type: true } },
     },
   });
+
+  // Month-1 retention for referred users — pulls converted referrals where
+  // the conversion is at least 30 days old, then checks whether the referee's
+  // subscription is still active. Below ~67% retention, the influencer track
+  // becomes unprofitable; below ~50%, the student track does too.
+  type RetentionBucket = { retained: number; churned: number };
+  const buckets: Record<"STUDENT_REFERRAL" | "TUTOR_AFFILIATE" | "INFLUENCER_AFFILIATE", RetentionBucket> = {
+    STUDENT_REFERRAL: { retained: 0, churned: 0 },
+    TUTOR_AFFILIATE: { retained: 0, churned: 0 },
+    INFLUENCER_AFFILIATE: { retained: 0, churned: 0 },
+  };
+
+  const ageableReferrals = await prisma.referral.findMany({
+    where: {
+      status: "CONVERTED",
+      convertedAt: { lt: thirtyDaysAgo },
+    },
+    select: {
+      affiliate: { select: { type: true } },
+      referredUser: {
+        select: {
+          enrolments: {
+            where: { subject: { slug: "mathematical-methods" } },
+            select: { tier: true, subscriptionStatus: true },
+            take: 1,
+          },
+        },
+      },
+    },
+  });
+
+  for (const r of ageableReferrals) {
+    const enrol = r.referredUser.enrolments[0];
+    const isActive =
+      enrol?.tier === "PAID" &&
+      (enrol.subscriptionStatus === "active" ||
+        enrol.subscriptionStatus === "trialing");
+    const bucket = buckets[r.affiliate.type];
+    if (isActive) bucket.retained++;
+    else bucket.churned++;
+  }
+
+  const totalRetention =
+    Object.values(buckets).reduce((s, b) => s + b.retained, 0);
+  const totalChurn =
+    Object.values(buckets).reduce((s, b) => s + b.churned, 0);
+  const totalAgeable = totalRetention + totalChurn;
+  const overallRate = totalAgeable > 0 ? totalRetention / totalAgeable : null;
 
   // Aggregate stats
   const totalAffiliates = affiliates.length;
@@ -105,6 +156,15 @@ export default async function AdminAffiliatesPage() {
         <TypeCard label="Tutors" count={tutorCount} color="violet" />
         <TypeCard label="Influencers" count={influencerCount} color="amber" />
       </div>
+
+      {/* Month-1 retention for referred users */}
+      <RetentionCard
+        overallRate={overallRate}
+        totalAgeable={totalAgeable}
+        totalRetention={totalRetention}
+        totalChurn={totalChurn}
+        buckets={buckets}
+      />
 
       {/* Suspicious activity warning */}
       {flagged.length > 0 && (
@@ -259,6 +319,179 @@ function TypeCard({
     <div className={`rounded-2xl border p-5 ${colors[color]}`}>
       <p className="text-2xl font-bold">{count}</p>
       <p className="text-sm">{label}</p>
+    </div>
+  );
+}
+
+/**
+ * Month-1 retention card for referred users. Shows overall retention rate +
+ * per-track breakdown, and surfaces a warning when the rate dips below the
+ * profitability threshold (~67% for influencer track).
+ *
+ * "Ageable" = converted ≥30 days ago, so we know whether they survived past
+ * their first invoice (the 50%-off month).
+ */
+function RetentionCard({
+  overallRate,
+  totalAgeable,
+  totalRetention,
+  totalChurn,
+  buckets,
+}: {
+  overallRate: number | null;
+  totalAgeable: number;
+  totalRetention: number;
+  totalChurn: number;
+  buckets: Record<
+    "STUDENT_REFERRAL" | "TUTOR_AFFILIATE" | "INFLUENCER_AFFILIATE",
+    { retained: number; churned: number }
+  >;
+}) {
+  // Profitability thresholds (per ~3-month break-even analysis):
+  //   ≥67% → both tracks healthy
+  //   50–67% → influencer marginal, student healthy
+  //   <50% → both tracks bleeding
+  const tone =
+    overallRate === null
+      ? "muted"
+      : overallRate >= 0.67
+        ? "ok"
+        : overallRate >= 0.5
+          ? "warn"
+          : "bad";
+
+  const palette = {
+    muted: {
+      border: "border-gray-200 dark:border-gray-800",
+      bg: "bg-white dark:bg-gray-900",
+      heading: "text-gray-700 dark:text-gray-300",
+      pct: "text-gray-500 dark:text-gray-400",
+    },
+    ok: {
+      border: "border-emerald-200 dark:border-emerald-800",
+      bg: "bg-emerald-50 dark:bg-emerald-950",
+      heading: "text-emerald-800 dark:text-emerald-300",
+      pct: "text-emerald-700 dark:text-emerald-400",
+    },
+    warn: {
+      border: "border-amber-200 dark:border-amber-800",
+      bg: "bg-amber-50 dark:bg-amber-950",
+      heading: "text-amber-800 dark:text-amber-300",
+      pct: "text-amber-700 dark:text-amber-400",
+    },
+    bad: {
+      border: "border-red-200 dark:border-red-800",
+      bg: "bg-red-50 dark:bg-red-950",
+      heading: "text-red-800 dark:text-red-300",
+      pct: "text-red-700 dark:text-red-400",
+    },
+  }[tone];
+
+  function bucketRate(b: { retained: number; churned: number }): number | null {
+    const total = b.retained + b.churned;
+    return total > 0 ? b.retained / total : null;
+  }
+
+  const trackLabels: Record<
+    "STUDENT_REFERRAL" | "TUTOR_AFFILIATE" | "INFLUENCER_AFFILIATE",
+    string
+  > = {
+    STUDENT_REFERRAL: "Student",
+    TUTOR_AFFILIATE: "Tutor",
+    INFLUENCER_AFFILIATE: "Influencer",
+  };
+
+  return (
+    <div className={`mb-8 rounded-2xl border ${palette.border} ${palette.bg} p-5`}>
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div>
+          <h2 className={`text-sm font-semibold ${palette.heading}`}>
+            Month-1 retention (referred users)
+          </h2>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            Sample: {totalAgeable} referral{totalAgeable === 1 ? "" : "s"} converted ≥30 days ago.
+            {overallRate !== null && (
+              <>
+                {" "}Of these, <strong>{totalRetention}</strong> still subscribed,
+                {" "}<strong>{totalChurn}</strong> churned.
+              </>
+            )}
+          </p>
+        </div>
+        <div className="text-right">
+          <p className={`text-3xl font-bold ${palette.pct}`}>
+            {overallRate === null ? "—" : `${Math.round(overallRate * 100)}%`}
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+            still paying past month 1
+          </p>
+        </div>
+      </div>
+
+      {/* Per-track breakdown */}
+      {totalAgeable > 0 && (
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {(
+            ["STUDENT_REFERRAL", "TUTOR_AFFILIATE", "INFLUENCER_AFFILIATE"] as const
+          ).map((type) => {
+            const b = buckets[type];
+            const rate = bucketRate(b);
+            const total = b.retained + b.churned;
+            return (
+              <div
+                key={type}
+                className="rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 px-4 py-3"
+              >
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  {trackLabels[type]}
+                </p>
+                <div className="flex items-baseline gap-2 mt-0.5">
+                  <p className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                    {rate === null ? "—" : `${Math.round(rate * 100)}%`}
+                  </p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500">
+                    {total > 0 ? `(${b.retained}/${total})` : "no data"}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Profitability guidance */}
+      {overallRate !== null && totalAgeable >= 5 && (
+        <div className="mt-4 text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+          {tone === "ok" && (
+            <>
+              ✓ Both tracks are profitable. Break-even retention is roughly 50%
+              (Student) and 67% (Influencer).
+            </>
+          )}
+          {tone === "warn" && (
+            <>
+              ⚠️ Retention is below the influencer track&apos;s break-even threshold
+              (~67%). The student track is still profitable, but the influencer
+              track may be losing money. Consider tightening influencer
+              vetting or pausing new influencer approvals.
+            </>
+          )}
+          {tone === "bad" && (
+            <>
+              🚨 Retention is below 50% — both tracks are likely losing money on
+              referrals. Investigate referee quality (are they real students?
+              what marketing channel?) before approving more affiliates.
+            </>
+          )}
+        </div>
+      )}
+
+      {totalAgeable > 0 && totalAgeable < 5 && (
+        <p className="mt-3 text-xs text-gray-500 dark:text-gray-400 italic">
+          Sample size is small ({totalAgeable}) — more data needed for a
+          reliable trend.
+        </p>
+      )}
     </div>
   );
 }

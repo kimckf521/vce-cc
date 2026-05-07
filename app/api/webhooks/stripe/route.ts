@@ -4,7 +4,7 @@ import { Prisma } from "@prisma/client";
 import { getStripe } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 import { ensureMathMethodsSubject, ACCESS_GRANTING_STATUSES } from "@/lib/subscription";
-import { rewardForType } from "@/lib/affiliate";
+import { rewardForType, COMMISSION_HOLD_DAYS } from "@/lib/affiliate";
 import { sendPaymentFailedEmail, sendRefundEmail } from "@/lib/billing-emails";
 
 // Stripe webhooks need the raw request body for signature verification.
@@ -186,13 +186,22 @@ async function syncSubscription(subscription: Stripe.Subscription) {
     subscription.status === "active" || subscription.status === "trialing";
 
   // Affiliate conversion: if this user has a PENDING referral and the subscription
-  // just became active, mark it CONVERTED and credit/owe the affiliate.
+  // just became active, move it into the 30-day commission hold.
   if (isActive) {
     try {
       await convertReferralIfPending(user.id);
     } catch (err) {
       console.error(`[stripe-webhook] Failed to convert referral for user ${user.id}:`, err);
       // Don't throw — the subscription sync should still succeed.
+    }
+  } else {
+    // Cancellation / past-due / unpaid: if the referee was still in the hold
+    // window, drop their referral to CHURNED_NO_COMMISSION so the cron skips it.
+    // Already-finalized (CONVERTED) referrals are unaffected.
+    try {
+      await churnReferralIfInHold(user.id);
+    } catch (err) {
+      console.error(`[stripe-webhook] Failed to churn referral for user ${user.id}:`, err);
     }
   }
 
@@ -250,86 +259,61 @@ async function syncSubscription(subscription: Stripe.Subscription) {
 
 /**
  * If the given user was referred by an affiliate and their referral is still
- * PENDING, mark it CONVERTED and accrue the affiliate's reward.
+ * PENDING, move it into a 30-day commission hold. Commissions are only paid
+ * out (via the daily cron job) if the referee remains subscribed past the
+ * hold; cancellations within the hold zero the commission.
  *
- * - Track A (STUDENT_REFERRAL): credits the referrer's platform credit balance.
- * - Track B/C (TUTOR/INFLUENCER_AFFILIATE): records owed commission for payout.
- *
- * Idempotent — only converts a referral once (uses status as guard).
+ * Idempotent — only converts each referral once.
  */
 async function convertReferralIfPending(userId: string): Promise<void> {
   const referral = await prisma.referral.findUnique({
     where: { referredUserId: userId },
-    include: { affiliate: { include: { user: { select: { stripeCustomerId: true } } } } },
+    select: { id: true, status: true, affiliateId: true, affiliate: { select: { type: true } } },
   });
 
   if (!referral || referral.status !== "PENDING") return;
 
   const reward = rewardForType(referral.affiliate.type);
-  let shouldApplyStripeCredit = false;
+  const now = new Date();
+  const locksAt = new Date(now.getTime() + COMMISSION_HOLD_DAYS * 24 * 60 * 60 * 1000);
 
-  await prisma.$transaction(async (tx) => {
-    // Re-check inside the transaction to prevent double-credit races
-    const fresh = await tx.referral.findUnique({
-      where: { id: referral.id },
-      select: { status: true },
-    });
-    if (!fresh || fresh.status !== "PENDING") return;
-
-    await tx.referral.update({
-      where: { id: referral.id },
-      data: {
-        status: "CONVERTED",
-        rewardAmount: reward,
-        convertedAt: new Date(),
-      },
-    });
-
-    // Track A: add to the referrer's credit balance immediately.
-    // Track B/C: leave rewardPaid=false until an admin processes a payout.
-    if (referral.affiliate.type === "STUDENT_REFERRAL") {
-      await tx.affiliate.update({
-        where: { id: referral.affiliateId },
-        data: { creditBalance: { increment: reward } },
-      });
-      shouldApplyStripeCredit = true;
-    }
+  await prisma.referral.update({
+    where: { id: referral.id, status: "PENDING" }, // safety: only update if still PENDING
+    data: {
+      status: "PENDING_HOLD",
+      rewardAmount: reward,
+      convertedAt: now,
+      commissionLocksAt: locksAt,
+    },
   });
 
-  // After the DB transaction commits, push the credit to Stripe so it
-  // auto-applies to the referrer's next invoice (≈ 50% off their next month
-  // for a single $5 referral on the $9.99 plan).
-  if (shouldApplyStripeCredit && referral.affiliate.user.stripeCustomerId) {
-    try {
-      const stripe = getStripe();
-      await stripe.customers.createBalanceTransaction(
-        referral.affiliate.user.stripeCustomerId,
-        {
-          amount: -reward, // Negative = credit to customer
-          currency: "aud",
-          description: `Referral reward — converted referral ${referral.id}`,
-          metadata: {
-            referralId: referral.id,
-            affiliateId: referral.affiliateId,
-            type: "STUDENT_REFERRAL_CREDIT",
-          },
-        }
-      );
-      console.log(
-        `[stripe-webhook] Applied ${reward}c Stripe credit to referrer's customer balance`
-      );
-    } catch (err) {
-      // Don't fail the webhook — DB credit is the source of truth.
-      // An admin can reconcile if Stripe credit application fails.
-      console.error(
-        `[stripe-webhook] Failed to apply Stripe credit for referral ${referral.id}:`,
-        err
-      );
-    }
-  }
+  console.log(
+    `[stripe-webhook] Referral ${referral.id} entered ${COMMISSION_HOLD_DAYS}-day hold (locks ${locksAt.toISOString()}, reward ${reward}c)`
+  );
+}
+
+/**
+ * If the given user has a referral in PENDING_HOLD and their subscription was
+ * just cancelled, set it to CHURNED_NO_COMMISSION so the cron will skip them.
+ * No commission is issued for users who churn within the hold period.
+ *
+ * Once a referral has reached CONVERTED (hold expired), this is a no-op — the
+ * commission has already been earned.
+ */
+async function churnReferralIfInHold(userId: string): Promise<void> {
+  const referral = await prisma.referral.findUnique({
+    where: { referredUserId: userId },
+    select: { id: true, status: true },
+  });
+  if (!referral || referral.status !== "PENDING_HOLD") return;
+
+  await prisma.referral.update({
+    where: { id: referral.id, status: "PENDING_HOLD" },
+    data: { status: "CHURNED_NO_COMMISSION" },
+  });
 
   console.log(
-    `[stripe-webhook] Converted referral ${referral.id} for user ${userId} (reward=${reward}c)`
+    `[stripe-webhook] Referral ${referral.id} churned within hold — no commission`
   );
 }
 

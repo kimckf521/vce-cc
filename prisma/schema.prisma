@@ -373,10 +373,12 @@ enum AffiliateType {
 }
 
 enum ReferralStatus {
-  PENDING    // Signed up via referral, no paid subscription yet
-  CONVERTED  // First paid subscription successful
-  EXPIRED    // Did not convert within window
-  REFUNDED   // Subscription refunded — reward clawed back
+  PENDING                  // Signed up via referral, no paid subscription yet
+  PENDING_HOLD             // First paid sub successful, in 30-day hold before commission unlocks
+  CONVERTED                // Hold period passed AND referee still subscribed → commission paid
+  CHURNED_NO_COMMISSION    // Referee cancelled within 30-day hold → no commission
+  EXPIRED                  // Did not convert within window
+  REFUNDED                 // Subscription refunded — reward clawed back
 }
 
 enum PayoutStatus {
@@ -418,10 +420,13 @@ model Referral {
   rewardAmount    Int            @default(0)  // Cents — set on conversion (500 student / 1000 tutor+influencer)
   rewardPaid      Boolean        @default(false)
   createdAt       DateTime       @default(now())
-  convertedAt     DateTime?
+  convertedAt     DateTime?       // First paid subscription (entry to hold period)
+  commissionLocksAt DateTime?     // When the 30-day hold expires (nullable — only set during PENDING_HOLD)
+  finalizedAt       DateTime?     // Hold passed and commission was issued
 
   @@index([affiliateId])
   @@index([status])
+  @@index([commissionLocksAt])
 }
 
 model Payout {

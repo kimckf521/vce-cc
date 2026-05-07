@@ -415,7 +415,7 @@ export default async function ReferralsPage({ searchParams }: PageProps) {
                     {r.referredUser.createdAt.toLocaleDateString("en-AU")}
                   </td>
                   <td className="px-5 py-4">
-                    <StatusBadge status={r.status} />
+                    <StatusBadge status={r.status} commissionLocksAt={r.commissionLocksAt} />
                   </td>
                   <td className="px-5 py-4 text-right font-medium text-gray-900 dark:text-gray-100">
                     {r.status === "CONVERTED" ? formatCents(r.rewardAmount) : "—"}
@@ -519,17 +519,33 @@ function StatCard({
   );
 }
 
-function StatusBadge({ status }: { status: string }) {
+function StatusBadge({
+  status,
+  commissionLocksAt,
+}: {
+  status: string;
+  commissionLocksAt?: Date | null;
+}) {
   const config: Record<string, { bg: string; text: string; label: string }> = {
     PENDING: {
       bg: "bg-amber-100 dark:bg-amber-900",
       text: "text-amber-700 dark:text-amber-300",
       label: "Pending",
     },
+    PENDING_HOLD: {
+      bg: "bg-sky-100 dark:bg-sky-900",
+      text: "text-sky-700 dark:text-sky-300",
+      label: "In 30-day hold",
+    },
     CONVERTED: {
       bg: "bg-emerald-100 dark:bg-emerald-900",
       text: "text-emerald-700 dark:text-emerald-300",
       label: "Converted",
+    },
+    CHURNED_NO_COMMISSION: {
+      bg: "bg-gray-100 dark:bg-gray-800",
+      text: "text-gray-600 dark:text-gray-400",
+      label: "Churned",
     },
     EXPIRED: {
       bg: "bg-gray-100 dark:bg-gray-800",
@@ -543,9 +559,28 @@ function StatusBadge({ status }: { status: string }) {
     },
   };
   const c = config[status] ?? config.PENDING;
+
+  // For PENDING_HOLD, surface the days remaining so affiliates know when their
+  // commission unlocks (it's confusing otherwise — looks like a stuck pending).
+  let label = c.label;
+  if (status === "PENDING_HOLD" && commissionLocksAt) {
+    const ms = new Date(commissionLocksAt).getTime() - Date.now();
+    const days = Math.max(0, Math.ceil(ms / (24 * 60 * 60 * 1000)));
+    label = days > 0 ? `Locks in ${days}d` : "Unlocking…";
+  }
+
   return (
-    <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${c.bg} ${c.text}`}>
-      {c.label}
+    <span
+      className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${c.bg} ${c.text}`}
+      title={
+        status === "PENDING_HOLD"
+          ? "Commission is held for 30 days. If the referee stays subscribed, commission unlocks on the date shown."
+          : status === "CHURNED_NO_COMMISSION"
+            ? "Referee cancelled before the 30-day hold expired. No commission was earned."
+            : undefined
+      }
+    >
+      {label}
     </span>
   );
 }

@@ -13,6 +13,11 @@ export const MIN_PAYOUT_AMOUNT = 2000; // $20
 export const REFERRAL_DISCOUNT_PERCENT = 50;
 export const REFERRAL_COUPON_ID = "REFERRAL50";
 
+// Commission hold period — referrals must remain subscribed for this long
+// before the affiliate's commission is paid. Cancellations within this window
+// reset the referral to CHURNED_NO_COMMISSION (no payout).
+export const COMMISSION_HOLD_DAYS = 30;
+
 /** Reward (in cents) for a given affiliate type's per-referral commission. */
 export function rewardForType(type: AffiliateType): number {
   switch (type) {
