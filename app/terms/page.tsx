@@ -3,7 +3,7 @@ import MarketingNav from "@/components/MarketingNav";
 import MarketingFooter from "@/components/MarketingFooter";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions — ATAR Hero",
+  title: "Terms & Conditions",
   description:
     "The terms that govern your use of ATAR Hero, including accounts, subscriptions, acceptable use, and intellectual property.",
   alternates: { canonical: "/terms" },
@@ -11,9 +11,38 @@ export const metadata: Metadata = {
 
 const LAST_UPDATED = "9 April 2026";
 
+// JSON-LD: WebPage schema for the terms. Helps Google understand page purpose
+// + show "last updated" hints in search snippets.
+const termsJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Terms & Conditions",
+  description:
+    "The terms that govern your use of ATAR Hero, including accounts, subscriptions, acceptable use, and intellectual property.",
+  url: "https://www.atarhero.com.au/terms",
+  inLanguage: "en-AU",
+  datePublished: "2026-04-09",
+  dateModified: "2026-04-09",
+  isPartOf: {
+    "@id": "https://www.atarhero.com.au/#website",
+  },
+  publisher: {
+    "@id": "https://www.atarhero.com.au/#organization",
+  },
+  about: {
+    "@type": "Thing",
+    name: "Terms of service and acceptable use",
+  },
+};
+
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
+      {/* WebPage structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(termsJsonLd) }}
+      />
       <MarketingNav />
 
       <section className="py-16 lg:py-24 px-5 sm:px-8 lg:px-12 bg-gradient-to-b from-brand-50 to-white dark:from-gray-950 dark:to-gray-900">

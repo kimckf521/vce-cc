@@ -3,7 +3,7 @@ import MarketingNav from "@/components/MarketingNav";
 import MarketingFooter from "@/components/MarketingFooter";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — ATAR Hero",
+  title: "Privacy Policy",
   description:
     "How ATAR Hero collects, uses, and protects your personal information in accordance with the Australian Privacy Principles.",
   alternates: { canonical: "/privacy" },
@@ -11,9 +11,38 @@ export const metadata: Metadata = {
 
 const LAST_UPDATED = "9 April 2026";
 
+// JSON-LD: WebPage schema for the privacy policy. Helps Google understand
+// page purpose + show "last updated" hints in search snippets.
+const privacyJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Privacy Policy",
+  description:
+    "How ATAR Hero collects, uses, and protects your personal information in accordance with the Australian Privacy Principles.",
+  url: "https://www.atarhero.com.au/privacy",
+  inLanguage: "en-AU",
+  datePublished: "2026-04-09",
+  dateModified: "2026-04-09",
+  isPartOf: {
+    "@id": "https://www.atarhero.com.au/#website",
+  },
+  publisher: {
+    "@id": "https://www.atarhero.com.au/#organization",
+  },
+  about: {
+    "@type": "Thing",
+    name: "Privacy and data protection",
+  },
+};
+
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
+      {/* WebPage structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(privacyJsonLd) }}
+      />
       <MarketingNav />
 
       <section className="py-16 lg:py-24 px-5 sm:px-8 lg:px-12 bg-gradient-to-b from-brand-50 to-white dark:from-gray-950 dark:to-gray-900">

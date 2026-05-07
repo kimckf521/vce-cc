@@ -3,7 +3,7 @@ import MarketingNav from "@/components/MarketingNav";
 import MarketingFooter from "@/components/MarketingFooter";
 
 export const metadata: Metadata = {
-  title: "FAQs — ATAR Hero",
+  title: "FAQs",
   description:
     "Answers to common questions about ATAR Hero: free vs Standard plans, subscriptions, VCAA past papers, progress tracking, and more.",
   alternates: { canonical: "/faqs" },

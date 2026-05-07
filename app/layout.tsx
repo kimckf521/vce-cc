@@ -119,6 +119,44 @@ const jsonLd = {
       publisher: { "@id": `${SITE_URL}/#organization` },
       inLanguage: "en-AU",
     },
+    {
+      "@type": "Course",
+      "@id": `${SITE_URL}/#course`,
+      name: "VCE Mathematical Methods Revision",
+      description:
+        "Year 12 VCE Mathematical Methods preparation with VCAA past exam questions, step-by-step worked solutions, and timed practice exams.",
+      provider: { "@id": `${SITE_URL}/#organization` },
+      educationalLevel: "Senior Secondary School",
+      inLanguage: "en-AU",
+      audience: {
+        "@type": "EducationalAudience",
+        educationalRole: "student",
+      },
+      offers: [
+        {
+          "@type": "Offer",
+          name: "Free",
+          category: "Free",
+          price: "0",
+          priceCurrency: "AUD",
+          availability: "https://schema.org/InStock",
+        },
+        {
+          "@type": "Offer",
+          name: "Standard",
+          category: "Subscription",
+          price: "9.99",
+          priceCurrency: "AUD",
+          availability: "https://schema.org/InStock",
+        },
+      ],
+      hasCourseInstance: {
+        "@type": "CourseInstance",
+        courseMode: "online",
+        inLanguage: "en-AU",
+        courseWorkload: "PT100H",
+      },
+    },
   ],
 };
 
