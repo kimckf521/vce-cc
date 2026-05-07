@@ -109,9 +109,9 @@ export default function MarketingFooter() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 lg:mt-16 pt-6 border-t border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs lg:text-sm text-gray-400 dark:text-gray-500">
+        <div className="mt-12 lg:mt-16 pt-6 border-t border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3 text-xs lg:text-sm text-gray-400 dark:text-gray-500 text-center sm:text-left">
           <p>© {year} ATAR Hero. Made for Victorian Year 12 students.</p>
-          <p>VCAA® is a registered trademark of the Victorian Curriculum and Assessment Authority.</p>
+          <p className="text-[10px] sm:text-xs lg:text-sm">VCAA® is a registered trademark of the Victorian Curriculum and Assessment Authority.</p>
         </div>
       </div>
     </footer>

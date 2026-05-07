@@ -9,6 +9,7 @@ import { canAccessTopic } from "@/lib/subscription";
 import InfiniteQuestionList from "@/components/InfiniteQuestionList";
 import TopicFilters from "@/components/TopicFilters";
 import PaywallScreen from "@/components/PaywallScreen";
+import BackToTopButton from "@/components/BackToTopButton";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 
@@ -113,6 +114,8 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
         filters={filters}
         isAdmin={isAdmin}
       />
+
+      <BackToTopButton />
     </div>
   );
 }

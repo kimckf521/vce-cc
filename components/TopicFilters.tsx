@@ -94,7 +94,7 @@ export default function TopicFilters({ slug, subtopics }: Props) {
                 key={value}
                 onClick={() => toggleMulti("exam", currentExams, value)}
                 className={cn(
-                  "rounded-full border px-2.5 py-0.5 text-xs font-medium transition-colors",
+                  "rounded-full border px-3 py-2 text-sm font-medium transition-colors",
                   active
                     ? "border-brand-300 dark:border-brand-700 bg-brand-100 dark:bg-brand-900 text-brand-700 dark:text-brand-400"
                     : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
@@ -115,7 +115,7 @@ export default function TopicFilters({ slug, subtopics }: Props) {
                 key={value}
                 onClick={() => toggleMulti("difficulty", currentDifficulties, value)}
                 className={cn(
-                  "rounded-full border px-2.5 py-0.5 text-xs font-medium transition-colors",
+                  "rounded-full border px-3 py-2 text-sm font-medium transition-colors",
                   active
                     ? `border ${activeStyle}`
                     : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400"

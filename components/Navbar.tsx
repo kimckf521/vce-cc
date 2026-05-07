@@ -7,13 +7,16 @@ import { cn } from "@/lib/utils";
 import ThemeToggle from "@/components/ThemeToggle";
 import BrandMark from "@/components/BrandMark";
 
-const navLinks = [
+const studyLinks = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/topics", label: "Topics", icon: BookOpen },
   { href: "/exams", label: "Past Papers", icon: FileText },
   { href: "/practice", label: "Practice", icon: BarChart2 },
   { href: "/history", label: "History", icon: History },
   { href: "/referrals", label: "Refer & Earn", icon: Gift },
+];
+
+const accountLinks = [
   { href: "/profile", label: "Profile", icon: UserCircle },
 ];
 
@@ -42,7 +45,25 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
 
       {/* Nav links */}
       <nav className="flex-1 px-4 py-5 space-y-1">
-        {navLinks.map(({ href, label, icon: Icon }) => (
+        {studyLinks.map(({ href, label, icon: Icon }) => (
+          <Link
+            key={href}
+            href={href}
+            className={cn(
+              "flex items-center gap-3 rounded-xl px-4 py-3 text-base font-medium transition-colors",
+              pathname === href || pathname.startsWith(href + "/")
+                ? "bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-400"
+                : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
+            )}
+          >
+            <Icon className="h-5 w-5 flex-shrink-0" />
+            {label}
+          </Link>
+        ))}
+
+        <div className="my-2 border-t border-gray-100 dark:border-gray-800" />
+
+        {accountLinks.map(({ href, label, icon: Icon }) => (
           <Link
             key={href}
             href={href}

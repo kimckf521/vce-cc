@@ -7,6 +7,7 @@ import QuestionGroup from "@/components/QuestionGroup";
 import Link from "next/link";
 import { ChevronLeft, FileText } from "lucide-react";
 import ExamCompleteButton from "@/components/ExamCompleteButton";
+import BackToTopButton from "@/components/BackToTopButton";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -212,6 +213,8 @@ export default async function ExamPage({ params }: PageProps) {
       {(sectionA.length > 0 || sectionBGroups.length > 0) && (
         <ExamCompleteButton examId={id} initialCompleted={isCompleted} />
       )}
+
+      <BackToTopButton />
     </div>
   );
 }
