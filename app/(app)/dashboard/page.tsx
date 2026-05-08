@@ -128,7 +128,7 @@ export default async function DashboardPage() {
           className="inline-flex items-center gap-2 rounded-xl bg-brand-600 hover:bg-brand-700 px-5 py-2.5 lg:px-6 lg:py-3 text-sm lg:text-base font-semibold text-white transition-colors shrink-0"
         >
           <Play className="h-4 w-4" />
-          {totalAttempted === 0 ? "Start studying" : "Practice now"}
+          {totalAttempted === 0 ? "Start studying" : "Practise now"}
         </Link>
       </div>
 

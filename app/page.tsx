@@ -50,7 +50,7 @@ const features = [
     icon: LineChart,
     title: "Smart progress tracking",
     description:
-      "Mark questions correct, incorrect or needs-review. Bookmark anything. See your trend over time.",
+      "Mark questions correct, incorrect, or needs-review. Bookmark anything. See your trend over time.",
     iconBg: "bg-sky-100 dark:bg-sky-900/60",
     iconColor: "text-sky-600 dark:text-sky-400",
   },
@@ -58,7 +58,7 @@ const features = [
     icon: Smartphone,
     title: "Works everywhere you do",
     description:
-      "Mobile, tablet, desktop. Light, dark or system theme. Study on the bus or at your desk — same beautiful UI.",
+      "Mobile, tablet, desktop. Light, dark, or system theme. Study on the bus or at your desk — same beautiful UI.",
     iconBg: "bg-rose-100 dark:bg-rose-900/60",
     iconColor: "text-rose-600 dark:text-rose-400",
   },
@@ -77,7 +77,7 @@ const journey = [
     label: "Grow",
     title: "Build skill, one question at a time",
     description:
-      "Practise real VCAA past exam questions with worked solutions. Track every correct, incorrect and review.",
+      "Practise real VCAA past exam questions with worked solutions. Track every correct, incorrect, and review.",
   },
   {
     icon: Trophy,
