@@ -71,6 +71,8 @@ interface QuestionGroupProps {
    * server render). The optimistic local state is sufficient.
    */
   disableServerRefresh?: boolean;
+  /** Hide the difficulty / topic / subtopic / frequency / calculator badges. */
+  hideBadges?: boolean;
 }
 
 const difficultyStyles = {
@@ -284,7 +286,7 @@ const FREQ_LABEL: Record<"rare" | "normal" | "often", string> = {
   often: "Every year",
 };
 
-export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts, showSolutionButton = true, examMode, revealAnswers, onMcqSelect, isAdmin, disableServerRefresh }: QuestionGroupProps) {
+export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts, showSolutionButton = true, examMode, revealAnswers, onMcqSelect, isAdmin, disableServerRefresh, hideBadges }: QuestionGroupProps) {
   const router = useRouter();
   const [showSolution, setShowSolution] = useState(false);
   const [statuses, setStatuses] = useState<Record<string, AttemptStatus>>(
@@ -552,13 +554,13 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
                 {totalMarks} {totalMarks === 1 ? "mark" : "marks"}
               </span>
             )}
-            {!examMode && (
+            {!examMode && !hideBadges && (
               <span className={cn("rounded-full px-3 py-1 text-sm lg:text-base font-medium", difficultyStyles[overallDifficulty])}>
                 {difficultyLabel[overallDifficulty]}
               </span>
             )}
             {/* Frequency hidden on phone — saves a row of metadata clutter */}
-            {!examMode && frequency && (
+            {!examMode && !hideBadges && frequency && (
               <span className="hidden sm:flex items-center gap-1 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-0.5 text-xs lg:text-sm font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">
                 <CalendarDays className="h-3 w-3 lg:h-3.5 lg:w-3.5 text-gray-400 dark:text-gray-500" />
                 {FREQ_LABEL[frequency]}
@@ -571,7 +573,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
               badge is communicated at the section level instead (e.g. the
               setup page header says "No calculator" / "CAS Calculator
               allowed" for the whole paper). */}
-          {!examMode && (
+          {!examMode && !hideBadges && (
             <div className="flex flex-wrap gap-2 items-center">
               <span className="rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-400 px-3 py-1 text-sm lg:text-base font-medium">{topic}</span>
               {/* Subtopic pills hidden on phone after the first one to keep

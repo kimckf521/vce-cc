@@ -165,6 +165,7 @@ export default async function ExamPage({ params }: PageProps) {
                 topic={q.topic.name}
                 subtopics={q.subtopics.map((s) => s.name)}
                 parts={toGroupParts([q])}
+                hideBadges
               />
             ))}
           </div>
@@ -196,6 +197,7 @@ export default async function ExamPage({ params }: PageProps) {
                 topic={group[0].topic.name}
                 subtopics={group[0].subtopics.map((s) => s.name)}
                 parts={toGroupParts(group)}
+                hideBadges
               />
             ))}
           </div>
