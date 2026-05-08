@@ -6,6 +6,9 @@ import { ensureMathMethodsSubject, ensureFreeEnrolment } from "@/lib/subscriptio
 import { syncUserSchema } from "@/lib/validations";
 import { SESSION_COOKIE, sessionCookieOptions } from "@/lib/session";
 import { isAdminRole } from "@/lib/utils";
+import { sendEmail } from "@/lib/email";
+
+const ADMIN_NOTIFY_EMAIL = "support@atarhero.com.au";
 
 // Cookie set by /signup?ref=CODE to persist the referral code across the
 // email-confirmation flow. Read here as a fallback when the body doesn't
@@ -76,6 +79,9 @@ export async function POST(request: NextRequest) {
     select: { role: true },
   });
   const isAdmin = isAdminRole(existing?.role);
+  // Track whether this is a brand-new registration so we can send a
+  // notification email below (only on first sync, not on subsequent logins).
+  const isNewRegistration = !existing;
 
   // Non-admins get a fresh session ID that invalidates any other browser
   // currently logged into the same account.
@@ -117,6 +123,35 @@ export async function POST(request: NextRequest) {
   // (idempotent — won't downgrade an existing PAID enrolment).
   await ensureMathMethodsSubject();
   await ensureFreeEnrolment(user.id);
+
+  // Notify the support inbox of new registrations. Fire-and-forget — we don't
+  // want a Resend outage to break user signup. The check on `isNewRegistration`
+  // ensures repeated sync-user calls (logins, refreshes) don't re-send.
+  if (isNewRegistration) {
+    const userName = user.user_metadata?.name || "(no name provided)";
+    const userEmail = user.email || "(no email)";
+    const referralLine = referralCode
+      ? `Referral code: ${referralCode}${referringAffiliateId ? "" : " (invalid / not attributed)"}`
+      : "Referral code: (none)";
+    const lines = [
+      "A new user has just registered on ATAR Hero.",
+      "",
+      `Name:  ${userName}`,
+      `Email: ${userEmail}`,
+      `User ID: ${user.id}`,
+      referralLine,
+      `Registered at: ${new Date().toISOString()}`,
+    ];
+    void sendEmail({
+      to: ADMIN_NOTIFY_EMAIL,
+      subject: `[ATAR Hero] New registration — ${userEmail}`,
+      text: lines.join("\n"),
+      replyTo: user.email ?? undefined,
+    }).catch((err) => {
+      // eslint-disable-next-line no-console
+      console.error("[sync-user] new-registration email failed:", err);
+    });
+  }
 
   const response = NextResponse.json({ ok: true });
   if (newSessionId) {
