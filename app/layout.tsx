@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: "%s | ATAR Hero",
   },
   description:
-    "Go from zero to hero in VCE. Master Mathematical Methods with VCAA past exam questions, step-by-step worked solutions, and timed practice exams. Built for Year 12 students in Victoria.",
+    "Go from zero to hero in VCE. Master Mathematical Methods with VCAA past exam questions, step-by-step worked solutions, and timed practice exams. Built for Victorian students.",
   applicationName: SITE_NAME,
   keywords: [
     "ATAR Hero",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     title: "ATAR Hero — From Zero to Hero in VCE",
     description:
-      "Master VCE with VCAA past exam questions, worked solutions, and practice exams. From zero to hero — built for Year 12 students in Victoria.",
+      "Master VCE with VCAA past exam questions, worked solutions, and practice exams. From zero to hero — built for Victorian students.",
     images: [
       {
         url: "/og-image.png",
@@ -75,7 +75,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ATAR Hero — VCAA Past Exams & Worked Solutions",
     description:
-      "VCAA past exams, worked solutions, and timed practice for Year 12. From zero to hero in VCE.",
+      "VCAA past exams, worked solutions, and timed practice for Victorian students. From zero to hero in VCE.",
     images: ["/og-image.png"],
   },
   robots: {
@@ -102,7 +102,7 @@ const jsonLd = {
       url: SITE_URL,
       logo: `${SITE_URL}/og-image.png`,
       description:
-        "ATAR Hero — go from zero to hero in VCE. Mathematical Methods revision platform with VCAA past exam questions, worked solutions, and practice exams for Year 12 students in Victoria, Australia.",
+        "ATAR Hero — go from zero to hero in VCE. Mathematical Methods revision platform with VCAA past exam questions, worked solutions, and practice exams for Victorian students.",
       areaServed: { "@type": "Country", name: "Australia" },
       audience: {
         "@type": "EducationalAudience",
@@ -115,7 +115,7 @@ const jsonLd = {
       url: SITE_URL,
       name: SITE_NAME,
       description:
-        "ATAR Hero — past VCAA Mathematical Methods exams, worked solutions, and timed practice for Year 12 students in Victoria. From zero to hero.",
+        "ATAR Hero — past VCAA Mathematical Methods exams, worked solutions, and timed practice for Victorian students. From zero to hero.",
       publisher: { "@id": `${SITE_URL}/#organization` },
       inLanguage: "en-AU",
     },
@@ -124,7 +124,7 @@ const jsonLd = {
       "@id": `${SITE_URL}/#course`,
       name: "VCE Mathematical Methods Revision",
       description:
-        "Year 12 VCE Mathematical Methods preparation with VCAA past exam questions, step-by-step worked solutions, and timed practice exams.",
+        "VCE Mathematical Methods preparation with VCAA past exam questions, step-by-step worked solutions, and timed practice exams.",
       provider: { "@id": `${SITE_URL}/#organization` },
       educationalLevel: "Senior Secondary School",
       inLanguage: "en-AU",
