@@ -2,7 +2,13 @@ import { NextResponse, type NextRequest } from "next/server";
 import { requireAuthenticatedUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { rateLimit } from "@/lib/rate-limit";
-import { MIN_PAYOUT_AMOUNT } from "@/lib/affiliate";
+import { MIN_PAYOUT_AMOUNT, formatCents, affiliateTypeLabel } from "@/lib/affiliate";
+import { sendEmail } from "@/lib/email";
+
+// Internal address for payout-request notifications. Pulled from env so it
+// can be overridden per environment without a code change.
+const PAYOUT_NOTIFY_TO =
+  process.env.PAYOUT_NOTIFY_EMAIL ?? "support@atarhero.com.au";
 
 /**
  * GET /api/affiliates/payouts — list the current affiliate's payouts.
@@ -110,6 +116,47 @@ export async function POST(request: NextRequest) {
       status: "PENDING",
     },
   });
+
+  // Notify the support inbox so admins can process the payout. Pull the
+  // affiliate's user info for the email body. Email failures are logged but
+  // don't break the request — the payout record still gets created.
+  try {
+    const dbUser = await prisma.user.findUnique({
+      where: { id: user.id },
+      select: { email: true, name: true },
+    });
+    const trackLabel = affiliateTypeLabel(affiliate.type);
+    const amountFmt = formatCents(available);
+    const origin =
+      request.headers.get("origin") ??
+      request.nextUrl.origin ??
+      "http://localhost:3000";
+    const adminUrl = `${origin}/admin/affiliates/${affiliate.id}`;
+
+    const text = [
+      `New payout request received.`,
+      ``,
+      `Affiliate: ${dbUser?.name ?? "—"} (${dbUser?.email ?? user.email ?? "unknown"})`,
+      `Track: ${trackLabel}`,
+      `Referral code: ${affiliate.referralCode}`,
+      `Amount: ${amountFmt}`,
+      `Payout ID: ${payout.id}`,
+      ``,
+      `Open admin: ${adminUrl}`,
+    ].join("\n");
+
+    await sendEmail({
+      to: PAYOUT_NOTIFY_TO,
+      subject: `Payout request: ${amountFmt} from ${dbUser?.name ?? dbUser?.email ?? "an affiliate"}`,
+      text,
+      replyTo: dbUser?.email ?? undefined,
+    });
+  } catch (err) {
+    console.error(
+      `[payouts] Failed to send notification email for payout ${payout.id}:`,
+      err
+    );
+  }
 
   return NextResponse.json({ payout }, { status: 201 });
 }

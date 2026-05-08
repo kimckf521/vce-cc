@@ -4,6 +4,10 @@
     {
       "path": "/api/cron/finalize-referrals",
       "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/cron/monitor-affiliates",
+      "schedule": "0 8 * * *"
     }
   ]
 }

@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
           email: true,
           enrolments: {
             where: { subject: { slug: "mathematical-methods" } },
-            select: { tier: true, subscriptionStatus: true },
+            select: { tier: true, subscriptionStatus: true, cancelAtPeriodEnd: true },
             take: 1,
           },
         },
@@ -74,14 +74,23 @@ export async function GET(request: NextRequest) {
 
   for (const r of ripe) {
     const enrol = r.referredUser.enrolments[0];
+    // SECURITY: a referee with `cancelAtPeriodEnd === true` is on their way
+    // out — they'll never pay a second cycle. We must NOT finalize commission
+    // for them, even though their subscription is technically still "active"
+    // until the period ends. Without this check, an attacker could:
+    //   1. Subscribe with the 50% off coupon (pay $4.99)
+    //   2. Immediately set cancel_at_period_end via Stripe billing portal
+    //   3. Wait 30 days — status stays "active" until period closes
+    //   4. Cron finalizes commission → attacker nets $5–$10 per fake account.
     const stillActive =
       enrol?.tier === "PAID" &&
       (enrol.subscriptionStatus === "active" ||
-        enrol.subscriptionStatus === "trialing");
+        enrol.subscriptionStatus === "trialing") &&
+      enrol.cancelAtPeriodEnd !== true;
 
     if (!stillActive) {
-      // Subscription lapsed before hold expired — skip and downgrade status
-      // (treat as churned, unless already in a terminal state).
+      // Subscription lapsed (or scheduled to end) before hold expired — skip
+      // and downgrade status (treat as churned, unless already terminal).
       try {
         await prisma.referral.update({
           where: { id: r.id, status: "PENDING_HOLD" },

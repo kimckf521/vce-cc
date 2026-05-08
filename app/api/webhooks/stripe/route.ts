@@ -323,6 +323,129 @@ async function churnReferralIfInHold(userId: string): Promise<void> {
 }
 
 /**
+ * Claw back affiliate commission when a referee gets a full refund.
+ *
+ * State transitions:
+ *   - PENDING_HOLD → CHURNED_NO_COMMISSION (cron will skip them; no payout owed)
+ *   - CONVERTED   → REFUNDED (commission was already issued; reverse the credit)
+ *   - PENDING / CHURNED_NO_COMMISSION / REFUNDED / EXPIRED → no-op
+ *
+ * For CONVERTED refunds:
+ *   - STUDENT/INFLUENCER: decrement Affiliate.creditBalance by rewardAmount,
+ *     and (best-effort) push a positive Stripe customer balance transaction
+ *     to reverse the credit they may have already received.
+ *   - TUTOR: status flip alone is enough — their "Available for payout" is
+ *     calculated as sum(CONVERTED) - sum(paid-out), so REFUNDED falls out.
+ *
+ * If a TUTOR/INFLUENCER has already been paid out for this commission, the
+ * clawback can't fully recover the cash — admin needs to dispute or recover
+ * out-of-band. We log a warning in that case for manual reconciliation.
+ */
+async function clawbackCommissionOnRefund(
+  userId: string,
+  chargeId: string
+): Promise<void> {
+  const referral = await prisma.referral.findUnique({
+    where: { referredUserId: userId },
+    select: {
+      id: true,
+      status: true,
+      rewardAmount: true,
+      affiliateId: true,
+      affiliate: {
+        select: {
+          type: true,
+          user: { select: { stripeCustomerId: true } },
+        },
+      },
+    },
+  });
+  if (!referral) return;
+
+  if (referral.status === "PENDING_HOLD") {
+    await prisma.referral.update({
+      where: { id: referral.id, status: "PENDING_HOLD" },
+      data: { status: "CHURNED_NO_COMMISSION" },
+    });
+    console.log(
+      `[stripe-webhook] Referral ${referral.id} marked CHURNED on refund (was PENDING_HOLD, charge ${chargeId})`
+    );
+    return;
+  }
+
+  if (referral.status !== "CONVERTED") return;
+
+  const isStudent = referral.affiliate.type === "STUDENT_REFERRAL";
+  const isInfluencer = referral.affiliate.type === "INFLUENCER_AFFILIATE";
+
+  // Check whether this commission has already been paid out (cash). If so,
+  // we can only flip status and warn — the cash is gone.
+  const paidOut = await prisma.payout.aggregate({
+    where: {
+      affiliateId: referral.affiliateId,
+      type: "COMMISSION",
+      status: "COMPLETED",
+    },
+    _sum: { amount: true },
+  });
+  const paidCashCents = paidOut._sum.amount ?? 0;
+
+  await prisma.$transaction(async (tx) => {
+    await tx.referral.update({
+      where: { id: referral.id, status: "CONVERTED" },
+      data: { status: "REFUNDED" },
+    });
+
+    // Reverse the creditBalance bump for student/influencer.
+    // (Tutor's "Available" derives from CONVERTED count, so status flip is enough.)
+    if (isStudent || isInfluencer) {
+      await tx.affiliate.update({
+        where: { id: referral.affiliateId },
+        data: { creditBalance: { decrement: referral.rewardAmount } },
+      });
+    }
+  });
+
+  // Reverse the Stripe customer balance push (students only — they got
+  // platform credit applied to their next invoice).
+  if (isStudent && referral.affiliate.user.stripeCustomerId) {
+    try {
+      const stripe = getStripe();
+      await stripe.customers.createBalanceTransaction(
+        referral.affiliate.user.stripeCustomerId,
+        {
+          // POSITIVE = customer-owes (reverses the earlier negative-balance credit)
+          amount: referral.rewardAmount,
+          currency: "aud",
+          description: `Referral commission clawback — referee refunded (referral ${referral.id})`,
+          metadata: {
+            referralId: referral.id,
+            chargeId,
+            type: "STUDENT_REFERRAL_CLAWBACK",
+          },
+        }
+      );
+    } catch (err) {
+      console.error(
+        `[stripe-webhook] Failed to push clawback to Stripe for referral ${referral.id}:`,
+        err
+      );
+    }
+  }
+
+  if (isInfluencer && paidCashCents >= referral.rewardAmount) {
+    console.warn(
+      `[stripe-webhook] Influencer commission ${referral.rewardAmount}c was already paid out for referral ${referral.id}. ` +
+        `creditBalance has been decremented but cash has been disbursed — admin must reconcile.`
+    );
+  }
+
+  console.log(
+    `[stripe-webhook] Clawed back ${referral.rewardAmount}c for referral ${referral.id} (refunded charge ${chargeId})`
+  );
+}
+
+/**
  * Notify the user that a renewal payment failed. Looks up their email by the
  * Stripe customer ID, then sends a templated email via Resend explaining that
  * Stripe will retry and they should update their card.
@@ -478,6 +601,19 @@ async function handleChargeRefunded(charge: Stripe.Charge) {
     } else {
       console.warn(
         `[stripe-webhook] Full refund on charge ${charge.id} but no active subscription found for customer ${customerId}`
+      );
+    }
+
+    // Affiliate commission clawback — if this refunded user was attributed
+    // to an affiliate and their commission has already been finalized
+    // (CONVERTED), reverse the credit. If still in PENDING_HOLD, mark as
+    // CHURNED_NO_COMMISSION so the cron skips them.
+    try {
+      await clawbackCommissionOnRefund(user.id, charge.id);
+    } catch (err) {
+      console.error(
+        `[stripe-webhook] Failed to claw back commission on refund ${charge.id}:`,
+        err
       );
     }
   } else {
