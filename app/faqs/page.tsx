@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const faqs: { q: string; a: string }[] = [
   {
     q: "What is ATAR Hero?",
-    a: "ATAR Hero is an independent revision hub for Victorian students studying VCE Mathematical Methods. It gives you past VCAA exam questions organised by topic, step-by-step worked solutions, timed practice exams, and progress tracking.",
+    a: "ATAR Hero is an independent revision hub for Victorian Year 12 students studying VCE Mathematical Methods. It gives you past VCAA exam questions organised by topic, step-by-step worked solutions, timed practice exams, and progress tracking.",
   },
   {
     q: "Is ATAR Hero affiliated with VCAA?",
