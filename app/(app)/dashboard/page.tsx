@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { hasActiveSubscription } from "@/lib/subscription";
 import { isAdminRole } from "@/lib/utils";
+import DashboardEmptyState from "@/components/DashboardEmptyState";
 
 /* ────────────────────────── colour tokens ────────────────────────── */
 
@@ -131,6 +132,9 @@ export default async function DashboardPage() {
           {totalAttempted === 0 ? "Start studying" : "Practice now"}
         </Link>
       </div>
+
+      {/* ─── Empty-state onboarding (no attempts yet) ─── */}
+      {totalAttempted === 0 && <DashboardEmptyState />}
 
       {/* ─── Upgrade CTA (free users only) ─── */}
       {showUpgradeCard && (
