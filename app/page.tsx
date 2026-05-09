@@ -368,7 +368,7 @@ export default async function HomePage() {
               href={user ? "/dashboard" : "/signup"}
               className="group inline-flex items-center gap-2 text-sm lg:text-base font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors"
             >
-              {user ? "Jump back to your dashboard" : "Try every feature for free"}
+              {user ? "Jump back to your dashboard" : "Browse every topic and try sample questions free"}
               <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
