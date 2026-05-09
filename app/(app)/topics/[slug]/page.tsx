@@ -80,7 +80,7 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
 
   const filters: TopicQuestionFilters = { subtopic, exam, difficulty, frequency };
 
-  const { groups: initialGroups, totalCount, hasMore } = await fetchQuestionSetGroupsPaginated(
+  const { groups: initialGroups, hasMore } = await fetchQuestionSetGroupsPaginated(
     topic.id,
     topic.name,
     filters,
@@ -98,8 +98,7 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
         <ChevronLeft className="h-4 w-4 lg:h-5 lg:w-5" /> All topics
       </Link>
 
-      <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">{topic.name}</h1>
-      <p className="text-sm text-gray-500 dark:text-gray-400 lg:text-base mb-4 lg:mb-8">{totalCount} questions</p>
+      <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4 lg:mb-8">{topic.name}</h1>
 
       {/* Horizontal filter bar */}
       <Suspense>

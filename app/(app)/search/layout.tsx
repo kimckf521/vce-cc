@@ -1,10 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/utils";
-import { canAccessFeature } from "@/lib/subscription";
-import PaywallScreen from "@/components/PaywallScreen";
+import { redirect } from "next/navigation";
 
-// Gate /search behind a paid subscription. Admins bypass.
+// Search is admin-only while under development.
+// Non-admin users are redirected to dashboard.
 export default async function SearchLayout({
   children,
 }: {
@@ -13,20 +13,15 @@ export default async function SearchLayout({
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) return <>{children}</>;
+  if (!user) redirect("/login");
 
   const dbUser = await prisma.user.findUnique({
     where: { id: user.id },
     select: { role: true },
   });
 
-  if (isAdminRole(dbUser?.role)) {
-    return <>{children}</>;
-  }
-
-  const access = await canAccessFeature(user.id, "search");
-  if (!access.allowed) {
-    return <PaywallScreen feature="search" />;
+  if (!isAdminRole(dbUser?.role)) {
+    redirect("/dashboard");
   }
 
   return <>{children}</>;

@@ -3,7 +3,6 @@ import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { rateLimit } from "@/lib/rate-limit";
 import { requireAuthenticatedUser } from "@/lib/auth";
-import { canAccessFeature } from "@/lib/subscription";
 import { isAdminRole } from "@/lib/utils";
 import { z } from "zod";
 
@@ -17,20 +16,11 @@ export async function GET(req: NextRequest) {
   const limited = rateLimit(`search:${ip}`, { maxRequests: 30, windowMs: 60_000 });
   if (limited) return limited;
 
-  // Search is a paid feature. Defence in depth — page-level layout already
-  // shows a paywall, but a free user calling this endpoint directly should
-  // also be rejected.
+  // Search is admin-only while under development.
   const auth = await requireAuthenticatedUser();
   if (auth.response) return auth.response;
-  const { user } = auth;
   if (!isAdminRole(auth.dbUser.role)) {
-    const access = await canAccessFeature(user.id, "search");
-    if (!access.allowed) {
-      return NextResponse.json(
-        { error: "Search requires a paid subscription." },
-        { status: 403 }
-      );
-    }
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
   const { searchParams } = req.nextUrl;
