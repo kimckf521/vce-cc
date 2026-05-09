@@ -8,6 +8,7 @@ import { fetchQuestionSetGroupsPaginated } from "@/lib/question-set-groups";
 import { canAccessTopic } from "@/lib/subscription";
 import InfiniteQuestionList from "@/components/InfiniteQuestionList";
 import TopicFilters from "@/components/TopicFilters";
+import TopicGuidanceChips from "@/components/TopicGuidanceChips";
 import PaywallScreen from "@/components/PaywallScreen";
 import BackToTopButton from "@/components/BackToTopButton";
 import Link from "next/link";
@@ -99,6 +100,14 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
       </Link>
 
       <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4 lg:mb-8">{topic.name}</h1>
+
+      {/* Suggested-start chip strip */}
+      <TopicGuidanceChips
+        slug={slug}
+        firstSubtopicSlug={topic.subtopics[0]?.slug}
+        currentSubtopic={subtopic}
+        currentExam={exam}
+      />
 
       {/* Horizontal filter bar */}
       <Suspense>

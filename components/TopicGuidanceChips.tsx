@@ -1,0 +1,85 @@
+import Link from "next/link";
+import { Sparkles, FileText, BarChart3 } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+interface Props {
+  slug: string;
+  firstSubtopicSlug?: string;
+  currentSubtopic?: string;
+  currentExam?: string;
+}
+
+export default function TopicGuidanceChips({
+  slug,
+  firstSubtopicSlug,
+  currentSubtopic,
+  currentExam,
+}: Props) {
+  const examValues = (currentExam ?? "").split(",").filter(Boolean);
+  const hasExam1 = examValues.includes("EXAM_1");
+  const hasExam2MC = examValues.includes("EXAM_2_MC");
+  const hasExam2B = examValues.includes("EXAM_2_B");
+
+  const isStartHere =
+    !!firstSubtopicSlug && currentSubtopic === firstSubtopicSlug;
+  const isExam1Focus = hasExam1 && !hasExam2MC && !hasExam2B;
+  const isExam2Focus = hasExam2MC && hasExam2B && !hasExam1;
+
+  const chips: {
+    key: string;
+    label: string;
+    icon: typeof Sparkles;
+    href: string;
+    active: boolean;
+  }[] = [];
+
+  if (firstSubtopicSlug) {
+    chips.push({
+      key: "start",
+      label: "Start here",
+      icon: Sparkles,
+      href: `/topics/${slug}?subtopic=${firstSubtopicSlug}`,
+      active: isStartHere,
+    });
+  }
+  chips.push({
+    key: "exam1",
+    label: "Exam 1 focus",
+    icon: FileText,
+    href: `/topics/${slug}?exam=EXAM_1`,
+    active: isExam1Focus,
+  });
+  chips.push({
+    key: "exam2",
+    label: "Exam 2 focus",
+    icon: BarChart3,
+    href: `/topics/${slug}?exam=EXAM_2_MC,EXAM_2_B`,
+    active: isExam2Focus,
+  });
+
+  return (
+    <div className="mb-3 lg:mb-4 flex flex-wrap items-center gap-2">
+      <span className="text-[10px] lg:text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mr-1">
+        Suggested
+      </span>
+      {chips.map((chip) => {
+        const Icon = chip.icon;
+        return (
+          <Link
+            key={chip.key}
+            href={chip.href}
+            className={cn(
+              "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors whitespace-nowrap",
+              chip.active
+                ? "border-brand-300 dark:border-brand-700 bg-brand-100 dark:bg-brand-900 text-brand-700 dark:text-brand-400"
+                : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+            )}
+          >
+            <Icon className="h-3.5 w-3.5" />
+            {chip.label}
+          </Link>
+        );
+      })}
+    </div>
+  );
+}
