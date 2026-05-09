@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { User, CreditCard, MessageSquare } from "lucide-react";
+import Link from "next/link";
+import { User, CreditCard, MessageSquare, Gift, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import EditDisplayName from "@/components/EditDisplayName";
 import ChangePassword from "@/components/ChangePassword";
@@ -30,6 +31,7 @@ type ProfileTabsProps = {
 const TABS = [
   { key: "account", label: "Account", icon: User },
   { key: "billing", label: "Billing", icon: CreditCard },
+  { key: "referrals", label: "Refer & earn", icon: Gift },
   { key: "report", label: "Report", icon: MessageSquare },
 ] as const;
 
@@ -134,6 +136,33 @@ export default function ProfileTabs({
             cancelAtPeriodEnd={billing.cancelAtPeriodEnd}
             hideTitle
           />
+        )}
+
+        {activeTab === "referrals" && (
+          <div className="rounded-xl border border-gray-100 dark:border-gray-800 p-5 lg:p-6">
+            <div className="flex items-start gap-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 dark:bg-brand-950">
+                <Gift className="h-5 w-5 text-brand-600 dark:text-brand-400" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100">
+                  Refer a friend, earn credit
+                </h3>
+                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                  When a friend signs up with your code and subscribes to
+                  Standard, both of you get $5 in platform credit toward your
+                  subscription.
+                </p>
+                <Link
+                  href="/referrals"
+                  className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-brand-600 hover:bg-brand-700 px-4 py-2 text-sm font-semibold text-white transition-colors"
+                >
+                  Open Refer &amp; earn
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
         )}
 
         {activeTab === "report" && <ReportForm />}

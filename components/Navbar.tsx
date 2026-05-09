@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BookOpen, BarChart2, FileText, LogOut, LayoutDashboard, UserCircle, ShieldCheck, Search, History, Gift } from "lucide-react";
+import { BookOpen, BarChart2, FileText, LogOut, LayoutDashboard, UserCircle, ShieldCheck, Search, History } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "@/components/ThemeToggle";
 import BrandMark from "@/components/BrandMark";
@@ -13,7 +13,6 @@ const studyLinks = [
   { href: "/exams", label: "Past papers", icon: FileText },
   { href: "/practice", label: "Practice", icon: BarChart2 },
   { href: "/history", label: "History", icon: History },
-  { href: "/referrals", label: "Refer & earn", icon: Gift },
 ];
 
 const accountLinks = [
