@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuthenticatedUser } from "@/lib/auth";
 import { rateLimit } from "@/lib/rate-limit";
+import { hasActiveSubscription } from "@/lib/subscription";
+import { isAdminRole } from "@/lib/utils";
 import { z } from "zod";
 
 const createSchema = z.object({
@@ -28,9 +30,28 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json();
 
-  // Check if this is a bookmark toggle
+  // Self-marking and bookmarking are paid-only. Admins and active subscribers
+  // pass; everyone else gets a 403 — the client UI suppresses the call already
+  // for free users, this is the server-side belt-and-braces.
+  async function ensurePaid() {
+    const dbUser = await prisma.user.findUnique({
+      where: { id: user.id },
+      select: { role: true },
+    });
+    const isAdmin = isAdminRole(dbUser?.role);
+    if (isAdmin) return null;
+    if (await hasActiveSubscription(user.id)) return null;
+    return NextResponse.json(
+      { error: "Progress tracking is part of the paid plan", code: "PAYWALL" },
+      { status: 403 },
+    );
+  }
+
+  // Bookmark toggle.
   const bm = bookmarkSchema.safeParse(body);
   if (bm.success) {
+    const denied = await ensurePaid();
+    if (denied) return denied;
     const { questionSetItemId, bookmarked } = bm.data;
     const attempt = await prisma.questionSetAttempt.upsert({
       where: { userId_questionSetItemId: { userId: user.id, questionSetItemId } },
@@ -44,6 +65,9 @@ export async function POST(req: NextRequest) {
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid input", details: parsed.error.flatten().fieldErrors }, { status: 400 });
   }
+
+  const denied = await ensurePaid();
+  if (denied) return denied;
 
   const { questionSetItemId, status } = parsed.data;
 

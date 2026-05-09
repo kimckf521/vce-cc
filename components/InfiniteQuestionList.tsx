@@ -17,6 +17,7 @@ interface InfiniteQuestionListProps {
   topicSlug: string;
   filters: TopicQuestionFilters;
   isAdmin?: boolean;
+  canTrackProgress?: boolean;
 }
 
 export default function InfiniteQuestionList({
@@ -25,6 +26,7 @@ export default function InfiniteQuestionList({
   topicSlug,
   filters,
   isAdmin,
+  canTrackProgress = true,
 }: InfiniteQuestionListProps) {
   const [groups, setGroups] = useState(initialGroups);
   const [hasMore, setHasMore] = useState(initialHasMore);
@@ -100,6 +102,7 @@ export default function InfiniteQuestionList({
             calculatorAllowed={group.calculatorAllowed}
             parts={group.parts}
             isAdmin={isAdmin}
+            canTrackProgress={canTrackProgress}
             hideTopicBadge
           />
           {/* Invisible sentinel after the 4th question of the latest batch */}

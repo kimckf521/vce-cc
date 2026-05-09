@@ -6,6 +6,8 @@ import { createClient } from "@/lib/supabase/server";
 import QuestionGroup from "@/components/QuestionGroup";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
+import { isAdminRole } from "@/lib/utils";
+import { hasActiveSubscription } from "@/lib/subscription";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -93,6 +95,14 @@ export default async function QuestionPage({ params, searchParams }: PageProps) 
     }));
   }
 
+  // Self-marking and bookmarking are paid-only. Admins and active subscribers
+  // pass; free users see locked Mark Correct / Mark Incorrect / Bookmark icons.
+  const dbUser = user
+    ? await prisma.user.findUnique({ where: { id: user.id }, select: { role: true } })
+    : null;
+  const canTrackProgress =
+    isAdminRole(dbUser?.role) || (!!user && (await hasActiveSubscription(user.id)));
+
   return (
     <div>
       <Link
@@ -115,6 +125,7 @@ export default async function QuestionPage({ params, searchParams }: PageProps) 
         topic={question.topic.name}
         subtopics={question.subtopics.map((s) => s.name)}
         parts={toGroupParts(parts)}
+        canTrackProgress={canTrackProgress}
       />
     </div>
   );

@@ -102,8 +102,9 @@ export default async function DashboardPage() {
     }
   }
 
-  const showUpgradeCard =
-    !!userId && !isAdminRole(dbUser?.role) && !(await hasActiveSubscription(userId));
+  const isAdmin = isAdminRole(dbUser?.role);
+  const isPaid = !!userId && (isAdmin || (await hasActiveSubscription(userId)));
+  const showUpgradeCard = !!userId && !isAdmin && !isPaid;
 
   const firstName = dbUser?.name?.split(" ")[0] ?? "";
 
@@ -148,7 +149,7 @@ export default async function DashboardPage() {
                 Unlock the full Methods experience
               </h2>
               <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                Upgrade to access all four topics, practice exams, search, and history.
+                Upgrade to access all four topics, practice exams, and history.
               </p>
               <Link
                 href="/pricing"
@@ -210,6 +211,15 @@ export default async function DashboardPage() {
             View all <ChevronRight className="h-4 w-4" />
           </Link>
         </div>
+        {!isPaid && (
+          <p className="-mt-2 mb-4 text-xs lg:text-sm text-gray-500 dark:text-gray-400">
+            Track your progress over time with{" "}
+            <Link href="/pricing" className="text-brand-600 dark:text-brand-400 hover:underline font-medium">
+              Standard
+            </Link>
+            .
+          </p>
+        )}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">
           {topics.map((topic, i) => {
             const c = TOPIC_COLORS[i % TOPIC_COLORS.length];

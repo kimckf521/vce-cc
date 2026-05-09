@@ -75,6 +75,12 @@ interface QuestionGroupProps {
   hideBadges?: boolean;
   /** Hide just the topic badge (used on topic pages where the topic is implied). */
   hideTopicBadge?: boolean;
+  /**
+   * When false, the Mark Correct / Mark Incorrect / Bookmark buttons show a
+   * locked state and clicks (and the c/x/r keyboard shortcuts) are no-ops.
+   * Used to gate progress tracking behind the paid plan. Defaults to true.
+   */
+  canTrackProgress?: boolean;
 }
 
 const difficultyStyles = {
@@ -288,7 +294,7 @@ const FREQ_LABEL: Record<"rare" | "normal" | "often", string> = {
   often: "Every year",
 };
 
-export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts, showSolutionButton = true, examMode, revealAnswers, onMcqSelect, isAdmin, disableServerRefresh, hideBadges, hideTopicBadge }: QuestionGroupProps) {
+export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts, showSolutionButton = true, examMode, revealAnswers, onMcqSelect, isAdmin, disableServerRefresh, hideBadges, hideTopicBadge, canTrackProgress = true }: QuestionGroupProps) {
   const router = useRouter();
   const [showSolution, setShowSolution] = useState(false);
   const [statuses, setStatuses] = useState<Record<string, AttemptStatus>>(
@@ -359,6 +365,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
     .map((p) => ({ questionId: p.id, part: p.part, content: p.solution!.content, imageUrl: p.solution!.imageUrl, videoUrl: p.solution!.videoUrl }));
 
   async function toggleStatus(id: string, s: AttemptStatus) {
+    if (!canTrackProgress) return;
     const prev = statuses[id];
     // When clicking same status to un-toggle, clear to null visually
     // but send ATTEMPTED to API (preserves bookmark in DB)
@@ -419,6 +426,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
   }
 
   async function toggleBookmark(id: string) {
+    if (!canTrackProgress) return;
     const prev = bookmarks[id];
     const next = !prev;
     const siblings = siblingPartIds(id);
@@ -622,16 +630,31 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
           {/* For MCQs: status buttons live here in the header (hidden in exam mode) */}
           {!hasParts && !examMode && (
             <>
-              <button onClick={() => toggleStatus(parts[0].id, "CORRECT")} title="Mark correct"
-                className={cn("rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center", statuses[parts[0].id] === "CORRECT" ? "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400" : "text-gray-400 dark:text-gray-500 hover:text-green-500")}>
+              <button onClick={() => toggleStatus(parts[0].id, "CORRECT")} title={canTrackProgress ? "Mark correct" : "Standard plan required"}
+                className={cn(
+                  "rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center",
+                  !canTrackProgress && "text-gray-300 dark:text-gray-600",
+                  canTrackProgress && statuses[parts[0].id] === "CORRECT" && "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400",
+                  canTrackProgress && statuses[parts[0].id] !== "CORRECT" && "text-gray-400 dark:text-gray-500 hover:text-green-500",
+                )}>
                 <CheckCircle className="h-4 w-4 lg:h-5 lg:w-5" />
               </button>
-              <button onClick={() => toggleStatus(parts[0].id, "INCORRECT")} title="Mark incorrect"
-                className={cn("rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center", statuses[parts[0].id] === "INCORRECT" ? "bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400" : "text-gray-400 dark:text-gray-500 hover:text-red-500")}>
+              <button onClick={() => toggleStatus(parts[0].id, "INCORRECT")} title={canTrackProgress ? "Mark incorrect" : "Standard plan required"}
+                className={cn(
+                  "rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center",
+                  !canTrackProgress && "text-gray-300 dark:text-gray-600",
+                  canTrackProgress && statuses[parts[0].id] === "INCORRECT" && "bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400",
+                  canTrackProgress && statuses[parts[0].id] !== "INCORRECT" && "text-gray-400 dark:text-gray-500 hover:text-red-500",
+                )}>
                 <XCircle className="h-4 w-4 lg:h-5 lg:w-5" />
               </button>
-              <button onClick={() => toggleBookmark(parts[0].id)} title="Bookmark for review"
-                className={cn("rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center", bookmarks[parts[0].id] ? "bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400" : "text-gray-400 dark:text-gray-500 hover:text-yellow-500")}>
+              <button onClick={() => toggleBookmark(parts[0].id)} title={canTrackProgress ? "Bookmark for review" : "Standard plan required"}
+                className={cn(
+                  "rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center",
+                  !canTrackProgress && "text-gray-300 dark:text-gray-600",
+                  canTrackProgress && bookmarks[parts[0].id] && "bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400",
+                  canTrackProgress && !bookmarks[parts[0].id] && "text-gray-400 dark:text-gray-500 hover:text-yellow-500",
+                )}>
                 <BookmarkIcon className="h-4 w-4 lg:h-5 lg:w-5" />
               </button>
             </>
@@ -667,16 +690,31 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
                 </div>
                 {!examMode && (
                 <div className="flex items-center gap-0.5">
-                  <button onClick={() => toggleStatus(p.id, "CORRECT")} title="Mark correct"
-                    className={cn("rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center", statuses[p.id] === "CORRECT" ? "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400" : "text-gray-400 dark:text-gray-500 hover:text-green-500")}>
+                  <button onClick={() => toggleStatus(p.id, "CORRECT")} title={canTrackProgress ? "Mark correct" : "Standard plan required"}
+                    className={cn(
+                      "rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center",
+                      !canTrackProgress && "text-gray-300 dark:text-gray-600",
+                      canTrackProgress && statuses[p.id] === "CORRECT" && "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400",
+                      canTrackProgress && statuses[p.id] !== "CORRECT" && "text-gray-400 dark:text-gray-500 hover:text-green-500",
+                    )}>
                     <CheckCircle className="h-4 w-4 lg:h-5 lg:w-5" />
                   </button>
-                  <button onClick={() => toggleStatus(p.id, "INCORRECT")} title="Mark incorrect"
-                    className={cn("rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center", statuses[p.id] === "INCORRECT" ? "bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400" : "text-gray-400 dark:text-gray-500 hover:text-red-500")}>
+                  <button onClick={() => toggleStatus(p.id, "INCORRECT")} title={canTrackProgress ? "Mark incorrect" : "Standard plan required"}
+                    className={cn(
+                      "rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center",
+                      !canTrackProgress && "text-gray-300 dark:text-gray-600",
+                      canTrackProgress && statuses[p.id] === "INCORRECT" && "bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400",
+                      canTrackProgress && statuses[p.id] !== "INCORRECT" && "text-gray-400 dark:text-gray-500 hover:text-red-500",
+                    )}>
                     <XCircle className="h-4 w-4 lg:h-5 lg:w-5" />
                   </button>
-                  <button onClick={() => toggleBookmark(p.id)} title="Bookmark for review"
-                    className={cn("rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center", bookmarks[p.id] ? "bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400" : "text-gray-400 dark:text-gray-500 hover:text-yellow-500")}>
+                  <button onClick={() => toggleBookmark(p.id)} title={canTrackProgress ? "Bookmark for review" : "Standard plan required"}
+                    className={cn(
+                      "rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center",
+                      !canTrackProgress && "text-gray-300 dark:text-gray-600",
+                      canTrackProgress && bookmarks[p.id] && "bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400",
+                      canTrackProgress && !bookmarks[p.id] && "text-gray-400 dark:text-gray-500 hover:text-yellow-500",
+                    )}>
                     <BookmarkIcon className="h-4 w-4 lg:h-5 lg:w-5" />
                   </button>
                 </div>

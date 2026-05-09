@@ -14,7 +14,6 @@ type PaywallModalProps = {
 const PAID_PERKS = [
   "All four Mathematical Methods topics",
   "Unlimited practice questions and timed exams",
-  "Search across every past exam question",
   "Performance history and progress tracking",
 ];
 

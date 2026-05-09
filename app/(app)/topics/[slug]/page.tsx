@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/utils";
 import type { SubtopicInfo, TopicQuestionFilters } from "@/lib/question-groups";
 import { fetchQuestionSetGroupsPaginated } from "@/lib/question-set-groups";
-import { canAccessTopic } from "@/lib/subscription";
+import { canAccessTopic, hasActiveSubscription } from "@/lib/subscription";
 import InfiniteQuestionList from "@/components/InfiniteQuestionList";
 import TopicFilters from "@/components/TopicFilters";
 import TopicGuidanceChips from "@/components/TopicGuidanceChips";
@@ -90,6 +90,10 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
     user?.id
   );
 
+  // Self-marking and bookmarking are paid-only. Admins and active subscribers
+  // pass; free users see locked Mark Correct / Mark Incorrect / Bookmark icons.
+  const canTrackProgress = isAdmin || (!!user && (await hasActiveSubscription(user.id)));
+
   return (
     <div>
       <Link
@@ -121,6 +125,7 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
         topicSlug={slug}
         filters={filters}
         isAdmin={isAdmin}
+        canTrackProgress={canTrackProgress}
       />
 
       <BackToTopButton />

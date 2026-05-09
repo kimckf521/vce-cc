@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { isAdminRole } from "@/lib/utils";
 import { canAccessTopic } from "@/lib/subscription";
+import Link from "next/link";
 import LockedTopicLink from "@/components/LockedTopicLink";
 import {
   ChevronRight,
@@ -184,7 +185,7 @@ export default async function TopicsPage() {
           const isLocked = lockedSlugs.has(topic.slug);
 
           return (
-            <div key={topic.id} className={`rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden ${isLocked ? "opacity-75" : ""}`}>
+            <div key={topic.id} className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
               {/* Topic header */}
               <LockedTopicLink
                 href={`/topics/${topic.slug}`}
@@ -211,36 +212,58 @@ export default async function TopicsPage() {
 
               {/* Subtopic card grid — more columns on wider screens */}
               {topic.subtopics.length > 0 && (
-                <div className="p-3 sm:p-4 lg:p-6 border-t border-gray-100 dark:border-gray-800 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3 lg:gap-4">
+                <div className={`p-3 sm:p-4 lg:p-6 border-t border-gray-100 dark:border-gray-800 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3 lg:gap-4 ${isLocked ? "opacity-40" : ""}`}>
                   {topic.subtopics.map((sub) => {
                     const Icon = getSubtopicIcon(sub.name);
 
+                    const cardInner = (
+                      <>
+                        {/* Icon */}
+                        <div className="flex items-start justify-between">
+                          <span className={`flex h-8 w-8 sm:h-9 sm:w-9 lg:h-11 lg:w-11 items-center justify-center rounded-lg lg:rounded-xl shrink-0 ${theme.iconBg}`}>
+                            <Icon className={`h-3.5 w-3.5 sm:h-4 sm:w-4 lg:h-5 lg:w-5 ${theme.iconColor}`} />
+                          </span>
+                          {isLocked && (
+                            <span className="flex h-6 w-6 lg:h-7 lg:w-7 items-center justify-center rounded-full bg-gray-900/80 dark:bg-gray-700 text-white shrink-0">
+                              <Lock className="h-3 w-3 lg:h-3.5 lg:w-3.5" />
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Name */}
+                        <div>
+                          <p className="text-xs sm:text-sm lg:text-base font-semibold text-gray-800 dark:text-gray-200 leading-snug">{sub.name}</p>
+                        </div>
+                      </>
+                    );
+
+                    const cardClass = "flex flex-col gap-2.5 sm:gap-3 lg:gap-4 rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800 hover:border-gray-200 dark:hover:border-gray-700 hover:bg-white dark:hover:bg-gray-900 hover:shadow-sm transition-all p-3 sm:p-3.5 lg:p-5 h-full text-left w-full";
+
+                    const tooltipText = isLocked
+                      ? "Standard plan required"
+                      : getSubtopicDescription(sub.name);
+                    const tooltipTitle = isLocked ? sub.name : sub.name;
+
                     return (
                       <div key={sub.id} className="group relative">
-                        <LockedTopicLink
-                          href={`/topics/${topic.slug}?subtopic=${sub.slug}`}
-                          locked={isLocked}
-                          topicName={topic.name}
-                          className="flex flex-col gap-2.5 sm:gap-3 lg:gap-4 rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800 hover:border-gray-200 dark:hover:border-gray-700 hover:bg-white dark:hover:bg-gray-900 hover:shadow-sm transition-all p-3 sm:p-3.5 lg:p-5 h-full text-left w-full"
-                        >
-                          {/* Icon */}
-                          <div className="flex items-start">
-                            <span className={`flex h-8 w-8 sm:h-9 sm:w-9 lg:h-11 lg:w-11 items-center justify-center rounded-lg lg:rounded-xl shrink-0 ${theme.iconBg}`}>
-                              <Icon className={`h-3.5 w-3.5 sm:h-4 sm:w-4 lg:h-5 lg:w-5 ${theme.iconColor}`} />
-                            </span>
-                          </div>
+                        {isLocked ? (
+                          <Link href="/pricing" className={cardClass}>
+                            {cardInner}
+                          </Link>
+                        ) : (
+                          <Link
+                            href={`/topics/${topic.slug}?subtopic=${sub.slug}`}
+                            className={cardClass}
+                          >
+                            {cardInner}
+                          </Link>
+                        )}
 
-                          {/* Name */}
-                          <div>
-                            <p className="text-xs sm:text-sm lg:text-base font-semibold text-gray-800 dark:text-gray-200 leading-snug">{sub.name}</p>
-                          </div>
-                        </LockedTopicLink>
-
-                        {/* Description tooltip on hover */}
+                        {/* Hover tooltip — shows description (or "Standard plan required" for locked) */}
                         <div className="pointer-events-none absolute bottom-full left-0 mb-2 z-10 opacity-0 lg:group-hover:opacity-100 transition-opacity duration-150 w-60 lg:w-72">
                           <div className="rounded-lg bg-gray-900 text-white text-xs lg:text-sm px-3 py-2.5 shadow-lg">
-                            <p className="font-semibold mb-1">{sub.name}</p>
-                            <p className="text-gray-300 dark:text-gray-400 leading-relaxed">{getSubtopicDescription(sub.name)}</p>
+                            <p className="font-semibold mb-1">{tooltipTitle}</p>
+                            <p className="text-gray-300 dark:text-gray-400 leading-relaxed">{tooltipText}</p>
                             <div className="absolute top-full left-6 border-4 border-transparent border-t-gray-900" />
                           </div>
                         </div>

@@ -10,12 +10,12 @@ import { prisma } from "@/lib/prisma";
 export const metadata: Metadata = {
   title: "Pricing — Free & Standard Plans",
   description:
-    "Try ATAR Hero free with a topic preview and every VCAA past paper. Upgrade to Standard ($9.99/month AUD) for full access to every topic, every question and worked solutions.",
+    "Free includes one full topic, every VCAA past paper and timed Exam 1 practice. Standard ($9.99/month AUD) unlocks all four topics, Exam 2 simulations and full progress tracking.",
   alternates: { canonical: "/pricing" },
   openGraph: {
     title: "ATAR Hero Pricing — Free & Standard Plans",
     description:
-      "Free plan with VCAA past papers, or Standard at $9.99/month AUD for full Methods access.",
+      "Free: one topic + every VCAA past paper + Exam 1 practice. Standard ($9.99/mo AUD): all four topics + Exam 2 simulations + progress tracking.",
     url: "/pricing",
     type: "website",
   },
@@ -38,34 +38,34 @@ const plans: Plan[] = [
     name: "Free",
     price: "$0",
     period: "forever",
-    description: "Try the platform with limited access — no credit card needed.",
+    description: "Get one full topic, every past paper and timed Exam 1 practice — no credit card needed.",
     cta: "Get started",
     href: "/signup",
     highlighted: false,
     features: [
-      "Preview the Algebra, Number & Structure topic",
-      "Limited practice questions",
-      "View all VCAA past papers",
-      "Track your progress",
-      "Dark mode and mobile-friendly",
+      "Algebra, Number & Structure — full topic with worked solutions",
+      "Every VCAA past paper from 2016 — Exam 1 + Exam 2",
+      "Timed Exam 1 practice — unlimited",
+      "Works on phone, tablet and laptop",
+      "Dark mode",
     ],
   },
   {
     name: "Standard",
     price: "$9.99",
     period: "/month",
-    description: "Full access to Mathematical Methods — every topic, every question.",
+    description: "Full access to Mathematical Methods — every topic, every Exam 2 simulation, full progress tracking.",
     cta: "Start standard",
     checkout: true,
     highlighted: true,
     features: [
-      "Every VCAA Methods past paper from 2016 — Exam 1 + Exam 2",
-      "Step-by-step worked solutions for every question",
-      "Timed Exam 1 + Exam 2 simulations under real VCAA conditions",
-      "All four topics: Functions & graphs, Algebra, Calculus, Probability & statistics",
-      "Track every attempt — see your weakest subtopics and SAC-prep gaps",
-      "Study on any device — phone, tablet, or laptop",
-      "No lock-in — cancel from your profile at any time",
+      "Everything in Free, plus:",
+      "All four topics: Algebra, Functions & Graphs, Calculus, Probability & Statistics",
+      "Exam 2A, Exam 2B and full Exam 2 simulations under VCAA timing",
+      "Mark questions correct or incorrect as you self-mark",
+      "Bookmark questions to revisit later",
+      "Performance history — track every attempt and spot weak subtopics",
+      "Cancel anytime from your profile",
     ],
   },
 ];
@@ -73,7 +73,7 @@ const plans: Plan[] = [
 const faqs = [
   {
     q: "What's included in the free plan?",
-    a: "You get a preview of the Algebra, Number & Structure topic with limited practice questions, plus full access to view every VCAA Mathematical Methods past paper. It's a great way to try the platform before subscribing.",
+    a: "Free covers one full topic (Algebra, Number & Structure), every VCAA Mathematical Methods past paper from 2016 with worked solutions, and unlimited timed Exam 1 practice. Standard unlocks the other three topics, Exam 2 practice modes, bookmarking, self-marking and your performance history.",
   },
   {
     q: "Can I cancel at any time?",
@@ -142,7 +142,7 @@ export default async function PricingPage() {
             Choose the plan that fits you
           </h1>
           <p className="mt-5 lg:mt-6 text-lg lg:text-xl text-gray-500 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto">
-            Start free with a topic preview and every VCAA past paper. Upgrade when you&apos;re ready for full access.
+            Start free with one full topic, every VCAA past paper and timed Exam 1 practice. Upgrade when you&apos;re ready for the rest.
           </p>
           <p className="mt-3 text-sm text-gray-400 dark:text-gray-500">
             All prices in AUD. Cancel at any time.

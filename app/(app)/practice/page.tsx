@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { PenLine, CheckSquare, FileText, LayoutGrid } from "lucide-react";
+import { PenLine, CheckSquare, FileText, LayoutGrid, Lock } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import {
   getPracticeQuestionSetId,
   approvedItemsFilter,
 } from "@/lib/question-set-groups";
 import { TOPICS } from "@/lib/topics-config";
+import { canAccessPaidPractice } from "@/lib/practice-gate";
 
 export const dynamic = "force-dynamic";
 
@@ -99,7 +100,11 @@ function CountSummary({ counts }: { counts: TopicCount[] }) {
 }
 
 export default async function PracticePage() {
-  const counts = await loadCounts();
+  const [counts, hasPaid] = await Promise.all([
+    loadCounts(),
+    canAccessPaidPractice(),
+  ]);
+  const locked = !hasPaid;
 
   return (
     <div>
@@ -109,7 +114,7 @@ export default async function PracticePage() {
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6">
-        {/* Exam 1 Practice */}
+        {/* Exam 1 Practice — free for everyone */}
         <Link
           href="/practice/exam1"
           className="group rounded-2xl border border-violet-200 dark:border-violet-800 bg-violet-50 dark:bg-violet-950 hover:bg-violet-100 dark:hover:bg-violet-900 p-6 lg:p-8 flex flex-col gap-4 lg:gap-5 transition-all hover:shadow-md"
@@ -132,75 +137,136 @@ export default async function PracticePage() {
           <div className="text-sm lg:text-base font-semibold text-violet-700 dark:text-violet-400 group-hover:translate-x-0.5 transition-transform">Configure and start →</div>
         </Link>
 
-        {/* Exam 2A Practice */}
-        <Link
-          href="/practice/exam2a"
-          className="group rounded-2xl border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950 hover:bg-sky-100 dark:hover:bg-sky-900 p-6 lg:p-8 flex flex-col gap-4 lg:gap-5 transition-all hover:shadow-md"
-        >
-          <div className="flex items-center justify-between">
-            <div className="rounded-xl bg-sky-100 dark:bg-sky-900 p-3 lg:p-4">
-              <CheckSquare className="h-6 w-6 lg:h-7 lg:w-7 text-sky-600 dark:text-sky-400" />
-            </div>
-            <span className="rounded-full bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-400 px-3 py-1 text-xs lg:text-sm font-semibold">
-              CAS · MCQ
-            </span>
-          </div>
-          <div>
-            <div className="text-lg lg:text-xl font-bold text-gray-900 dark:text-gray-100 mb-1 lg:mb-2">Exam 2A practice</div>
-            <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 leading-relaxed">
-              Multiple-choice questions with a CAS calculator. 20 questions in exam format.
-            </p>
-          </div>
-          <CountSummary counts={counts.exam2a} />
-          <div className="text-sm lg:text-base font-semibold text-sky-700 dark:text-sky-400 group-hover:translate-x-0.5 transition-transform">Configure and start →</div>
-        </Link>
+        {/* Exam 2A Practice — paid */}
+        <PracticeCard
+          href={locked ? "/pricing" : "/practice/exam2a"}
+          locked={locked}
+          accent="sky"
+          icon={<CheckSquare className="h-6 w-6 lg:h-7 lg:w-7 text-sky-600 dark:text-sky-400" />}
+          chip="CAS · MCQ"
+          title="Exam 2A practice"
+          description="Multiple-choice questions with a CAS calculator. 20 questions in exam format."
+          counts={counts.exam2a}
+        />
 
-        {/* Exam 2B Practice */}
-        <Link
-          href="/practice/exam2b"
-          className="group rounded-2xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950 hover:bg-amber-100 dark:hover:bg-amber-900 p-6 lg:p-8 flex flex-col gap-4 lg:gap-5 transition-all hover:shadow-md"
-        >
-          <div className="flex items-center justify-between">
-            <div className="rounded-xl bg-amber-100 dark:bg-amber-900 p-3 lg:p-4">
-              <FileText className="h-6 w-6 lg:h-7 lg:w-7 text-amber-600 dark:text-amber-400" />
-            </div>
-            <span className="rounded-full bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-400 px-3 py-1 text-xs lg:text-sm font-semibold">
-              CAS · Extended
-            </span>
-          </div>
-          <div>
-            <div className="text-lg lg:text-xl font-bold text-gray-900 dark:text-gray-100 mb-1 lg:mb-2">Exam 2B practice</div>
-            <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 leading-relaxed">
-              Extended-response questions with a CAS calculator. Multi-part problem-solving.
-            </p>
-          </div>
-          <CountSummary counts={counts.exam2b} />
-          <div className="text-sm lg:text-base font-semibold text-amber-700 dark:text-amber-400 group-hover:translate-x-0.5 transition-transform">Configure and start →</div>
-        </Link>
+        {/* Exam 2B Practice — paid */}
+        <PracticeCard
+          href={locked ? "/pricing" : "/practice/exam2b"}
+          locked={locked}
+          accent="amber"
+          icon={<FileText className="h-6 w-6 lg:h-7 lg:w-7 text-amber-600 dark:text-amber-400" />}
+          chip="CAS · Extended"
+          title="Exam 2B practice"
+          description="Extended-response questions with a CAS calculator. Multi-part problem-solving."
+          counts={counts.exam2b}
+        />
 
-        {/* Exam 2A & 2B Practice */}
-        <Link
-          href="/practice/exam2ab"
-          className="group rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950 hover:bg-emerald-100 dark:hover:bg-emerald-900 p-6 lg:p-8 flex flex-col gap-4 lg:gap-5 transition-all hover:shadow-md"
-        >
-          <div className="flex items-center justify-between">
-            <div className="rounded-xl bg-emerald-100 dark:bg-emerald-900 p-3 lg:p-4">
-              <LayoutGrid className="h-6 w-6 lg:h-7 lg:w-7 text-emerald-600 dark:text-emerald-400" />
-            </div>
-            <span className="rounded-full bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-400 px-3 py-1 text-xs lg:text-sm font-semibold">
-              Full exam 2
-            </span>
-          </div>
-          <div>
-            <div className="text-lg lg:text-xl font-bold text-gray-900 dark:text-gray-100 mb-1 lg:mb-2">Exam 2A &amp; 2B practice</div>
-            <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 leading-relaxed">
-              Complete Exam 2 experience — 20 MCQs followed by 4–5 extended-response questions.
-            </p>
-          </div>
-          <CountSummary counts={counts.exam2ab} />
-          <div className="text-sm lg:text-base font-semibold text-emerald-700 dark:text-emerald-400 group-hover:translate-x-0.5 transition-transform">Configure and start →</div>
-        </Link>
+        {/* Exam 2A & 2B Practice — paid */}
+        <PracticeCard
+          href={locked ? "/pricing" : "/practice/exam2ab"}
+          locked={locked}
+          accent="emerald"
+          icon={<LayoutGrid className="h-6 w-6 lg:h-7 lg:w-7 text-emerald-600 dark:text-emerald-400" />}
+          chip="Full exam 2"
+          title="Exam 2A & 2B practice"
+          description="Complete Exam 2 experience — 20 MCQs followed by 4–5 extended-response questions."
+          counts={counts.exam2ab}
+        />
       </div>
+    </div>
+  );
+}
+
+// Tailwind needs every class string to be present at build time, so we pre-define
+// each accent's full class set rather than interpolating colour names at runtime.
+const ACCENT_CLASSES = {
+  sky: {
+    border: "border-sky-200 dark:border-sky-800",
+    bg: "bg-sky-50 dark:bg-sky-950 hover:bg-sky-100 dark:hover:bg-sky-900",
+    iconBg: "bg-sky-100 dark:bg-sky-900",
+    chip: "bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-400",
+    cta: "text-sky-700 dark:text-sky-400",
+  },
+  amber: {
+    border: "border-amber-200 dark:border-amber-800",
+    bg: "bg-amber-50 dark:bg-amber-950 hover:bg-amber-100 dark:hover:bg-amber-900",
+    iconBg: "bg-amber-100 dark:bg-amber-900",
+    chip: "bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-400",
+    cta: "text-amber-700 dark:text-amber-400",
+  },
+  emerald: {
+    border: "border-emerald-200 dark:border-emerald-800",
+    bg: "bg-emerald-50 dark:bg-emerald-950 hover:bg-emerald-100 dark:hover:bg-emerald-900",
+    iconBg: "bg-emerald-100 dark:bg-emerald-900",
+    chip: "bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-400",
+    cta: "text-emerald-700 dark:text-emerald-400",
+  },
+} as const;
+
+type AccentKey = keyof typeof ACCENT_CLASSES;
+
+function PracticeCard({
+  href,
+  locked,
+  accent,
+  icon,
+  chip,
+  title,
+  description,
+  counts,
+}: {
+  href: string;
+  locked: boolean;
+  accent: AccentKey;
+  icon: React.ReactNode;
+  chip: string;
+  title: string;
+  description: string;
+  counts: TopicCount[];
+}) {
+  const c = ACCENT_CLASSES[accent];
+  return (
+    <div className="group relative">
+      <Link
+        href={href}
+        className={`block rounded-2xl border ${c.border} ${c.bg} p-6 lg:p-8 transition-all hover:shadow-md ${locked ? "opacity-40" : ""}`}
+      >
+        <div className="flex flex-col gap-4 lg:gap-5">
+          <div className="flex items-center justify-between">
+            <div className={`rounded-xl ${c.iconBg} p-3 lg:p-4`}>{icon}</div>
+            <div className="flex items-center gap-2">
+              <span className={`rounded-full ${c.chip} px-3 py-1 text-xs lg:text-sm font-semibold`}>
+                {chip}
+              </span>
+              {locked && (
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-900/80 dark:bg-gray-700 text-white shrink-0">
+                  <Lock className="h-3.5 w-3.5" />
+                </span>
+              )}
+            </div>
+          </div>
+          <div>
+            <div className="text-lg lg:text-xl font-bold text-gray-900 dark:text-gray-100 mb-1 lg:mb-2">{title}</div>
+            <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 leading-relaxed">
+              {description}
+            </p>
+          </div>
+          <CountSummary counts={counts} />
+          <div className={`text-sm lg:text-base font-semibold ${c.cta} group-hover:translate-x-0.5 transition-transform`}>
+            {locked ? "See plans →" : "Configure and start →"}
+          </div>
+        </div>
+      </Link>
+
+      {locked && (
+        <div className="pointer-events-none absolute bottom-full left-0 mb-2 z-10 opacity-0 lg:group-hover:opacity-100 transition-opacity duration-150 w-60 lg:w-72">
+          <div className="rounded-lg bg-gray-900 text-white text-xs lg:text-sm px-3 py-2.5 shadow-lg">
+            <p className="font-semibold mb-1">{title}</p>
+            <p className="text-gray-300 dark:text-gray-400 leading-relaxed">Standard plan required</p>
+            <div className="absolute top-full left-6 border-4 border-transparent border-t-gray-900" />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

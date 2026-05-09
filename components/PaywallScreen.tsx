@@ -19,7 +19,7 @@ const COPY: Record<
   topic: {
     title: (name) => (name ? `${name} is part of the paid plan` : "This topic is part of the paid plan"),
     description:
-      "Upgrade to unlock all four Mathematical Methods topics, plus practice mode, search and history.",
+      "Upgrade to unlock all four Mathematical Methods topics, plus practice mode and history.",
   },
   practice: {
     title: () => "Practice mode is part of the paid plan",
@@ -41,7 +41,6 @@ const COPY: Record<
 const PAID_PERKS = [
   "All four Mathematical Methods topics",
   "Unlimited practice questions and timed exams",
-  "Search across every past exam question",
   "Performance history and progress tracking",
   "Cancel at any time",
 ];

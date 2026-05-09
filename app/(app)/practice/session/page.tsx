@@ -9,6 +9,8 @@ import FreedomModeEnd from "@/components/FreedomModeEnd";
 import { EXAM_CONFIG, type ExamMode } from "@/lib/exam-config";
 import { getPracticeQuestionSetId, approvedItemsFilter } from "@/lib/question-set-groups";
 import { createClient } from "@/lib/supabase/server";
+import PaywallScreen from "@/components/PaywallScreen";
+import { canAccessPaidPractice } from "@/lib/practice-gate";
 
 type QuestionSetItemType = "MCQ" | "SHORT_ANSWER" | "EXTENDED_ANSWER" | "EXTENDED_RESPONSE";
 
@@ -529,6 +531,15 @@ export default async function SessionPage({ searchParams }: PageProps) {
     );
   }
 
+  // Exam 1 is free; Exam 2 modes require a paid plan. The same gate also
+  // controls whether free users can self-mark or bookmark questions in their
+  // free Exam 1 session — they can practise but not record progress.
+  const hasPaidAccess = await canAccessPaidPractice();
+  if (mode !== "exam1" && !hasPaidAccess) {
+    return <PaywallScreen feature="practice" backHref="/practice" backLabel="Back to practice" />;
+  }
+  const canTrackProgress = hasPaidAccess;
+
   const version = params.version ?? "exam";
   const showSolutionButton = params.solutions === "1";
   const showTimer = params.timer === "1";
@@ -718,6 +729,7 @@ export default async function SessionPage({ searchParams }: PageProps) {
                     parts={group.parts}
                     showSolutionButton={showSolutionButton}
                     disableServerRefresh
+                    canTrackProgress={canTrackProgress}
                   />
                 ))}
               </div>
@@ -742,6 +754,7 @@ export default async function SessionPage({ searchParams }: PageProps) {
                     parts={group.parts}
                     showSolutionButton={showSolutionButton}
                     disableServerRefresh
+                    canTrackProgress={canTrackProgress}
                   />
                 ))}
               </div>
@@ -1064,6 +1077,7 @@ export default async function SessionPage({ searchParams }: PageProps) {
               parts={group.parts}
               showSolutionButton={showSolutionButton}
               disableServerRefresh
+              canTrackProgress={canTrackProgress}
             />
           ))}
           <FreedomModeEnd setupHref={backHref} />
