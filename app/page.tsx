@@ -70,7 +70,7 @@ const journey = [
     label: "Zero",
     title: "Start where you are",
     description:
-      "No matter where you're at — overwhelmed, behind or just starting out — your hero journey begins here.",
+      "No matter where you're at — overwhelmed, behind or just starting out — your VCE Methods journey begins here.",
   },
   {
     icon: TrendingUp,
@@ -151,7 +151,7 @@ export default async function HomePage() {
               href={user ? "/dashboard" : "/signup"}
               className="group rounded-2xl bg-brand-600 px-8 lg:px-10 py-4 lg:py-5 text-base lg:text-lg font-semibold text-white shadow-lg shadow-brand-600/20 hover:bg-brand-700 hover:shadow-brand-600/30 hover:-translate-y-0.5 transition-all"
             >
-              {user ? "Go to dashboard" : "Begin your hero journey — free"}
+              {user ? "Go to dashboard" : "Start practising — free"}
               <ArrowRight className="inline-block h-4 w-4 lg:h-5 lg:w-5 ml-2 group-hover:translate-x-0.5 transition-transform" />
             </Link>
             <Link
@@ -172,7 +172,7 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 lg:mb-16">
             <h2 className="text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-3 lg:mb-4">
-              Every hero starts somewhere
+              Every VCE journey starts somewhere
             </h2>
             <p className="text-base lg:text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
               The gap between you and a top ATAR isn&apos;t talent — it&apos;s reps. Here&apos;s
@@ -420,7 +420,7 @@ export default async function HomePage() {
         <div className="max-w-2xl mx-auto">
           <Trophy className="h-10 w-10 lg:h-12 lg:w-12 text-amber-500 dark:text-amber-400 mx-auto mb-5" />
           <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 dark:text-gray-100">
-            Your hero arc starts today.
+            Your VCE Methods journey starts today.
           </h2>
           <p className="mt-4 lg:mt-6 text-base lg:text-xl text-gray-500 dark:text-gray-400">
             Create a free account and take the first step from zero to hero. More VCE subjects are on the way.
