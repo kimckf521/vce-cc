@@ -14,6 +14,8 @@ export function isAdminRole(role: string | null | undefined): boolean {
 export function roleLabel(role: string | null | undefined): string {
   if (role === "SUPER_ADMIN") return "Super Admin";
   if (role === "ADMIN") return "Admin";
+  if (role === "TUTOR") return "Tutor";
+  if (role === "INFLUENCER") return "Influencer";
   return "Student";
 }
 

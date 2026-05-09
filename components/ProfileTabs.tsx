@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { User, CreditCard, MessageSquare, Gift, ArrowRight } from "lucide-react";
+import { User, CreditCard, MessageSquare, Gift, ArrowRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import EditDisplayName from "@/components/EditDisplayName";
 import ChangePassword from "@/components/ChangePassword";
@@ -28,14 +28,14 @@ type ProfileTabsProps = {
 
 /* ─── tab definitions ─────────────────────────────────────────────────── */
 
-const TABS = [
+const ALL_TABS = [
   { key: "account", label: "Account", icon: User },
   { key: "billing", label: "Billing", icon: CreditCard },
   { key: "referrals", label: "Refer & earn", icon: Gift },
   { key: "report", label: "Report", icon: MessageSquare },
 ] as const;
 
-type TabKey = (typeof TABS)[number]["key"];
+type TabKey = (typeof ALL_TABS)[number]["key"];
 
 /* ═══════════════════════════ MAIN COMPONENT ═══════════════════════════ */
 
@@ -46,6 +46,11 @@ export default function ProfileTabs({
   memberSince,
   billing,
 }: ProfileTabsProps) {
+  // Tutors / influencers access "Refer & earn" via the sidebar instead, so we
+  // hide the duplicate tab on their Profile page to avoid two entry points.
+  const TABS = ALL_TABS.filter(
+    (t) => t.key !== "referrals" || (role !== "Tutor" && role !== "Influencer")
+  );
   const [activeTab, setActiveTab] = useState<TabKey>("account");
 
   return (
@@ -191,17 +196,36 @@ export default function ProfileTabs({
                 ) : (
                   <>
                     <h3 className="text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100">
-                      Refer a friend, both save
+                      Share your link. Both save.
                     </h3>
-                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                      Share your link with classmates. When a friend subscribes,
-                      <strong className="text-gray-900 dark:text-gray-100"> you earn $5 credit</strong> {""}
-                      (auto-applied to your next bill — 2 referrals = a free month),
-                      and <strong className="text-gray-900 dark:text-gray-100">they get 50% off their first month</strong> (just $4.99).
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                      Send your link to a classmate. When they subscribe:
                     </p>
-                    <p className="mt-2 text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-                      No referral limit. Credit unlocks once your friend has been
-                      subscribed for 30 days.
+                    <ul className="mt-3 space-y-2">
+                      <li className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                        <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
+                        <span>
+                          <strong className="text-gray-900 dark:text-gray-100">You</strong> get
+                          <strong className="text-emerald-600 dark:text-emerald-400"> $5 off</strong> your next month
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                        <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
+                        <span>
+                          <strong className="text-gray-900 dark:text-gray-100">Your friend</strong> gets their first month at
+                          <strong className="text-emerald-600 dark:text-emerald-400"> half price</strong> ($4.99 instead of $9.99)
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                        <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
+                        <span>
+                          Refer <strong className="text-gray-900 dark:text-gray-100">2 friends</strong> = your next month is
+                          <strong className="text-emerald-600 dark:text-emerald-400"> free</strong>. No limit on how many you can refer.
+                        </span>
+                      </li>
+                    </ul>
+                    <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">
+                      Your $5 shows up after your friend has paid for 30 days.
                     </p>
                   </>
                 )}
