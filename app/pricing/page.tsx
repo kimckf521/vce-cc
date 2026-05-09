@@ -10,7 +10,7 @@ import { prisma } from "@/lib/prisma";
 export const metadata: Metadata = {
   title: "Pricing — Free & Standard Plans",
   description:
-    "Try ATAR Hero free with a topic preview and every VCAA past paper. Upgrade to Standard ($9.99/month AUD) for full access to every topic, every question, and worked solutions.",
+    "Try ATAR Hero free with a topic preview and every VCAA past paper. Upgrade to Standard ($9.99/month AUD) for full access to every topic, every question and worked solutions.",
   alternates: { canonical: "/pricing" },
   openGraph: {
     title: "ATAR Hero Pricing — Free & Standard Plans",
@@ -55,7 +55,7 @@ const plans: Plan[] = [
     price: "$9.99",
     period: "/month",
     description: "Full access to Mathematical Methods — every topic, every question.",
-    cta: "Start Standard",
+    cta: "Start standard",
     checkout: true,
     highlighted: true,
     features: [
@@ -81,7 +81,7 @@ const faqs = [
   },
   {
     q: "Do you offer annual discounts?",
-    a: "Annual plans are coming soon. If you'd like to be notified when they launch, sign up for a free account and we'll let you know.",
+    a: "Annual plans are coming soon. If you'd like to be notified when they launch, create a free account and we'll let you know.",
   },
   {
     q: "Will more subjects be added?",
@@ -271,7 +271,7 @@ export default async function PricingPage() {
               More plans coming soon
             </p>
             <p className="mt-1.5 text-sm text-gray-500 dark:text-gray-400">
-              We&apos;re working on a Premium tier with practice exams, video solutions, and more subjects. Stay tuned.
+              We&apos;re working on a Premium tier with video solutions and more subjects. Stay tuned.
             </p>
           </div>
         </div>

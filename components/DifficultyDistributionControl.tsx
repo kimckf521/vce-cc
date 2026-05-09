@@ -56,7 +56,7 @@ export default function DifficultyDistributionControl({ distribution, onChange, 
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
-        <h3 className="font-semibold text-gray-800 dark:text-gray-200 lg:text-lg">{label ?? "Difficulty Distribution"}</h3>
+        <h3 className="font-semibold text-gray-800 dark:text-gray-200 lg:text-lg">{label ?? "Difficulty distribution"}</h3>
         <span
           className={cn(
             "text-xs font-semibold px-2.5 py-1 rounded-full",

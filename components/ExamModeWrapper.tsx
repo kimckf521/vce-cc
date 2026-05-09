@@ -366,7 +366,7 @@ export default function ExamModeWrapper({
                   : "text-blue-600 dark:text-blue-400"
               )} />
               <h2 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100">
-                {enableSelfMarking ? "Self-Mark Your Exam" : "Exam Results"}
+                {enableSelfMarking ? "Self-mark your exam" : "Exam results"}
               </h2>
             </div>
 
@@ -380,7 +380,7 @@ export default function ExamModeWrapper({
               {/* Score */}
               <div className="rounded-xl bg-white/80 border border-white p-4 lg:p-5">
                 <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-1">
-                  {enableSelfMarking ? "Marks Earned" : "Score"}
+                  {enableSelfMarking ? "Marks earned" : "Score"}
                 </p>
                 <p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100">
                   {showScore ? (
@@ -417,7 +417,7 @@ export default function ExamModeWrapper({
 
               {/* Time taken */}
               <div className="rounded-xl bg-white/80 border border-white p-4 lg:p-5">
-                <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-1">Time Taken</p>
+                <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-1">Time taken</p>
                 <div className="flex items-center gap-2">
                   <Clock className="h-5 w-5 lg:h-6 lg:w-6 text-gray-400 dark:text-gray-500" />
                   <p className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">{formatElapsed(finalTime)}</p>
@@ -500,7 +500,7 @@ export default function ExamModeWrapper({
             onClick={handleSubmit}
             className="w-full rounded-2xl bg-brand-600 px-8 py-4 lg:py-5 text-base lg:text-lg font-bold text-white hover:bg-brand-700 transition-colors shadow-lg"
           >
-            {showScore ? `Submit Exam (${answeredCount}/${totalQuestions} answered)` : "Submit Exam"}
+            {showScore ? `Submit exam (${answeredCount}/${totalQuestions} answered)` : "Submit exam"}
           </button>
         </div>
       )}
@@ -571,8 +571,8 @@ export default function ExamModeWrapper({
             {finalising
               ? "Saving…"
               : allMarked
-                ? `Finish Marking (${selfMarksTotal}/${totalMaxMarks} marks)`
-                : "Finish Marking"}
+                ? `Finish marking (${selfMarksTotal}/${totalMaxMarks} marks)`
+                : "Finish marking"}
             {allMarked && !finalising && <ArrowRight className="h-5 w-5" />}
           </button>
         </div>

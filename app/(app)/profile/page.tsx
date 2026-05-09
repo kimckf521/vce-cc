@@ -63,7 +63,7 @@ export default async function ProfilePage() {
               </span>
               {memberSince && (
                 <span className="text-xs text-gray-400 dark:text-gray-500">
-                  Since {memberSince}
+                  Member since {memberSince}
                 </span>
               )}
             </div>

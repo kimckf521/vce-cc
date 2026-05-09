@@ -19,12 +19,12 @@ const COPY: Record<
   topic: {
     title: (name) => (name ? `${name} is part of the paid plan` : "This topic is part of the paid plan"),
     description:
-      "Upgrade to unlock all four Mathematical Methods topics, plus practice mode, search, and history.",
+      "Upgrade to unlock all four Mathematical Methods topics, plus practice mode, search and history.",
   },
   practice: {
     title: () => "Practice mode is part of the paid plan",
     description:
-      "Build timed exam practice sessions with custom topic and difficulty distributions. Available on the paid plan.",
+      "Build timed exam practice sessions with custom topic mixes and difficulty levels. Available on the paid plan.",
   },
   search: {
     title: () => "Search is part of the paid plan",
@@ -92,7 +92,7 @@ export default function PaywallScreen({
           className="flex items-center justify-center gap-2 w-full rounded-xl bg-brand-600 hover:bg-brand-700 text-white px-6 py-3.5 lg:py-4 text-base lg:text-lg font-semibold transition-colors"
         >
           <Sparkles className="h-5 w-5" />
-          See plans &amp; upgrade
+          See plans and upgrade
         </Link>
       </div>
     </div>

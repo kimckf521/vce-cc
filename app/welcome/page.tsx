@@ -20,7 +20,7 @@ const BENEFITS = [
     icon: BookOpen,
     title: "Every topic, unlocked",
     description:
-      "Full access to all four VCE Mathematical Methods topics — Functions, Algebra, Calculus, and Probability & Statistics.",
+      "Full access to all four VCE Mathematical Methods topics — Functions, Algebra, Calculus and Probability & Statistics.",
   },
   {
     icon: FileText,
@@ -44,7 +44,7 @@ const BENEFITS = [
     icon: BarChart2,
     title: "Track your progress",
     description:
-      "See your strengths and weaknesses by topic, review every attempt, and watch your scores climb.",
+      "See your strengths and weaknesses by topic, review every attempt and watch your scores climb.",
   },
 ];
 
@@ -74,9 +74,8 @@ export default async function WelcomePage() {
           </h1>
 
           <p className="mt-5 lg:mt-6 text-lg lg:text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto">
-            We&apos;re so happy you&apos;ve become part of the team. Your
-            subscription is now active — let&apos;s get you ready to ace your
-            Methods exam.
+            We&apos;re stoked to have you on board. Your subscription is now
+            active — let&apos;s get you ready to ace your Methods exam.
           </p>
         </div>
 

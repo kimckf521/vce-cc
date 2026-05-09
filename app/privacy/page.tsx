@@ -5,7 +5,7 @@ import MarketingFooter from "@/components/MarketingFooter";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "How ATAR Hero collects, uses, and protects your personal information in accordance with the Australian Privacy Principles.",
+    "How ATAR Hero collects, uses and protects your personal information in accordance with the Australian Privacy Principles.",
   alternates: { canonical: "/privacy" },
 };
 
@@ -18,7 +18,7 @@ const privacyJsonLd = {
   "@type": "WebPage",
   name: "Privacy Policy",
   description:
-    "How ATAR Hero collects, uses, and protects your personal information in accordance with the Australian Privacy Principles.",
+    "How ATAR Hero collects, uses and protects your personal information in accordance with the Australian Privacy Principles.",
   url: "https://www.atarhero.com.au/privacy",
   inLanguage: "en-AU",
   datePublished: "2026-04-09",
@@ -59,27 +59,27 @@ export default function PrivacyPage() {
       <section className="py-16 lg:py-20 px-5 sm:px-8 lg:px-12">
         <article className="max-w-3xl mx-auto space-y-5 text-sm lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed [&_h2]:text-xl [&_h2]:lg:text-2xl [&_h2]:font-bold [&_h2]:text-gray-900 [&_h2]:dark:text-gray-100 [&_h2]:mt-10 [&_h2]:mb-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_li]:leading-relaxed [&_a]:text-brand-600 [&_a]:dark:text-brand-400 [&_a]:hover:underline [&_strong]:text-gray-900 [&_strong]:dark:text-gray-100">
           <p>
-            ATAR Hero (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) is an independent revision
+            ATAR Hero (&lsquo;we&rsquo;, &lsquo;us&rsquo;, &lsquo;our&rsquo;) is an independent revision
             platform for Victorian VCE students. We take your privacy seriously and handle your
             personal information in accordance with the{" "}
             <em>Privacy Act 1988</em> (Cth) and the Australian Privacy Principles (APPs).
           </p>
           <p>
-            This policy explains what information we collect, how we use it, who we share it with,
+            This policy explains what information we collect, how we use it, who we share it with
             and the choices you have. By creating an account or using vcemethods.com.au (the
-            &ldquo;Service&rdquo;) you agree to this policy.
+            &lsquo;Service&rsquo;) you agree to this policy.
           </p>
 
           <h2>1. Information we collect</h2>
           <p>We only collect information that is necessary to operate and improve the Service.</p>
           <ul>
             <li>
-              <strong>Account information:</strong> your name, email address, and a password hash
+              <strong>Account information:</strong> your name, email address and a password hash
               when you create an account.
             </li>
             <li>
               <strong>Study activity:</strong> the questions you attempt, your answers, time spent,
-              correctness, and self-marked status. This powers progress tracking and review history.
+              correctness and self-marked status. This powers progress tracking and review history.
             </li>
             <li>
               <strong>Billing information:</strong> if you subscribe to a paid plan, payment details
@@ -87,7 +87,7 @@ export default function PrivacyPage() {
               your full card number — we only receive a customer identifier and subscription status.
             </li>
             <li>
-              <strong>Technical data:</strong> IP address, browser type, device type, referrer, and
+              <strong>Technical data:</strong> IP address, browser type, device type, referrer and
               pages visited, collected via standard server logs and basic first-party analytics.
             </li>
             <li>
@@ -99,17 +99,17 @@ export default function PrivacyPage() {
           <h2>2. How we use your information</h2>
           <ul>
             <li>To provide and personalise the Service — including tracking your progress, showing
-              your history, and unlocking content based on your subscription.</li>
+              your history and unlocking content based on your subscription.</li>
             <li>To authenticate you and keep your account secure.</li>
             <li>To process subscription payments and send billing receipts.</li>
-            <li>To send important service communications (e.g. password resets, billing notices,
+            <li>To send important service communications (e.g. password resets, billing notices
               and occasional product updates).</li>
-            <li>To understand how the Service is used so we can improve features, fix bugs, and
+            <li>To understand how the Service is used so we can improve features, fix bugs and
               prioritise content.</li>
             <li>To comply with our legal obligations.</li>
           </ul>
           <p>
-            We do not sell your personal information, and we do not share it with third parties for
+            We do not sell your personal information and we do not share it with third parties for
             their own marketing purposes.
           </p>
 
@@ -183,7 +183,7 @@ export default function PrivacyPage() {
           <h2>8. Changes to this policy</h2>
           <p>
             We may update this policy from time to time as the Service evolves. When we do, we will
-            update the &ldquo;Last updated&rdquo; date at the top of this page. If the changes are
+            update the &lsquo;Last updated&rsquo; date at the top of this page. If the changes are
             material, we will also notify you by email or an in-app notice.
           </p>
 

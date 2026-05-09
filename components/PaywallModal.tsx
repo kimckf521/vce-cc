@@ -88,7 +88,7 @@ export default function PaywallModal({ open, onClose, topicName }: PaywallModalP
           className="flex items-center justify-center gap-2 w-full rounded-xl bg-brand-600 hover:bg-brand-700 text-white px-6 py-3 text-sm sm:text-base font-semibold transition-colors"
         >
           <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
-          See plans &amp; upgrade
+          See plans and upgrade
         </Link>
         <button
           type="button"

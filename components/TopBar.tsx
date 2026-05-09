@@ -8,7 +8,7 @@ import BrandMark from "@/components/BrandMark";
 const PAGE_TITLES: Record<string, string> = {
   "/dashboard": "Dashboard",
   "/topics":    "Topics",
-  "/exams":     "Past Papers",
+  "/exams":     "Past papers",
   "/practice":  "Practice",
   "/profile":   "Profile",
   "/search":    "Search",

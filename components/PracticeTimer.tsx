@@ -155,7 +155,7 @@ export default function PracticeTimer({
 
   if (dismissed || position.x < 0) return null;
 
-  const phaseLabel = phase === "reading" ? "Reading Time" : phase === "writing" ? "Writing Time" : "Time Up";
+  const phaseLabel = phase === "reading" ? "Reading time" : phase === "writing" ? "Writing time" : "Time up";
   const isLow = phase === "writing" && remaining <= 5 * 60 && remaining > 0;
   const isFinished = phase === "finished";
 
@@ -298,7 +298,7 @@ export default function PracticeTimer({
               <div className="flex items-center justify-center h-10 w-10 rounded-full bg-yellow-100 dark:bg-yellow-900">
                 <AlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
               </div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Close Timer?</h3>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Close timer?</h3>
             </div>
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Are you sure you want to close the timer? You won&apos;t be able to bring it back.
@@ -308,7 +308,7 @@ export default function PracticeTimer({
                 onClick={() => setShowDismissConfirm(false)}
                 className="flex-1 rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
               >
-                Keep Timer
+                Keep timer
               </button>
               <button
                 onClick={() => {
@@ -317,7 +317,7 @@ export default function PracticeTimer({
                 }}
                 className="flex-1 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700 transition-colors"
               >
-                Close Timer
+                Close timer
               </button>
             </div>
           </div>

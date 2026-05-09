@@ -5,18 +5,18 @@ import MarketingFooter from "@/components/MarketingFooter";
 export const metadata: Metadata = {
   title: "FAQs",
   description:
-    "Answers to common questions about ATAR Hero: free vs Standard plans, subscriptions, VCAA past papers, progress tracking, and more.",
+    "Answers to common questions about ATAR Hero: free vs Standard plans, subscriptions, VCAA past papers, progress tracking and more.",
   alternates: { canonical: "/faqs" },
 };
 
 const faqs: { q: string; a: string }[] = [
   {
     q: "What is ATAR Hero?",
-    a: "ATAR Hero is an independent revision hub for Victorian Year 12 students studying VCE Mathematical Methods. It gives you past VCAA exam questions organised by topic, step-by-step worked solutions, timed practice exams, and progress tracking.",
+    a: "ATAR Hero is an independent revision hub for Victorian Year 12 students studying VCE Mathematical Methods. It gives you past VCAA exam questions organised by topic, step-by-step worked solutions, timed practice exams and progress tracking.",
   },
   {
     q: "Is ATAR Hero affiliated with VCAA?",
-    a: "No. ATAR Hero is an independent study platform built by students, for students. We are not affiliated with, endorsed by, or sponsored by the Victorian Curriculum and Assessment Authority (VCAA). Past exam content is sourced from publicly available VCAA materials and is used for educational revision purposes only.",
+    a: "No. ATAR Hero is an independent study platform built by students, for students. We are not affiliated with, endorsed by or sponsored by the Victorian Curriculum and Assessment Authority (VCAA). Past exam content is sourced from publicly available VCAA materials and is used for educational revision purposes only.",
   },
   {
     q: "What's included in the Free plan?",
@@ -24,7 +24,7 @@ const faqs: { q: string; a: string }[] = [
   },
   {
     q: "What do I get with the Standard plan?",
-    a: "The Standard plan ($9.99/month AUD) unlocks all four Mathematical Methods topics (Algebra Number & Structure, Functions Relations & Graphs, Calculus, and Data Analysis Probability & Statistics), unlimited practice questions, step-by-step worked solutions for every question, timed practice exams (Exam 1, Exam 2A multiple choice, Exam 2B short-answer), search across every past question, and full history / progress tracking.",
+    a: "The Standard plan ($9.99/month AUD) unlocks all four Mathematical Methods topics (Algebra, Number & Structure; Functions, Relations & Graphs; Calculus; and Data Analysis, Probability & Statistics), unlimited practice questions, step-by-step worked solutions for every question, timed practice exams (Exam 1, Exam 2A multiple-choice, Exam 2B short-answer), search across every past question, and full history and progress tracking.",
   },
   {
     q: "How much does Standard cost?",
@@ -32,7 +32,7 @@ const faqs: { q: string; a: string }[] = [
   },
   {
     q: "Can I cancel anytime?",
-    a: "Yes. You can cancel your Standard subscription at any time from the billing portal on your profile page. You'll keep full access until the end of the billing period you've already paid for, and you won't be charged again.",
+    a: "Yes. You can cancel your Standard subscription at any time from the billing portal on your profile page. You'll keep full access until the end of the billing period you've already paid for and you won't be charged again.",
   },
   {
     q: "Do you offer refunds?",
@@ -48,19 +48,19 @@ const faqs: { q: string; a: string }[] = [
   },
   {
     q: "Which exam years are covered?",
-    a: "We cover the most recent years of VCAA Mathematical Methods exams (both Exam 1 and Exam 2), and we keep the library up to date as new past papers become publicly available from VCAA.",
+    a: "We cover VCAA Mathematical Methods exams from 2016 onwards (both Exam 1 and Exam 2), and we keep the library up to date as new past papers become publicly available from VCAA.",
   },
   {
     q: "How are the worked solutions written?",
-    a: "Worked solutions are written to mirror how a VCE examiner awards marks: each step is shown, key working is highlighted, and answers are clearly stated. For multiple-choice questions the correct letter is shown; for short-answer questions the full method is shown.",
+    a: "Worked solutions are written to mirror how a VCE examiner awards marks: each step is shown, key working is highlighted and answers are clearly stated. For multiple-choice questions the correct letter is shown; for short-answer questions the full method is shown.",
   },
   {
     q: "Does it work on my phone?",
-    a: "Yes. The entire platform is mobile-friendly, so you can revise on your phone, tablet, or laptop. Dark mode is supported on every page.",
+    a: "Yes. The entire platform is mobile-friendly, so you can revise on your phone, tablet or laptop. Dark mode is supported on every page.",
   },
   {
     q: "How do I reset my password?",
-    a: "Click \"Forgot password?\" on the login page. We'll email you a password reset link. For security, the link expires after a short period — request a new one if it has expired.",
+    a: "Click 'Forgot password?' on the login page. We'll email you a password reset link. For security, the link expires after a short period — request a new one if it has expired.",
   },
   {
     q: "How do I contact support?",
@@ -93,7 +93,7 @@ export default function FAQsPage() {
             Frequently asked questions
           </h1>
           <p className="mt-5 text-lg lg:text-xl text-gray-500 dark:text-gray-400">
-            Everything you need to know about ATAR Hero, plans, and billing.
+            Everything you need to know about ATAR Hero, plans and billing.
           </p>
         </div>
       </section>

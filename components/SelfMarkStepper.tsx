@@ -26,7 +26,7 @@ export default function SelfMarkStepper({ parts, selfMarks, onChange }: Props) {
   return (
     <div className="mt-3 rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 px-4 py-3 lg:px-5 lg:py-4">
       <p className="text-[10px] lg:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2.5">
-        Self-Mark
+        Self-mark
       </p>
       <div className="space-y-2.5">
         {parts.map((p) => {

@@ -50,7 +50,7 @@ const features = [
     icon: LineChart,
     title: "Smart progress tracking",
     description:
-      "Mark questions correct, incorrect or needs-review. Bookmark anything. See your trend over time.",
+      "Mark questions as correct, incorrect or needs-review. Bookmark anything. See your trend over time.",
     iconBg: "bg-sky-100 dark:bg-sky-900/60",
     iconColor: "text-sky-600 dark:text-sky-400",
   },
@@ -70,28 +70,28 @@ const journey = [
     label: "Zero",
     title: "Start where you are",
     description:
-      "No matter where you're at — overwhelmed, behind, or just starting out — your hero journey begins here.",
+      "No matter where you're at — overwhelmed, behind or just starting out — your hero journey begins here.",
   },
   {
     icon: TrendingUp,
     label: "Grow",
     title: "Build skill, one question at a time",
     description:
-      "Practise real VCAA past exam questions with worked solutions. Track every correct, incorrect and review.",
+      "Practise real VCAA past exam questions with worked solutions. Track every correct answer, mistake and review.",
   },
   {
     icon: Trophy,
     label: "Hero",
     title: "Walk into the exam ready",
     description:
-      "Timed practice exams, exam-day strategy, and confidence built from doing the work — not just reading it.",
+      "Timed practice exams, exam-day strategy and confidence built from doing the work — not just reading it.",
   },
 ];
 
 const subjects = [
   {
     name: "Mathematical Methods",
-    description: "Functions, calculus, algebra, probability and statistics — complete Exam 1 & 2 coverage.",
+    description: "Functions, calculus, algebra, probability and statistics — complete Exam 1 and Exam 2 coverage.",
     status: "available" as const,
     href: "/topics",
     topics: [
@@ -143,8 +143,8 @@ export default async function HomePage() {
           </h1>
           <p className="mt-6 lg:mt-8 text-lg sm:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto">
             Wherever you&apos;re starting from, ATAR Hero takes you all the way. Real VCAA past
-            exam questions, worked solutions, and timed practice — built to turn study into a
-            top ATAR.
+            exam questions, worked solutions and timed practice — built to turn study into a
+            top ATAR score.
           </p>
           <div className="mt-10 lg:mt-12 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -176,7 +176,7 @@ export default async function HomePage() {
             </h2>
             <p className="text-base lg:text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
               The gap between you and a top ATAR isn&apos;t talent — it&apos;s reps. Here&apos;s
-              how ATAR Hero gets you across.
+              how ATAR Hero helps you bridge it.
             </p>
           </div>
 
@@ -321,7 +321,7 @@ export default async function HomePage() {
               Everything you need to ace VCE
             </h2>
             <p className="text-base lg:text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
-              Built by VCE students, for VCE students. Real exam content, smart tools, and a UX that doesn&apos;t get in your way.
+              Built by VCE students, for VCE students. Real exam content, smart tools and a UX that doesn&apos;t get in your way.
             </p>
           </div>
 
@@ -395,7 +395,7 @@ export default async function HomePage() {
               Get in touch
             </h2>
             <p className="text-base lg:text-lg text-gray-500 dark:text-gray-400 max-w-xl mx-auto leading-relaxed">
-              Have a question about plans, a content suggestion, or found a bug? Drop us a line.
+              Have a question about plans, a content suggestion or a bug to report? Drop us a line.
             </p>
           </div>
 
@@ -442,8 +442,8 @@ export default async function HomePage() {
             <Award className="h-5 w-5 lg:h-6 lg:w-6 text-gray-500 dark:text-gray-400" />
           </div>
           <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 leading-relaxed">
-            All content on this website has been developed independently from and is not endorsed
-            by the Victorian Curriculum and Assessment Authority (VCAA). VCAA<sup>®</sup> is a
+            All content on this website has been developed independently of, and is not endorsed
+            by, the Victorian Curriculum and Assessment Authority (VCAA). VCAA<sup>®</sup> is a
             registered trademark of the Victorian Curriculum and Assessment Authority. Past exam
             content is sourced from publicly available VCAA materials and is used for educational
             revision purposes only.

@@ -32,7 +32,7 @@ export default async function MarketingNav({ active = null }: { active?: NavKey 
             Topics
           </Link>
           <Link href="/exams" className={linkClass("exams")}>
-            Past Papers
+            Past papers
           </Link>
           <Link href="/practice" className={linkClass("practice")}>
             Practice

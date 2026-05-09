@@ -90,7 +90,7 @@ export default async function ExamPage({ params }: PageProps) {
         href="/exams"
         className="inline-flex items-center gap-1 text-sm lg:text-base text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 mb-6 transition-colors"
       >
-        <ChevronLeft className="h-4 w-4 lg:h-5 lg:w-5" /> Past Papers
+        <ChevronLeft className="h-4 w-4 lg:h-5 lg:w-5" /> Past papers
       </Link>
 
       <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
@@ -111,7 +111,7 @@ export default async function ExamPage({ params }: PageProps) {
               className="inline-flex items-center gap-2 rounded-xl border border-brand-200 dark:border-brand-700 bg-brand-50 dark:bg-brand-950/50 px-3 py-2 text-sm font-medium text-brand-700 dark:text-brand-300 hover:bg-brand-100 dark:hover:bg-brand-900/50 transition-colors"
             >
               <FileText className="h-4 w-4" />
-              Original Exam PDF
+              Original exam PDF
             </a>
           )}
           {exam.answerUrl && (
@@ -122,7 +122,7 @@ export default async function ExamPage({ params }: PageProps) {
               className="inline-flex items-center gap-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             >
               <FileText className="h-4 w-4" />
-              Examiner Report
+              Examiner report
             </a>
           )}
         </div>
@@ -131,8 +131,8 @@ export default async function ExamPage({ params }: PageProps) {
       {/* VCAA Copyright Notice */}
       <div className="mb-8 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-3 text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
         <span className="font-semibold text-gray-600 dark:text-gray-300">Copyright notice: </span>
-        Exam questions on this page are reproduced from past VCAA Mathematical Methods examinations for individual study and research purposes under the fair dealing provisions of the{" "}
-        <em>Copyright Act 1968</em> (Cth). This site is not affiliated with, endorsed by, or associated with the Victorian Curriculum and Assessment Authority (VCAA).{" "}
+        Exam questions on this page are reproduced from past VCAA Mathematical Methods examinations for the purposes of individual study and research under the fair dealing provisions of the{" "}
+        <em>Copyright Act 1968</em> (Cth). This site is not affiliated with, endorsed by or otherwise associated with the Victorian Curriculum and Assessment Authority (VCAA).{" "}
         © Victorian Curriculum and Assessment Authority. For current and official versions of all VCE examinations, visit{" "}
         <a
           href="https://www.vcaa.vic.edu.au"

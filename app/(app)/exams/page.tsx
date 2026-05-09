@@ -46,7 +46,7 @@ export default async function ExamsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Past Papers</h1>
+      <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Past papers</h1>
       <p className="text-gray-500 dark:text-gray-400 lg:text-base mb-6">
         Every VCAA Mathematical Methods exam, with questions and solutions.
       </p>
@@ -54,8 +54,8 @@ export default async function ExamsPage() {
       {/* VCAA Copyright Notice */}
       <div className="mb-8 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-3 text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
         <span className="font-semibold text-gray-600 dark:text-gray-300">Copyright notice: </span>
-        Exam questions on this page are reproduced from past VCAA Mathematical Methods examinations for individual study and research purposes under the fair dealing provisions of the{" "}
-        <em>Copyright Act 1968</em> (Cth). This site is not affiliated with, endorsed by, or associated with the Victorian Curriculum and Assessment Authority (VCAA).{" "}
+        Exam questions on this page are reproduced from past VCAA Mathematical Methods examinations for the purposes of individual study and research under the fair dealing provisions of the{" "}
+        <em>Copyright Act 1968</em> (Cth). This site is not affiliated with, endorsed by or otherwise associated with the Victorian Curriculum and Assessment Authority (VCAA).{" "}
         © Victorian Curriculum and Assessment Authority. For current and official versions of all VCE examinations, visit{" "}
         <a
           href="https://www.vcaa.vic.edu.au"
@@ -78,7 +78,7 @@ export default async function ExamsPage() {
             <div>
               <h2 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100">Exam 1</h2>
               <p className="text-sm lg:text-base text-gray-400 dark:text-gray-500">
-                Short answer · No calculator · 40 marks
+                Short-answer · No calculator · 40 marks
               </p>
             </div>
           </div>
@@ -123,7 +123,7 @@ export default async function ExamsPage() {
             <div>
               <h2 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100">Exam 2</h2>
               <p className="text-sm lg:text-base text-gray-400 dark:text-gray-500">
-                Multiple choice + extended response · CAS · 80 marks
+                Multiple-choice + extended-response · CAS · 80 marks
               </p>
             </div>
           </div>

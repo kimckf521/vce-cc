@@ -90,7 +90,7 @@ export default function SolutionModal({ questionLabel, solutions, onClose, isAdm
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-gray-800">
           <h2 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-            Worked Solution — {questionLabel}
+            Worked solution — {questionLabel}
           </h2>
           <button
             onClick={onClose}

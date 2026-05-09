@@ -142,7 +142,7 @@ export default function RegisterAffiliateForm({
             <BenefitRow
               icon={InfinityIcon}
               title="No referral limit"
-              detail="Refer as many classmates as you want. Credits never expire and stack — 2 referrals = a free month."
+              detail="Refer as many classmates as you want. Credits never expire and stack — 2 referrals equal a free month."
             />
           </div>
           <p className="text-xs text-emerald-700/80 dark:text-emerald-400/80 mt-4 leading-relaxed">
@@ -169,7 +169,7 @@ export default function RegisterAffiliateForm({
             className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-3 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
           />
           <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-            Required for tax. Get one free at abr.gov.au.
+            Required for tax purposes. You can register one free at abr.gov.au.
           </p>
         </div>
       )}

@@ -44,7 +44,7 @@ export default function Exam2ABSetupForm({ topics: _topics }: Props) {
       </Link>
 
       {/* Heading */}
-      <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">Exam 2A &amp; 2B Practice</h1>
+      <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">Exam 2A &amp; 2B practice</h1>
 
       {/* Info banner — format summary */}
       <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-5 lg:px-6 py-4 lg:py-5 text-sm lg:text-base text-gray-600 dark:text-gray-400 flex items-start gap-3">
@@ -54,7 +54,7 @@ export default function Exam2ABSetupForm({ topics: _topics }: Props) {
           </svg>
         </div>
         <span>
-          Section A: 20 MCQ (20 marks) · Section B: extended response (60 marks) · 80 marks total · CAS Calculator allowed — matches the real VCE Exam 2.
+          Section A: 20 MCQs (20 marks) · Section B: extended response (60 marks) · 80 marks total · CAS calculator allowed — matches the real VCE Exam 2.
         </span>
       </div>
 
@@ -66,7 +66,7 @@ export default function Exam2ABSetupForm({ topics: _topics }: Props) {
       <div className="flex items-center justify-between rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-5 lg:px-6 py-4 lg:py-5">
         <div>
           <p className="text-sm lg:text-base font-semibold text-gray-800 dark:text-gray-200">Show solutions as I go</p>
-          <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 mt-0.5">Display a solution button on each question</p>
+          <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 mt-0.5">Displays a solution button on each question</p>
         </div>
         <button
           type="button"
@@ -87,7 +87,7 @@ export default function Exam2ABSetupForm({ topics: _topics }: Props) {
       <div className="flex items-center justify-between rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-5 lg:px-6 py-4 lg:py-5">
         <div>
           <p className="text-sm lg:text-base font-semibold text-gray-800 dark:text-gray-200">Exam timer</p>
-          <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 mt-0.5">15 min reading time + 2 hour writing time</p>
+          <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 mt-0.5">15 min reading time + 2 hr writing time</p>
         </div>
         <button
           type="button"
@@ -110,7 +110,7 @@ export default function Exam2ABSetupForm({ topics: _topics }: Props) {
         onClick={handleStart}
         className="rounded-xl bg-brand-600 px-8 lg:px-10 py-3 lg:py-4 text-base lg:text-lg font-semibold text-white hover:bg-brand-700 transition-colors"
       >
-        Start Practice →
+        Start practice →
       </button>
     </div>
   );

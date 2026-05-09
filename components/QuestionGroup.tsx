@@ -735,7 +735,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
             onClick={() => setShowSolution(true)}
             className="rounded-xl px-6 lg:px-8 py-2.5 lg:py-3 text-base lg:text-lg font-semibold bg-brand-600 text-white hover:bg-brand-700 transition-colors"
           >
-            Show Solution
+            Show solution
           </button>
         </div>
       )}

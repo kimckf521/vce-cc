@@ -521,9 +521,9 @@ export default async function SessionPage({ searchParams }: PageProps) {
   if (!mode) {
     return (
       <div className="rounded-2xl border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950 p-6 text-red-700 dark:text-red-400">
-        <p className="font-semibold">Missing mode parameter.</p>
+        <p className="font-semibold">Missing mode parameter — please return to the practice setup page.</p>
         <Link href="/practice" className="mt-2 inline-block text-sm underline">
-          ← Back to Practice
+          ← Back to practice
         </Link>
       </div>
     );
@@ -587,12 +587,12 @@ export default async function SessionPage({ searchParams }: PageProps) {
 
   // Mode labels
   const modeLabels: Record<string, string> = {
-    exam1: "Exam 1 Practice",
-    exam2a: "Exam 2A Practice",
-    exam2b: "Exam 2B Practice",
-    exam2ab: "Exam 2A & 2B Practice",
+    exam1: "Exam 1 practice",
+    exam2a: "Exam 2A practice",
+    exam2b: "Exam 2B practice",
+    exam2ab: "Exam 2A & 2B practice",
   };
-  const versionLabel = version === "exam" ? "Exam Version" : "Freedom Version";
+  const versionLabel = version === "exam" ? "Exam version" : "Freedom version";
   const modeLabel = modeLabels[mode] ?? mode;
   const backHref = `/practice/${mode}`;
   const calculatorAllowed = mode !== "exam1";
@@ -682,7 +682,7 @@ export default async function SessionPage({ searchParams }: PageProps) {
                 {" "}(VCE target: 80)
               </span>
             )}
-            {" · CAS Calculator allowed"}
+            {" · CAS calculator allowed"}
           </p>
         </div>
 
@@ -766,16 +766,16 @@ export default async function SessionPage({ searchParams }: PageProps) {
     // because EXTENDED_ANSWER items are already multi-part in the DB.
     itemTypes = ["SHORT_ANSWER", "EXTENDED_ANSWER"];
     sectionLabel = "Exam 1";
-    calcInfo = "No calculator";
+    calcInfo = "No calculator allowed";
   } else if (mode === "exam2a") {
     itemTypes = ["MCQ"];
     sectionLabel = "Exam 2A";
-    calcInfo = "CAS Calculator allowed";
+    calcInfo = "CAS calculator allowed";
   } else {
     // exam2b
     itemTypes = ["EXTENDED_RESPONSE"];
     sectionLabel = "Exam 2B";
-    calcInfo = "CAS Calculator allowed";
+    calcInfo = "CAS calculator allowed";
   }
 
   // Single batch fetch, then pick per topic.

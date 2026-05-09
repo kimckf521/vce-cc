@@ -72,7 +72,7 @@ export default function BookmarkedSection({
     <div>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
-          Bookmarked Questions
+          Bookmarked questions
           <span className="ml-2 text-xs font-normal normal-case tracking-normal text-gray-400 dark:text-gray-500">
             ({total})
           </span>

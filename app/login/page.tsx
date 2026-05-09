@@ -49,7 +49,7 @@ function LoginForm() {
 
         {reason === "other-device" && !error && (
           <div className="mb-5 rounded-xl bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-4 py-3 text-base text-amber-800 dark:text-amber-300">
-            You were signed out because your account was used on another device.
+            You were signed out because your account was signed in on another device.
             Only one device can be signed in at a time.
           </div>
         )}
@@ -118,7 +118,7 @@ function LoginForm() {
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
             )}
-            {loading ? "Signing in…" : "Sign in"}
+            {loading ? "Logging in…" : "Log in"}
           </button>
         </form>
 

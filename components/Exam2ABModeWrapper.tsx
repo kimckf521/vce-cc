@@ -343,7 +343,7 @@ export default function Exam2ABModeWrapper({
                 )}
               />
               <h2 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100">
-                Self-Mark Section B
+                Self-mark Section B
               </h2>
             </div>
 
@@ -354,7 +354,7 @@ export default function Exam2ABModeWrapper({
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6">
               <div className="rounded-xl bg-white/80 dark:bg-gray-800/80 border border-white dark:border-gray-700 p-4 lg:p-5">
                 <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-1">
-                  Marks Earned
+                  Marks earned
                 </p>
                 <p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100">
                   {totalEarned}
@@ -382,7 +382,7 @@ export default function Exam2ABModeWrapper({
               </div>
               <div className="rounded-xl bg-white/80 dark:bg-gray-800/80 border border-white dark:border-gray-700 p-4 lg:p-5">
                 <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 mb-1">
-                  Time Taken
+                  Time taken
                 </p>
                 <div className="flex items-center gap-2">
                   <Clock className="h-5 w-5 lg:h-6 lg:w-6 text-gray-400 dark:text-gray-500" />
@@ -421,7 +421,7 @@ export default function Exam2ABModeWrapper({
       {/* Section A — Multiple Choice */}
       <div className="space-y-5 lg:space-y-6">
         <h2 className="text-lg lg:text-xl font-bold text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700 pb-2 lg:pb-3">
-          Section A — Multiple Choice ({groupsA.length} questions · {sectionAMarks} marks)
+          Section A — Multiple choice ({groupsA.length} questions · {sectionAMarks} marks)
         </h2>
         <div className="space-y-4 lg:space-y-5">
           {groupsA.map((group, idx) => (
@@ -452,7 +452,7 @@ export default function Exam2ABModeWrapper({
       {/* Section B — Extended Response */}
       <div className="space-y-5 lg:space-y-6">
         <h2 className="text-lg lg:text-xl font-bold text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700 pb-2 lg:pb-3">
-          Section B — Extended Response ({groupsB.length} questions · {sectionBMarks} marks)
+          Section B — Extended response ({groupsB.length} questions · {sectionBMarks} marks)
         </h2>
         <div className="space-y-4 lg:space-y-5">
           {groupsB.map((group, idx) => (
@@ -494,7 +494,7 @@ export default function Exam2ABModeWrapper({
             onClick={handleSubmit}
             className="w-full rounded-2xl bg-brand-600 px-8 py-4 lg:py-5 text-base lg:text-lg font-bold text-white hover:bg-brand-700 transition-colors shadow-lg"
           >
-            Submit Exam ({Object.keys(selections).length}/{groupsA.length} MCQs answered)
+            Submit exam ({Object.keys(selections).length}/{groupsA.length} MCQs answered)
           </button>
         </div>
       )}
@@ -568,8 +568,8 @@ export default function Exam2ABModeWrapper({
             {finalising
               ? "Saving…"
               : allSectionBMarked
-                ? `Finish Marking (${totalEarned}/${totalMaxMarks} marks)`
-                : "Finish Marking"}
+                ? `Finish marking (${totalEarned}/${totalMaxMarks} marks)`
+                : "Finish marking"}
             {allSectionBMarked && !finalising && <ArrowRight className="h-5 w-5" />}
           </button>
         </div>

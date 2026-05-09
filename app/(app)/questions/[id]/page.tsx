@@ -34,7 +34,7 @@ export default async function QuestionPage({ params, searchParams }: PageProps) 
   const { id } = await params;
   const { from } = await searchParams;
   const backHref = from === "history" ? "/history" : "/search";
-  const backLabel = from === "history" ? "Back to History" : "Back to Search";
+  const backLabel = from === "history" ? "Back to history" : "Back to search";
 
   // Parallel: fetch question metadata (lightweight) + auth
   const [questionMeta, supabaseResult] = await Promise.all([

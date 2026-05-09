@@ -74,7 +74,7 @@ export default function SearchPage() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="e.g. tangent, 2023, chain rule, binomial..."
+          placeholder="e.g. tangent, 2023, chain rule, binomial…"
           className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 pl-12 lg:pl-14 pr-4 py-3 lg:py-4 text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
           autoFocus
         />
@@ -101,7 +101,7 @@ export default function SearchPage() {
             const examLabel = q.exam.examType === "EXAM_1" ? "Exam 1" : "Exam 2";
             const label = `${q.exam.year} · ${examLabel} · Q${q.questionNumber}${q.part ? q.part : ""}`;
             // Truncate content for preview
-            const preview = q.content.length > 200 ? q.content.slice(0, 200) + "..." : q.content;
+            const preview = q.content.length > 200 ? q.content.slice(0, 200) + "…" : q.content;
 
             return (
               <Link

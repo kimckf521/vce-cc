@@ -51,7 +51,7 @@ export default class ErrorBoundary extends Component<Props, State> {
             onClick={() => this.setState({ hasError: false, error: null })}
             className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition-colors"
           >
-            Try Again
+            Try again
           </button>
         </div>
       );

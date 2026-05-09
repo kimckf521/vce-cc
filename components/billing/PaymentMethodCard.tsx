@@ -56,7 +56,7 @@ export default function PaymentMethodCard({
   return (
     <div className="rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 p-5">
       <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-3">
-        Payment Method
+        Payment method
       </p>
 
       <div className="flex items-center gap-3">

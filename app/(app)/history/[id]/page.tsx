@@ -92,7 +92,7 @@ export default async function HistoryDetailPage({ params }: PageProps) {
           className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors mb-4"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to History
+          Back to history
         </Link>
         <div className="flex flex-wrap items-center gap-3 mb-2">
           <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">

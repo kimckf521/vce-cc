@@ -79,7 +79,7 @@ export default async function ModeHistoryPage({ params }: PageProps) {
         href="/history"
         className="inline-flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
       >
-        <ChevronLeft className="h-4 w-4" /> Back to History
+        <ChevronLeft className="h-4 w-4" /> Back to history
       </Link>
 
       <div className="flex items-start justify-between gap-4">
@@ -111,7 +111,7 @@ export default async function ModeHistoryPage({ params }: PageProps) {
           href={practiceUrl}
           className="shrink-0 inline-flex rounded-xl bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700 transition-colors"
         >
-          Start new
+          Start new attempt
         </Link>
       </div>
 

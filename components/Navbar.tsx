@@ -10,10 +10,10 @@ import BrandMark from "@/components/BrandMark";
 const studyLinks = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/topics", label: "Topics", icon: BookOpen },
-  { href: "/exams", label: "Past Papers", icon: FileText },
+  { href: "/exams", label: "Past papers", icon: FileText },
   { href: "/practice", label: "Practice", icon: BarChart2 },
   { href: "/history", label: "History", icon: History },
-  { href: "/referrals", label: "Refer & Earn", icon: Gift },
+  { href: "/referrals", label: "Refer & earn", icon: Gift },
 ];
 
 const accountLinks = [

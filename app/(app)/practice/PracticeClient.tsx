@@ -60,7 +60,7 @@ export default function PracticeClient({ topics, years }: Props) {
     return (
       <div>
         <div className="flex items-center justify-between mb-6">
-          <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400">{questions.length} questions</p>
+          <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400">{questions.length} question{questions.length === 1 ? "" : "s"}</p>
           <button
             onClick={reset}
             className="text-sm lg:text-base text-brand-600 dark:text-brand-400 font-medium hover:underline"
@@ -94,7 +94,7 @@ export default function PracticeClient({ topics, years }: Props) {
     <div className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm p-6 lg:p-8 space-y-6 lg:space-y-8">
       {/* Topics */}
       <div>
-        <h3 className="text-sm lg:text-base font-semibold text-gray-700 dark:text-gray-300 mb-3">Topics (leave blank for all)</h3>
+        <h3 className="text-sm lg:text-base font-semibold text-gray-700 dark:text-gray-300 mb-3">Topics (leave blank to include all)</h3>
         <div className="flex flex-wrap gap-2">
           {topics.map((t) => (
             <button

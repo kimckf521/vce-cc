@@ -18,10 +18,10 @@ export default function MarketingFooter() {
             </Link>
             <p className="mt-3 text-sm lg:text-base text-gray-500 dark:text-gray-400 max-w-sm leading-relaxed">
               From zero to hero — master VCE with real VCAA past exam questions, worked
-              solutions, and progress tracking built for Year 12 students.
+              solutions and progress tracking built for Year 12 students.
             </p>
             <p className="mt-4 text-xs lg:text-sm text-gray-400 dark:text-gray-500">
-              Not affiliated with, endorsed by, or sponsored by VCAA.
+              Not affiliated with, endorsed by or sponsored by VCAA.
             </p>
           </div>
 
@@ -44,7 +44,7 @@ export default function MarketingFooter() {
                   href="/exams"
                   className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
-                  Past Papers
+                  Past papers
                 </Link>
               </li>
               <li>
@@ -93,7 +93,7 @@ export default function MarketingFooter() {
                   href="/privacy"
                   className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
-                  Privacy Policy
+                  Privacy policy
                 </Link>
               </li>
               <li>
@@ -101,7 +101,7 @@ export default function MarketingFooter() {
                   href="/terms"
                   className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
-                  Terms &amp; Conditions
+                  Terms and conditions
                 </Link>
               </li>
             </ul>

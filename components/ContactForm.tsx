@@ -98,7 +98,7 @@ export default function ContactForm() {
             </h3>
           </div>
           <p className="text-sm text-gray-500 dark:text-gray-400 ml-12 lg:ml-13">
-            Real humans read every one. Usually back to you within 1–2 days.
+            Real humans read every one. We&apos;ll usually reply within two business days.
           </p>
         </div>
 

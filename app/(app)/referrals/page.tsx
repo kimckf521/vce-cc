@@ -581,7 +581,7 @@ function StatusBadge({
   if (status === "PENDING_HOLD" && commissionLocksAt) {
     const ms = new Date(commissionLocksAt).getTime() - Date.now();
     const days = Math.max(0, Math.ceil(ms / (24 * 60 * 60 * 1000)));
-    label = days > 0 ? `Locks in ${days}d` : "Unlocking…";
+    label = days > 0 ? `Unlocks in ${days}d` : "Unlocking…";
   }
 
   return (

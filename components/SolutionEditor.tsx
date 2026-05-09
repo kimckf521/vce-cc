@@ -29,13 +29,13 @@ export default function SolutionEditor({ questionId, initialContent, initialVide
       });
       if (!res.ok) {
         const data = await res.json();
-        setError(data.error ?? "Failed to save");
+        setError(data.error ?? "Failed to save.");
       } else {
         setSaved(true);
         setEditing(false);
       }
     } catch {
-      setError("Network error");
+      setError("Network error.");
     } finally {
       setSaving(false);
     }
@@ -80,7 +80,7 @@ export default function SolutionEditor({ questionId, initialContent, initialVide
           className="flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 transition-colors disabled:opacity-60"
         >
           <Save className="h-3.5 w-3.5" />
-          {saving ? "Saving..." : "Save"}
+          {saving ? "Saving…" : "Save"}
         </button>
         <button
           onClick={() => { setEditing(false); setContent(initialContent); setVideoUrl(initialVideoUrl ?? ""); }}

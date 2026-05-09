@@ -56,7 +56,7 @@ export default function ExamCompleteButton({
               : "text-gray-400 dark:text-gray-500"
           }`}
         />
-        {completed ? "Completed" : "Mark as Complete"}
+        {completed ? "Completed" : "Mark as complete"}
       </button>
     </div>
   );
