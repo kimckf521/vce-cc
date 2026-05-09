@@ -145,14 +145,66 @@ export default function ProfileTabs({
                 <Gift className="h-5 w-5 text-brand-600 dark:text-brand-400" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100">
-                  Refer a friend, earn credit
-                </h3>
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                  When a friend signs up with your code and subscribes to
-                  Standard, both of you get $5 in platform credit toward your
-                  subscription.
-                </p>
+                {role === "Tutor" ? (
+                  <>
+                    <h3 className="text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100">
+                      Earn cash commission per student
+                    </h3>
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      Refer your students with your unique link. Earn{" "}
+                      <strong className="text-gray-900 dark:text-gray-100">$10 cash</strong>{" "}
+                      for each student who subscribes — paid via bank transfer
+                      once you reach $20.
+                    </p>
+                    <p className="mt-2 text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                      Commission unlocks 30 days after the student subscribes.
+                      Your students also get 50% off their first month.
+                    </p>
+                  </>
+                ) : role === "Influencer" ? (
+                  <>
+                    <h3 className="text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100">
+                      Earn commission + content fees
+                    </h3>
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      Earn{" "}
+                      <strong className="text-gray-900 dark:text-gray-100">$10 cash</strong>{" "}
+                      per student who subscribes via your link, plus a negotiable
+                      upfront fee for each video you publish.
+                    </p>
+                    <p className="mt-2 text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                      Commission unlocks 30 days after the student subscribes.
+                      Your audience also gets 50% off their first month.
+                    </p>
+                  </>
+                ) : role === "Admin" || role === "Super Admin" ? (
+                  <>
+                    <h3 className="text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100">
+                      Refer & earn — admin preview
+                    </h3>
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      View and test all three affiliate tracks (Student, Tutor,
+                      Influencer) without registering. Manage approvals, payouts,
+                      and commission rates from the admin panel.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <h3 className="text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100">
+                      Refer a friend, both save
+                    </h3>
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      Share your link with classmates. When a friend subscribes,
+                      <strong className="text-gray-900 dark:text-gray-100"> you earn $5 credit</strong> {""}
+                      (auto-applied to your next bill — 2 referrals = a free month),
+                      and <strong className="text-gray-900 dark:text-gray-100">they get 50% off their first month</strong> (just $4.99).
+                    </p>
+                    <p className="mt-2 text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                      No referral limit. Credit unlocks once your friend has been
+                      subscribed for 30 days.
+                    </p>
+                  </>
+                )}
                 <Link
                   href="/referrals"
                   className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-brand-600 hover:bg-brand-700 px-4 py-2 text-sm font-semibold text-white transition-colors"
