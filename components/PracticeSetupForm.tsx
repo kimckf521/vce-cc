@@ -95,7 +95,7 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
                 : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-gray-300 dark:hover:border-gray-600"
             )}
           >
-            <div className="font-bold text-gray-900 dark:text-gray-100 text-base lg:text-lg mb-1">Exam version</div>
+            <div className="font-bold text-gray-900 dark:text-gray-100 text-base lg:text-lg mb-1">Exam simulation</div>
             <div className="text-xs lg:text-sm text-gray-500 dark:text-gray-400">{cfg.examDescription}</div>
           </button>
 
@@ -110,7 +110,7 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
                 : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-gray-300 dark:hover:border-gray-600"
             )}
           >
-            <div className="font-bold text-gray-900 dark:text-gray-100 text-base lg:text-lg mb-1">Freedom version</div>
+            <div className="font-bold text-gray-900 dark:text-gray-100 text-base lg:text-lg mb-1">Custom practice</div>
             <div className="text-xs lg:text-sm text-gray-500 dark:text-gray-400">Choose your own question count.</div>
           </button>
         </div>
@@ -173,7 +173,7 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
           <p className="text-sm lg:text-base font-semibold text-gray-800 dark:text-gray-200">Show solutions as I go</p>
           <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
             {isFreedom
-              ? "Always on in Freedom version"
+              ? "Always on in Custom practice"
               : "Displays a solution button on each question"}
           </p>
         </div>
@@ -186,7 +186,7 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
             isFreedom ? "cursor-not-allowed opacity-80" : "cursor-pointer",
             effectiveShowSolutions ? "bg-brand-600" : "bg-gray-200 dark:bg-gray-700"
           )}
-          aria-label={isFreedom ? "Show solutions as I go (locked on in Freedom version)" : "Show solutions as I go"}
+          aria-label={isFreedom ? "Show solutions as I go (locked on in Custom practice)" : "Show solutions as I go"}
         >
           <span className={cn(
             "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200",

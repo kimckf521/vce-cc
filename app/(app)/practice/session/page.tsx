@@ -592,7 +592,7 @@ export default async function SessionPage({ searchParams }: PageProps) {
     exam2b: "Exam 2B practice",
     exam2ab: "Exam 2A & 2B practice",
   };
-  const versionLabel = version === "exam" ? "Exam version" : "Freedom version";
+  const versionLabel = version === "exam" ? "Exam simulation" : "Custom practice";
   const modeLabel = modeLabels[mode] ?? mode;
   const backHref = `/practice/${mode}`;
   const calculatorAllowed = mode !== "exam1";
