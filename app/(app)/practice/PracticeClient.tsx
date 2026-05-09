@@ -156,7 +156,7 @@ export default function PracticeClient({ topics, years }: Props) {
         disabled={loading}
         className="w-full rounded-xl bg-brand-600 py-3 lg:py-4 text-sm lg:text-base font-semibold text-white hover:bg-brand-700 transition-colors disabled:opacity-60"
       >
-        {loading ? "Loading…" : "Start practice →"}
+        {loading ? "Loading…" : "Start practising →"}
       </button>
     </div>
   );

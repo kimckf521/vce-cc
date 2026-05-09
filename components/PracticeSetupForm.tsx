@@ -261,7 +261,7 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
         disabled={!isValid}
         className="rounded-xl bg-brand-600 px-8 lg:px-10 py-3 lg:py-4 text-base lg:text-lg font-semibold text-white hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        Start practice →
+        Start practising →
       </button>
     </div>
   );

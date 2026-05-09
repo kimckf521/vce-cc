@@ -110,7 +110,7 @@ export default function Exam2ABSetupForm({ topics: _topics }: Props) {
         onClick={handleStart}
         className="rounded-xl bg-brand-600 px-8 lg:px-10 py-3 lg:py-4 text-base lg:text-lg font-semibold text-white hover:bg-brand-700 transition-colors"
       >
-        Start practice →
+        Start practising →
       </button>
     </div>
   );

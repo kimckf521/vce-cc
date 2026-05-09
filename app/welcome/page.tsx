@@ -117,7 +117,7 @@ export default async function WelcomePage() {
 
         {/* Footer note */}
         <p className="mt-12 lg:mt-16 text-center text-xs lg:text-sm text-gray-400 dark:text-gray-500">
-          You can manage your subscription anytime from your{" "}
+          You can manage your subscription at any time from your{" "}
           <span className="font-medium text-gray-500 dark:text-gray-400">
             Profile → Billing
           </span>{" "}

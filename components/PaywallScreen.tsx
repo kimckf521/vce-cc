@@ -43,7 +43,7 @@ const PAID_PERKS = [
   "Unlimited practice questions and timed exams",
   "Search across every past exam question",
   "Performance history and progress tracking",
-  "Cancel anytime",
+  "Cancel at any time",
 ];
 
 export default function PaywallScreen({

@@ -65,7 +65,7 @@ const plans: Plan[] = [
       "Step-by-step worked solutions",
       "Timed practice exams",
       "Progress tracking and review history",
-      "Cancel anytime",
+      "Cancel at any time",
     ],
   },
 ];
@@ -76,7 +76,7 @@ const faqs = [
     a: "You get a preview of the Algebra, Number & Structure topic with limited practice questions, plus full access to view every VCAA Mathematical Methods past paper. It's a great way to try the platform before subscribing.",
   },
   {
-    q: "Can I cancel anytime?",
+    q: "Can I cancel at any time?",
     a: "Yes — you can cancel your Standard subscription at any time. You'll keep access until the end of your current billing period.",
   },
   {
@@ -145,7 +145,7 @@ export default async function PricingPage() {
             Start free with a topic preview and every VCAA past paper. Upgrade when you&apos;re ready for full access.
           </p>
           <p className="mt-3 text-sm text-gray-400 dark:text-gray-500">
-            All prices in AUD. Cancel anytime.
+            All prices in AUD. Cancel at any time.
           </p>
         </div>
       </section>

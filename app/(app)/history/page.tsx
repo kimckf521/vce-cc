@@ -145,7 +145,7 @@ export default async function HistoryPage() {
             href="/practice"
             className="inline-flex rounded-xl bg-brand-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 transition-colors"
           >
-            Start practice
+            Start practising
           </Link>
         </div>
       ) : (

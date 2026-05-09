@@ -118,7 +118,9 @@ export default function SubscriptionCard({
               >
                 {cancelAtPeriodEnd && isActive
                   ? "Cancelling"
-                  : statusLabel(status)}
+                  : status === "canceled"
+                    ? "Cancelled"
+                    : statusLabel(status)}
               </span>
             </div>
 

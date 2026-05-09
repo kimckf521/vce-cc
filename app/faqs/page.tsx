@@ -28,10 +28,10 @@ const faqs: { q: string; a: string }[] = [
   },
   {
     q: "How much does Standard cost?",
-    a: "Standard is $9.99 per month in Australian dollars (AUD), billed monthly. There is no minimum commitment — you can cancel anytime.",
+    a: "Standard is $9.99 per month in Australian dollars (AUD), billed monthly. There is no minimum commitment — you can cancel at any time.",
   },
   {
-    q: "Can I cancel anytime?",
+    q: "Can I cancel at any time?",
     a: "Yes. You can cancel your Standard subscription at any time from the billing portal on your profile page. You'll keep full access until the end of the billing period you've already paid for and you won't be charged again.",
   },
   {
