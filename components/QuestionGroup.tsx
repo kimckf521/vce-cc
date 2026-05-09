@@ -73,6 +73,8 @@ interface QuestionGroupProps {
   disableServerRefresh?: boolean;
   /** Hide the difficulty / topic / subtopic / frequency / calculator badges. */
   hideBadges?: boolean;
+  /** Hide just the topic badge (used on topic pages where the topic is implied). */
+  hideTopicBadge?: boolean;
 }
 
 const difficultyStyles = {
@@ -286,7 +288,7 @@ const FREQ_LABEL: Record<"rare" | "normal" | "often", string> = {
   often: "Every year",
 };
 
-export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts, showSolutionButton = true, examMode, revealAnswers, onMcqSelect, isAdmin, disableServerRefresh, hideBadges }: QuestionGroupProps) {
+export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts, showSolutionButton = true, examMode, revealAnswers, onMcqSelect, isAdmin, disableServerRefresh, hideBadges, hideTopicBadge }: QuestionGroupProps) {
   const router = useRouter();
   const [showSolution, setShowSolution] = useState(false);
   const [statuses, setStatuses] = useState<Record<string, AttemptStatus>>(
@@ -575,7 +577,9 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
               allowed" for the whole paper). */}
           {!examMode && !hideBadges && (
             <div className="flex flex-wrap gap-2 items-center">
-              <span className="rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-400 px-3 py-1 text-sm lg:text-base font-medium">{topic}</span>
+              {!hideTopicBadge && (
+                <span className="rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-400 px-3 py-1 text-sm lg:text-base font-medium">{topic}</span>
+              )}
               {/* Subtopic pills hidden on phone after the first one to keep
                   the card header from wrapping onto 3 rows. The first
                   subtopic still gives context. */}

@@ -100,6 +100,7 @@ export default function InfiniteQuestionList({
             calculatorAllowed={group.calculatorAllowed}
             parts={group.parts}
             isAdmin={isAdmin}
+            hideTopicBadge
           />
           {/* Invisible sentinel after the 4th question of the latest batch */}
           {hasMore && i === sentinelIndexRef.current && (
