@@ -36,11 +36,6 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     select: { role: true, activeSessionId: true },
   });
   const isAdmin = isAdminRole(dbUser?.role);
-  // Tutors and influencers get a dedicated "Refer & earn" sidebar item
-  // (cash payouts are central to their use of the platform). Students still
-  // access it via the Profile → Refer & earn tab.
-  const showAffiliateNav =
-    dbUser?.role === "TUTOR" || dbUser?.role === "INFLUENCER";
   // If a session ID has been issued for this user in the DB AND either the
   // browser has no cookie or it doesn't match, this browser has been
   // superseded by a newer login. Sign out of Supabase and redirect to login
@@ -59,7 +54,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
       {/* Desktop sidebar */}
-      <Navbar isAdmin={isAdmin} showAffiliateNav={showAffiliateNav} />
+      <Navbar isAdmin={isAdmin} />
 
       {/* Mobile top bar */}
       <TopBar isAdmin={isAdmin} />
@@ -80,7 +75,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       </main>
 
       {/* Mobile bottom nav */}
-      <BottomNav isAdmin={isAdmin} showAffiliateNav={showAffiliateNav} />
+      <BottomNav isAdmin={isAdmin} />
     </div>
   );
 }

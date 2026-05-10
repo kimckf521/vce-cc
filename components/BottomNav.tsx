@@ -2,38 +2,24 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BookOpen, BarChart2, FileText, LayoutDashboard, UserCircle, ShieldCheck, History, Gift } from "lucide-react";
+import { BookOpen, BarChart2, FileText, LayoutDashboard, UserCircle, ShieldCheck, History } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const baseNavItems = [
+const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/topics",    label: "Topics",    icon: BookOpen      },
   { href: "/exams",     label: "Papers",    icon: FileText      },
   { href: "/practice",  label: "Practice",  icon: BarChart2     },
   { href: "/history",   label: "History",   icon: History       },
+  { href: "/profile",   label: "Profile",   icon: UserCircle    },
 ];
 
-const profileItem = { href: "/profile", label: "Profile", icon: UserCircle };
-
-export default function BottomNav({
-  isAdmin = false,
-  showAffiliateNav = false,
-}: {
-  isAdmin?: boolean;
-  showAffiliateNav?: boolean;
-}) {
+export default function BottomNav({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname();
 
-  // Tutors / influencers get a "Refer" tab inserted between History and Profile.
-  // Keep the bar at 6 cells max so labels don't get cramped.
-  const items = [
-    ...baseNavItems,
-    ...(showAffiliateNav
-      ? [{ href: "/referrals", label: "Refer", icon: Gift }]
-      : []),
-    profileItem,
-    ...(isAdmin ? [{ href: "/admin", label: "Admin", icon: ShieldCheck }] : []),
-  ];
+  const items = isAdmin
+    ? [...navItems, { href: "/admin", label: "Admin", icon: ShieldCheck }]
+    : navItems;
 
   return (
     <nav className="fixed bottom-0 inset-x-0 z-40 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 lg:hidden"

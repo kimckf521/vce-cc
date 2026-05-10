@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { User, CreditCard, MessageSquare, Gift, ArrowRight, Check } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { User, CreditCard, MessageSquare, Gift, ArrowRight, Check, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import EditDisplayName from "@/components/EditDisplayName";
 import ChangePassword from "@/components/ChangePassword";
@@ -28,14 +29,14 @@ type ProfileTabsProps = {
 
 /* ─── tab definitions ─────────────────────────────────────────────────── */
 
-const ALL_TABS = [
+const TABS = [
   { key: "account", label: "Account", icon: User },
   { key: "billing", label: "Billing", icon: CreditCard },
   { key: "referrals", label: "Refer & earn", icon: Gift },
   { key: "report", label: "Report", icon: MessageSquare },
 ] as const;
 
-type TabKey = (typeof ALL_TABS)[number]["key"];
+type TabKey = (typeof TABS)[number]["key"];
 
 /* ═══════════════════════════ MAIN COMPONENT ═══════════════════════════ */
 
@@ -46,30 +47,44 @@ export default function ProfileTabs({
   memberSince,
   billing,
 }: ProfileTabsProps) {
-  // Tutors / influencers access "Refer & earn" via the sidebar instead, so we
-  // hide the duplicate tab on their Profile page to avoid two entry points.
-  const TABS = ALL_TABS.filter(
-    (t) => t.key !== "referrals" || (role !== "Tutor" && role !== "Influencer")
-  );
   const [activeTab, setActiveTab] = useState<TabKey>("account");
+  const router = useRouter();
+  const [signingOut, setSigningOut] = useState(false);
+
+  async function handleSignOut() {
+    if (signingOut) return;
+    setSigningOut(true);
+    try {
+      // Server-side logout clears the Prisma activeSessionId + vce_sid cookie
+      // and runs supabase.auth.signOut() in one round trip.
+      await fetch("/api/auth/logout", { method: "POST" });
+      router.push("/");
+      router.refresh();
+    } catch {
+      setSigningOut(false);
+    }
+  }
 
   return (
     <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
       {/* ── tab bar ──────────────────────────────────────────────────── */}
-      <div className="border-b border-gray-100 dark:border-gray-800 px-2 lg:px-4">
-        <div className="flex">
+      {/* On narrow screens the four tab labels (especially "Refer & earn")
+          would wrap onto two lines and overlap. Make the row horizontally
+          scrollable and force every tab to stay on a single line. */}
+      <div className="border-b border-gray-100 dark:border-gray-800 px-2 lg:px-4 overflow-x-auto">
+        <div className="flex flex-nowrap min-w-max">
           {TABS.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
               className={cn(
-                "flex items-center gap-2 px-4 lg:px-5 py-3.5 text-sm font-medium border-b-2 transition-colors -mb-px",
+                "shrink-0 whitespace-nowrap flex items-center gap-2 px-3 sm:px-4 lg:px-5 py-3.5 text-sm font-medium border-b-2 transition-colors -mb-px",
                 activeTab === tab.key
                   ? "border-brand-600 text-brand-600 dark:text-brand-400 dark:border-brand-400"
                   : "border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
               )}
             >
-              <tab.icon className="h-4 w-4" />
+              <tab.icon className="h-4 w-4 shrink-0" />
               {tab.label}
             </button>
           ))}
@@ -79,56 +94,69 @@ export default function ProfileTabs({
       {/* ── tab content ──────────────────────────────────────────────── */}
       <div className="p-5 lg:p-7">
         {activeTab === "account" && (
-          <div className="rounded-xl border border-gray-100 dark:border-gray-800 divide-y divide-gray-100 dark:divide-gray-800">
-            {/* Name row */}
-            <div className="flex items-center px-5 lg:px-6 py-4 lg:py-5">
-              <EditDisplayName initialName={displayName} />
-            </div>
+          <div className="space-y-5 lg:space-y-6">
+            <div className="rounded-xl border border-gray-100 dark:border-gray-800 divide-y divide-gray-100 dark:divide-gray-800">
+              {/* Name row */}
+              <div className="flex items-center px-5 lg:px-6 py-4 lg:py-5">
+                <EditDisplayName initialName={displayName} />
+              </div>
 
-            {/* Email row */}
-            <div className="px-5 lg:px-6 py-4 lg:py-5">
-              <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-0.5">
-                Email
-              </p>
-              <p className="text-sm lg:text-base font-medium text-gray-900 dark:text-gray-100">
-                {email}
-              </p>
-            </div>
-
-            {/* Role row */}
-            <div className="px-5 lg:px-6 py-4 lg:py-5">
-              <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-0.5">
-                Role
-              </p>
-              <p className="text-sm lg:text-base font-medium text-gray-900 dark:text-gray-100">
-                {role}
-              </p>
-            </div>
-
-            {/* Password row */}
-            <div className="px-5 lg:px-6 py-4 lg:py-5">
-              <ChangePassword />
-            </div>
-
-            {/* Theme row */}
-            <div className="px-5 lg:px-6 py-4 lg:py-5">
-              <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2">
-                Theme
-              </p>
-              <ThemeToggle />
-            </div>
-
-            {/* Member since row */}
-            {memberSince && (
+              {/* Email row */}
               <div className="px-5 lg:px-6 py-4 lg:py-5">
                 <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-0.5">
-                  Member since
+                  Email
                 </p>
                 <p className="text-sm lg:text-base font-medium text-gray-900 dark:text-gray-100">
-                  {memberSince}
+                  {email}
                 </p>
               </div>
-            )}
+
+              {/* Role row */}
+              <div className="px-5 lg:px-6 py-4 lg:py-5">
+                <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-0.5">
+                  Role
+                </p>
+                <p className="text-sm lg:text-base font-medium text-gray-900 dark:text-gray-100">
+                  {role}
+                </p>
+              </div>
+
+              {/* Password row */}
+              <div className="px-5 lg:px-6 py-4 lg:py-5">
+                <ChangePassword />
+              </div>
+
+              {/* Theme row */}
+              <div className="px-5 lg:px-6 py-4 lg:py-5">
+                <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2">
+                  Theme
+                </p>
+                <ThemeToggle />
+              </div>
+
+              {/* Member since row */}
+              {memberSince && (
+                <div className="px-5 lg:px-6 py-4 lg:py-5">
+                  <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-0.5">
+                    Member since
+                  </p>
+                  <p className="text-sm lg:text-base font-medium text-gray-900 dark:text-gray-100">
+                    {memberSince}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Sign out — duplicated here so mobile users (who don't see the
+                desktop sidebar) can log out without leaving the Profile page. */}
+            <button
+              onClick={handleSignOut}
+              disabled={signingOut}
+              className="w-full flex items-center justify-center gap-2 rounded-xl border border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950 px-4 py-3 text-sm lg:text-base font-semibold text-red-700 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              <LogOut className="h-4 w-4 lg:h-5 lg:w-5" />
+              {signingOut ? "Signing out…" : "Sign out"}
+            </button>
           </div>
         )}
 
@@ -153,33 +181,71 @@ export default function ProfileTabs({
                 {role === "Tutor" ? (
                   <>
                     <h3 className="text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100">
-                      Earn cash commission per student
+                      Share your link. Earn cash.
                     </h3>
-                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                      Refer your students with your unique link. Earn{" "}
-                      <strong className="text-gray-900 dark:text-gray-100">$10 cash</strong>{" "}
-                      for each student who subscribes — paid via bank transfer
-                      once you reach $20.
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                      Send your link to your students. When they subscribe:
                     </p>
-                    <p className="mt-2 text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-                      Commission unlocks 30 days after the student subscribes.
-                      Your students also get 50% off their first month.
+                    <ul className="mt-3 space-y-2">
+                      <li className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                        <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
+                        <span>
+                          <strong className="text-gray-900 dark:text-gray-100">You</strong> earn
+                          <strong className="text-emerald-600 dark:text-emerald-400"> $10 cash</strong> per student — paid via bank transfer
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                        <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
+                        <span>
+                          <strong className="text-gray-900 dark:text-gray-100">Your student</strong> gets their first month at
+                          <strong className="text-emerald-600 dark:text-emerald-400"> half price</strong> ($4.99 instead of $9.99)
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                        <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
+                        <span>
+                          Cash out once you reach
+                          <strong className="text-gray-900 dark:text-gray-100"> $20</strong>. No limit on how many students you can refer.
+                        </span>
+                      </li>
+                    </ul>
+                    <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">
+                      Your $10 unlocks after your student has paid for 30 days.
                     </p>
                   </>
                 ) : role === "Influencer" ? (
                   <>
                     <h3 className="text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100">
-                      Earn commission + content fees
+                      Promote, earn cash + content fees.
                     </h3>
-                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                      Earn{" "}
-                      <strong className="text-gray-900 dark:text-gray-100">$10 cash</strong>{" "}
-                      per student who subscribes via your link, plus a negotiable
-                      upfront fee for each video you publish.
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                      Share your link with your audience. When they subscribe:
                     </p>
-                    <p className="mt-2 text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-                      Commission unlocks 30 days after the student subscribes.
-                      Your audience also gets 50% off their first month.
+                    <ul className="mt-3 space-y-2">
+                      <li className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                        <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
+                        <span>
+                          <strong className="text-gray-900 dark:text-gray-100">You</strong> earn
+                          <strong className="text-emerald-600 dark:text-emerald-400"> $10 cash</strong> per subscriber — paid via bank transfer
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                        <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
+                        <span>
+                          <strong className="text-gray-900 dark:text-gray-100">Plus</strong> a
+                          <strong className="text-emerald-600 dark:text-emerald-400"> negotiable upfront fee</strong> for every video you publish
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                        <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
+                        <span>
+                          <strong className="text-gray-900 dark:text-gray-100">Your audience</strong> gets their
+                          <strong className="text-emerald-600 dark:text-emerald-400"> first month at half price</strong> ($4.99 instead of $9.99)
+                        </span>
+                      </li>
+                    </ul>
+                    <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">
+                      Your $10 unlocks after the subscriber has paid for 30 days.
                     </p>
                   </>
                 ) : role === "Admin" || role === "Super Admin" ? (

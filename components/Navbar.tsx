@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BookOpen, BarChart2, FileText, LogOut, LayoutDashboard, UserCircle, ShieldCheck, Search, History, Gift } from "lucide-react";
+import { BookOpen, BarChart2, FileText, LogOut, LayoutDashboard, UserCircle, ShieldCheck, Search, History } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "@/components/ThemeToggle";
 import BrandMark from "@/components/BrandMark";
@@ -19,20 +19,9 @@ const accountLinks = [
   { href: "/profile", label: "Profile", icon: UserCircle },
 ];
 
-export default function Navbar({
-  isAdmin = false,
-  showAffiliateNav = false,
-}: {
-  isAdmin?: boolean;
-  showAffiliateNav?: boolean;
-}) {
+export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname();
   const router = useRouter();
-  // Tutors and influencers see "Refer & earn" as a top-level sidebar link
-  // (cash payouts are central to their use of the platform).
-  const links = showAffiliateNav
-    ? [...studyLinks, { href: "/referrals", label: "Refer & earn", icon: Gift }]
-    : studyLinks;
 
   async function handleSignOut() {
     // Use the server-side logout endpoint so the Prisma activeSessionId is
@@ -55,7 +44,7 @@ export default function Navbar({
 
       {/* Nav links */}
       <nav className="flex-1 px-4 py-5 space-y-1">
-        {links.map(({ href, label, icon: Icon }) => (
+        {studyLinks.map(({ href, label, icon: Icon }) => (
           <Link
             key={href}
             href={href}
