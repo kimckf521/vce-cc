@@ -55,6 +55,30 @@ function SignupForm() {
 
     setLoading(true);
 
+    // Pre-check the email against our DB so the user gets a clear error if
+    // they already have an account. Without this, Supabase (with email
+    // confirmation on) silently sends a magic link to the existing address
+    // and the form shows "Check your email" — confusing for returning users.
+    try {
+      const res = await fetch("/api/auth/check-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (res.ok) {
+        const { exists } = (await res.json()) as { exists: boolean };
+        if (exists) {
+          setError("An account with this email already exists. Try logging in instead.");
+          setLoading(false);
+          return;
+        }
+      }
+      // On rate-limit or network error, fall through to Supabase signup —
+      // it will still enforce uniqueness, the message just won't be as clear.
+    } catch {
+      // Network failure — proceed to Supabase signup as a fallback.
+    }
+
     const supabase = createClient();
     const { data, error } = await supabase.auth.signUp({
       email,
