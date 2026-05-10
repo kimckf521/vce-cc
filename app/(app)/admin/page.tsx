@@ -13,17 +13,28 @@ export default async function AdminPage() {
   const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
   if (!isAdminRole(dbUser?.role)) redirect("/dashboard");
 
-  const [examCount, questionCount, userCount, affiliateCount, questionSetCount] = await Promise.all([
-    prisma.exam.count(),
-    prisma.question.count(),
-    prisma.user.count(),
-    prisma.affiliate.count(),
-    prisma.questionSet.count(),
-  ]);
+  const [examCount, examQuestionCount, setItemCount, userCount, affiliateCount, questionSetCount] =
+    await Promise.all([
+      prisma.exam.count(),
+      prisma.question.count(),       // exam-paper questions
+      prisma.questionSetItem.count(), // questions inside question sets
+      prisma.user.count(),
+      prisma.affiliate.count(),
+      prisma.questionSet.count(),
+    ]);
+  const totalQuestionCount = examQuestionCount + setItemCount;
 
   const stats = [
     { label: "Exams", value: examCount, icon: FileText, href: "/admin/exams" },
-    { label: "Questions", value: questionCount, icon: HelpCircle, href: "/admin/questions" },
+    {
+      label: "Questions",
+      value: totalQuestionCount,
+      // Sub-label breaks down where the questions live so the card matches
+      // both the /admin/exams and /admin/question-sets views.
+      subLabel: `${examQuestionCount} exam · ${setItemCount} in sets`,
+      icon: HelpCircle,
+      href: "/admin/questions",
+    },
     { label: "Question sets", value: questionSetCount, icon: Star, href: "/admin/question-sets" },
     { label: "Users", value: userCount, icon: Users, href: "/admin/users" },
     { label: "Affiliates", value: affiliateCount, icon: Gift, href: "/admin/affiliates" },
@@ -36,15 +47,18 @@ export default async function AdminPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-10">
-        {stats.map(({ label, value, icon: Icon, href }) => (
+        {stats.map(({ label, value, subLabel, icon: Icon, href }) => (
           <Link
             key={label}
             href={href}
             className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm p-5 hover:border-brand-300 dark:hover:border-brand-700 transition-all group"
           >
             <Icon className="h-5 w-5 text-brand-500 mb-3" />
-            <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{value}</p>
+            <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{value.toLocaleString()}</p>
             <p className="text-sm text-gray-500 dark:text-gray-400 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">{label}</p>
+            {subLabel && (
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{subLabel}</p>
+            )}
           </Link>
         ))}
       </div>
