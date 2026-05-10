@@ -70,8 +70,11 @@ export default function ProfileTabs({
       {/* ── tab bar ──────────────────────────────────────────────────── */}
       {/* On narrow screens the four tab labels (especially "Refer & earn")
           would wrap onto two lines and overlap. Make the row horizontally
-          scrollable and force every tab to stay on a single line. */}
-      <div className="border-b border-gray-100 dark:border-gray-800 px-2 lg:px-4 overflow-x-auto">
+          scrollable and force every tab to stay on a single line.
+          `overflow-y-hidden` is needed because `overflow-x-auto` alone
+          promotes the y-axis from `visible` to `auto`, which lets the row
+          scroll vertically too — that's what we want to suppress. */}
+      <div className="border-b border-gray-100 dark:border-gray-800 px-2 lg:px-4 overflow-x-auto overflow-y-hidden">
         <div className="flex flex-nowrap min-w-max">
           {TABS.map((tab) => (
             <button
