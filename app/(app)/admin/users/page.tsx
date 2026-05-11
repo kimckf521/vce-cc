@@ -1,8 +1,9 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createSupabaseAdmin } from "@supabase/supabase-js";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import { CheckCircle, XCircle, BookmarkIcon, TrendingUp, Users, ArrowLeft } from "lucide-react";
+import { CheckCircle, XCircle, BookmarkIcon, TrendingUp, Users, ArrowLeft, MailCheck, MailWarning } from "lucide-react";
 import { isAdminRole, roleLabel } from "@/lib/utils";
 import { getStripe } from "@/lib/stripe";
 import { isResourceMissing } from "@/lib/stripe-customer";
@@ -36,6 +37,45 @@ function avatarColor(id: string) {
 
 function formatDate(date: Date) {
   return date.toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" });
+}
+
+/**
+ * Fetch email-confirmation status for all users from Supabase Auth.
+ *
+ * Returns Map<userId, confirmedAt|null>. A null value means the user has
+ * not yet confirmed their email; a Date means they have. Users not present
+ * in the map (e.g. deleted from auth) default to null on lookup.
+ *
+ * Uses the admin API. listUsers() paginates at 1000/page; we currently have
+ * a small user base so a single page is enough. If the user count grows
+ * past ~900, paginate properly.
+ */
+async function fetchEmailConfirmedMap(): Promise<Map<string, Date | null>> {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!supabaseUrl || !serviceRoleKey) return new Map();
+
+  try {
+    const adminClient = createSupabaseAdmin(supabaseUrl, serviceRoleKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    });
+    const { data, error } = await adminClient.auth.admin.listUsers({
+      page: 1,
+      perPage: 1000,
+    });
+    if (error) {
+      console.error("[admin-users] listUsers failed:", error.message);
+      return new Map();
+    }
+    const map = new Map<string, Date | null>();
+    for (const u of data.users) {
+      map.set(u.id, u.email_confirmed_at ? new Date(u.email_confirmed_at) : null);
+    }
+    return map;
+  } catch (err) {
+    console.error("[admin-users] fetchEmailConfirmedMap error:", err);
+    return new Map();
+  }
 }
 
 /**
@@ -104,11 +144,14 @@ export default async function AdminUsersPage() {
     }),
   ]);
 
-  // Fetch each user's current Stripe customer balance for display.
-  // Only super admins see the credit info; for others, skip the API calls.
-  const creditBalances = isSuperAdmin
-    ? await fetchCreditBalances(users.map((u) => ({ id: u.id, stripeCustomerId: u.stripeCustomerId })))
-    : new Map<string, number>();
+  // Parallel: Stripe balances (super-admin only) + Supabase email-confirmation
+  // status (all admins).
+  const [creditBalances, emailConfirmedMap] = await Promise.all([
+    isSuperAdmin
+      ? fetchCreditBalances(users.map((u) => ({ id: u.id, stripeCustomerId: u.stripeCustomerId })))
+      : Promise.resolve(new Map<string, number>()),
+    fetchEmailConfirmedMap(),
+  ]);
 
   // Build a map: userId → { CORRECT: n, INCORRECT: n, ... }
   const statsMap = new Map<string, Record<string, number>>();
@@ -226,7 +269,34 @@ export default async function AdminUsersPage() {
                       })()
                     )}
                   </div>
-                  <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 truncate">{u.email}</p>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 truncate">{u.email}</p>
+                    {(() => {
+                      // Email confirmation badge — pulled from Supabase auth.
+                      // emailConfirmedAt is undefined if we couldn't reach Supabase
+                      // (e.g. service key missing). In that case show nothing rather
+                      // than a misleading "unconfirmed".
+                      const confirmedAt = emailConfirmedMap.get(u.id);
+                      if (!emailConfirmedMap.has(u.id)) return null;
+                      return confirmedAt ? (
+                        <span
+                          className="inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 text-[10px] lg:text-xs font-medium text-emerald-700 dark:text-emerald-400"
+                          title={`Confirmed on ${formatDate(confirmedAt)}`}
+                        >
+                          <MailCheck className="h-3 w-3" />
+                          Email confirmed
+                        </span>
+                      ) : (
+                        <span
+                          className="inline-flex items-center gap-1 rounded-full bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2 py-0.5 text-[10px] lg:text-xs font-medium text-amber-700 dark:text-amber-400"
+                          title="User has not yet clicked the confirmation link in their welcome email"
+                        >
+                          <MailWarning className="h-3 w-3" />
+                          Email unconfirmed
+                        </span>
+                      );
+                    })()}
+                  </div>
                   <p className="text-xs lg:text-sm text-gray-400 dark:text-gray-500 mt-0.5">Joined {formatDate(u.createdAt)}</p>
                   {u.role === "STUDENT" && u.enrolments.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1.5">
