@@ -14,7 +14,7 @@
  *
  * Idempotent: if `extendedAnswer` already has 5+ items, the file is skipped.
  *
- * Run: cd vce-methods && npx tsx scripts/add-ea-calculus.ts
+ * Run: cd atar-hero && npx tsx scripts/add-ea-calculus.ts
  */
 import fs from "fs";
 import path from "path";

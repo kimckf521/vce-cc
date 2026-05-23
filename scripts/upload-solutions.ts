@@ -1,7 +1,7 @@
 /**
  * VCE Mathematical Methods — Solution PDF Uploader
  *
- * Uploads solution PDFs from exams/solutions/ to Supabase Storage
+ * Uploads solution PDFs from exams/vce/math/mathematical_methods/solutions/ to Supabase Storage
  * and updates the Exam.answerUrl field in the database.
  *
  * File naming: {year}-mm{1|2}-sol.pdf  e.g. 2016-mm1-sol.pdf
@@ -23,7 +23,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-const SOLUTIONS_DIR = path.join(process.cwd(), "exams", "solutions");
+const SOLUTIONS_DIR = path.join(process.cwd(), "exams", "vce", "math", "mathematical_methods", "solutions");
 const BUCKET = "solutions";
 
 // ─── Filename parser ──────────────────────────────────────────────────────────

@@ -24,7 +24,7 @@ from typing import Optional
 
 # ── Config ────────────────────────────────────────────────────────────
 
-EXAMS_DIR = Path(__file__).parent.parent / "exams" / "questions"
+EXAMS_DIR = Path(__file__).parent.parent / "exams" / "vce" / "math" / "mathematical_methods" / "questions"
 OUTPUT_DIR = Path(__file__).parent / "diagrams"
 RENDER_SCALE = 3  # 3x = 216 DPI (crisp on retina)
 PREVIEW_SCALE = 1  # 1x for sending to Claude (saves tokens)

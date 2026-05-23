@@ -96,7 +96,7 @@ Same approach as question extraction but for solution/answer PDFs.
 npm run extract-solutions -- --file 2024-mm1-sol.pdf
 
 # All solution PDFs
-npm run extract-solutions -- --folder ./exams/solutions
+npm run extract-solutions -- --folder ./exams/vce/math/mathematical_methods/solutions
 ```
 
 **Input**: Solution PDFs. Naming: `{year}-mm{1|2}-sol.pdf`
@@ -166,7 +166,7 @@ These are run ad-hoc with `tsx --env-file=.env.local scripts/<name>.ts`.
 ## Adding a New Year's Exam
 
 1. Place exam PDF in `./exams/` (e.g. `2025-exam1.pdf`)
-2. Place solution PDF in `./exams/solutions/` (e.g. `2025-mm1-sol.pdf`)
+2. Place solution PDF in `./exams/vce/math/mathematical_methods/solutions/` (e.g. `2025-mm1-sol.pdf`)
 3. Extract: `npm run extract -- --pdf ./exams/2025-exam1.pdf --year 2025 --exam 1`
 4. Review JSON in `scripts/output/2025-EXAM_1.json` — fix any extraction errors
 5. Seed: `npm run seed -- --file 2025-EXAM_1`

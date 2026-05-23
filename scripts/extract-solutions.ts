@@ -1,14 +1,14 @@
 /**
  * VCE Mathematical Methods — Solution Extractor
  *
- * Reads solution PDFs from exams/solutions/ and extracts per-question solutions
+ * Reads solution PDFs from exams/vce/math/mathematical_methods/solutions/ and extracts per-question solutions
  * using Claude, outputting JSON files ready for seeding.
  *
  * File naming: {year}-mm{1|2}-sol.pdf  e.g. 2016-mm1-sol.pdf
  *
  * Usage:
  *   npm run extract-solutions -- --file 2016-mm1-sol.pdf
- *   npm run extract-solutions -- --folder ./exams/solutions
+ *   npm run extract-solutions -- --folder ./exams/vce/math/mathematical_methods/solutions
  */
 
 import Anthropic from "@anthropic-ai/sdk";
@@ -165,7 +165,7 @@ async function main() {
       process.exit(1);
     }
 
-    const pdfPath = path.join(process.cwd(), "exams", "solutions", filename);
+    const pdfPath = path.join(process.cwd(), "exams", "vce", "math", "mathematical_methods", "solutions", filename);
     if (!fs.existsSync(pdfPath)) {
       console.error(`❌ File not found: ${pdfPath}`);
       process.exit(1);
@@ -181,7 +181,7 @@ async function main() {
   // Folder mode
   const folderPath = args.includes("--folder")
     ? args[args.indexOf("--folder") + 1]
-    : path.join(process.cwd(), "exams", "solutions");
+    : path.join(process.cwd(), "exams", "vce", "math", "mathematical_methods", "solutions");
 
   const files = fs.readdirSync(folderPath)
     .filter((f) => f.toLowerCase().endsWith("-sol.pdf"))

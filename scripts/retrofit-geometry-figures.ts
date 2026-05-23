@@ -10,7 +10,7 @@
  * numeric or symbolic dimensions remain in the question text.
  *
  * Usage:
- *   cd /Volumes/Extreme/Claude/VCE-Claude/vce-methods
+ *   cd /Volumes/Extreme/Claude/VCE-Claude/atar-hero
  *   npx tsx scripts/retrofit-geometry-figures.ts
  */
 import fs from "fs";
