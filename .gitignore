@@ -18,8 +18,10 @@ npm-debug.log*
 *.pem
 .figure-artifacts/
 
-# exams (PDFs are large — store in Supabase Storage)
-exams/
+# exams PDFs are large — store in Supabase Storage. Root-anchored (leading
+# slash) so this only ignores the top-level /exams PDF folder and NOT app
+# route directories named "exams" (e.g. app/(content)/.../exams/).
+/exams/
 
 # prisma generated
 prisma/generated/
@@ -28,5 +30,5 @@ prisma/generated/
 scripts/output/
 scripts/__pycache__/
 
-# textbook PDFs (too large for git)
-textbook/
+# textbook PDFs (too large for git) — root-anchored, same reasoning as /exams/
+/textbook/
