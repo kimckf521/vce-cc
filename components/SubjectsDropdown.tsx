@@ -10,7 +10,19 @@ type Subject = {
   description: string;
 };
 
+// VCAA pathway order: Foundation → General → Methods → Specialist
+// (matches the in-app SUBJECTS order in lib/subject-context.ts).
 const SUBJECTS: Subject[] = [
+  {
+    name: "Foundation Mathematics",
+    href: "/foundation",
+    description: "Real-world maths for everyday life",
+  },
+  {
+    name: "General Mathematics",
+    href: "/general",
+    description: "Applied financial, statistical, geometric maths",
+  },
   {
     name: "Mathematical Methods",
     href: "/methods",
@@ -20,16 +32,6 @@ const SUBJECTS: Subject[] = [
     name: "Specialist Mathematics",
     href: "/specialist",
     description: "Complex numbers, vectors, mechanics",
-  },
-  {
-    name: "General Mathematics",
-    href: "/general",
-    description: "Applied financial, statistical, geometric maths",
-  },
-  {
-    name: "Foundation Mathematics",
-    href: "/foundation",
-    description: "Real-world maths for everyday life",
   },
 ];
 

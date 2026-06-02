@@ -8,20 +8,21 @@ import ThemeToggle from "@/components/ThemeToggle";
 
 type NavKey = "subjects" | "pricing" | "about" | null;
 
-/** Mirrors the desktop SubjectsDropdown list so the two stay in sync. */
+/** Mirrors the desktop SubjectsDropdown list so the two stay in sync.
+ *  VCAA pathway order: Foundation → General → Methods → Specialist. */
 const SUBJECTS = [
+  { name: "Foundation Mathematics", href: "/foundation" },
+  { name: "General Mathematics", href: "/general" },
   { name: "Mathematical Methods", href: "/methods" },
   { name: "Specialist Mathematics", href: "/specialist" },
-  { name: "General Mathematics", href: "/general" },
-  { name: "Foundation Mathematics", href: "/foundation" },
 ];
 
 /** Mirrors the desktop PastPapersDropdown — links to each subject's exams page. */
 const PAST_PAPERS = [
+  { name: "Foundation Mathematics", href: "/vce/foundation/exams" },
+  { name: "General Mathematics", href: "/vce/general/exams" },
   { name: "Mathematical Methods", href: "/vce/methods/exams" },
   { name: "Specialist Mathematics", href: "/vce/specialist/exams" },
-  { name: "General Mathematics", href: "/vce/general/exams" },
-  { name: "Foundation Mathematics", href: "/vce/foundation/exams" },
 ];
 
 /**

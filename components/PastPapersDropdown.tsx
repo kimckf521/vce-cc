@@ -11,9 +11,20 @@ type Paper = {
 };
 
 // Links point at each subject's Past Papers page (`/{curriculum}/{subject}/exams`).
-// Year ranges mirror the seeded archive: Methods/Specialist/General run 2016–2025,
+// VCAA pathway order: Foundation → General → Methods → Specialist.
+// Year ranges mirror the seeded archive: General/Methods/Specialist run 2016–2025,
 // Foundation only exists from 2023. Keep in sync with MarketingMobileMenu.
 const PAPERS: Paper[] = [
+  {
+    name: "Foundation Mathematics",
+    href: "/vce/foundation/exams",
+    description: "2023–2025 exams · worked solutions",
+  },
+  {
+    name: "General Mathematics",
+    href: "/vce/general/exams",
+    description: "2016–2025 exams · worked solutions",
+  },
   {
     name: "Mathematical Methods",
     href: "/vce/methods/exams",
@@ -23,16 +34,6 @@ const PAPERS: Paper[] = [
     name: "Specialist Mathematics",
     href: "/vce/specialist/exams",
     description: "2016–2025 exams · worked solutions",
-  },
-  {
-    name: "General Mathematics",
-    href: "/vce/general/exams",
-    description: "2016–2025 exams · worked solutions",
-  },
-  {
-    name: "Foundation Mathematics",
-    href: "/vce/foundation/exams",
-    description: "2023–2025 exams · worked solutions",
   },
 ];
 
