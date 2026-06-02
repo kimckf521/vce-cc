@@ -1,9 +1,10 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { requireAuthenticatedUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { getStripe, getStandardPriceId } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import { getOrCreateStripeCustomer } from "@/lib/stripe-customer";
-import { ensureMathMethodsSubject } from "@/lib/subscription";
+import { ensureSubjects } from "@/lib/subscription";
+import { PRICE_CATALOG, getPlanPriceId, type PlanKey } from "@/lib/pricing-catalog";
 import { rateLimit } from "@/lib/rate-limit";
 import { ensureReferralCoupon } from "@/lib/affiliate";
 
@@ -26,6 +27,18 @@ export async function POST(request: NextRequest) {
   if (auth.response) return auth.response;
   const { user } = auth;
 
+  // Resolve which plan the user is checking out for. Only "vceMaths" exists
+  // today; the body param is optional + future-proof for additional plans.
+  const body = (await request.json().catch(() => ({}))) as { planKey?: string };
+  const planKey = (body.planKey ?? "vceMaths") as PlanKey;
+  const plan = PRICE_CATALOG[planKey];
+  if (!plan) {
+    return NextResponse.json(
+      { error: `Unknown plan: ${planKey}` },
+      { status: 400 }
+    );
+  }
+
   // Make sure the DB user row exists and fetch the Stripe customer ID if any
   const dbUser = await prisma.user.upsert({
     where: { id: user.id },
@@ -43,8 +56,9 @@ export async function POST(request: NextRequest) {
     },
   });
 
-  // Make sure the Subject row for Mathematical Methods exists
-  await ensureMathMethodsSubject();
+  // Make sure every Subject row for this plan exists (defensive — subjects
+  // should already be seeded but this avoids a null-Subject crash).
+  await ensureSubjects(plan.subjectSlugs);
 
   const stripe = getStripe();
 
@@ -74,7 +88,7 @@ export async function POST(request: NextRequest) {
       customer: customerId,
       line_items: [
         {
-          price: getStandardPriceId(),
+          price: getPlanPriceId(planKey),
           quantity: 1,
         },
       ],
@@ -85,7 +99,8 @@ export async function POST(request: NextRequest) {
       subscription_data: {
         metadata: {
           userId: dbUser.id,
-          subjectSlug: "mathematical-methods",
+          planKey,
+          subjectSlugs: plan.subjectSlugs.join(","),
         },
       },
       success_url: `${origin}/welcome?session_id={CHECKOUT_SESSION_ID}`,
@@ -100,7 +115,7 @@ export async function POST(request: NextRequest) {
     console.error(
       "[checkout] Stripe rejected checkout.sessions.create. userId=%s priceId=%s customerId=%s message=%s full=%s",
       user.id,
-      getStandardPriceId(),
+      getPlanPriceId(planKey),
       customerId,
       message,
       errorJson,

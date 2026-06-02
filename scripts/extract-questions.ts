@@ -1,16 +1,32 @@
 /**
- * VCE Mathematical Methods — Question Extractor
+ * VCE Question Extractor — multi-subject pipeline.
+ *
+ * Reads exam PDFs and uses Claude to extract structured question data
+ * (topic + subtopic tags, difficulty, marks, content). Output JSON is
+ * consumed by seed-questions.ts.
  *
  * Usage:
- *   npm run extract -- --pdf ./exams/2023-exam1.pdf --year 2023 --exam 1
- *   npm run extract -- --folder ./exams
+ *   npm run extract -- --subject vce-methods    --pdf ./exams/.../2024-mm1.pdf
+ *   npm run extract -- --subject vce-specialist --pdf ./exams/.../2024-sm1.pdf
+ *   npm run extract -- --subject vce-specialist --folder ./exams/vce/math/specialist_mathematics/questions
+ *   npm run extract -- --subject vce-specialist                                       # folder defaults to the subject's questions/
  *
- * Output: JSON files in ./scripts/output/
+ * Defaults to --subject vce-methods if omitted (backwards-compatible).
+ *
+ * Output: JSON files in ./scripts/output/, named `<year>-<EXAM_TYPE>-<subject-slug>.json`
+ *         (Methods JSON files written WITHOUT a subject suffix to keep the
+ *          existing seeded data importable without renaming.)
  */
 
 import Anthropic from "@anthropic-ai/sdk";
 import fs from "fs";
 import path from "path";
+import {
+  getSubjectConfig,
+  getSubjectFolder,
+  parsePaperFilename,
+  type SubjectExtractionConfig,
+} from "./subject-extraction-config";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -28,23 +44,17 @@ interface ExtractedQuestion {
 interface ExtractedExam {
   year: number;
   examType: "EXAM_1" | "EXAM_2";
+  /** URL slug of the subject this exam belongs to. Read by seed-questions.ts
+   * to set Question.subjectId / Exam.subjectId on the new rows. */
+  subjectSlug: string;
   questions: ExtractedQuestion[];
 }
 
-// ─── VCE Math Methods Topics ──────────────────────────────────────────────────
+// ─── System Prompt (per-subject) ─────────────────────────────────────────────
 
-const TOPICS = `
-Valid topics and their subtopics:
-- Algebra, Number, and Structure → Polynomial Equations, Exponential Equations, Logarithmic Equations, Trigonometric Equations, Simultaneous Equations, Exponent and Logarithm Laws
-- Functions, Relations, and Graphs → Polynomial Functions, Exponential Functions, Logarithmic Functions, Trigonometric Functions, Rational Functions, Domain and Range, Transformations, Inverse Functions, Composite Functions
-- Calculus → Differentiation, Chain Rule, Product Rule, Quotient Rule, Tangents and Normals, Rates of Change, Stationary Points and Curve Sketching, Optimisation, Antidifferentiation, Definite Integrals, Area Under Curves, Fundamental Theorem of Calculus
-- Data Analysis, Probability, and Statistics → Probability Rules, Conditional Probability, Discrete Random Variables, Binomial Distribution, Continuous Random Variables, Normal Distribution, Confidence Intervals, Sample Proportions and Sampling
-`;
-
-// ─── System Prompt ────────────────────────────────────────────────────────────
-
-const SYSTEM_PROMPT = `You are an expert VCE (Victorian Certificate of Education) Mathematical Methods exam analyser.
-Your task is to extract ALL questions from a VCE Math Methods exam PDF.
+function buildSystemPrompt(cfg: SubjectExtractionConfig): string {
+  return `You are an expert VCE (Victorian Certificate of Education) ${cfg.displayName} exam analyser.
+Your task is to extract ALL questions from a ${cfg.displayName} exam PDF.
 
 Rules:
 1. Extract EVERY question and sub-part — do not skip any
@@ -58,16 +68,18 @@ Rules:
 9. Parts are labelled "a", "b", "c", "d" etc. If a question has no parts, set part to null
 10. Always include the mark allocation for each question/part
 
-${TOPICS}
+${cfg.topicTaxonomyPrompt}
 
 Return ONLY valid JSON — no markdown, no explanation, no code fences.`;
+}
 
 // ─── Extraction Function ──────────────────────────────────────────────────────
 
 async function extractQuestionsFromPDF(
   pdfPath: string,
   year: number,
-  examType: "EXAM_1" | "EXAM_2"
+  examType: "EXAM_1" | "EXAM_2",
+  cfg: SubjectExtractionConfig
 ): Promise<ExtractedExam> {
   const client = new Anthropic({
     apiKey: process.env.ANTHROPIC_API_KEY,
@@ -83,7 +95,7 @@ async function extractQuestionsFromPDF(
     model: "claude-opus-4-6",
     max_tokens: 16000,
     thinking: { type: "adaptive" },
-    system: SYSTEM_PROMPT,
+    system: buildSystemPrompt(cfg),
     messages: [
       {
         role: "user",
@@ -98,7 +110,7 @@ async function extractQuestionsFromPDF(
           },
           {
             type: "text",
-            text: `This is the VCE Mathematical Methods ${year} Exam ${examType === "EXAM_1" ? "1" : "2"}.
+            text: `This is the ${cfg.displayName} ${year} Exam ${examType === "EXAM_1" ? "1" : "2"}.
 
 Extract ALL questions and return them as a JSON object with this exact structure:
 {
@@ -113,16 +125,6 @@ Extract ALL questions and return them as a JSON object with this exact structure
       "topic": "Calculus",
       "subtopics": ["Differentiation"],
       "difficulty": "EASY",
-      "imageDescription": null
-    },
-    {
-      "questionNumber": 3,
-      "part": "b",
-      "marks": 4,
-      "content": "Find the area enclosed between $y = e^x$ and $y = 2x + 1$ for $x \\in [0, 2]$",
-      "topic": "Calculus",
-      "subtopics": ["Integration", "Areas Under Curves", "Exponential Functions"],
-      "difficulty": "HARD",
       "imageDescription": null
     }
   ]
@@ -149,13 +151,16 @@ Important: Return ONLY the JSON object. No markdown, no code fences, no extra te
     .replace(/\n?```$/, "")
     .trim();
 
-  let extracted: ExtractedExam;
+  let extracted: Omit<ExtractedExam, "subjectSlug">;
   try {
     extracted = JSON.parse(jsonText);
   } catch {
     const outputDir = path.join(__dirname, "output");
     fs.mkdirSync(outputDir, { recursive: true });
-    const debugPath = path.join(outputDir, `debug-${year}-${examType}.txt`);
+    const debugPath = path.join(
+      outputDir,
+      `debug-${year}-${examType}-${cfg.urlSlug}.txt`
+    );
     fs.writeFileSync(debugPath, rawText);
     throw new Error(
       `Failed to parse JSON response. Raw output saved to ${debugPath}`
@@ -163,21 +168,27 @@ Important: Return ONLY the JSON object. No markdown, no code fences, no extra te
   }
 
   console.log(`✅ Extracted ${extracted.questions.length} questions`);
-  return extracted;
+  return { ...extracted, subjectSlug: cfg.urlSlug };
 }
 
-// ─── File Naming Helpers ──────────────────────────────────────────────────────
+// ─── Output filename ──────────────────────────────────────────────────────────
 
-function parseFilename(filename: string): { year: number; examType: "EXAM_1" | "EXAM_2" } | null {
-  // Supports: 2023-exam1.pdf, 2023-mm1.pdf, 2023_exam2.pdf, exam1_2023.pdf, 2023exam1.pdf
-  const match = filename.match(/(\d{4}).*(?:exam|mm)[_-]?([12])|(?:exam|mm)[_-]?([12]).*(\d{4})/i);
-  if (!match) return null;
-
-  const year = parseInt(match[1] || match[4]);
-  const num = parseInt(match[2] || match[3]);
-
-  if (isNaN(year) || isNaN(num)) return null;
-  return { year, examType: num === 1 ? "EXAM_1" : "EXAM_2" };
+/**
+ * Methods (the original subject) writes JSON without a slug suffix so the
+ * existing seed pipeline keeps working unchanged: `2024-EXAM_1.json`. New
+ * subjects get a slug-suffixed name to disambiguate: `2024-EXAM_1-vce-specialist.json`.
+ *
+ * This is purely a filesystem convenience — the seed script reads the
+ * `subjectSlug` field inside the JSON to know which subject to seed into.
+ */
+function outputFilename(
+  year: number,
+  examType: "EXAM_1" | "EXAM_2",
+  urlSlug: string
+): string {
+  return urlSlug === "vce-methods"
+    ? `${year}-${examType}.json`
+    : `${year}-${examType}-${urlSlug}.json`;
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
@@ -187,12 +198,15 @@ async function main() {
 
   if (!process.env.ANTHROPIC_API_KEY) {
     console.error("❌ ANTHROPIC_API_KEY environment variable is not set.");
-    console.error(
-      "   Add it to your .env.local or export it in your terminal:\n"
-    );
-    console.error("   export ANTHROPIC_API_KEY=sk-ant-...\n");
+    console.error("   Add it to .env.local or export it in your terminal.\n");
     process.exit(1);
   }
+
+  // ── Resolve --subject (default: vce-methods) ──
+  const subjectIdx = args.indexOf("--subject");
+  const subjectSlug = subjectIdx !== -1 ? args[subjectIdx + 1] : "vce-methods";
+  const cfg = getSubjectConfig(subjectSlug);
+  console.log(`📚 Subject: ${cfg.displayName} (${cfg.urlSlug})`);
 
   const outputDir = path.join(path.dirname(__filename), "output");
   fs.mkdirSync(outputDir, { recursive: true });
@@ -217,117 +231,90 @@ async function main() {
       year = parseInt(args[yearIndex + 1]);
       examType = args[examIndex + 1] === "1" ? "EXAM_1" : "EXAM_2";
     } else {
-      const parsed = parseFilename(path.basename(pdfPath));
+      const parsed = parsePaperFilename(path.basename(pdfPath), cfg.urlSlug);
       if (!parsed) {
         console.error(
-          "❌ Could not determine year/exam from filename. Use --year and --exam flags."
+          `❌ Could not determine year/exam from filename for subject "${cfg.urlSlug}".`
         );
         console.error(
-          "   Example: npm run extract -- --pdf ./exam.pdf --year 2023 --exam 1\n"
+          `   Expected: 2024-${cfg.examPrefix}1.pdf (or pass --year and --exam flags).`
         );
         process.exit(1);
       }
       ({ year, examType } = parsed);
     }
 
-    const result = await extractQuestionsFromPDF(pdfPath, year, examType);
-    const outFile = path.join(outputDir, `${year}-${examType}.json`);
+    const result = await extractQuestionsFromPDF(pdfPath, year, examType, cfg);
+    const outFile = path.join(outputDir, outputFilename(year, examType, cfg.urlSlug));
     fs.writeFileSync(outFile, JSON.stringify(result, null, 2));
     console.log(`\n💾 Saved: ${outFile}`);
     printSummary(result);
     return;
   }
 
-  // ── Folder mode ──
-  if (args.includes("--folder")) {
-    const folderIndex = args.indexOf("--folder");
-    const folderPath = args[folderIndex + 1];
+  // ── Folder mode (defaults to the subject's questions/ folder) ──
+  const folderIdx = args.indexOf("--folder");
+  const folderPath = folderIdx !== -1
+    ? args[folderIdx + 1]
+    : getSubjectFolder(cfg.urlSlug, "questions");
 
-    if (!folderPath || !fs.existsSync(folderPath)) {
-      console.error(`❌ Folder not found: ${folderPath}`);
-      process.exit(1);
-    }
-
-    const pdfs = fs
-      .readdirSync(folderPath)
-      .filter((f) => f.toLowerCase().endsWith(".pdf"))
-      .sort();
-
-    if (pdfs.length === 0) {
-      console.error(`❌ No PDF files found in: ${folderPath}`);
-      process.exit(1);
-    }
-
-    console.log(`\n📁 Found ${pdfs.length} PDF(s) in ${folderPath}`);
-
-    const results: ExtractedExam[] = [];
-    const failed: string[] = [];
-
-    for (const pdf of pdfs) {
-      const parsed = parseFilename(pdf);
-      if (!parsed) {
-        console.warn(`⚠️  Skipping (can't parse filename): ${pdf}`);
-        console.warn(`   Rename to format: 2023-exam1.pdf or 2023-exam2.pdf`);
-        continue;
-      }
-
-      try {
-        const result = await extractQuestionsFromPDF(
-          path.join(folderPath, pdf),
-          parsed.year,
-          parsed.examType
-        );
-        const outFile = path.join(outputDir, `${parsed.year}-${parsed.examType}.json`);
-        fs.writeFileSync(outFile, JSON.stringify(result, null, 2));
-        console.log(`💾 Saved: ${outFile}`);
-        results.push(result);
-      } catch (err) {
-        console.error(`❌ Failed: ${pdf} — ${(err as Error).message}`);
-        failed.push(pdf);
-      }
-
-      // Small delay between requests to avoid rate limits
-      await new Promise((r) => setTimeout(r, 2000));
-    }
-
-    // Save combined output
-    if (results.length > 0) {
-      const combinedPath = path.join(outputDir, "all-questions.json");
-      fs.writeFileSync(combinedPath, JSON.stringify(results, null, 2));
-      console.log(`\n📦 Combined output: ${combinedPath}`);
-    }
-
-    console.log(`\n✅ Done: ${results.length} succeeded, ${failed.length} failed`);
-    if (failed.length > 0) {
-      console.log("Failed files:", failed);
-    }
-    return;
+  if (!fs.existsSync(folderPath)) {
+    console.error(`❌ Folder not found: ${folderPath}`);
+    console.error(
+      `   For subject "${cfg.urlSlug}", drop PDFs into ${getSubjectFolder(cfg.urlSlug, "questions")}`
+    );
+    process.exit(1);
   }
 
-  // ── Help ──
-  console.log(`
-VCE Math Methods Question Extractor
-═══════════════════════════════════
+  const pdfs = fs
+    .readdirSync(folderPath)
+    .filter((f) => f.toLowerCase().endsWith(".pdf"))
+    // Skip solution PDFs (those have -sol.pdf suffix)
+    .filter((f) => !f.toLowerCase().includes("-sol."))
+    .sort();
 
-Usage:
-  npm run extract -- --pdf <path> [--year <year>] [--exam <1|2>]
-  npm run extract -- --folder <path>
+  if (pdfs.length === 0) {
+    console.error(`❌ No question PDFs found in: ${folderPath}`);
+    process.exit(1);
+  }
 
-Examples:
-  npm run extract -- --pdf ./exams/2023-exam1.pdf
-  npm run extract -- --pdf ./exam.pdf --year 2023 --exam 1
-  npm run extract -- --folder ./exams
+  console.log(`\n📁 Found ${pdfs.length} PDF(s) in ${folderPath}`);
 
-File naming (for --folder mode):
-  2023-exam1.pdf  ✅
-  2023-exam2.pdf  ✅
-  2022_exam1.pdf  ✅
-  exam1-2021.pdf  ✅
+  const results: ExtractedExam[] = [];
+  const failed: string[] = [];
 
-Output:
-  scripts/output/<year>-<EXAM_TYPE>.json
-  scripts/output/all-questions.json  (folder mode only)
-  `);
+  for (const pdf of pdfs) {
+    const parsed = parsePaperFilename(pdf, cfg.urlSlug);
+    if (!parsed) {
+      console.warn(`⚠️  Skipping (can't parse filename for ${cfg.urlSlug}): ${pdf}`);
+      console.warn(`   Expected format: 2024-${cfg.examPrefix}1.pdf`);
+      continue;
+    }
+
+    try {
+      const result = await extractQuestionsFromPDF(
+        path.join(folderPath, pdf),
+        parsed.year,
+        parsed.examType,
+        cfg
+      );
+      const outFile = path.join(outputDir, outputFilename(parsed.year, parsed.examType, cfg.urlSlug));
+      fs.writeFileSync(outFile, JSON.stringify(result, null, 2));
+      console.log(`💾 Saved: ${outFile}`);
+      results.push(result);
+    } catch (err) {
+      console.error(`❌ Failed: ${pdf} — ${(err as Error).message}`);
+      failed.push(pdf);
+    }
+
+    // Small delay between requests to avoid rate limits
+    await new Promise((r) => setTimeout(r, 2000));
+  }
+
+  console.log(`\n✅ Done: ${results.length} succeeded, ${failed.length} failed`);
+  if (failed.length > 0) {
+    console.log("Failed files:", failed);
+  }
 }
 
 function printSummary(exam: ExtractedExam) {
@@ -344,7 +331,7 @@ function printSummary(exam: ExtractedExam) {
     ? (exam.questions.reduce((s, q) => s + q.subtopics.length, 0) / exam.questions.length).toFixed(1)
     : "0";
 
-  console.log(`\n📊 Summary: ${exam.year} ${exam.examType}`);
+  console.log(`\n📊 Summary: ${exam.year} ${exam.examType} (${exam.subjectSlug})`);
   console.log(`   Total questions: ${exam.questions.length}`);
   console.log(`   Total marks: ${exam.questions.reduce((s, q) => s + q.marks, 0)}`);
   console.log(`   Avg subtopics per question: ${avgSubtopics}`);

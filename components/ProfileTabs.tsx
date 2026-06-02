@@ -3,13 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { User, CreditCard, MessageSquare, Gift, ArrowRight, Check, LogOut } from "lucide-react";
+import { User, CreditCard, MessageSquare, Gift, ArrowRight, Check, LogOut, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 import EditDisplayName from "@/components/EditDisplayName";
 import ChangePassword from "@/components/ChangePassword";
 import ThemeToggle from "@/components/ThemeToggle";
 import BillingSection from "@/components/BillingSection";
 import ReportForm from "@/components/ReportForm";
+import SubjectRegistration from "@/components/SubjectRegistration";
 
 /* ─── types ──────────────────────────────────────────────────────────── */
 
@@ -18,6 +19,8 @@ type ProfileTabsProps = {
   email: string;
   role: string;
   memberSince: string | null;
+  /** Registered maths subjects (URL slugs). Empty = all (legacy/un-narrowed). */
+  studyingSubjects: string[];
   billing: {
     hasSubscription: boolean;
     planName: string | null;
@@ -31,6 +34,7 @@ type ProfileTabsProps = {
 
 const TABS = [
   { key: "account", label: "Account", icon: User },
+  { key: "subjects", label: "Subjects", icon: BookOpen },
   { key: "billing", label: "Billing", icon: CreditCard },
   { key: "referrals", label: "Refer & earn", icon: Gift },
   { key: "report", label: "Report", icon: MessageSquare },
@@ -45,6 +49,7 @@ export default function ProfileTabs({
   email,
   role,
   memberSince,
+  studyingSubjects,
   billing,
 }: ProfileTabsProps) {
   const [activeTab, setActiveTab] = useState<TabKey>("account");
@@ -160,6 +165,12 @@ export default function ProfileTabs({
               <LogOut className="h-4 w-4 lg:h-5 lg:w-5" />
               {signingOut ? "Signing out…" : "Sign out"}
             </button>
+          </div>
+        )}
+
+        {activeTab === "subjects" && (
+          <div className="rounded-xl border border-gray-100 dark:border-gray-800 p-5 lg:p-6">
+            <SubjectRegistration initialSubjects={studyingSubjects} />
           </div>
         )}
 

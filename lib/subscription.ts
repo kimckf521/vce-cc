@@ -1,5 +1,12 @@
 import { prisma } from "@/lib/prisma";
-import { STANDARD_SUBJECT_SLUG } from "@/lib/stripe";
+import { SUBJECT_DISPLAY_NAMES } from "@/lib/pricing-catalog";
+
+/**
+ * Default subject slug for legacy single-subject callers. To be removed
+ * in B2 when URL restructure brings explicit per-route subject context
+ * to every callsite that currently relies on this default.
+ */
+const LEGACY_DEFAULT_SUBJECT_SLUG = "mathematical-methods";
 
 /**
  * Subscription status values that grant the user access to paid content.
@@ -23,10 +30,18 @@ export type AccessGrantingStatus = (typeof ACCESS_GRANTING_STATUSES)[number];
 
 /**
  * The single topic per subject that free users can access in full.
- * Keys are subject slugs, values are topic slugs.
+ * Keys are DB subject slugs (not URL slugs), values are topic slugs.
+ *
+ * All 4 VCE maths subjects share the "algebra-number-and-structure" topic
+ * slug because they reuse the Methods topic taxonomy (per the seed scripts'
+ * "structure first, refine later" decision). When subject taxonomies
+ * diverge in the future, pick each subject's most foundational topic.
  */
 export const FREE_PREVIEW_TOPIC_BY_SUBJECT: Record<string, string> = {
-  [STANDARD_SUBJECT_SLUG]: "algebra-number-and-structure",
+  [LEGACY_DEFAULT_SUBJECT_SLUG]: "algebra-number-and-structure",
+  "vce-specialist": "algebra-number-and-structure",
+  "vce-foundation": "algebra-number-and-structure",
+  "vce-general": "algebra-number-and-structure",
 };
 
 /**
@@ -46,7 +61,7 @@ export type AccessResult =
  */
 export async function hasActiveSubscription(
   userId: string,
-  subjectSlug: string = STANDARD_SUBJECT_SLUG
+  subjectSlug: string = LEGACY_DEFAULT_SUBJECT_SLUG
 ): Promise<boolean> {
   const enrolment = await prisma.subjectEnrolment.findFirst({
     where: {
@@ -67,7 +82,7 @@ export async function hasActiveSubscription(
  */
 export async function getEnrolment(
   userId: string,
-  subjectSlug: string = STANDARD_SUBJECT_SLUG
+  subjectSlug: string = LEGACY_DEFAULT_SUBJECT_SLUG
 ) {
   return prisma.subjectEnrolment.findFirst({
     where: {
@@ -92,7 +107,7 @@ export async function getEnrolment(
 export async function canAccessTopic(
   userId: string,
   topicSlug: string,
-  subjectSlug: string = STANDARD_SUBJECT_SLUG
+  subjectSlug: string = LEGACY_DEFAULT_SUBJECT_SLUG
 ): Promise<AccessResult> {
   const freeTopic = FREE_PREVIEW_TOPIC_BY_SUBJECT[subjectSlug];
   if (freeTopic && topicSlug === freeTopic) {
@@ -114,7 +129,7 @@ export async function canAccessTopic(
 export async function canAccessFeature(
   userId: string,
   _feature: GatedFeature,
-  subjectSlug: string = STANDARD_SUBJECT_SLUG
+  subjectSlug: string = LEGACY_DEFAULT_SUBJECT_SLUG
 ): Promise<AccessResult> {
   const isPaid = await hasActiveSubscription(userId, subjectSlug);
   return isPaid ? { allowed: true } : { allowed: false, reason: "paywall" };
@@ -130,7 +145,7 @@ export async function canAccessFeature(
  */
 export async function ensureFreeEnrolment(
   userId: string,
-  subjectSlug: string = STANDARD_SUBJECT_SLUG
+  subjectSlug: string = LEGACY_DEFAULT_SUBJECT_SLUG
 ): Promise<void> {
   const subject = await prisma.subject.findUnique({
     where: { slug: subjectSlug },
@@ -152,20 +167,70 @@ export async function ensureFreeEnrolment(
 }
 
 /**
- * Ensure a Subject record exists for Mathematical Methods.
+ * Ensure FREE enrolment rows exist for every VCE maths subject the user
+ * doesn't already have an enrolment for. Called after signup so every user
+ * has a row per subject from day one — fixes the "discovery hole" where
+ * users with only a Methods enrolment couldn't see the other 3 subjects
+ * in the dashboard SubjectsGrid.
+ *
+ * Pulls slugs from the VCE Maths catalog so adding a new subject is one
+ * pricing-catalog edit, not two.
+ *
+ * Idempotent: existing rows (FREE or PAID) are left untouched.
+ */
+export async function ensureFreeEnrolmentsForMathsSubjects(
+  userId: string
+): Promise<void> {
+  const { PRICE_CATALOG } = await import("@/lib/pricing-catalog");
+  const slugs = PRICE_CATALOG.vceMaths.subjectSlugs;
+  for (const slug of slugs) {
+    await ensureFreeEnrolment(userId, slug);
+  }
+}
+
+/**
+ * Ensure a Subject record exists for the given slug.
  * Called from the checkout flow before creating an enrolment.
  * Returns the Subject ID.
+ *
+ * Phase 2 generalisation of the old `ensureMathMethodsSubject` — accepts any
+ * subject slug + display name so Specialist/General/Foundation enrolments can
+ * route through the same path when their Stripe prices land.
  */
-export async function ensureMathMethodsSubject(): Promise<string> {
+export async function ensureSubject(slug: string, name: string): Promise<string> {
   const subject = await prisma.subject.upsert({
-    where: { slug: STANDARD_SUBJECT_SLUG },
+    where: { slug },
     update: {},
-    create: {
-      name: "Mathematical Methods",
-      slug: STANDARD_SUBJECT_SLUG,
-      order: 0,
-    },
+    create: { name, slug, order: 0 },
     select: { id: true },
   });
   return subject.id;
+}
+
+/**
+ * Ensure multiple Subject rows exist. Used by the webhook + checkout when
+ * a single Stripe subscription needs to create/update enrolment rows for
+ * a whole plan's subject list (e.g. VCE Maths = 4 subjects). Display names
+ * come from the catalog so the slug→name mapping lives in one place.
+ *
+ * Returns a map of slug → subjectId so callers can build enrolment rows.
+ */
+export async function ensureSubjects(
+  slugs: readonly string[]
+): Promise<Record<string, string>> {
+  const result: Record<string, string> = {};
+  for (const slug of slugs) {
+    const name = SUBJECT_DISPLAY_NAMES[slug] ?? slug;
+    result[slug] = await ensureSubject(slug, name);
+  }
+  return result;
+}
+
+/**
+ * Backwards-compatible wrapper. Existing checkout/webhook code continues to
+ * call this; new code should use `ensureSubject()` directly with an explicit
+ * slug+name pair.
+ */
+export async function ensureMathMethodsSubject(): Promise<string> {
+  return ensureSubject(LEGACY_DEFAULT_SUBJECT_SLUG, "VCE Mathematical Methods");
 }

@@ -22,7 +22,7 @@ export async function GET() {
 
   const secretKey = process.env.STRIPE_SECRET_KEY ?? "";
   const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? "";
-  const priceId = process.env.STRIPE_STANDARD_PRICE_ID ?? "";
+  const priceId = process.env.STRIPE_PRICE_VCE_MATHS ?? "";
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET ?? "";
 
   function modeOf(key: string): "live" | "test" | "missing" | "unknown" {
@@ -41,7 +41,7 @@ export async function GET() {
       mode: modeOf(publishableKey),
       prefix: publishableKey ? publishableKey.slice(0, 8) + "…" : null,
     },
-    STRIPE_STANDARD_PRICE_ID: {
+    STRIPE_PRICE_VCE_MATHS: {
       // Price IDs don't carry a test/live marker — verified by API call below.
       value: priceId || null,
       verified: false as boolean,
@@ -61,17 +61,17 @@ export async function GET() {
     try {
       const stripe = getStripe();
       const price = await stripe.prices.retrieve(priceId);
-      config.STRIPE_STANDARD_PRICE_ID.verified = true;
-      (config.STRIPE_STANDARD_PRICE_ID as Record<string, unknown>).priceMode =
+      config.STRIPE_PRICE_VCE_MATHS.verified = true;
+      (config.STRIPE_PRICE_VCE_MATHS as Record<string, unknown>).priceMode =
         price.livemode ? "live" : "test";
-      (config.STRIPE_STANDARD_PRICE_ID as Record<string, unknown>).active =
+      (config.STRIPE_PRICE_VCE_MATHS as Record<string, unknown>).active =
         price.active;
-      (config.STRIPE_STANDARD_PRICE_ID as Record<string, unknown>).currency =
+      (config.STRIPE_PRICE_VCE_MATHS as Record<string, unknown>).currency =
         price.currency;
-      (config.STRIPE_STANDARD_PRICE_ID as Record<string, unknown>).amount =
+      (config.STRIPE_PRICE_VCE_MATHS as Record<string, unknown>).amount =
         price.unit_amount;
     } catch (err) {
-      config.STRIPE_STANDARD_PRICE_ID.verifyError =
+      config.STRIPE_PRICE_VCE_MATHS.verifyError =
         err instanceof Error ? err.message : "Unknown error";
     }
   }
@@ -90,9 +90,9 @@ export async function GET() {
       allKeysInSameMode: allSameMode,
       mode: allSameMode ? modes[0] : "MISMATCH",
       priceMatchesKeys:
-        config.STRIPE_STANDARD_PRICE_ID.verified === true &&
+        config.STRIPE_PRICE_VCE_MATHS.verified === true &&
         allSameMode &&
-        (config.STRIPE_STANDARD_PRICE_ID as Record<string, unknown>)
+        (config.STRIPE_PRICE_VCE_MATHS as Record<string, unknown>)
           .priceMode === modes[0],
     },
   });

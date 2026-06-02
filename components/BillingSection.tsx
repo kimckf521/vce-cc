@@ -226,7 +226,7 @@ export default function BillingSection({
             <AccountCreditCard cents={accountCreditCents} hasSubscription={true} />
           )}
 
-          {subscription && (
+          {subscription ? (
             <SubscriptionCard
               planName={subscription.planName}
               status={subscription.status}
@@ -235,6 +235,21 @@ export default function BillingSection({
               priceInterval={subscription.priceInterval}
               currentPeriodEnd={subscription.currentPeriodEnd}
               cancelAtPeriodEnd={subscription.cancelAtPeriodEnd}
+              onChanged={handleChanged}
+            />
+          ) : (
+            /* Fallback when Stripe API hasn't returned (e.g. transient error
+               or test-data row with no real Stripe sub). Surface what we
+               know from the DB so the tab never renders empty for a paid
+               user. */
+            <SubscriptionCard
+              planName={_planName ?? "VCE Maths"}
+              status={_status ?? "active"}
+              priceAmount={999}
+              priceCurrency="aud"
+              priceInterval="month"
+              currentPeriodEnd={_currentPeriodEnd}
+              cancelAtPeriodEnd={_cancelAtPeriodEnd}
               onChanged={handleChanged}
             />
           )}

@@ -9,6 +9,7 @@ import QuestionGroup, { parseMCQAnswer } from "@/components/QuestionGroup";
 import PracticeTimer from "@/components/PracticeTimer";
 import { useSessionRefresh } from "@/hooks/useSessionRefresh";
 import { useAutoSave } from "@/hooks/useAutoSave";
+import NavigationGuard from "@/components/NavigationGuard";
 import { trackEvent } from "@/lib/analytics";
 
 interface QuestionGroupData {
@@ -33,7 +34,7 @@ interface QuestionGroupData {
 interface ExamModeWrapperProps {
   groups: QuestionGroupData[];
   totalQuestions: number;
-  sectionLabel: "Exam 1" | "Exam 2A" | "Exam 2B";
+  sectionLabel: "Exam 1" | "Exam 2A" | "Exam 2B" | "Section A" | "Section B";
   calculatorAllowed: boolean;
   /** "Show solutions as I go" toggle from setup */
   showSolutionsAsYouGo?: boolean;
@@ -51,6 +52,13 @@ interface ExamModeWrapperProps {
    * Each stepper change PATCHes the session score.
    */
   enableSelfMarking?: boolean;
+  /**
+   * Subject-scoped history list URL (e.g. "/vce/general/history"). The
+   * post-submit redirect goes to `${historyHref}/${sessionId}` so the review
+   * screen's "Back to history" returns to the correct subject. Defaults to the
+   * global list for safety.
+   */
+  historyHref?: string;
 }
 
 function formatElapsed(seconds: number): string {
@@ -67,6 +75,7 @@ export default function ExamModeWrapper({
   totalQuestions,
   sectionLabel,
   calculatorAllowed,
+  historyHref = "/history",
   showSolutionsAsYouGo = false,
   showTimer = false,
   readingSeconds = 15 * 60,
@@ -333,6 +342,14 @@ export default function ExamModeWrapper({
 
   return (
     <div className="space-y-4 lg:space-y-5">
+      {/* Warn before leaving while self-marking is unfinished. */}
+      <NavigationGuard
+        enabled={submitted && enableSelfMarking && !finalising}
+        title="Leave without finishing?"
+        message="You haven't finished marking this exam yet. Your score won't be finalised until you do."
+        confirmLabel="Leave anyway"
+        cancelLabel="Keep marking"
+      />
       {/* Timer — hidden after submit */}
       {showTimer && !submitted && (
         <PracticeTimer readingSeconds={readingSeconds} writingSeconds={writingSeconds} />
@@ -559,7 +576,7 @@ export default function ExamModeWrapper({
                   // to history rather than block the user.
                 }
               }
-              router.push(sessionId ? `/history/${sessionId}` : "/history");
+              router.push(sessionId ? `${historyHref}/${sessionId}` : historyHref);
             }}
             className={cn(
               "w-full rounded-2xl px-8 py-4 lg:py-5 text-base lg:text-lg font-bold text-white shadow-lg transition-colors flex items-center justify-center gap-2",

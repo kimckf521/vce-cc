@@ -90,9 +90,11 @@ async function uploadExamDiagrams(folder: string, dryRun: boolean): Promise<numb
 
   console.log(`\n📁 ${folder} — ${manifest.length} diagram(s)`);
 
-  // Find the exam in DB
-  const exam = await prisma.exam.findUnique({
-    where: { year_examType: { year, examType } },
+  // Find the exam in DB. Phase 1 made the unique key (subjectId, year,
+  // examType); this script is Methods-only for now (diagrams are extracted
+  // from Methods PDFs and stored under the Methods folder).
+  const exam = await prisma.exam.findFirst({
+    where: { year, examType, subject: { slug: "mathematical-methods" } },
   });
 
   if (!exam) {

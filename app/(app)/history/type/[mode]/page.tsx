@@ -2,7 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, FileText } from "lucide-react";
+import { ChevronRight, FileText } from "lucide-react";
+import BackLink from "@/components/BackLink";
 import EditableScoreBadge from "@/components/EditableScoreBadge";
 
 const MODE_SLUGS: Record<string, { mode: string; label: string }> = {
@@ -75,12 +76,7 @@ export default async function ModeHistoryPage({ params }: PageProps) {
 
   return (
     <div className="space-y-6">
-      <Link
-        href="/history"
-        className="inline-flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
-      >
-        <ChevronLeft className="h-4 w-4" /> Back to history
-      </Link>
+      <BackLink href="/history" label="Back to history" className="mb-4" />
 
       <div className="flex items-start justify-between gap-4">
         <div>

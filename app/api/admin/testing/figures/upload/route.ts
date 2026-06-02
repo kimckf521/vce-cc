@@ -3,6 +3,7 @@ import { requireAuthenticatedUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { rateLimit } from "@/lib/rate-limit";
 import { isAdminRole } from "@/lib/utils";
+import { ensureMathMethodsSubject } from "@/lib/subscription";
 import { createClient as createSupabaseAdmin } from "@supabase/supabase-js";
 import { readFile } from "fs/promises";
 import { join } from "path";
@@ -73,8 +74,11 @@ export async function POST(req: NextRequest) {
       }
 
       const examType = parsed.examNum === 1 ? "EXAM_1" : "EXAM_2";
+      // Figure-upload admin tool targets Methods exams (the only subject with
+      // figures right now). Compound key now includes subjectId.
+      const subjectId = await ensureMathMethodsSubject();
       const exam = await prisma.exam.findUnique({
-        where: { year_examType: { year: parsed.year, examType } },
+        where: { subjectId_year_examType: { subjectId, year: parsed.year, examType } },
       });
 
       if (!exam) {

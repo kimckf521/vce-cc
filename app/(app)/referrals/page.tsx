@@ -114,7 +114,7 @@ export default async function ReferralsPage({ searchParams }: PageProps) {
             : ["STUDENT_REFERRAL"];
 
     return (
-      <div className="max-w-6xl">
+      <div className="max-w-6xl mx-auto">
         <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
           Refer &amp; Earn
         </h1>
@@ -189,7 +189,7 @@ export default async function ReferralsPage({ searchParams }: PageProps) {
   const isPreviewing = viewOverride !== null && (!affiliate || viewOverride !== affiliate.type);
 
   return (
-    <div className="max-w-6xl">
+    <div className="max-w-6xl mx-auto">
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-1">

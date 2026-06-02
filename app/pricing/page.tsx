@@ -8,14 +8,14 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
-  title: "Pricing — Free & Standard Plans",
+  title: "Pricing — Free & VCE Maths Plans",
   description:
-    "Free includes one full topic, every VCAA past paper and timed Exam 1 practice. Standard ($9.99/month AUD) unlocks all four topics, Exam 2 simulations and full progress tracking.",
+    "Free includes one preview topic per subject and every VCAA past paper. VCE Maths ($9.99/month AUD) unlocks all four VCE maths subjects — Methods, Specialist, Foundation and General — with Exam 2 simulations and full progress tracking.",
   alternates: { canonical: "/pricing" },
   openGraph: {
-    title: "ATAR Hero Pricing — Free & Standard Plans",
+    title: "ATAR Hero Pricing — Free & VCE Maths Plans",
     description:
-      "Free: one topic + every VCAA past paper + Exam 1 practice. Standard ($9.99/mo AUD): all four topics + Exam 2 simulations + progress tracking.",
+      "Free: preview topics + every VCAA past paper. VCE Maths ($9.99/mo AUD): all 4 VCE maths subjects + Exam 2 simulations + progress tracking.",
     url: "/pricing",
     type: "website",
   },
@@ -38,33 +38,34 @@ const plans: Plan[] = [
     name: "Free",
     price: "$0",
     period: "forever",
-    description: "Get one full topic, every past paper and timed Exam 1 practice — no credit card needed.",
+    description: "Preview a topic in every maths subject + every VCAA past paper — no credit card needed.",
     cta: "Get started",
     href: "/signup",
     highlighted: false,
     features: [
-      "Algebra, Number & Structure — full topic with worked solutions",
-      "Every VCAA past paper from 2016 — Exam 1 + Exam 2",
+      "One free preview topic in each of the 4 maths subjects",
+      "Every VCAA past paper from 2016 — Methods, Specialist, Foundation, General",
       "Timed Exam 1 practice — unlimited",
       "Works on phone, tablet and laptop",
       "Dark mode",
     ],
   },
   {
-    name: "Standard",
+    name: "VCE Maths",
     price: "$9.99",
     period: "/month",
-    description: "Full access to Mathematical Methods — every topic, every Exam 2 simulation, full progress tracking.",
-    cta: "Start standard",
+    description: "Full access to all 4 VCE maths subjects — Methods, Specialist, Foundation and General. One subscription unlocks the lot.",
+    cta: "Unlock VCE Maths",
     checkout: true,
     highlighted: true,
     features: [
       "Everything in Free, plus:",
-      "All four topics: Algebra, Functions & Graphs, Calculus, Probability & Statistics",
+      "All 4 maths subjects: Methods, Specialist, Foundation and General",
+      "Every topic, every subject — worked solutions for the lot",
       "Exam 2A, Exam 2B and full Exam 2 simulations under VCAA timing",
       "Mark questions correct or incorrect as you self-mark",
       "Bookmark questions to revisit later",
-      "Performance history — track every attempt and spot weak subtopics",
+      "Performance history across all your subjects",
       "Cancel anytime from your profile",
     ],
   },
@@ -73,19 +74,23 @@ const plans: Plan[] = [
 const faqs = [
   {
     q: "What's included in the free plan?",
-    a: "Free covers one full topic (Algebra, Number & Structure), every VCAA Mathematical Methods past paper from 2016 with worked solutions, and unlimited timed Exam 1 practice. Standard unlocks the other three topics, Exam 2 practice modes, bookmarking, self-marking and your performance history.",
+    a: "Free gets you one preview topic in each of the 4 VCE maths subjects, every VCAA past paper from 2016 onwards with worked solutions, and unlimited timed Exam 1 practice. VCE Maths unlocks every topic in all 4 subjects, Exam 2 practice modes, bookmarking, self-marking and your performance history.",
+  },
+  {
+    q: "Which subjects does VCE Maths cover?",
+    a: "All 4 VCE maths studies: Mathematical Methods, Specialist Mathematics, Foundation Mathematics and General Mathematics. One $9.99/month subscription unlocks the lot.",
   },
   {
     q: "Can I cancel at any time?",
-    a: "Yes — you can cancel your Standard subscription at any time. You'll keep access until the end of your current billing period.",
+    a: "Yes — cancel any time from Profile → Billing. You'll keep access until the end of your current billing period.",
   },
   {
-    q: "Do you offer annual discounts?",
-    a: "Annual plans are coming soon. If you'd like to be notified when they launch, create a free account and we'll let you know.",
+    q: "What about VCE Sciences, English and other subjects?",
+    a: "We're focused on maths first. Sciences, English and other VCE subjects are on the roadmap and will be added as separate subject groups when their content is ready.",
   },
   {
-    q: "Will more subjects be added?",
-    a: "Yes. We're starting with Mathematical Methods and plan to expand to Specialist Mathematics and other VCE subjects. Standard subscribers will be the first to know when new subjects launch.",
+    q: "Will other Australian curricula be supported?",
+    a: "Yes — HSC, QCE, WACE and other state curricula are coming. The platform is built to scale across every Australian curriculum.",
   },
   {
     q: "Is this affiliated with VCAA?",
@@ -95,15 +100,26 @@ const faqs = [
 
 const faqJsonLd = {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqs.map((f) => ({
-    "@type": "Question",
-    name: f.q,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: f.a,
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: f.a,
+        },
+      })),
     },
-  })),
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.atarhero.com.au/" },
+        { "@type": "ListItem", position: 2, name: "Pricing", item: "https://www.atarhero.com.au/pricing" },
+      ],
+    },
+  ],
 };
 
 export default async function PricingPage() {
@@ -142,7 +158,7 @@ export default async function PricingPage() {
             Choose the plan that fits you
           </h1>
           <p className="mt-5 lg:mt-6 text-lg lg:text-xl text-gray-500 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto">
-            Start free with one full topic, every VCAA past paper and timed Exam 1 practice. Upgrade when you&apos;re ready for the rest.
+            Start free with a preview topic in each of the 4 VCE maths subjects and every VCAA past paper. Upgrade when you&apos;re ready to unlock the lot.
           </p>
           <p className="mt-3 text-sm text-gray-400 dark:text-gray-500">
             All prices in AUD. Cancel at any time.
@@ -190,7 +206,7 @@ export default async function PricingPage() {
                 </div>
 
                 <div className="mb-6 flex items-baseline gap-1">
-                  {isReferred && plan.name === "Standard" ? (
+                  {isReferred && plan.name === "VCE Maths" ? (
                     <>
                       <span className="text-2xl lg:text-3xl font-bold text-gray-400 dark:text-gray-500 line-through mr-2">
                         $9.99
@@ -211,7 +227,7 @@ export default async function PricingPage() {
                       <span className="text-sm lg:text-base text-gray-500 dark:text-gray-400">
                         {plan.period}
                       </span>
-                      {plan.name === "Standard" && (
+                      {plan.name === "VCE Maths" && (
                         <span className="text-xs text-gray-400 dark:text-gray-500 ml-1">AUD</span>
                       )}
                     </>

@@ -7,9 +7,9 @@ import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 
 const stats = [
-  { value: "800+",   label: "Past exam questions" },
+  { value: "2,900+", label: "Past exam questions" },
   { value: "10 yrs", label: "Of VCAA papers" },
-  { value: "4",      label: "Practice exam modes" },
+  { value: "4",      label: "VCE maths subjects" },
   { value: "100%",   label: "With worked solutions" },
 ];
 
@@ -18,7 +18,7 @@ const features = [
     icon: FileText,
     title: "Real VCAA past exams",
     description:
-      "Every VCAA Mathematical Methods Exam 1 and Exam 2 from 2016 onwards — actual questions, not lookalikes.",
+      "Every VCAA Exam 1 and Exam 2 from 2016 onwards across all 4 maths subjects — actual questions, not lookalikes.",
     iconBg: "bg-brand-100 dark:bg-brand-900/60",
     iconColor: "text-brand-600 dark:text-brand-400",
   },
@@ -70,7 +70,7 @@ const journey = [
     label: "Zero",
     title: "Start where you are",
     description:
-      "No matter where you're at — overwhelmed, behind or just starting out — your VCE Methods journey begins here.",
+      "No matter where you're at — overwhelmed, behind or just starting out — your VCE Maths journey begins here.",
   },
   {
     icon: TrendingUp,
@@ -92,21 +92,53 @@ const subjects = [
   {
     name: "Mathematical Methods",
     description: "Functions, calculus, algebra, probability and statistics — complete Exam 1 and Exam 2 coverage.",
-    status: "available" as const,
-    href: "/topics",
+    status: "available",
+    href: "/vce/methods/topics",
     topics: [
-      { name: "Functions & Graphs", slug: "functions-and-graphs" },
-      { name: "Algebra", slug: "algebra" },
+      { name: "Algebra", slug: "algebra-number-and-structure" },
+      { name: "Functions & Graphs", slug: "functions-relations-and-graphs" },
       { name: "Calculus", slug: "calculus" },
-      { name: "Probability & Statistics", slug: "probability-and-statistics" },
+      { name: "Probability & Statistics", slug: "data-analysis-probability-and-statistics" },
     ],
   },
   {
     name: "Specialist Mathematics",
-    description: "Complex numbers, vectors, differential equations, mechanics and more.",
-    status: "coming-soon" as const,
-    href: "#",
-    topics: [],
+    description: "Complex numbers, vectors, differential equations, mechanics, discrete maths and more.",
+    status: "available",
+    href: "/vce/specialist/topics",
+    topics: [
+      { name: "Algebra", slug: "algebra-number-and-structure" },
+      { name: "Functions & Graphs", slug: "functions-relations-and-graphs" },
+      { name: "Calculus", slug: "calculus" },
+      { name: "Discrete Maths", slug: "discrete-mathematics" },
+      { name: "Space & Measurement", slug: "space-and-measurement" },
+      { name: "Data & Statistics", slug: "data-analysis-probability-and-statistics" },
+    ],
+  },
+  {
+    name: "General Mathematics",
+    description: "Applied maths across financial, statistical, geometric and algebraic contexts — full Exam 1 and Exam 2 coverage.",
+    status: "available",
+    href: "/vce/general/topics",
+    topics: [
+      { name: "Algebra", slug: "algebra-number-and-structure" },
+      { name: "Functions & Graphs", slug: "functions-relations-and-graphs" },
+      { name: "Discrete Maths", slug: "discrete-mathematics" },
+      { name: "Space & Measurement", slug: "space-and-measurement" },
+      { name: "Data & Statistics", slug: "data-analysis-probability-and-statistics" },
+    ],
+  },
+  {
+    name: "Foundation Mathematics",
+    description: "Real-world maths for everyday life — financial maths, measurement, statistics and algebra.",
+    status: "available",
+    href: "/vce/foundation/topics",
+    topics: [
+      { name: "Algebra", slug: "algebra-number-and-structure" },
+      { name: "Discrete Maths", slug: "discrete-mathematics" },
+      { name: "Space & Measurement", slug: "space-and-measurement" },
+      { name: "Data & Statistics", slug: "data-analysis-probability-and-statistics" },
+    ],
   },
 ];
 
@@ -141,7 +173,10 @@ export default async function HomePage() {
             </span>
             .
           </h1>
-          <p className="mt-6 lg:mt-8 text-lg sm:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto">
+          <p className="mt-5 lg:mt-6 text-base lg:text-lg font-semibold text-brand-700 dark:text-brand-300 max-w-2xl mx-auto">
+            Created by VCE specialists to help students practise smarter with real VCAA exam questions.
+          </p>
+          <p className="mt-4 lg:mt-5 text-lg sm:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto">
             Wherever you&apos;re starting from, ATAR Hero takes you all the way. Real VCAA past
             exam questions, worked solutions and timed practice — built to turn study into a
             top ATAR score.
@@ -155,7 +190,7 @@ export default async function HomePage() {
               <ArrowRight className="inline-block h-4 w-4 lg:h-5 lg:w-5 ml-2 group-hover:translate-x-0.5 transition-transform" />
             </Link>
             <Link
-              href="/topics"
+              href="/vce/methods/topics"
               className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-8 lg:px-10 py-4 lg:py-5 text-base lg:text-lg font-semibold text-gray-700 dark:text-gray-300 shadow-sm hover:border-brand-300 dark:hover:border-brand-600 transition-colors"
             >
               Browse topics
@@ -230,7 +265,7 @@ export default async function HomePage() {
             VCE Subjects
           </h2>
           <p className="text-base lg:text-lg text-gray-500 dark:text-gray-400 text-center mb-10 lg:mb-14 max-w-2xl mx-auto">
-            ATAR Hero is building revision tools for every VCE subject. Mathematical Methods is live now — more on the way.
+            ATAR Hero is building revision tools for every VCE subject. All 4 maths subjects are live now — Sciences, English and more on the way.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
@@ -273,7 +308,7 @@ export default async function HomePage() {
                       {subject.topics.map((topic) => (
                         <Link
                           key={topic.slug}
-                          href={`/topics/${topic.slug}`}
+                          href={`${subject.href}/${topic.slug}`}
                           className="group rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800 px-4 py-3 hover:border-brand-300 hover:bg-brand-50 dark:hover:bg-brand-950 transition-all"
                         >
                           <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
@@ -321,7 +356,7 @@ export default async function HomePage() {
               Everything you need to ace VCE
             </h2>
             <p className="text-base lg:text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
-              Built by VCE students, for VCE students. Real exam content, smart tools and a UX that doesn&apos;t get in your way.
+              Built by VCE specialists who&apos;ve sat the exams. Real exam content, smart tools and a UX that doesn&apos;t get in your way.
             </p>
           </div>
 
@@ -420,7 +455,7 @@ export default async function HomePage() {
         <div className="max-w-2xl mx-auto">
           <Trophy className="h-10 w-10 lg:h-12 lg:w-12 text-amber-500 dark:text-amber-400 mx-auto mb-5" />
           <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 dark:text-gray-100">
-            Your VCE Methods journey starts today.
+            Your VCE Maths journey starts today.
           </h2>
           <p className="mt-4 lg:mt-6 text-base lg:text-xl text-gray-500 dark:text-gray-400">
             Create a free account and take the first step from zero to hero. More VCE subjects are on the way.

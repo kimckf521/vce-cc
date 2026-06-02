@@ -1,17 +1,21 @@
 /**
- * VCE Mathematical Methods — Database Seeder
+ * Question seeder — reads extracted JSON files into the database.
  *
- * Reads extracted JSON files and seeds them into the database.
+ * Picks the target subject from each JSON's `subjectSlug` field (defaults
+ * to "vce-methods" for legacy files that pre-date Phase 2). New rows are
+ * tagged with subjectId so multi-subject queries can scope correctly.
  *
  * Usage:
- *   npm run seed                          ← seeds all files in scripts/output/
- *   npm run seed -- --file 2016-EXAM_1   ← seeds a single file
- *   npm run seed -- --dry-run            ← preview without writing to DB
+ *   npm run seed                                ← seeds every JSON in scripts/output/
+ *   npm run seed -- --file 2024-EXAM_1         ← single Methods file
+ *   npm run seed -- --file 2024-EXAM_1-vce-specialist
+ *   npm run seed -- --dry-run                  ← preview without writing
  */
 
 import { PrismaClient, Difficulty, ExamType } from "@prisma/client";
 import fs from "fs";
 import path from "path";
+import { getSubjectConfig } from "./subject-extraction-config";
 
 const prisma = new PrismaClient();
 
@@ -29,28 +33,20 @@ interface ExtractedQuestion {
   imageDescription: string | null;
 }
 
+interface ExtractedExam {
+  year: number;
+  examType: "EXAM_1" | "EXAM_2";
+  /** Optional — older files (pre-Phase 2) don't carry this; default to vce-methods. */
+  subjectSlug?: string;
+  questions: ExtractedQuestion[];
+}
+
 /** Normalize both old (subtopic) and new (subtopics) formats into an array. */
 function getSubtopics(q: ExtractedQuestion): string[] {
   if (q.subtopics && q.subtopics.length > 0) return q.subtopics;
   if (q.subtopic) return [q.subtopic];
   return [];
 }
-
-interface ExtractedExam {
-  year: number;
-  examType: "EXAM_1" | "EXAM_2";
-  questions: ExtractedQuestion[];
-}
-
-// ─── Topic ordering ───────────────────────────────────────────────────────────
-
-const TOPIC_ORDER: Record<string, number> = {
-  "Functions and Graphs": 1,
-  "Algebra": 2,
-  "Calculus": 3,
-  "Probability": 4,
-  "Statistics": 5,
-};
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -61,23 +57,56 @@ function slugify(text: string): string {
     .replace(/^-|-$/g, "");
 }
 
+/**
+ * Look up the DB Subject row for a given URL slug. Throws if missing —
+ * callers should ensure the seed script for the subject has run first
+ * (e.g. `npm run seed-specialist` for Specialist).
+ */
+async function resolveSubject(urlSlug: string): Promise<{ id: string; slug: string; name: string }> {
+  const cfg = getSubjectConfig(urlSlug);
+  const row = await prisma.subject.findUnique({
+    where: { slug: cfg.dbSlug },
+    select: { id: true, slug: true, name: true },
+  });
+  if (!row) {
+    throw new Error(
+      `Subject "${cfg.displayName}" (db slug "${cfg.dbSlug}") not found.\n` +
+        `Run its seed script first — for Specialist: \`npm run seed-specialist\`.`
+    );
+  }
+  return row;
+}
+
 // ─── Core seed function ───────────────────────────────────────────────────────
 
 async function seedExam(exam: ExtractedExam, dryRun: boolean): Promise<void> {
-  console.log(`\n📚 Seeding ${exam.year} ${exam.examType} (${exam.questions.length} questions)`);
+  const urlSlug = exam.subjectSlug ?? "vce-methods";
+  const cfg = getSubjectConfig(urlSlug);
+  const subject = await resolveSubject(urlSlug);
+
+  console.log(
+    `\n📚 Seeding ${exam.year} ${exam.examType} → ${subject.name} (${exam.questions.length} questions)`
+  );
 
   if (dryRun) {
     console.log("   [DRY RUN — nothing will be written to the database]");
   }
 
-  // ── 1. Upsert Exam ──
+  // ── 1. Upsert Exam (scoped to the subject) ──
   let examRecord: { id: string } | null = null;
 
   if (!dryRun) {
     examRecord = await prisma.exam.upsert({
-      where: { year_examType: { year: exam.year, examType: exam.examType as ExamType } },
+      where: {
+        subjectId_year_examType: {
+          subjectId: subject.id,
+          year: exam.year,
+          examType: exam.examType as ExamType,
+        },
+      },
       update: {},
       create: {
+        subjectId: subject.id,
         year: exam.year,
         examType: exam.examType as ExamType,
       },
@@ -85,7 +114,7 @@ async function seedExam(exam: ExtractedExam, dryRun: boolean): Promise<void> {
     });
     console.log(`   ✅ Exam record: ${examRecord.id}`);
   } else {
-    console.log(`   [DRY] Would upsert Exam: ${exam.year} ${exam.examType}`);
+    console.log(`   [DRY] Would upsert Exam: ${exam.year} ${exam.examType} (subject: ${subject.slug})`);
   }
 
   // ── 2. Collect unique topics & subtopics from this exam ──
@@ -96,22 +125,33 @@ async function seedExam(exam: ExtractedExam, dryRun: boolean): Promise<void> {
 
   for (const topicName of topicNames) {
     const slug = slugify(topicName);
-    const order = TOPIC_ORDER[topicName] ?? 99;
+    const order = cfg.topicOrder[topicName] ?? 99;
 
     if (!dryRun) {
+      // Scoped uniqueness: same slug across different subjects is fine, the
+      // compound key disambiguates. This was a Phase 1 bug — used to be
+      // findUnique({ where: { slug } }) which fails post-multi-subject.
       const topic = await prisma.topic.upsert({
-        where: { slug },
+        where: {
+          subjectId_slug: { subjectId: subject.id, slug },
+        },
         update: {},
-        create: { name: topicName, slug, order },
+        create: {
+          name: topicName,
+          slug,
+          order,
+          subjectId: subject.id,
+        },
         select: { id: true },
       });
       topicMap[topicName] = topic.id;
     } else {
-      console.log(`   [DRY] Would upsert Topic: ${topicName}`);
+      console.log(`   [DRY] Would upsert Topic: ${topicName} (subject: ${subject.slug})`);
       topicMap[topicName] = `dry-run-topic-${slug}`;
     }
 
-    // Upsert subtopics for this topic
+    // Upsert subtopics for this topic (scoped by topicId — no subject FK
+    // needed because subtopic inherits subject via its parent topic)
     const subtopicNames = [
       ...new Set(
         exam.questions
@@ -187,6 +227,10 @@ async function seedExam(exam: ExtractedExam, dryRun: boolean): Promise<void> {
       data: {
         examId: examRecord!.id,
         topicId,
+        // Denormalized subjectId on Question for cheap subject-scoped search;
+        // Phase 1 added the column + index. Authoritative source is still
+        // the topic/exam relations.
+        subjectId: subject.id,
         ...(subtopicConnect.length && { subtopics: { connect: subtopicConnect } }),
         questionNumber: q.questionNumber,
         part: q.part,
@@ -240,7 +284,12 @@ async function main() {
 
     const files = fs
       .readdirSync(outputDir)
-      .filter((f) => f.endsWith(".json") && f !== "all-questions.json")
+      .filter(
+        (f) =>
+          f.endsWith(".json") &&
+          !f.endsWith("-solutions.json") &&
+          f !== "all-questions.json"
+      )
       .sort();
 
     if (files.length === 0) {
@@ -263,6 +312,7 @@ async function main() {
   // ── Final summary ──
   if (!dryRun) {
     const counts = await Promise.all([
+      prisma.subject.count(),
       prisma.topic.count(),
       prisma.subtopic.count(),
       prisma.exam.count(),
@@ -270,10 +320,11 @@ async function main() {
     ]);
     console.log("\n─────────────────────────────────");
     console.log("📊 Database totals:");
-    console.log(`   Topics:    ${counts[0]}`);
-    console.log(`   Subtopics: ${counts[1]}`);
-    console.log(`   Exams:     ${counts[2]}`);
-    console.log(`   Questions: ${counts[3]}`);
+    console.log(`   Subjects:  ${counts[0]}`);
+    console.log(`   Topics:    ${counts[1]}`);
+    console.log(`   Subtopics: ${counts[2]}`);
+    console.log(`   Exams:     ${counts[3]}`);
+    console.log(`   Questions: ${counts[4]}`);
     console.log("─────────────────────────────────");
   }
 

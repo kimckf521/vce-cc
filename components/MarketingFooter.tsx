@@ -33,7 +33,7 @@ export default function MarketingFooter() {
             <ul className="mt-4 space-y-3 text-sm lg:text-base">
               <li>
                 <Link
-                  href="/topics"
+                  href="/vce/methods/topics"
                   className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
                   Topics
@@ -41,7 +41,7 @@ export default function MarketingFooter() {
               </li>
               <li>
                 <Link
-                  href="/exams"
+                  href="/vce/methods/exams"
                   className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
                   Past papers
@@ -49,7 +49,7 @@ export default function MarketingFooter() {
               </li>
               <li>
                 <Link
-                  href="/practice"
+                  href="/vce/methods/practice"
                   className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
                   Practice

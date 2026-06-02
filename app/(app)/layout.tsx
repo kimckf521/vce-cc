@@ -5,9 +5,8 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/utils";
 import { SESSION_COOKIE } from "@/lib/session";
-import Navbar from "@/components/Navbar";
+import { hasActiveSubscription } from "@/lib/subscription";
 import TopBar from "@/components/TopBar";
-import BottomNav from "@/components/BottomNav";
 
 // All authenticated routes under (app)/ should never appear in search results.
 // This metadata cascades to every page within this layout group.
@@ -30,10 +29,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   if (!user) redirect("/login");
 
-  // Single-active-session enforcement + admin check in one lookup.
+  // Single-active-session enforcement + admin check + display name in one lookup.
   const dbUser = await prisma.user.findUnique({
     where: { id: user.id },
-    select: { role: true, activeSessionId: true },
+    select: { role: true, activeSessionId: true, name: true, studyingSubjects: true },
   });
   const isAdmin = isAdminRole(dbUser?.role);
   // If a session ID has been issued for this user in the DB AND either the
@@ -51,31 +50,38 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     }
   }
 
-  return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
-      {/* Desktop sidebar */}
-      <Navbar isAdmin={isAdmin} />
+  // Paid state — used by TopBar to decide whether to show the mega-menu
+  // footer upsell. Admins skip the upsell (they bypass the paywall anyway).
+  // Failure-closed: any DB hiccup falls back to "not paid", so the upsell
+  // shows unnecessarily — annoying but not broken.
+  const isPaid = isAdmin || (await hasActiveSubscription(user.id).catch(() => false));
 
-      {/* Mobile top bar */}
-      <TopBar isAdmin={isAdmin} />
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+      <TopBar
+        isAdmin={isAdmin}
+        isPaid={isPaid}
+        displayName={dbUser?.name}
+        email={user.email}
+        studyingSubjects={dbUser?.studyingSubjects}
+      />
 
       {/* Main content
-          - Mobile:  full width, top padding for TopBar (56px), bottom padding for BottomNav (64px)
-          - Desktop: left margin for sidebar, normal padding
+          - Top padding clears the fixed TopBar (h-14 mobile, h-16 desktop)
+            PLUS a bit of breathing room so page headings don't hug the bar
+          - Bottom padding clears mobile SubjectBottomTabs (64px) on subject
+            pages; harmless extra space on global pages
+          - Subject pages add their own lg:ml-60 wrapper to clear the
+            SubjectSidebar; global pages use full width
       */}
       <main className="
-        flex-1 min-w-0
-        lg:ml-72
-        pt-[72px] px-4 pb-24
-        sm:pt-[76px] sm:px-5
-        lg:pt-10 lg:px-10 lg:pb-10
-        xl:pt-12 xl:px-12 xl:pb-12
+        pt-20 lg:pt-24
+        px-4 pb-24 sm:px-5
+        lg:px-10 lg:pb-10
+        xl:px-12 xl:pb-12
       ">
         {children}
       </main>
-
-      {/* Mobile bottom nav */}
-      <BottomNav isAdmin={isAdmin} />
     </div>
   );
 }

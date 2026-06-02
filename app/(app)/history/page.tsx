@@ -142,7 +142,7 @@ export default async function HistoryPage() {
           <Trophy className="h-10 w-10 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
           <p className="text-gray-400 dark:text-gray-500 mb-4">No exam sessions yet. Complete a practice exam to see your history.</p>
           <Link
-            href="/practice"
+            href="/vce/methods/practice"
             className="inline-flex rounded-xl bg-brand-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 transition-colors"
           >
             Start practising

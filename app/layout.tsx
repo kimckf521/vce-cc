@@ -21,20 +21,26 @@ export const metadata: Metadata = {
     template: "%s | ATAR Hero",
   },
   description:
-    "Go from zero to hero in VCE. Master Mathematical Methods with VCAA past exam questions, step-by-step worked solutions and timed practice exams. Built for Year 12 students in Victoria.",
+    "Go from zero to hero in VCE. Master all 4 VCE maths subjects — Methods, Specialist, Foundation and General — with VCAA past exam questions, step-by-step worked solutions and timed practice exams. Built for Year 12 students in Victoria.",
   applicationName: SITE_NAME,
   keywords: [
     "ATAR Hero",
     "ATAR",
     "VCE",
+    "VCE Maths",
     "VCE Mathematical Methods",
+    "VCE Specialist Mathematics",
+    "VCE General Mathematics",
+    "VCE Foundation Mathematics",
     "VCAA past exams",
     "VCE practice",
     "VCE worked solutions",
-    "Year 12 Maths Methods",
+    "Year 12 Maths",
     "VCE revision",
     "Methods Exam 1",
     "Methods Exam 2",
+    "Specialist Exam 1",
+    "Specialist Exam 2",
     "Victorian Certificate of Education",
     "ATAR score",
   ],
@@ -61,7 +67,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     title: "ATAR Hero — From Zero to Hero in VCE",
     description:
-      "Master VCE with VCAA past exam questions, worked solutions and practice exams. From zero to hero — built for Year 12 students in Victoria.",
+      "Master all 4 VCE maths subjects — Methods, Specialist, Foundation and General — with VCAA past exam questions, worked solutions and practice exams. Built for Year 12 students in Victoria.",
     images: [
       {
         url: "/og-image.png",
@@ -75,7 +81,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ATAR Hero — VCAA Past Exams & Worked Solutions",
     description:
-      "VCAA past exams, worked solutions and timed practice for Year 12. From zero to hero in VCE.",
+      "All 4 VCE maths subjects. VCAA past exams, worked solutions and timed practice for Year 12. From zero to hero.",
     images: ["/og-image.png"],
   },
   robots: {
@@ -102,7 +108,7 @@ const jsonLd = {
       url: SITE_URL,
       logo: `${SITE_URL}/og-image.png`,
       description:
-        "ATAR Hero — go from zero to hero in VCE. Mathematical Methods revision platform with VCAA past exam questions, worked solutions and practice exams for Year 12 students in Victoria, Australia.",
+        "ATAR Hero — go from zero to hero in VCE. VCE Maths revision platform covering Methods, Specialist, Foundation and General, with VCAA past exam questions, worked solutions and practice exams for Year 12 students in Victoria, Australia.",
       areaServed: { "@type": "Country", name: "Australia" },
       audience: {
         "@type": "EducationalAudience",
@@ -115,16 +121,16 @@ const jsonLd = {
       url: SITE_URL,
       name: SITE_NAME,
       description:
-        "ATAR Hero — past VCAA Mathematical Methods exams, worked solutions and timed practice for Year 12 students in Victoria. From zero to hero.",
+        "ATAR Hero — past VCAA exams across all 4 VCE maths subjects, worked solutions and timed practice for Year 12 students in Victoria. From zero to hero.",
       publisher: { "@id": `${SITE_URL}/#organization` },
       inLanguage: "en-AU",
     },
     {
       "@type": "Course",
       "@id": `${SITE_URL}/#course`,
-      name: "VCE Mathematical Methods Revision",
+      name: "VCE Maths Revision",
       description:
-        "Year 12 VCE Mathematical Methods preparation with VCAA past exam questions, step-by-step worked solutions and timed practice exams.",
+        "Year 12 VCE maths preparation across Mathematical Methods, Specialist Mathematics, Foundation Mathematics and General Mathematics — with VCAA past exam questions, step-by-step worked solutions and timed practice exams.",
       provider: { "@id": `${SITE_URL}/#organization` },
       educationalLevel: "Senior Secondary School",
       inLanguage: "en-AU",
@@ -143,7 +149,7 @@ const jsonLd = {
         },
         {
           "@type": "Offer",
-          name: "Standard",
+          name: "VCE Maths",
           category: "Subscription",
           price: "9.99",
           priceCurrency: "AUD",
@@ -155,6 +161,97 @@ const jsonLd = {
         courseMode: "online",
         inLanguage: "en-AU",
         courseWorkload: "PT100H",
+      },
+      hasPart: [
+        { "@id": `${SITE_URL}/#course-methods` },
+        { "@id": `${SITE_URL}/#course-specialist` },
+        { "@id": `${SITE_URL}/#course-general` },
+        { "@id": `${SITE_URL}/#course-foundation` },
+      ],
+    },
+    {
+      "@type": "Course",
+      "@id": `${SITE_URL}/#course-methods`,
+      name: "VCE Mathematical Methods",
+      alternateName: "VCE Methods",
+      description:
+        "VCE Mathematical Methods revision: functions, calculus, algebra, probability and statistics. Real VCAA past exam questions, step-by-step worked solutions and timed practice exams for Year 12 students.",
+      provider: { "@id": `${SITE_URL}/#organization` },
+      educationalLevel: "Senior Secondary School",
+      inLanguage: "en-AU",
+      isPartOf: { "@id": `${SITE_URL}/#course` },
+      url: `${SITE_URL}/vce/methods/topics`,
+      audience: {
+        "@type": "EducationalAudience",
+        educationalRole: "student",
+      },
+      hasCourseInstance: {
+        "@type": "CourseInstance",
+        courseMode: "online",
+        inLanguage: "en-AU",
+      },
+    },
+    {
+      "@type": "Course",
+      "@id": `${SITE_URL}/#course-specialist`,
+      name: "VCE Specialist Mathematics",
+      description:
+        "VCE Specialist Mathematics revision: complex numbers, vectors, differential equations, mechanics and discrete maths. Real VCAA past exam questions, worked solutions and timed practice for Year 12.",
+      provider: { "@id": `${SITE_URL}/#organization` },
+      educationalLevel: "Senior Secondary School",
+      inLanguage: "en-AU",
+      isPartOf: { "@id": `${SITE_URL}/#course` },
+      url: `${SITE_URL}/vce/specialist/topics`,
+      audience: {
+        "@type": "EducationalAudience",
+        educationalRole: "student",
+      },
+      hasCourseInstance: {
+        "@type": "CourseInstance",
+        courseMode: "online",
+        inLanguage: "en-AU",
+      },
+    },
+    {
+      "@type": "Course",
+      "@id": `${SITE_URL}/#course-general`,
+      name: "VCE General Mathematics",
+      description:
+        "VCE General Mathematics revision: applied maths across financial, statistical, geometric and algebraic contexts. Real VCAA past exam questions, worked solutions and timed practice for Year 12.",
+      provider: { "@id": `${SITE_URL}/#organization` },
+      educationalLevel: "Senior Secondary School",
+      inLanguage: "en-AU",
+      isPartOf: { "@id": `${SITE_URL}/#course` },
+      url: `${SITE_URL}/vce/general/topics`,
+      audience: {
+        "@type": "EducationalAudience",
+        educationalRole: "student",
+      },
+      hasCourseInstance: {
+        "@type": "CourseInstance",
+        courseMode: "online",
+        inLanguage: "en-AU",
+      },
+    },
+    {
+      "@type": "Course",
+      "@id": `${SITE_URL}/#course-foundation`,
+      name: "VCE Foundation Mathematics",
+      description:
+        "VCE Foundation Mathematics revision: real-world maths for everyday life — financial maths, measurement, statistics and algebra. Worked solutions and timed practice for Year 12 students.",
+      provider: { "@id": `${SITE_URL}/#organization` },
+      educationalLevel: "Senior Secondary School",
+      inLanguage: "en-AU",
+      isPartOf: { "@id": `${SITE_URL}/#course` },
+      url: `${SITE_URL}/vce/foundation/topics`,
+      audience: {
+        "@type": "EducationalAudience",
+        educationalRole: "student",
+      },
+      hasCourseInstance: {
+        "@type": "CourseInstance",
+        courseMode: "online",
+        inLanguage: "en-AU",
       },
     },
   ],

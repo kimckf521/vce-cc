@@ -1,9 +1,12 @@
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import BrandMark from "@/components/BrandMark";
+import SubjectsDropdown from "@/components/SubjectsDropdown";
+import PastPapersDropdown from "@/components/PastPapersDropdown";
+import MarketingMobileMenu from "@/components/MarketingMobileMenu";
 import { createClient } from "@/lib/supabase/server";
 
-type NavKey = "topics" | "exams" | "practice" | "pricing" | null;
+type NavKey = "subjects" | "pricing" | "about" | null;
 
 export default async function MarketingNav({ active = null }: { active?: NavKey }) {
   const supabase = await createClient();
@@ -28,17 +31,13 @@ export default async function MarketingNav({ active = null }: { active?: NavKey 
           <span className="hidden xs:inline whitespace-nowrap">ATAR Hero</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm lg:text-base text-gray-600 dark:text-gray-400">
-          <Link href="/topics" className={linkClass("topics")}>
-            Topics
-          </Link>
-          <Link href="/exams" className={linkClass("exams")}>
-            Past papers
-          </Link>
-          <Link href="/practice" className={linkClass("practice")}>
-            Practice
-          </Link>
+          <SubjectsDropdown active={active === "subjects"} />
+          <PastPapersDropdown />
           <Link href="/pricing" className={linkClass("pricing")}>
             Pricing
+          </Link>
+          <Link href="/about" className={linkClass("about")}>
+            About
           </Link>
         </nav>
         <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 flex-shrink-0">
@@ -70,6 +69,9 @@ export default async function MarketingNav({ active = null }: { active?: NavKey 
               </Link>
             </>
           )}
+          {/* Mobile-only menu — exposes Subjects / Pricing / About / Log in,
+              which are otherwise hidden below md with no replacement */}
+          <MarketingMobileMenu loggedIn={!!user} active={active} />
         </div>
       </div>
     </header>

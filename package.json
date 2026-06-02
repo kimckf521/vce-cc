@@ -18,7 +18,15 @@
     "upload-solutions": "tsx --env-file=.env.local scripts/upload-solutions.ts",
     "extract-solutions": "tsx --env-file=.env.local scripts/extract-solutions.ts",
     "seed-solutions": "tsx --env-file=.env.local scripts/seed-solutions.ts",
-    "upload-diagrams": "tsx --env-file=.env.local scripts/upload-diagrams.ts"
+    "upload-diagrams": "tsx --env-file=.env.local scripts/upload-diagrams.ts",
+    "multi-subject-backfill": "tsx --env-file=.env.local scripts/seed-and-backfill-multi-subject.ts",
+    "seed-specialist": "tsx --env-file=.env.local scripts/seed-specialist-mathematics.ts",
+    "seed-foundation": "tsx --env-file=.env.local scripts/seed-foundation-mathematics.ts",
+    "seed-general": "tsx --env-file=.env.local scripts/seed-general-mathematics.ts",
+    "backfill-tech": "tsx --env-file=.env.local scripts/backfill-tech-classification.ts",
+    "check-tech": "tsx --env-file=.env.local scripts/check-tech-progress.ts",
+    "verify-dedup": "tsx --env-file=.env.local scripts/verify-dedup.ts",
+    "seed-exam-set": "tsx --env-file=.env.local scripts/seed-exam-set.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",

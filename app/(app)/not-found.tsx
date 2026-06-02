@@ -18,7 +18,7 @@ export default function NotFound() {
 
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Link
-            href="/topics"
+            href="/vce/methods/topics"
             className="group rounded-2xl border border-gray-200/80 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 text-left shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700 hover:-translate-y-0.5 transition-all"
           >
             <div className="inline-flex rounded-2xl p-3 mb-4 bg-brand-50 dark:bg-brand-950/40">
@@ -37,7 +37,7 @@ export default function NotFound() {
           </Link>
 
           <Link
-            href="/practice"
+            href="/vce/methods/practice"
             className="group rounded-2xl border border-gray-200/80 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 text-left shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700 hover:-translate-y-0.5 transition-all"
           >
             <div className="inline-flex rounded-2xl p-3 mb-4 bg-emerald-50 dark:bg-emerald-950/40">

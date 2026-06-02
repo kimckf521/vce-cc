@@ -1,8 +1,13 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { requireAuthenticatedUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { getStripe, STANDARD_SUBJECT_SLUG } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import { rateLimit } from "@/lib/rate-limit";
+
+// TODO B2: derive subject from URL context. Today all 4 enrolment rows for a
+// VCE Maths sub share the same stripeSubscriptionId, so reading from any one
+// gives the right sub to cancel — the webhook syncs every row afterwards.
+const LEGACY_BILLING_SUBJECT_SLUG = "mathematical-methods";
 
 /**
  * POST /api/billing/cancel
@@ -21,7 +26,7 @@ export async function POST(request: NextRequest) {
   const enrolment = await prisma.subjectEnrolment.findFirst({
     where: {
       userId: user.id,
-      subject: { slug: STANDARD_SUBJECT_SLUG },
+      subject: { slug: LEGACY_BILLING_SUBJECT_SLUG },
       stripeSubscriptionId: { not: null },
     },
     select: { stripeSubscriptionId: true },
@@ -47,7 +52,9 @@ export async function POST(request: NextRequest) {
     ? new Date(firstItem.current_period_end * 1000)
     : null;
 
-  await prisma.subjectEnrolment.update({
+  // updateMany — one Stripe sub now backs 4 enrolment rows (one per maths
+  // subject) and the @unique was dropped from stripeSubscriptionId.
+  await prisma.subjectEnrolment.updateMany({
     where: { stripeSubscriptionId: enrolment.stripeSubscriptionId },
     data: {
       cancelAtPeriodEnd: true,

@@ -8,6 +8,7 @@ import PracticeTimer from "@/components/PracticeTimer";
 import SelfMarkStepper from "@/components/SelfMarkStepper";
 import { useSessionRefresh } from "@/hooks/useSessionRefresh";
 import { useAutoSave } from "@/hooks/useAutoSave";
+import NavigationGuard from "@/components/NavigationGuard";
 import { trackEvent } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
@@ -39,6 +40,13 @@ interface Exam2ABModeWrapperProps {
   showTimer?: boolean;
   readingSeconds?: number;
   writingSeconds?: number;
+  /**
+   * Subject-scoped history list URL (e.g. "/vce/general/history"). The
+   * post-submit redirect goes to `${historyHref}/${sessionId}` so the review
+   * screen's "Back to history" returns to the correct subject. Defaults to the
+   * global list for safety.
+   */
+  historyHref?: string;
 }
 
 function formatElapsed(seconds: number): string {
@@ -53,6 +61,7 @@ function formatElapsed(seconds: number): string {
 export default function Exam2ABModeWrapper({
   groupsA,
   groupsB,
+  historyHref = "/history",
   showSolutionsAsYouGo = false,
   showTimer = false,
   readingSeconds = 15 * 60,
@@ -311,6 +320,14 @@ export default function Exam2ABModeWrapper({
 
   return (
     <div className="space-y-4 lg:space-y-5">
+      {/* Warn before leaving while Section B self-marking is unfinished. */}
+      <NavigationGuard
+        enabled={submitted && !finalising}
+        title="Leave without finishing?"
+        message="You haven't finished marking this exam yet. Your score won't be finalised until you do."
+        confirmLabel="Leave anyway"
+        cancelLabel="Keep marking"
+      />
       {/* Timer — hidden after submit */}
       {showTimer && !submitted && (
         <PracticeTimer readingSeconds={readingSeconds} writingSeconds={writingSeconds} />
@@ -556,7 +573,7 @@ export default function Exam2ABModeWrapper({
                   // Last debounced PATCH is already saved; continue.
                 }
               }
-              router.push(sessionId ? `/history/${sessionId}` : "/history");
+              router.push(sessionId ? `${historyHref}/${sessionId}` : historyHref);
             }}
             className={cn(
               "w-full rounded-2xl px-8 py-4 lg:py-5 text-base lg:text-lg font-bold text-white shadow-lg transition-colors flex items-center justify-center gap-2",

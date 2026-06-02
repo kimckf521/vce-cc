@@ -14,7 +14,7 @@ export default function DashboardEmptyState() {
 
       <div className="mt-5 grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-4">
         <Link
-          href="/practice/exam1"
+          href="/vce/methods/practice/exam1"
           className="group rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-4 lg:p-5 hover:border-brand-200 dark:hover:border-brand-800 hover:shadow-sm transition-all"
         >
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 dark:bg-brand-950 mb-3">
@@ -33,7 +33,7 @@ export default function DashboardEmptyState() {
         </Link>
 
         <Link
-          href="/topics"
+          href="/vce/methods/topics"
           className="group rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-4 lg:p-5 hover:border-brand-200 dark:hover:border-brand-800 hover:shadow-sm transition-all"
         >
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-950 mb-3">
@@ -52,7 +52,7 @@ export default function DashboardEmptyState() {
         </Link>
 
         <Link
-          href="/exams"
+          href="/vce/methods/exams"
           className="group rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-4 lg:p-5 hover:border-brand-200 dark:hover:border-brand-800 hover:shadow-sm transition-all"
         >
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50 dark:bg-amber-950 mb-3">

@@ -11,28 +11,33 @@ export const metadata: Metadata = {
 
 const LAST_UPDATED = "9 April 2026";
 
-// JSON-LD: WebPage schema for the terms. Helps Google understand page purpose
-// + show "last updated" hints in search snippets.
+// JSON-LD: WebPage + BreadcrumbList for the terms. Helps Google understand
+// page purpose, show "last updated" hints, and render visual breadcrumbs
+// in search results.
 const termsJsonLd = {
   "@context": "https://schema.org",
-  "@type": "WebPage",
-  name: "Terms & Conditions",
-  description:
-    "The terms that govern your use of ATAR Hero, including accounts, subscriptions, acceptable use and intellectual property.",
-  url: "https://www.atarhero.com.au/terms",
-  inLanguage: "en-AU",
-  datePublished: "2026-04-09",
-  dateModified: "2026-04-09",
-  isPartOf: {
-    "@id": "https://www.atarhero.com.au/#website",
-  },
-  publisher: {
-    "@id": "https://www.atarhero.com.au/#organization",
-  },
-  about: {
-    "@type": "Thing",
-    name: "Terms of service and acceptable use",
-  },
+  "@graph": [
+    {
+      "@type": "WebPage",
+      name: "Terms & Conditions",
+      description:
+        "The terms that govern your use of ATAR Hero, including accounts, subscriptions, acceptable use and intellectual property.",
+      url: "https://www.atarhero.com.au/terms",
+      inLanguage: "en-AU",
+      datePublished: "2026-04-09",
+      dateModified: "2026-04-09",
+      isPartOf: { "@id": "https://www.atarhero.com.au/#website" },
+      publisher: { "@id": "https://www.atarhero.com.au/#organization" },
+      about: { "@type": "Thing", name: "Terms of service and acceptable use" },
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.atarhero.com.au/" },
+        { "@type": "ListItem", position: 2, name: "Terms & Conditions", item: "https://www.atarhero.com.au/terms" },
+      ],
+    },
+  ],
 };
 
 export default function TermsPage() {
@@ -95,16 +100,16 @@ export default function TermsPage() {
           <h2>3. Subscriptions and billing</h2>
           <ul>
             <li>
-              The Service offers a Free plan (limited content) and a paid Standard plan. Pricing
+              The Service offers a Free plan (limited content) and a paid VCE Maths plan. Pricing
               and plan features are shown on our{" "}
               <a href="/pricing">Pricing</a> page.
             </li>
             <li>
-              The Standard plan is billed monthly in Australian dollars (AUD) through our payment
+              The VCE Maths plan is billed monthly in Australian dollars (AUD) through our payment
               processor, Stripe. Prices include GST where applicable.
             </li>
             <li>
-              By starting a Standard subscription you authorise us (via Stripe) to charge your
+              By starting a VCE Maths subscription you authorise us (via Stripe) to charge your
               nominated payment method on a recurring monthly basis until you cancel.
             </li>
             <li>

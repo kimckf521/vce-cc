@@ -1,9 +1,17 @@
 import Link from "next/link";
 import { Sparkles, FileText, BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  getExam1FocusValue,
+  getExam2FocusValue,
+} from "@/lib/exam-filter-config";
 
 interface Props {
   slug: string;
+  /** URL prefix that scopes the topic (e.g. "/vce/foundation"). Defaults to "" for legacy callers. */
+  subjectBase?: string;
+  /** DB subject slug (e.g. "vce-general") — drives per-subject exam values. */
+  subjectSlug?: string;
   firstSubtopicSlug?: string;
   currentSubtopic?: string;
   currentExam?: string;
@@ -11,19 +19,31 @@ interface Props {
 
 export default function TopicGuidanceChips({
   slug,
+  subjectBase = "",
+  subjectSlug,
   firstSubtopicSlug,
   currentSubtopic,
   currentExam,
 }: Props) {
   const examValues = (currentExam ?? "").split(",").filter(Boolean);
-  const hasExam1 = examValues.includes("EXAM_1");
-  const hasExam2MC = examValues.includes("EXAM_2_MC");
-  const hasExam2B = examValues.includes("EXAM_2_B");
+
+  const exam1Value = getExam1FocusValue(subjectSlug);
+  const exam2Value = getExam2FocusValue(subjectSlug);
+  const exam2Parts = exam2Value.split(",").filter(Boolean);
+
+  const hasExam1 = examValues.includes(exam1Value);
+  const hasAllExam2 = exam2Parts.length > 0 && exam2Parts.every((v) => examValues.includes(v));
 
   const isStartHere =
     !!firstSubtopicSlug && currentSubtopic === firstSubtopicSlug;
-  const isExam1Focus = hasExam1 && !hasExam2MC && !hasExam2B;
-  const isExam2Focus = hasExam2MC && hasExam2B && !hasExam1;
+  const isExam1Focus = hasExam1 && !hasAllExam2;
+  const isExam2Focus = hasAllExam2 && !hasExam1;
+
+  // Foundation's paper has Section A / Section B rather than Exam 1 / Exam 2,
+  // so the chip wording switches when the underlying values reflect that.
+  const isSectionStyle = exam1Value === "SECTION_A";
+  const exam1Label = isSectionStyle ? "Section A focus" : "Exam 1 focus";
+  const exam2Label = isSectionStyle ? "Section B focus" : "Exam 2 focus";
 
   const chips: {
     key: string;
@@ -38,22 +58,22 @@ export default function TopicGuidanceChips({
       key: "start",
       label: "Start here",
       icon: Sparkles,
-      href: `/topics/${slug}?subtopic=${firstSubtopicSlug}`,
+      href: `${subjectBase}/topics/${slug}?subtopic=${firstSubtopicSlug}`,
       active: isStartHere,
     });
   }
   chips.push({
     key: "exam1",
-    label: "Exam 1 focus",
+    label: exam1Label,
     icon: FileText,
-    href: `/topics/${slug}?exam=EXAM_1`,
+    href: `${subjectBase}/topics/${slug}?exam=${exam1Value}`,
     active: isExam1Focus,
   });
   chips.push({
     key: "exam2",
-    label: "Exam 2 focus",
+    label: exam2Label,
     icon: BarChart3,
-    href: `/topics/${slug}?exam=EXAM_2_MC,EXAM_2_B`,
+    href: `${subjectBase}/topics/${slug}?exam=${exam2Value}`,
     active: isExam2Focus,
   });
 

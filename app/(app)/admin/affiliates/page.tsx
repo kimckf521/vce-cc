@@ -38,9 +38,10 @@ export default async function AdminAffiliatesPage() {
   });
 
   // Month-1 retention for referred users — pulls converted referrals where
-  // the conversion is at least 30 days old, then checks whether the referee's
-  // subscription is still active. Below ~67% retention, the influencer track
-  // becomes unprofitable; below ~50%, the student track does too.
+  // the conversion is at least 30 days old, then checks whether the referee
+  // still holds any active paid enrolment (subject-agnostic, so future
+  // per-subject pricing tiers all count as "retained"). Below ~67% retention,
+  // the influencer track becomes unprofitable; below ~50%, the student track does too.
   type RetentionBucket = { retained: number; churned: number };
   const buckets: Record<"STUDENT_REFERRAL" | "TUTOR_AFFILIATE" | "INFLUENCER_AFFILIATE", RetentionBucket> = {
     STUDENT_REFERRAL: { retained: 0, churned: 0 },
@@ -58,8 +59,11 @@ export default async function AdminAffiliatesPage() {
       referredUser: {
         select: {
           enrolments: {
-            where: { subject: { slug: "mathematical-methods" } },
-            select: { tier: true, subscriptionStatus: true },
+            where: {
+              tier: "PAID",
+              subscriptionStatus: { in: ["active", "trialing"] },
+            },
+            select: { id: true },
             take: 1,
           },
         },
@@ -68,11 +72,7 @@ export default async function AdminAffiliatesPage() {
   });
 
   for (const r of ageableReferrals) {
-    const enrol = r.referredUser.enrolments[0];
-    const isActive =
-      enrol?.tier === "PAID" &&
-      (enrol.subscriptionStatus === "active" ||
-        enrol.subscriptionStatus === "trialing");
+    const isActive = r.referredUser.enrolments.length > 0;
     const bucket = buckets[r.affiliate.type];
     if (isActive) bucket.retained++;
     else bucket.churned++;

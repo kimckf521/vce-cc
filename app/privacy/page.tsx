@@ -11,28 +11,33 @@ export const metadata: Metadata = {
 
 const LAST_UPDATED = "9 April 2026";
 
-// JSON-LD: WebPage schema for the privacy policy. Helps Google understand
-// page purpose + show "last updated" hints in search snippets.
+// JSON-LD: WebPage + BreadcrumbList for the privacy policy. Helps Google
+// understand page purpose, show "last updated" hints, and render visual
+// breadcrumbs in search results.
 const privacyJsonLd = {
   "@context": "https://schema.org",
-  "@type": "WebPage",
-  name: "Privacy Policy",
-  description:
-    "How ATAR Hero collects, uses and protects your personal information in accordance with the Australian Privacy Principles.",
-  url: "https://www.atarhero.com.au/privacy",
-  inLanguage: "en-AU",
-  datePublished: "2026-04-09",
-  dateModified: "2026-04-09",
-  isPartOf: {
-    "@id": "https://www.atarhero.com.au/#website",
-  },
-  publisher: {
-    "@id": "https://www.atarhero.com.au/#organization",
-  },
-  about: {
-    "@type": "Thing",
-    name: "Privacy and data protection",
-  },
+  "@graph": [
+    {
+      "@type": "WebPage",
+      name: "Privacy Policy",
+      description:
+        "How ATAR Hero collects, uses and protects your personal information in accordance with the Australian Privacy Principles.",
+      url: "https://www.atarhero.com.au/privacy",
+      inLanguage: "en-AU",
+      datePublished: "2026-04-09",
+      dateModified: "2026-04-09",
+      isPartOf: { "@id": "https://www.atarhero.com.au/#website" },
+      publisher: { "@id": "https://www.atarhero.com.au/#organization" },
+      about: { "@type": "Thing", name: "Privacy and data protection" },
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.atarhero.com.au/" },
+        { "@type": "ListItem", position: 2, name: "Privacy Policy", item: "https://www.atarhero.com.au/privacy" },
+      ],
+    },
+  ],
 };
 
 export default function PrivacyPage() {

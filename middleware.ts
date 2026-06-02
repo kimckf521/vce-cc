@@ -10,14 +10,20 @@ export const config = {
   // static assets, and the landing page to eliminate unnecessary overhead.
   matcher: [
     "/dashboard/:path*",
-    "/topics/:path*",
-    "/exams/:path*",
-    "/practice/:path*",
+    // Curriculum-prefixed subject routes (the canonical URLs as of Phase 2).
+    // The :subject segment matches any slug — `[subject]/layout.tsx` validates
+    // it and 404s if unknown. Flat /topics, /exams, etc. are 301-redirected
+    // here by next.config.mjs before middleware runs, so they don't need to
+    // be in the matcher anymore.
+    "/:subject/topics/:path*",
+    "/:subject/exams/:path*",
+    "/:subject/practice/:path*",
+    "/:subject/questions/:path*",
     "/search/:path*",
-    "/questions/:path*",
     "/history/:path*",
     "/profile/:path*",
     "/admin/:path*",
+    "/referrals/:path*",
     "/login",
     "/signup",
   ],

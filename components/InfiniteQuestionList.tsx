@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 import type { QuestionGroupData, TopicQuestionFilters } from "@/lib/question-groups";
-import { loadMoreGroups } from "@/app/(app)/topics/[slug]/actions";
+import { loadMoreGroups } from "@/app/(app)/[curriculum]/[subject]/topics/[slug]/actions";
 
 const QuestionGroup = dynamic(() => import("@/components/QuestionGroup"), { ssr: false });
 
@@ -15,6 +15,8 @@ interface InfiniteQuestionListProps {
   initialGroups: QuestionGroupData[];
   initialHasMore: boolean;
   topicSlug: string;
+  /** DB subject slug — scopes the "load more" lookup to the correct subject. */
+  subjectSlug?: string;
   filters: TopicQuestionFilters;
   isAdmin?: boolean;
   canTrackProgress?: boolean;
@@ -24,6 +26,7 @@ export default function InfiniteQuestionList({
   initialGroups,
   initialHasMore,
   topicSlug,
+  subjectSlug,
   filters,
   isAdmin,
   canTrackProgress = true,
@@ -46,7 +49,7 @@ export default function InfiniteQuestionList({
     if (loading || !hasMore) return;
     setLoading(true);
     try {
-      const result = await loadMoreGroups(topicSlug, filters, groups.length);
+      const result = await loadMoreGroups(topicSlug, filters, groups.length, subjectSlug);
       setGroups((prev) => {
         const next = [...prev, ...result.groups];
         // Move sentinel to 4 questions into the newly loaded batch
@@ -57,7 +60,7 @@ export default function InfiniteQuestionList({
     } finally {
       setLoading(false);
     }
-  }, [loading, hasMore, groups.length, topicSlug, filters]);
+  }, [loading, hasMore, groups.length, topicSlug, subjectSlug, filters]);
 
   // Intersection Observer on sentinel
   useEffect(() => {

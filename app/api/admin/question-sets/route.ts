@@ -63,8 +63,11 @@ export async function GET() {
   if (!isAdminRole(auth.dbUser.role)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const sets = await prisma.questionSet.findMany({
-    orderBy: { createdAt: "desc" },
+    // Order by subject name first so sets group together visually; then
+    // newest-first within each subject for parity with previous behaviour.
+    orderBy: [{ subject: { name: "asc" } }, { createdAt: "desc" }],
     include: {
+      subject: { select: { id: true, name: true, slug: true } },
       items: {
         orderBy: { order: "asc" },
         include: {

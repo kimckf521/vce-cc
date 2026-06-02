@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { FlaskConical, Loader2, Check, Star, ArrowLeft } from "lucide-react";
+import { FlaskConical, Loader2, Check, Star, ArrowLeft, Archive, ArchiveRestore } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type QuestionSetItemType =
@@ -24,6 +24,7 @@ interface QuestionSet {
   name: string;
   description: string | null;
   isDefault: boolean;
+  archived: boolean;
   createdAt: string;
   items: Item[];
 }
@@ -65,6 +66,25 @@ export default function AdminQuestionSetsPage() {
         body: JSON.stringify({ setId }),
       });
       if (res.ok) await refresh();
+    } finally {
+      setSaving(null);
+    }
+  }
+
+  async function toggleArchived(setId: string, archived: boolean) {
+    setSaving(setId);
+    try {
+      const res = await fetch("/api/admin/question-sets/archive", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ setId, archived }),
+      });
+      if (res.ok) {
+        await refresh();
+      } else {
+        const err = await res.json().catch(() => ({ error: "Unknown error" }));
+        alert(err.error || "Failed to update archive state");
+      }
     } finally {
       setSaving(null);
     }
@@ -112,18 +132,30 @@ export default function AdminQuestionSetsPage() {
               <div
                 key={s.id}
                 className={cn(
-                  "rounded-2xl bg-white dark:bg-gray-900 border-2 shadow-sm p-5 lg:p-6",
-                  s.isDefault
-                    ? "border-brand-400 dark:border-brand-600"
-                    : "border-gray-200 dark:border-gray-800"
+                  "rounded-2xl border-2 shadow-sm p-5 lg:p-6 transition-opacity",
+                  s.archived
+                    ? "bg-gray-100 dark:bg-gray-900/50 border-gray-300 dark:border-gray-700 opacity-60"
+                    : s.isDefault
+                      ? "bg-white dark:bg-gray-900 border-brand-400 dark:border-brand-600"
+                      : "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800"
                 )}
               >
                 <div className="flex items-start justify-between gap-4 flex-wrap">
                   <div className="flex items-start gap-3 min-w-0 flex-1">
-                    <FlaskConical className="h-6 w-6 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
+                    <FlaskConical className={cn(
+                      "h-6 w-6 flex-shrink-0 mt-0.5",
+                      s.archived
+                        ? "text-gray-400 dark:text-gray-600"
+                        : "text-purple-600 dark:text-purple-400"
+                    )} />
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h2 className="text-lg lg:text-xl font-bold text-gray-900 dark:text-gray-100">
+                        <h2 className={cn(
+                          "text-lg lg:text-xl font-bold",
+                          s.archived
+                            ? "text-gray-500 dark:text-gray-500 line-through"
+                            : "text-gray-900 dark:text-gray-100"
+                        )}>
                           {s.name}
                         </h2>
                         {s.isDefault && (
@@ -131,16 +163,26 @@ export default function AdminQuestionSetsPage() {
                             <Star className="h-3 w-3" /> Default
                           </span>
                         )}
+                        {s.archived && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-2.5 py-0.5 text-xs font-semibold">
+                            <Archive className="h-3 w-3" /> Archived
+                          </span>
+                        )}
                       </div>
                       {s.description && (
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        <p className={cn(
+                          "text-sm mt-1",
+                          s.archived
+                            ? "text-gray-400 dark:text-gray-600"
+                            : "text-gray-500 dark:text-gray-400"
+                        )}>
                           {s.description}
                         </p>
                       )}
                     </div>
                   </div>
 
-                  <div className="flex-shrink-0">
+                  <div className="flex-shrink-0 flex flex-wrap gap-2">
                     {s.isDefault ? (
                       <button
                         disabled
@@ -149,17 +191,40 @@ export default function AdminQuestionSetsPage() {
                         <Check className="h-4 w-4" /> Current default
                       </button>
                     ) : (
+                      !s.archived && (
+                        <button
+                          onClick={() => makeDefault(s.id)}
+                          disabled={isSaving}
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700 transition-colors disabled:opacity-60"
+                        >
+                          {isSaving ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <Star className="h-4 w-4" />
+                          )}
+                          Make default
+                        </button>
+                      )
+                    )}
+                    {!s.isDefault && (
                       <button
-                        onClick={() => makeDefault(s.id)}
+                        onClick={() => toggleArchived(s.id, !s.archived)}
                         disabled={isSaving}
-                        className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700 transition-colors disabled:opacity-60"
+                        className={cn(
+                          "inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:opacity-60",
+                          s.archived
+                            ? "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
+                            : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
+                        )}
                       >
                         {isSaving ? (
                           <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : s.archived ? (
+                          <ArchiveRestore className="h-4 w-4" />
                         ) : (
-                          <Star className="h-4 w-4" />
+                          <Archive className="h-4 w-4" />
                         )}
-                        Make default
+                        {s.archived ? "Unarchive" : "Archive"}
                       </button>
                     )}
                   </div>
@@ -203,9 +268,17 @@ export default function AdminQuestionSetsPage() {
           No code deploy or server restart is required.
         </p>
         <p className="text-xs mt-2">
-          The <span className="font-medium">Topic page</span> always reads from{" "}
-          <code className="bg-blue-100 dark:bg-blue-900 px-1 rounded">1st Generated Question Set</code> by
-          name — it is not affected by this toggle.
+          The <span className="font-medium">Topic page</span> always reads from the set named by
+          the{" "}
+          <code className="bg-blue-100 dark:bg-blue-900 px-1 rounded">GENERATED_QUESTION_SET_NAME</code>{" "}
+          constant in <code className="bg-blue-100 dark:bg-blue-900 px-1 rounded">lib/question-set-groups.ts</code>{" "}
+          (currently <code className="bg-blue-100 dark:bg-blue-900 px-1 rounded">1st Generated Question Set</code>, scoped per subject)
+          — it is not affected by this toggle. Update the constant to switch source.
+        </p>
+        <p className="text-xs mt-2">
+          <span className="font-medium">Archived</span> sets are dimmed and cannot be promoted to default;
+          they remain in the DB as historical record / rollback insurance. Use the Archive button on any
+          non-default set to mark it as historical.
         </p>
         <p className="text-xs mt-2">
           Only items with <code className="bg-blue-100 dark:bg-blue-900 px-1 rounded">status = APPROVED</code>{" "}

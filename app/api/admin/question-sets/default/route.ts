@@ -5,10 +5,15 @@ import { isAdminRole } from "@/lib/utils";
 
 /**
  * Transactionally flip which QuestionSet is the default for the Practice
- * page. Exactly one row must have isDefault=true at any time.
+ * page within a single subject. `isDefault` is now scoped per subject —
+ * at most one row per subject has `isDefault=true`, so each subject's
+ * Practice page resolves to its own pool.
  *
  * POST /api/admin/question-sets/default
  *   body: { setId: string }
+ *
+ * The target set's `subjectId` determines the scope. Sets without a
+ * `subjectId` fall back to global toggling (legacy behaviour).
  */
 export async function POST(req: NextRequest) {
   const auth = await requireAuthenticatedUser();
@@ -25,16 +30,22 @@ export async function POST(req: NextRequest) {
 
   const target = await prisma.questionSet.findUnique({
     where: { id: setId },
-    select: { id: true, name: true },
+    select: { id: true, name: true, subjectId: true },
   });
   if (!target) {
     return NextResponse.json({ error: "Set not found" }, { status: 404 });
   }
 
-  // Single transaction: unset all, set one.
+  // Unset other defaults SCOPED TO THE TARGET'S SUBJECT, then set the
+  // target. Legacy rows with null subjectId still toggle globally so we
+  // don't strand any historical setup.
+  const unsetWhere = target.subjectId
+    ? { isDefault: true, subjectId: target.subjectId }
+    : { isDefault: true, subjectId: null };
+
   await prisma.$transaction([
     prisma.questionSet.updateMany({
-      where: { isDefault: true },
+      where: unsetWhere,
       data: { isDefault: false },
     }),
     prisma.questionSet.update({

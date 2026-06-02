@@ -138,15 +138,15 @@ export default function robots(): MetadataRoute.Robots {
           "/admin/",
           "/history",
           "/search",
-          "/questions",
           "/referrals",
 
-          // Currently behind auth — remove these once topic/exam pages are
-          // made publicly indexable in Phase 2.
+          // Still behind auth. NOTE: past papers (/exams) and individual
+          // question pages (/questions/:id) are now PUBLIC via the (content)
+          // route group, so they are intentionally NOT disallowed here. The
+          // drill-bank set pages (/questions/set/:id) stay private via their
+          // own redirect + page-level noindex.
           "/topics",
           "/topics/",
-          "/exams",
-          "/exams/",
           "/practice",
           "/practice/",
         ],

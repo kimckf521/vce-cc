@@ -10,14 +10,23 @@ datasource db {
 
 model Topic {
   id          String     @id @default(cuid())
-  name        String     @unique
+  name        String
   createdAt   DateTime   @default(now())
   description String?
   order       Int        @default(0)
-  slug        String     @unique
+  slug        String
+  // Nullable during Phase 1 migration; backfilled to mathematical-methods via
+  // scripts/seed-and-backfill-multi-subject.ts, then optionally made required
+  // in Stage 2 (another db:push).
+  subjectId   String?
+  subject     Subject?   @relation(fields: [subjectId], references: [id])
   questions   Question[]
   subtopics   Subtopic[]
   questionSetItems QuestionSetItem[]
+
+  @@unique([subjectId, slug])
+  @@unique([subjectId, name])
+  @@index([subjectId])
 }
 
 model Subtopic {
@@ -40,10 +49,14 @@ model Exam {
   createdAt   DateTime         @default(now())
   answerUrl   String?
   pdfUrl      String?
+  // Nullable during Phase 1 migration; backfilled to mathematical-methods.
+  subjectId   String?
+  subject     Subject?         @relation(fields: [subjectId], references: [id])
   questions   Question[]
   completions ExamCompletion[]
 
-  @@unique([year, examType])
+  @@unique([subjectId, year, examType])
+  @@index([subjectId])
 }
 
 model Question {
@@ -57,16 +70,22 @@ model Question {
   part           String?
   questionNumber Int
   topicId        String
+  // Denormalized for cheap subject-scoped queries (search, dashboards).
+  // Authoritatively derived from topicId/examId but stored for indexing.
+  // Nullable during Phase 1 migration.
+  subjectId      String?
   updatedAt      DateTime   @updatedAt
   attempts       Attempt[]
   exam           Exam       @relation(fields: [examId], references: [id], onDelete: Cascade)
   topic          Topic      @relation(fields: [topicId], references: [id])
+  subject        Subject?   @relation(fields: [subjectId], references: [id])
   solution       Solution?
   subtopics      Subtopic[] @relation("QuestionToSubtopic")
 
   @@index([topicId, difficulty])
   @@index([examId, questionNumber])
   @@index([topicId, examId])
+  @@index([subjectId])
 }
 
 model Solution {
@@ -89,6 +108,12 @@ model User {
   stripeCustomerId     String?              @unique
   referredByCode       String?              // Referral code used at signup (immutable record)
   activeSessionId      String?              // Single-active-session enforcement — new logins rotate this, stale sessions get kicked
+  // Maths subjects the student has registered as "studying", as URL slugs
+  // (e.g. ["methods","specialist"]). A display preference only — NOT access
+  // or billing (that lives on SubjectEnrolment). Empty = treat as "all
+  // subjects" so legacy/un-onboarded users see the full switcher. Filters the
+  // personal subject switcher (SubjectSidebar / MobileDrawer).
+  studyingSubjects     String[]             @default([])
   attempts             Attempt[]
   questionSetAttempts  QuestionSetAttempt[]
   examSessions         ExamSession[]
@@ -97,6 +122,9 @@ model User {
   enrolments           SubjectEnrolment[]
   affiliate            Affiliate?
   referral             Referral?            @relation("ReferredUser")
+  /// Inverse side of AdminActionLog.actor. Lets us list a user's admin
+  /// actions for accountability; SetNull on user delete preserves history.
+  adminActions         AdminActionLog[]     @relation("AdminAuditActor")
 
   @@index([referredByCode])
 }
@@ -114,12 +142,42 @@ model ExamCompletion {
 }
 
 model Subject {
-  id         String             @id @default(cuid())
-  name       String             @unique
-  slug       String             @unique
-  order      Int                @default(0)
-  createdAt  DateTime           @default(now())
-  enrolments SubjectEnrolment[]
+  id           String             @id @default(cuid())
+  // `name` and `slug` keep field-level @unique for backward compat with
+  // existing findUnique({where:{slug}}) callsites. The composite uniques
+  // below scope uniqueness per curriculum — when HSC/QCE/WACE content
+  // lands and we need same-named subjects across curricula, drop the
+  // field-level @unique on the two and migrate callers to the composite key.
+  name         String             @unique
+  slug         String             @unique
+  order        Int                @default(0)
+  createdAt    DateTime           @default(now())
+  // Nullable during Phase 1 migration; backfilled to VCE.
+  // Future curricula (HSC, QCE, WACE, ...) are just additional Curriculum rows.
+  curriculumId String?
+  curriculum   Curriculum?        @relation(fields: [curriculumId], references: [id])
+  enrolments   SubjectEnrolment[]
+  topics       Topic[]
+  exams        Exam[]
+  questions    Question[]
+  questionSets QuestionSet[]
+
+  @@unique([curriculumId, name])
+  @@unique([curriculumId, slug])
+  @@index([curriculumId])
+}
+
+/// A national/state curriculum framework. VCE for now; HSC, QCE, WACE, SACE,
+/// TCE, NTCET, ACT, and AC (national) when their content lands. Adding a new
+/// curriculum is `INSERT INTO curriculum` + seeding subjects — no schema work.
+model Curriculum {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  slug      String    @unique
+  shortName String?
+  order     Int       @default(0)
+  createdAt DateTime  @default(now())
+  subjects  Subject[]
 }
 
 model SubjectEnrolment {
@@ -129,7 +187,7 @@ model SubjectEnrolment {
   tier                  EnrolmentTier       @default(FREE)
   createdAt             DateTime            @default(now())
   updatedAt             DateTime            @default(now()) @updatedAt
-  stripeSubscriptionId  String?             @unique
+  stripeSubscriptionId  String?
   stripePriceId         String?
   subscriptionStatus    SubscriptionStatus?
   currentPeriodEnd      DateTime?
@@ -140,6 +198,7 @@ model SubjectEnrolment {
   @@unique([userId, subjectId])
   @@index([userId])
   @@index([subjectId])
+  @@index([stripeSubscriptionId])
 }
 
 model ExtractionSession {
@@ -280,11 +339,21 @@ model QuestionSet {
   name        String
   description String?
   isDefault   Boolean           @default(false) // Exactly one row should be true at any time
+  /// Archived sets are visually greyed out in the admin UI and treated as
+  /// historical record only. They still exist in the DB (rollback safety) but
+  /// should not be promoted to default or read from by any page.
+  archived    Boolean           @default(false)
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
+  // Nullable during Phase 1 migration; backfilled to mathematical-methods.
+  // Future: one default QuestionSet per subject (`isDefault` within subject scope).
+  subjectId   String?
+  subject     Subject?          @relation(fields: [subjectId], references: [id])
   items       QuestionSetItem[]
 
   @@index([isDefault])
+  @@index([subjectId])
+  @@index([archived])
 }
 
 model QuestionSetItem {
@@ -310,6 +379,7 @@ model QuestionSetItem {
   // Solution
   solutionContent String?
   difficulty    Difficulty          @default(MEDIUM)
+  tech          Tech?               // Null until classified; the practice assembler filters Exam 1 to TECH_FREE
   createdAt     DateTime            @default(now())
   updatedAt     DateTime            @updatedAt
   questionSet   QuestionSet         @relation(fields: [questionSetId], references: [id], onDelete: Cascade)
@@ -321,6 +391,7 @@ model QuestionSetItem {
   @@index([questionSetId])
   @@index([topicId])
   @@index([status])
+  @@index([tech])
 }
 
 model QuestionSetAttempt {
@@ -349,6 +420,12 @@ enum QuestionSetItemStatus {
   PENDING   // Just generated, awaiting review
   APPROVED  // Reviewer has OK'd it — visible to the picker
   REJECTED  // Reviewer said no — kept for training data, not shown
+}
+
+enum Tech {
+  TECH_FREE     // Solvable without calculator — exact form, simple arithmetic only
+  CAS_ALLOWED   // Could be done by hand but CAS speeds it up — either paper OK
+  CAS_REQUIRED  // Needs CAS — decimals, numerical solutions, graphing, statistics
 }
 
 enum SubscriptionStatus {
@@ -454,6 +531,80 @@ model Payout {
 enum PayoutType {
   COMMISSION   // Per-referral commission
   CONTENT_FEE  // Influencer upfront content payment
+}
+
+// =====================================================
+// Operational logs (webhook + audit trail)
+// =====================================================
+
+enum WebhookSource {
+  STRIPE
+}
+
+enum WebhookEventStatus {
+  RECEIVED
+  SUCCESS
+  FAILED
+}
+
+/// Log of inbound webhook deliveries. Captured by /api/webhooks/* handlers
+/// so admins can see what fired, when, and what went wrong without SSH-ing
+/// into the host. Truncated payload snippets help diagnose handler bugs.
+model WebhookEvent {
+  id          String              @id @default(cuid())
+  source      WebhookSource       @default(STRIPE)
+  /// Provider's event ID (evt_* for Stripe). Unique so retries are idempotent.
+  externalId  String              @unique
+  type        String
+  status      WebhookEventStatus  @default(RECEIVED)
+  error       String?             // Truncated error message when FAILED
+  notes       String?             // Optional handler-provided summary
+  payload     Json?               // Trimmed payload snippet for debugging
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  @@index([createdAt])
+  @@index([source, status, createdAt])
+}
+
+enum AdminActionType {
+  USER_ROLE_CHANGE
+  USER_DELETE
+  AFFILIATE_APPROVE
+  AFFILIATE_DEACTIVATE
+  AFFILIATE_CREDIT_ADJUST
+  PAYOUT_MARK_PAID
+  QUESTION_DELETE
+  QUESTION_UPDATE
+  EXAM_DELETE
+  EXAM_UPDATE
+  QUESTION_SET_DEFAULT_SET
+  OTHER
+}
+
+/// Audit trail for admin mutations. Captured via lib/admin-audit#logAdminAction
+/// — every admin-only POST/PATCH/DELETE handler should call it after a
+/// successful state change. The actor link survives admin deletion via SetNull.
+model AdminActionLog {
+  id          String          @id @default(cuid())
+  actorId     String?
+  actor       User?           @relation("AdminAuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+  action      AdminActionType
+  /// Entity affected — e.g. "User", "Affiliate", "Question". Free-form so new
+  /// targets don't require a schema change.
+  targetType  String
+  /// Stable ID for the affected entity. Null for actions that operate on a
+  /// collection rather than a single row.
+  targetId    String?
+  /// Short human-readable summary ("Promoted alice@example.com to ADMIN").
+  summary     String
+  /// Structured payload for diffs — before/after values, options, etc.
+  metadata    Json?
+  createdAt   DateTime        @default(now())
+
+  @@index([createdAt])
+  @@index([actorId, createdAt])
+  @@index([targetType, targetId])
 }
 
 model InfluencerContract {

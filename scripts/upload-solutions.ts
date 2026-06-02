@@ -81,9 +81,12 @@ async function uploadSolution(filename: string): Promise<void> {
 
   console.log(`   ✅ Uploaded to: ${publicUrl}`);
 
-  // Update Exam.answerUrl in database
-  const exam = await prisma.exam.findUnique({
-    where: { year_examType: { year, examType } },
+  // Update Exam.answerUrl in database. Phase 1 made the unique key
+  // (subjectId, year, examType); this upload script is Methods-only for now,
+  // so we scope via the subject relation. When Specialist solutions land
+  // alongside Methods, add a --subject flag.
+  const exam = await prisma.exam.findFirst({
+    where: { year, examType, subject: { slug: "mathematical-methods" } },
   });
 
   if (!exam) {

@@ -2,7 +2,11 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { roleLabel } from "@/lib/utils";
 import ProfileTabs from "@/components/ProfileTabs";
-import { STANDARD_SUBJECT_SLUG } from "@/lib/stripe";
+
+// TODO B2: derive the relevant subject from URL/profile context instead of
+// hardcoding Methods. Today all enrolment rows for a VCE Maths sub share
+// the same Stripe subscription state, so reading any one of them is correct.
+const LEGACY_PROFILE_SUBJECT_SLUG = "mathematical-methods";
 
 // ── page ──────────────────────────────────────────────────────────────────────
 
@@ -18,7 +22,7 @@ export default async function ProfilePage() {
     user ? prisma.user.findUnique({ where: { id: userId } }) : null,
     user
       ? prisma.subjectEnrolment.findFirst({
-          where: { userId, subject: { slug: STANDARD_SUBJECT_SLUG } },
+          where: { userId, subject: { slug: LEGACY_PROFILE_SUBJECT_SLUG } },
           include: { subject: { select: { name: true } } },
         })
       : null,
@@ -77,12 +81,15 @@ export default async function ProfilePage() {
         email={email}
         role={role}
         memberSince={memberSince}
+        studyingSubjects={dbUser?.studyingSubjects ?? []}
         billing={{
           hasSubscription:
             enrolment?.tier === "PAID" &&
             (enrolment?.subscriptionStatus === "active" ||
               enrolment?.subscriptionStatus === "trialing"),
-          planName: enrolment?.subject?.name ?? null,
+          // One $9.99 plan covers all 4 maths subjects — surface the plan
+          // brand ("VCE Maths") rather than the individual Subject row name.
+          planName: enrolment?.tier === "PAID" ? "VCE Maths" : null,
           status: enrolment?.subscriptionStatus ?? null,
           currentPeriodEnd: enrolment?.currentPeriodEnd ? enrolment.currentPeriodEnd.toISOString() : null,
           cancelAtPeriodEnd: enrolment?.cancelAtPeriodEnd ?? false,

@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "pageImage and pageNumber are required" }, { status: 400 });
   }
 
-  const prompt = `You are analyzing page ${pageNumber} of a VCE Mathematical Methods exam PDF ("${pdfName || "unknown"}").
+  const prompt = `You are analyzing page ${pageNumber} of a VCE maths exam PDF ("${pdfName || "unknown"}") — this may be Mathematical Methods, Specialist Mathematics, General Mathematics or Foundation Mathematics.
 
 TASK: Identify every graph, diagram, chart, or visual figure on this page. Return precise bounding boxes.
 

@@ -1,10 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { HelpCircle, Plus, CheckCircle, Pencil, Trash2, X, Check, Loader2, Eye, Code2, FlaskConical, ChevronDown, ChevronRight, BookOpen, ArrowLeft } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { HelpCircle, Plus, CheckCircle, Pencil, Trash2, X, Check, Loader2, Eye, Code2, FlaskConical, ChevronDown, ChevronRight, BookOpen, ArrowLeft, AlertTriangle } from "lucide-react";
 import { cn, stripLatex } from "@/lib/utils";
 import MathContent from "@/components/MathContent";
+import SubjectFilterPills from "@/components/admin/SubjectFilterPills";
+import { getDbSubjectSlug, isKnownSubject } from "@/lib/subject-context";
 
 interface Question {
   id: string;
@@ -60,7 +63,13 @@ interface QuestionSet {
   name: string;
   description: string | null;
   isDefault?: boolean;
+  /** Archived sets render greyed out and shouldn't be promoted to default. */
+  archived?: boolean;
   createdAt: string;
+  // Which subject this set belongs to (null if not yet linked). Used to render
+  // the subject pill on the set card so admins can see at a glance whether a
+  // set is scoped to Methods, Specialist, General, etc.
+  subject: { id: string; name: string; slug: string } | null;
   items: QuestionSetItem[];
 }
 
@@ -262,6 +271,10 @@ function EditQuestionRow({
 }
 
 export default function AdminQuestionsPage() {
+  const searchParams = useSearchParams();
+  const subjectParam = searchParams.get("subject");
+  const subjectDbSlug =
+    subjectParam && isKnownSubject(subjectParam) ? getDbSubjectSlug(subjectParam) : null;
   const [questions, setQuestions] = useState<Question[]>([]);
   const [totalSolutions, setTotalSolutions] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -295,6 +308,16 @@ export default function AdminQuestionsPage() {
     D: string;
     correct: "A" | "B" | "C" | "D";
   } | null>(null);
+
+  // Filter sets by active subject pill — each set carries its subject.slug; we
+  // match against the translated DB slug. "All" (no subject) returns every set.
+  const visibleQuestionSets = useMemo(
+    () =>
+      subjectDbSlug
+        ? questionSets.filter((set) => set.subject?.slug === subjectDbSlug)
+        : questionSets,
+    [questionSets, subjectDbSlug]
+  );
 
   useEffect(() => {
     fetch("/api/admin/question-sets")
@@ -831,14 +854,15 @@ export default function AdminQuestionsPage() {
       </Link>
 
       {/* Header */}
-      <div className="flex items-center justify-between mb-8 lg:mb-10">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-3 mb-1">
             <HelpCircle className="h-6 w-6 lg:h-7 lg:w-7 text-brand-600 dark:text-brand-400" />
             <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">Questions</h1>
           </div>
           <p className="text-gray-500 dark:text-gray-400 lg:text-base ml-9">
-            {questionSets.reduce((s, set) => s + set.items.length, 0)} questions in {questionSets.length} set{questionSets.length !== 1 ? "s" : ""}
+            {visibleQuestionSets.reduce((s, set) => s + set.items.length, 0)} questions in {visibleQuestionSets.length} set{visibleQuestionSets.length !== 1 ? "s" : ""}
+            {subjectDbSlug ? " (filtered)" : ""}
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -864,10 +888,31 @@ export default function AdminQuestionsPage() {
         </div>
       </div>
 
+      <SubjectFilterPills />
+
+      {/* Untagged-subtopics callout — links to the orphan-question retag flow */}
+      <Link
+        href={`/admin/questions/untagged${subjectParam ? `?subject=${subjectParam}` : ""}`}
+        className="mb-6 flex items-center justify-between gap-3 rounded-2xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950 px-5 py-4 hover:bg-amber-100/60 dark:hover:bg-amber-900/40 transition-colors"
+      >
+        <div className="flex items-center gap-3">
+          <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+          <div>
+            <p className="text-sm font-semibold text-amber-800 dark:text-amber-300">
+              Untagged subtopics
+            </p>
+            <p className="text-xs text-amber-700 dark:text-amber-400">
+              Review exam questions with no subtopic assigned and retag them.
+            </p>
+          </div>
+        </div>
+        <ChevronRight className="h-4 w-4 text-amber-700 dark:text-amber-400" />
+      </Link>
+
       {/* Question Sets (AI-generated test sessions) */}
-      {questionSets.length > 0 && (
+      {visibleQuestionSets.length > 0 && (
         <div className="mb-10 space-y-6">
-          {questionSets.map((set) => {
+          {visibleQuestionSets.map((set) => {
             const isOpen = openSetIds.has(set.id);
             const mcqs = set.items.filter((i) => i.type === "MCQ");
             const shortAns = set.items.filter((i) => i.type === "SHORT_ANSWER");
@@ -912,21 +957,68 @@ export default function AdminQuestionsPage() {
             });
 
             return (
-              <div key={set.id} className="rounded-2xl bg-white dark:bg-gray-900 border-2 border-purple-200 dark:border-purple-800 shadow-sm overflow-hidden">
+              <div key={set.id} className={cn(
+                "rounded-2xl shadow-sm overflow-hidden border-2 transition-opacity",
+                set.archived
+                  ? "bg-gray-100 dark:bg-gray-900/50 border-gray-300 dark:border-gray-700 opacity-60"
+                  : "bg-white dark:bg-gray-900 border-purple-200 dark:border-purple-800"
+              )}>
                 <div
                   onClick={() => {
                     const next = new Set(openSetIds);
                     next.has(set.id) ? next.delete(set.id) : next.add(set.id);
                     setOpenSetIds(next);
                   }}
-                  className="w-full px-5 lg:px-6 py-4 grid grid-cols-3 items-center gap-3 bg-purple-50/60 dark:bg-purple-950/30 hover:bg-purple-100/60 dark:hover:bg-purple-950/50 transition-colors cursor-pointer"
+                  className={cn(
+                    "w-full px-5 lg:px-6 py-4 grid grid-cols-3 items-center gap-3 transition-colors cursor-pointer",
+                    set.archived
+                      ? "bg-gray-200/60 dark:bg-gray-800/40 hover:bg-gray-200 dark:hover:bg-gray-800/60"
+                      : "bg-purple-50/60 dark:bg-purple-950/30 hover:bg-purple-100/60 dark:hover:bg-purple-950/50"
+                  )}
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <FlaskConical className="h-5 w-5 lg:h-6 lg:w-6 text-purple-600 dark:text-purple-400 flex-shrink-0" />
+                    <FlaskConical className={cn(
+                      "h-5 w-5 lg:h-6 lg:w-6 flex-shrink-0",
+                      set.archived
+                        ? "text-gray-400 dark:text-gray-600"
+                        : "text-purple-600 dark:text-purple-400"
+                    )} />
                     <div className="text-left min-w-0">
-                      <h2 className="text-lg lg:text-xl font-bold text-gray-900 dark:text-gray-100 truncate">{set.name}</h2>
+                      <div className="flex items-center gap-2 min-w-0">
+                        <h2 className={cn(
+                          "text-lg lg:text-xl font-bold truncate",
+                          set.archived
+                            ? "text-gray-500 dark:text-gray-500 line-through"
+                            : "text-gray-900 dark:text-gray-100"
+                        )}>{set.name}</h2>
+                        {/* Subject pill — makes it obvious which subject this set belongs to. */}
+                        {set.subject ? (
+                          <span className={cn(
+                            "hidden sm:inline-flex flex-shrink-0 items-center rounded-full px-2 py-0.5 text-[10px] lg:text-xs font-semibold uppercase tracking-wide",
+                            set.archived
+                              ? "bg-gray-200 dark:bg-gray-800 text-gray-500 dark:text-gray-500"
+                              : "bg-sky-100 dark:bg-sky-950 text-sky-700 dark:text-sky-400"
+                          )}>
+                            {set.subject.name}
+                          </span>
+                        ) : (
+                          <span className="hidden sm:inline-flex flex-shrink-0 items-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 px-2 py-0.5 text-[10px] lg:text-xs font-semibold uppercase tracking-wide">
+                            Unscoped
+                          </span>
+                        )}
+                        {set.archived && (
+                          <span className="hidden sm:inline-flex flex-shrink-0 items-center gap-1 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-2 py-0.5 text-[10px] lg:text-xs font-semibold uppercase tracking-wide">
+                            Archived
+                          </span>
+                        )}
+                      </div>
                       {set.description && (
-                        <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 truncate">{set.description}</p>
+                        <p className={cn(
+                          "text-xs lg:text-sm truncate",
+                          set.archived
+                            ? "text-gray-400 dark:text-gray-600"
+                            : "text-gray-500 dark:text-gray-400"
+                        )}>{set.description}</p>
                       )}
                     </div>
                   </div>

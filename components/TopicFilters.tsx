@@ -3,6 +3,7 @@
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { getExamFilterOptions } from "@/lib/exam-filter-config";
 
 export interface SubtopicFilterInfo {
   id: string;
@@ -13,14 +14,10 @@ export interface SubtopicFilterInfo {
 
 interface Props {
   slug: string;
+  /** DB subject slug (e.g. "vce-general") — drives which exam/section pills appear. */
+  subjectSlug?: string;
   subtopics: SubtopicFilterInfo[];
 }
-
-const EXAM_OPTIONS = [
-  { value: "EXAM_1", label: "Exam 1" },
-  { value: "EXAM_2_MC", label: "Exam 2A" },
-  { value: "EXAM_2_B", label: "Exam 2B" },
-] as const;
 
 const DIFFICULTY_OPTIONS = [
   { value: "EASY", label: "Easy", active: "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800" },
@@ -28,10 +25,15 @@ const DIFFICULTY_OPTIONS = [
   { value: "HARD", label: "Hard", active: "bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800" },
 ] as const;
 
-export default function TopicFilters({ slug, subtopics }: Props) {
+export default function TopicFilters({ slug, subjectSlug, subtopics }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  // Per-subject pill set — General → Exam 1 / Exam 2; Methods/Specialist →
+  // Exam 1 / Exam 2A / Exam 2B; Foundation → Section A / Section B.
+  const examOptions = getExamFilterOptions(subjectSlug);
+  const examGroupLabel = subjectSlug === "vce-foundation" ? "Section" : "Exam";
 
   const currentSubtopic = searchParams.get("subtopic") ?? "";
   const currentExams = (searchParams.get("exam") ?? "").split(",").filter(Boolean);
@@ -86,8 +88,8 @@ export default function TopicFilters({ slug, subtopics }: Props) {
 
         {/* Exam + Difficulty pills row */}
         <div className="px-4 pb-3 pt-1 flex flex-wrap items-center gap-x-3 gap-y-2">
-          <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">Exam</span>
-          {EXAM_OPTIONS.map(({ value, label }) => {
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">{examGroupLabel}</span>
+          {examOptions.map(({ value, label }) => {
             const active = currentExams.includes(value);
             return (
               <button
@@ -168,9 +170,9 @@ export default function TopicFilters({ slug, subtopics }: Props) {
 
         <div className="flex items-center gap-1.5">
           <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 whitespace-nowrap">
-            Exam
+            {examGroupLabel}
           </span>
-          {EXAM_OPTIONS.map(({ value, label }) => {
+          {examOptions.map(({ value, label }) => {
             const active = currentExams.includes(value);
             return (
               <button

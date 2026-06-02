@@ -3,6 +3,9 @@ import Stripe from "stripe";
 // Singleton Stripe client. The secret key is read lazily so that importing this
 // module never crashes at build time if env vars are missing — it only throws
 // when you actually try to use the client.
+//
+// Pricing config (plan keys, price IDs, subject mappings) lives in
+// lib/pricing-catalog.ts. This module only owns the Stripe SDK init.
 
 let _stripe: Stripe | null = null;
 
@@ -27,20 +30,3 @@ export function getStripe(): Stripe {
 
   return _stripe;
 }
-
-// The Mathematical Methods Standard plan price ID. Read from env so you can
-// swap between test and live prices without code changes.
-export function getStandardPriceId(): string {
-  const priceId = process.env.STRIPE_STANDARD_PRICE_ID;
-  if (!priceId) {
-    throw new Error(
-      "STRIPE_STANDARD_PRICE_ID is not set. Add it to .env.local."
-    );
-  }
-  return priceId;
-}
-
-// Slug for the Mathematical Methods subject — the enrolment row that gets
-// created/updated when a user subscribes to the Standard plan.
-export const STANDARD_SUBJECT_SLUG = "mathematical-methods";
-export const STANDARD_SUBJECT_NAME = "Mathematical Methods";

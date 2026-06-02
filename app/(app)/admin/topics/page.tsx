@@ -3,9 +3,17 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/utils";
 import Link from "next/link";
-import { BookOpen, ChevronRight } from "lucide-react";
+import { BookOpen } from "lucide-react";
+import SubjectFilterPills from "@/components/admin/SubjectFilterPills";
+import { getDbSubjectSlug, isKnownSubject, SUBJECTS } from "@/lib/subject-context";
 
-export default async function AdminTopicsPage() {
+export const dynamic = "force-dynamic";
+
+export default async function AdminTopicsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ subject?: string }>;
+}) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
@@ -13,18 +21,28 @@ export default async function AdminTopicsPage() {
   const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
   if (!isAdminRole(dbUser?.role)) redirect("/dashboard");
 
+  const { subject: subjectUrlSlug } = await searchParams;
+  const subjectFilter =
+    subjectUrlSlug && isKnownSubject(subjectUrlSlug) ? getDbSubjectSlug(subjectUrlSlug) : null;
+
   const topics = await prisma.topic.findMany({
-    orderBy: { order: "asc" },
+    where: subjectFilter ? { subject: { slug: subjectFilter } } : undefined,
+    orderBy: [{ subject: { slug: "asc" } }, { order: "asc" }],
     include: {
       subtopics: { orderBy: { order: "asc" } },
+      subject: { select: { slug: true, name: true } },
       _count: { select: { questions: true } },
     },
   });
 
+  const activeSubject = subjectFilter
+    ? SUBJECTS.find((s) => getDbSubjectSlug(s.urlSlug) === subjectFilter)
+    : null;
+
   return (
     <div>
       {/* Header */}
-      <div className="flex items-center justify-between mb-8 lg:mb-10">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-3 mb-1">
             <BookOpen className="h-6 w-6 lg:h-7 lg:w-7 text-brand-600 dark:text-brand-400" />
@@ -33,24 +51,17 @@ export default async function AdminTopicsPage() {
           <p className="text-gray-500 dark:text-gray-400 lg:text-base ml-9">
             {topics.length} {topics.length === 1 ? "topic" : "topics"} with{" "}
             {topics.reduce((s, t) => s + t.subtopics.length, 0)} subtopics
+            {activeSubject ? ` in ${activeSubject.shortName}` : ""}
           </p>
         </div>
-        <Link
-          href="/admin/seed"
-          className="inline-flex items-center gap-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2.5 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-        >
-          Seed topics
-        </Link>
       </div>
+
+      <SubjectFilterPills />
 
       {/* Topics */}
       {topics.length === 0 ? (
         <div className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm p-10 text-center text-gray-400 dark:text-gray-500">
-          No topics yet.{" "}
-          <Link href="/admin/seed" className="text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 font-medium">
-            Seed the database
-          </Link>{" "}
-          to get started.
+          No topics{activeSubject ? ` for ${activeSubject.shortName}` : ""}. Run the canonical seed scripts in <code className="rounded bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 text-xs">scripts/seed-*-mathematics.ts</code> to get started.
         </div>
       ) : (
         <div className="space-y-4">
@@ -59,9 +70,16 @@ export default async function AdminTopicsPage() {
               key={topic.id}
               className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm p-5 lg:p-6"
             >
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between mb-3 gap-3 flex-wrap">
                 <div>
-                  <h2 className="font-semibold text-gray-900 dark:text-gray-100 lg:text-lg">{topic.name}</h2>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h2 className="font-semibold text-gray-900 dark:text-gray-100 lg:text-lg">{topic.name}</h2>
+                    {topic.subject && !activeSubject && (
+                      <span className="inline-flex items-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide">
+                        {topic.subject.name}
+                      </span>
+                    )}
+                  </div>
                   {topic.description && (
                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{topic.description}</p>
                   )}

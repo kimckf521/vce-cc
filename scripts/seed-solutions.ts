@@ -1,18 +1,21 @@
 /**
- * VCE Mathematical Methods — Solution Seeder
+ * Solution seeder — reads extracted solution JSON files into the database.
  *
- * Reads extracted solution JSON files and seeds them into the database,
- * matching each solution to its question by year + examType + questionNumber + part.
+ * Matches each solution to its question via (subjectId, year, examType,
+ * questionNumber, part). Picks the subject from the JSON's `subjectSlug`
+ * (defaults to "vce-methods" for legacy files pre-Phase 2).
  *
  * Usage:
- *   npm run seed-solutions                                  ← all solution JSON files
- *   npm run seed-solutions -- --file 2016-EXAM_1-solutions ← single file
- *   npm run seed-solutions -- --dry-run                    ← preview only
+ *   npm run seed-solutions                                       ← every solution JSON
+ *   npm run seed-solutions -- --file 2024-EXAM_1-solutions       ← single Methods file
+ *   npm run seed-solutions -- --file 2024-EXAM_1-solutions-vce-specialist
+ *   npm run seed-solutions -- --dry-run                          ← preview only
  */
 
 import { PrismaClient } from "@prisma/client";
 import fs from "fs";
 import path from "path";
+import { getSubjectConfig } from "./subject-extraction-config";
 
 const prisma = new PrismaClient();
 
@@ -25,6 +28,7 @@ interface ExtractedSolution {
 interface ExtractedSolutions {
   year: number;
   examType: "EXAM_1" | "EXAM_2";
+  subjectSlug?: string; // optional for legacy JSON
   solutions: ExtractedSolution[];
 }
 
@@ -34,17 +38,42 @@ function normalizePart(part: string | null): string | null {
   return part.replace(/^([a-z])([ivx]+)$/i, "$1.$2").toLowerCase();
 }
 
+async function resolveSubject(urlSlug: string): Promise<{ id: string; slug: string; name: string }> {
+  const cfg = getSubjectConfig(urlSlug);
+  const row = await prisma.subject.findUnique({
+    where: { slug: cfg.dbSlug },
+    select: { id: true, slug: true, name: true },
+  });
+  if (!row) {
+    throw new Error(
+      `Subject "${cfg.displayName}" (db slug "${cfg.dbSlug}") not found.`
+    );
+  }
+  return row;
+}
+
 async function seedSolutions(data: ExtractedSolutions, dryRun: boolean) {
-  console.log(`\n📚 Seeding solutions: ${data.year} ${data.examType} (${data.solutions.length} solutions)`);
+  const urlSlug = data.subjectSlug ?? "vce-methods";
+  const subject = await resolveSubject(urlSlug);
+
+  console.log(`\n📚 Seeding solutions: ${data.year} ${data.examType} → ${subject.name} (${data.solutions.length} solutions)`);
   if (dryRun) console.log("   [DRY RUN — nothing will be written]");
 
-  // Find the exam
+  // Find the exam scoped to this subject. Phase 1 changed the compound key
+  // from (year, examType) to (subjectId, year, examType) — old `year_examType`
+  // calls used to silently work because Methods was the only subject.
   const exam = await prisma.exam.findUnique({
-    where: { year_examType: { year: data.year, examType: data.examType as any } },
+    where: {
+      subjectId_year_examType: {
+        subjectId: subject.id,
+        year: data.year,
+        examType: data.examType as any,
+      },
+    },
   });
 
   if (!exam) {
-    console.error(`   ❌ No exam found for ${data.year} ${data.examType} — run seed first`);
+    console.error(`   ❌ No ${subject.name} exam found for ${data.year} ${data.examType} — run seed-questions first`);
     return;
   }
 
@@ -98,7 +127,7 @@ async function main() {
     await seedSolutions(JSON.parse(fs.readFileSync(filePath, "utf-8")), dryRun);
   } else {
     const files = fs.readdirSync(outputDir)
-      .filter((f) => f.endsWith("-solutions.json"))
+      .filter((f) => f.endsWith("-solutions.json") || /-solutions-[\w-]+\.json$/.test(f))
       .sort();
     if (files.length === 0) { console.error("❌ No solution JSON files found. Run extract-solutions first."); process.exit(1); }
     console.log(`\n📁 Found ${files.length} solution file(s)`);

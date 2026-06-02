@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/utils";
 import { createClient as createSupabaseAdmin } from "@supabase/supabase-js";
 import { z } from "zod";
+import { logAdminAction } from "@/lib/admin-audit";
 
 const enrolmentSchema = z.object({
   subjectId: z.string().min(1),
@@ -163,6 +164,15 @@ export async function PATCH(req: NextRequest) {
     const updated = await prisma.user.update({
       where: { id: userId },
       data: { role },
+    });
+
+    await logAdminAction({
+      actorId: auth.dbUser.id,
+      action: "USER_ROLE_CHANGE",
+      targetType: "User",
+      targetId: updated.id,
+      summary: `Changed role of ${updated.email} from ${targetUser.role} to ${role}`,
+      metadata: { previousRole: targetUser.role, newRole: role },
     });
 
     return NextResponse.json({

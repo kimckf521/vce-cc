@@ -1,19 +1,27 @@
 /**
- * VCE Mathematical Methods — Solution Extractor
+ * Solution Extractor — multi-subject pipeline.
  *
- * Reads solution PDFs from exams/vce/math/mathematical_methods/solutions/ and extracts per-question solutions
- * using Claude, outputting JSON files ready for seeding.
- *
- * File naming: {year}-mm{1|2}-sol.pdf  e.g. 2016-mm1-sol.pdf
+ * Reads solution PDFs and uses Claude to extract worked solutions with
+ * step-by-step mark allocations. Output JSON is consumed by seed-solutions.ts.
  *
  * Usage:
- *   npm run extract-solutions -- --file 2016-mm1-sol.pdf
- *   npm run extract-solutions -- --folder ./exams/vce/math/mathematical_methods/solutions
+ *   npm run extract-solutions -- --subject vce-methods    --file 2024-mm1-sol.pdf
+ *   npm run extract-solutions -- --subject vce-specialist --file 2024-sm1-sol.pdf
+ *   npm run extract-solutions -- --subject vce-specialist --folder ./exams/vce/math/specialist_mathematics/solutions
+ *   npm run extract-solutions -- --subject vce-specialist                                   # folder defaults to subject's solutions/
+ *
+ * Defaults to --subject vce-methods if omitted.
  */
 
 import Anthropic from "@anthropic-ai/sdk";
 import fs from "fs";
 import path from "path";
+import {
+  getSubjectConfig,
+  getSubjectFolder,
+  parseSolutionFilename,
+  type SubjectExtractionConfig,
+} from "./subject-extraction-config";
 
 interface ExtractedSolution {
   questionNumber: number;
@@ -24,11 +32,14 @@ interface ExtractedSolution {
 interface ExtractedSolutions {
   year: number;
   examType: "EXAM_1" | "EXAM_2";
+  /** URL slug — seed-solutions.ts reads this to scope the exam lookup. */
+  subjectSlug: string;
   solutions: ExtractedSolution[];
 }
 
-const SYSTEM_PROMPT = `You are an expert VCE (Victorian Certificate of Education) Mathematical Methods exam solution analyser.
-Your task is to extract the worked solution for EVERY question from a VCE Math Methods solution/answers PDF.
+function buildSystemPrompt(cfg: SubjectExtractionConfig): string {
+  return `You are an expert VCE (Victorian Certificate of Education) ${cfg.displayName} exam solution analyser.
+Your task is to extract the worked solution for EVERY question from a ${cfg.displayName} solution/answers PDF.
 
 Rules:
 1. Extract EVERY question and sub-part solution — do not skip any
@@ -64,11 +75,13 @@ Rules:
 10. Never put the step label and its content on the same line
 
 Return ONLY valid JSON — no markdown, no explanation, no code fences.`;
+}
 
 async function extractSolutionsFromPDF(
   pdfPath: string,
   year: number,
-  examType: "EXAM_1" | "EXAM_2"
+  examType: "EXAM_1" | "EXAM_2",
+  cfg: SubjectExtractionConfig
 ): Promise<ExtractedSolutions> {
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
@@ -80,7 +93,7 @@ async function extractSolutionsFromPDF(
   const response = await client.messages.create({
     model: "claude-opus-4-6",
     max_tokens: 16000,
-    system: SYSTEM_PROMPT,
+    system: buildSystemPrompt(cfg),
     messages: [
       {
         role: "user",
@@ -91,7 +104,7 @@ async function extractSolutionsFromPDF(
           },
           {
             type: "text",
-            text: `This is the worked solutions for VCE Mathematical Methods ${year} Exam ${examType === "EXAM_1" ? "1" : "2"}.
+            text: `This is the worked solutions for ${cfg.displayName} ${year} Exam ${examType === "EXAM_1" ? "1" : "2"}.
 
 Extract ALL solutions and return them as a JSON object with this exact structure:
 {
@@ -102,11 +115,6 @@ Extract ALL solutions and return them as a JSON object with this exact structure
       "questionNumber": 1,
       "part": "a",
       "content": "**Step 1** *(1 mark)*\\n\\nApply the quotient rule where $u = \\\\cos(x)$ and $v = x^2 + 2$.\\n\\n**Step 2** *(1 mark)*\\n\\n$$\\\\frac{dy}{dx} = \\\\frac{-\\\\sin(x)(x^2+2) - 2x\\\\cos(x)}{(x^2+2)^2}$$"
-    },
-    {
-      "questionNumber": 1,
-      "part": "b",
-      "content": "..."
     }
   ]
 }
@@ -126,23 +134,35 @@ Return ONLY the JSON object. No markdown, no code fences, no extra text.`,
     .replace(/\n?```$/, "")
     .trim();
 
-  let extracted: ExtractedSolutions;
+  let extracted: Omit<ExtractedSolutions, "subjectSlug">;
   try {
     extracted = JSON.parse(jsonText);
   } catch {
-    const debugPath = path.join(__dirname, "output", `debug-solutions-${year}-${examType}.txt`);
+    const debugPath = path.join(
+      __dirname,
+      "output",
+      `debug-solutions-${year}-${examType}-${cfg.urlSlug}.txt`
+    );
     fs.writeFileSync(debugPath, textBlock.text);
     throw new Error(`Failed to parse JSON. Raw output saved to ${debugPath}`);
   }
 
   console.log(`✅ Extracted ${extracted.solutions.length} solutions`);
-  return extracted;
+  return { ...extracted, subjectSlug: cfg.urlSlug };
 }
 
-function parseFilename(filename: string): { year: number; examType: "EXAM_1" | "EXAM_2" } | null {
-  const match = filename.match(/^(\d{4})-mm([12])-sol\.pdf$/i);
-  if (!match) return null;
-  return { year: parseInt(match[1]), examType: match[2] === "1" ? "EXAM_1" : "EXAM_2" };
+/**
+ * Methods solutions JSON gets a slug-free name to keep the existing
+ * pipeline import-compatible. New subjects get a slug-suffixed name.
+ */
+function outputFilename(
+  year: number,
+  examType: "EXAM_1" | "EXAM_2",
+  urlSlug: string
+): string {
+  return urlSlug === "vce-methods"
+    ? `${year}-${examType}-solutions.json`
+    : `${year}-${examType}-solutions-${urlSlug}.json`;
 }
 
 async function main() {
@@ -152,36 +172,51 @@ async function main() {
   }
 
   const args = process.argv.slice(2);
+
+  const subjectIdx = args.indexOf("--subject");
+  const subjectSlug = subjectIdx !== -1 ? args[subjectIdx + 1] : "vce-methods";
+  const cfg = getSubjectConfig(subjectSlug);
+  console.log(`📚 Subject: ${cfg.displayName} (${cfg.urlSlug})`);
+
   const outputDir = path.join(path.dirname(__filename), "output");
   fs.mkdirSync(outputDir, { recursive: true });
 
-  // Single file mode
+  // ── Single file mode ──
   if (args.includes("--file")) {
     const filename = args[args.indexOf("--file") + 1];
-    const parsed = parseFilename(filename);
+    const parsed = parseSolutionFilename(filename, cfg.urlSlug);
     if (!parsed) {
       console.error(`❌ Could not parse filename: ${filename}`);
-      console.error(`   Expected format: 2016-mm1-sol.pdf`);
+      console.error(`   Expected format for ${cfg.urlSlug}: 2024-${cfg.examPrefix}1-sol.pdf`);
       process.exit(1);
     }
 
-    const pdfPath = path.join(process.cwd(), "exams", "vce", "math", "mathematical_methods", "solutions", filename);
+    const pdfPath = path.join(
+      getSubjectFolder(cfg.urlSlug, "solutions"),
+      filename
+    );
     if (!fs.existsSync(pdfPath)) {
       console.error(`❌ File not found: ${pdfPath}`);
       process.exit(1);
     }
 
-    const result = await extractSolutionsFromPDF(pdfPath, parsed.year, parsed.examType);
-    const outFile = path.join(outputDir, `${parsed.year}-${parsed.examType}-solutions.json`);
+    const result = await extractSolutionsFromPDF(pdfPath, parsed.year, parsed.examType, cfg);
+    const outFile = path.join(outputDir, outputFilename(parsed.year, parsed.examType, cfg.urlSlug));
     fs.writeFileSync(outFile, JSON.stringify(result, null, 2));
     console.log(`\n💾 Saved: ${outFile}`);
     return;
   }
 
-  // Folder mode
-  const folderPath = args.includes("--folder")
-    ? args[args.indexOf("--folder") + 1]
-    : path.join(process.cwd(), "exams", "vce", "math", "mathematical_methods", "solutions");
+  // ── Folder mode (defaults to subject's solutions/ folder) ──
+  const folderIdx = args.indexOf("--folder");
+  const folderPath = folderIdx !== -1
+    ? args[folderIdx + 1]
+    : getSubjectFolder(cfg.urlSlug, "solutions");
+
+  if (!fs.existsSync(folderPath)) {
+    console.error(`❌ Folder not found: ${folderPath}`);
+    process.exit(1);
+  }
 
   const files = fs.readdirSync(folderPath)
     .filter((f) => f.toLowerCase().endsWith("-sol.pdf"))
@@ -194,11 +229,11 @@ async function main() {
 
   console.log(`\n📁 Found ${files.length} solution PDF(s)`);
   for (const file of files) {
-    const parsed = parseFilename(file);
-    if (!parsed) { console.warn(`⚠️  Skipping: ${file}`); continue; }
+    const parsed = parseSolutionFilename(file, cfg.urlSlug);
+    if (!parsed) { console.warn(`⚠️  Skipping (can't parse for ${cfg.urlSlug}): ${file}`); continue; }
 
-    const result = await extractSolutionsFromPDF(path.join(folderPath, file), parsed.year, parsed.examType);
-    const outFile = path.join(outputDir, `${parsed.year}-${parsed.examType}-solutions.json`);
+    const result = await extractSolutionsFromPDF(path.join(folderPath, file), parsed.year, parsed.examType, cfg);
+    const outFile = path.join(outputDir, outputFilename(parsed.year, parsed.examType, cfg.urlSlug));
     fs.writeFileSync(outFile, JSON.stringify(result, null, 2));
     console.log(`💾 Saved: ${outFile}`);
     await new Promise((r) => setTimeout(r, 2000));

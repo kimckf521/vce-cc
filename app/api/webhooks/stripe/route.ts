@@ -3,7 +3,8 @@ import type Stripe from "stripe";
 import { Prisma } from "@prisma/client";
 import { getStripe } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
-import { ensureMathMethodsSubject, ACCESS_GRANTING_STATUSES } from "@/lib/subscription";
+import { ensureSubjects, ACCESS_GRANTING_STATUSES } from "@/lib/subscription";
+import { getPlanByPriceId } from "@/lib/pricing-catalog";
 import { rewardForAffiliate, COMMISSION_HOLD_DAYS } from "@/lib/affiliate";
 import { sendPaymentFailedEmail, sendRefundEmail } from "@/lib/billing-emails";
 
@@ -47,6 +48,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: `Webhook Error: ${message}` }, { status: 400 });
   }
 
+  // Log every received event up front (RECEIVED). After the handler runs we
+  // upsert again to flip status to SUCCESS or FAILED. Idempotent via externalId
+  // — Stripe replays the same evt_* on retry, so we never double-row.
+  await logWebhookReceived(event);
+
+  let handlerError: Error | null = null;
   try {
     switch (event.type) {
       case "checkout.session.completed": {
@@ -106,22 +113,108 @@ export async function POST(request: NextRequest) {
         console.log(`[stripe-webhook] Unhandled event type: ${event.type}`);
     }
   } catch (err) {
-    // Log but return 200 to Stripe to prevent retry storms for bugs in our code.
-    // Real infrastructure failures should still return 500 so Stripe retries.
+    handlerError = err instanceof Error ? err : new Error(String(err));
     console.error(`[stripe-webhook] Handler error for ${event.type}:`, err);
-    return NextResponse.json({ error: "Handler failed" }, { status: 500 });
   }
 
+  await logWebhookOutcome(event.id, handlerError);
+
+  if (handlerError) {
+    return NextResponse.json({ error: "Handler failed" }, { status: 500 });
+  }
   return NextResponse.json({ received: true });
+}
+
+/**
+ * Upsert the WebhookEvent row at receipt time. The handler may later flip
+ * status to SUCCESS/FAILED via {@link logWebhookOutcome}. Failures here are
+ * swallowed — logging must never break the webhook path.
+ */
+async function logWebhookReceived(event: Stripe.Event): Promise<void> {
+  try {
+    await prisma.webhookEvent.upsert({
+      where: { externalId: event.id },
+      create: {
+        externalId: event.id,
+        source: "STRIPE",
+        type: event.type,
+        status: "RECEIVED",
+        payload: event.data.object as unknown as Prisma.InputJsonValue,
+      },
+      update: {
+        type: event.type,
+        // Reset to RECEIVED so a Stripe replay re-runs through outcome logging.
+        status: "RECEIVED",
+        error: null,
+      },
+    });
+  } catch (err) {
+    console.error(`[stripe-webhook] Failed to log received event ${event.id}:`, err);
+  }
+}
+
+/**
+ * Mark the WebhookEvent row as SUCCESS or FAILED post-handler. Best-effort —
+ * a DB hiccup here shouldn't change the response we send to Stripe.
+ */
+async function logWebhookOutcome(externalId: string, err: Error | null): Promise<void> {
+  try {
+    await prisma.webhookEvent.update({
+      where: { externalId },
+      data: {
+        status: err ? "FAILED" : "SUCCESS",
+        error: err ? err.message.slice(0, 1000) : null,
+      },
+    });
+  } catch (logErr) {
+    console.error(`[stripe-webhook] Failed to log outcome for ${externalId}:`, logErr);
+  }
 }
 
 /**
  * Sync a Stripe subscription to the SubjectEnrolment table.
  * Called for create/update/delete events.
+ *
+ * A single subscription can cover multiple subjects (e.g. the VCE Maths plan
+ * unlocks all 4 maths subjects). Subject slugs come from
+ * `subscription.metadata.subjectSlugs` (comma-separated). For backward compat
+ * with subs created before the multi-subject rollout, falls back to the
+ * legacy singular `subjectSlug`, then to a priceId reverse-lookup via the
+ * catalog (covers subs created outside our app, e.g. via Stripe dashboard).
+ *
+ * One enrolment row is upserted per subject — all rows share the same
+ * `stripeSubscriptionId`, so cancel/update events fire a single webhook
+ * that brings every row up to date in one pass.
  */
 async function syncSubscription(subscription: Stripe.Subscription) {
   const userId = subscription.metadata.userId;
-  const subjectSlug = subscription.metadata.subjectSlug ?? "mathematical-methods";
+
+  // Resolve which subjects this subscription unlocks.
+  let subjectSlugs: string[] = [];
+  const slugsMeta = subscription.metadata.subjectSlugs;
+  const slugMeta = subscription.metadata.subjectSlug;
+  if (slugsMeta) {
+    subjectSlugs = slugsMeta
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+  } else if (slugMeta) {
+    subjectSlugs = [slugMeta];
+  } else {
+    const firstItem = subscription.items.data[0];
+    const priceId = firstItem?.price.id;
+    if (priceId) {
+      const plan = getPlanByPriceId(priceId);
+      if (plan) subjectSlugs = [...plan.entry.subjectSlugs];
+    }
+  }
+
+  if (subjectSlugs.length === 0) {
+    console.warn(
+      `[stripe-webhook] Subscription ${subscription.id} has no resolvable subject slugs — cannot sync`
+    );
+    return;
+  }
 
   if (!userId) {
     console.warn(
@@ -147,23 +240,8 @@ async function syncSubscription(subscription: Stripe.Subscription) {
     return;
   }
 
-  // Make sure the subject exists
-  let subjectId: string;
-  if (subjectSlug === "mathematical-methods") {
-    subjectId = await ensureMathMethodsSubject();
-  } else {
-    const subject = await prisma.subject.findUnique({
-      where: { slug: subjectSlug },
-      select: { id: true },
-    });
-    if (!subject) {
-      console.warn(
-        `[stripe-webhook] No subject found for slug ${subjectSlug}, skipping sync`
-      );
-      return;
-    }
-    subjectId = subject.id;
-  }
+  // Ensure every Subject row exists, get slug → subjectId map.
+  const subjectIdMap = await ensureSubjects(subjectSlugs);
 
   const firstItem = subscription.items.data[0];
   const priceId = firstItem?.price.id ?? null;
@@ -185,19 +263,16 @@ async function syncSubscription(subscription: Stripe.Subscription) {
   const isActive =
     subscription.status === "active" || subscription.status === "trialing";
 
-  // Affiliate conversion: if this user has a PENDING referral and the subscription
-  // just became active, move it into the 30-day commission hold.
+  // Affiliate conversion fires ONCE per webhook event — it's per-user, not
+  // per-enrolment-row. A subscription becoming active converts the user's
+  // referral regardless of how many subjects the plan covers.
   if (isActive) {
     try {
       await convertReferralIfPending(user.id);
     } catch (err) {
       console.error(`[stripe-webhook] Failed to convert referral for user ${user.id}:`, err);
-      // Don't throw — the subscription sync should still succeed.
     }
   } else {
-    // Cancellation / past-due / unpaid: if the referee was still in the hold
-    // window, drop their referral to CHURNED_NO_COMMISSION so the cron skips it.
-    // Already-finalized (CONVERTED) referrals are unaffected.
     try {
       await churnReferralIfInHold(user.id);
     } catch (err) {
@@ -214,46 +289,51 @@ async function syncSubscription(subscription: Stripe.Subscription) {
     cancelAtPeriodEnd: subscription.cancel_at_period_end,
   } as const;
 
-  // Race-safe upsert. Two unique keys (userId_subjectId, stripeSubscriptionId)
-  // mean a naive upsert can race with a parallel request and throw P2002.
-  // We handle that by retrying via updateMany keyed on stripeSubscriptionId,
-  // which is guaranteed to match exactly the row the parallel request created.
-  try {
-    await prisma.subjectEnrolment.upsert({
-      where: {
-        userId_subjectId: { userId: user.id, subjectId },
-      },
-      create: { userId: user.id, subjectId, ...data },
-      update: data,
-    });
-  } catch (err) {
-    if (
-      err instanceof Prisma.PrismaClientKnownRequestError &&
-      err.code === "P2002"
-    ) {
-      // A parallel request already created/updated this row. Fall through
-      // to an idempotent update so our data wins (in case this event is
-      // newer than the one the parallel request processed).
-      const result = await prisma.subjectEnrolment.updateMany({
-        where: { stripeSubscriptionId: subscription.id },
-        data: {
-          tier,
-          stripePriceId: priceId,
-          subscriptionStatus: subscription.status,
-          currentPeriodEnd,
-          cancelAtPeriodEnd: subscription.cancel_at_period_end,
+  // Loop upsert across every subject this plan covers. Race-safe: P2002 on
+  // userId_subjectId means a parallel webhook already created the row.
+  // updateMany keyed on stripeSubscriptionId then brings every row created
+  // by the parallel writer up to date in one shot — so we can break the loop.
+  for (const slug of subjectSlugs) {
+    const subjectId = subjectIdMap[slug];
+    if (!subjectId) {
+      console.warn(`[stripe-webhook] No subjectId resolved for slug ${slug} — skipping`);
+      continue;
+    }
+    try {
+      await prisma.subjectEnrolment.upsert({
+        where: {
+          userId_subjectId: { userId: user.id, subjectId },
         },
+        create: { userId: user.id, subjectId, ...data },
+        update: data,
       });
-      console.log(
-        `[stripe-webhook] Race resolved for subscription ${subscription.id} (updateMany count=${result.count})`
-      );
-    } else {
-      throw err;
+    } catch (err) {
+      if (
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === "P2002"
+      ) {
+        const result = await prisma.subjectEnrolment.updateMany({
+          where: { stripeSubscriptionId: subscription.id },
+          data: {
+            tier,
+            stripePriceId: priceId,
+            subscriptionStatus: subscription.status,
+            currentPeriodEnd,
+            cancelAtPeriodEnd: subscription.cancel_at_period_end,
+          },
+        });
+        console.log(
+          `[stripe-webhook] Race resolved for subscription ${subscription.id} (updateMany count=${result.count})`
+        );
+        break;
+      } else {
+        throw err;
+      }
     }
   }
 
   console.log(
-    `[stripe-webhook] Synced subscription ${subscription.id} for user ${user.id} (status=${subscription.status}, tier=${tier})`
+    `[stripe-webhook] Synced subscription ${subscription.id} for user ${user.id} (status=${subscription.status}, tier=${tier}, subjects=${subjectSlugs.length})`
   );
 }
 

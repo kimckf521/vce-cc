@@ -1,9 +1,17 @@
 import { prisma } from "@/lib/prisma";
 import type { QuestionGroupData, TopicQuestionFilters } from "@/lib/question-groups";
+import { getExamFilterOptions } from "@/lib/exam-filter-config";
 
 /**
- * Canonical name of the legacy question set used by the Topic page.
+ * Canonical name of the question set used by the Topic page.
  * The Topic page ALWAYS reads from this set — it does not honour isDefault.
+ *
+ * The Methods row that holds this name is the 1540-item Wave 1 bank (renamed
+ * 2026-05-28 from "Methods Wave 1 Bank"). The pre-Wave-1 1575-item legacy bank
+ * lives at name="Methods Legacy Bank v0" (archived) for rollback.
+ *
+ * Multiple subjects (foundation/general/specialist) also have rows with this
+ * name, so callers must scope by subjectSlug — see getGeneratedQuestionSetId.
  */
 export const GENERATED_QUESTION_SET_NAME = "1st Generated Question Set";
 
@@ -20,15 +28,25 @@ const DIFFICULTY_ORDER = { EASY: 0, MEDIUM: 1, HARD: 2 } as const;
 
 /**
  * Resolve the question set id for the Topic page.
- * The Topic page reads from the legacy "1st Generated Question Set" — it
- * should NOT switch when the isDefault flag is flipped on a different set.
+ * The Topic page reads from the set named by GENERATED_QUESTION_SET_NAME
+ * — it does NOT honour isDefault.
  *
- * Legacy export name kept for backwards compatibility with callers that
- * still import `getGeneratedQuestionSetId`.
+ * To switch the Topic page to a different bank, update the constant above —
+ * don't flip isDefault, which only affects the Practice page.
+ *
+ * `subjectSlug` is required to disambiguate: foundation/general/specialist
+ * each hold a row with the same name. `archived: false` excludes the legacy
+ * Methods rollback row ("Methods Legacy Bank v0").
  */
-export async function getGeneratedQuestionSetId(): Promise<string | null> {
+export async function getGeneratedQuestionSetId(
+  subjectSlug?: string,
+): Promise<string | null> {
   const row = await prisma.questionSet.findFirst({
-    where: { name: GENERATED_QUESTION_SET_NAME },
+    where: {
+      name: GENERATED_QUESTION_SET_NAME,
+      archived: false,
+      ...(subjectSlug ? { subject: { slug: subjectSlug } } : {}),
+    },
     select: { id: true },
   });
   return row?.id ?? null;
@@ -37,11 +55,40 @@ export async function getGeneratedQuestionSetId(): Promise<string | null> {
 /**
  * Resolve the question set id for the Practice page (exam-style sessions).
  *
- * Resolution order:
- *   1. The `QuestionSet` row where `isDefault = true` (canonical selector).
+ * Resolution order (`subjectSlug` provided):
+ *   1. The `QuestionSet` row for that subject where `isDefault = true`.
+ *   2. The `QuestionSet` row for that subject named "1st Generated Exam Set".
+ *   3. null — caller should show an empty-pool message.
+ *
+ * Resolution order (no `subjectSlug`, legacy callers only):
+ *   1. The `QuestionSet` row where `isDefault = true`.
  *   2. Fallback to the legacy named set, for safety if no default is set yet.
+ *
+ * `isDefault` is now scoped per subject — multiple rows may have it set,
+ * but at most one per subject. The admin "Make default" action enforces
+ * this; see app/api/admin/question-sets/[id]/make-default.
  */
-export async function getPracticeQuestionSetId(): Promise<string | null> {
+export async function getPracticeQuestionSetId(
+  subjectSlug?: string,
+): Promise<string | null> {
+  if (subjectSlug) {
+    const defaultForSubject = await prisma.questionSet.findFirst({
+      where: { isDefault: true, subject: { slug: subjectSlug } },
+      select: { id: true },
+    });
+    if (defaultForSubject) return defaultForSubject.id;
+    const examSetForSubject = await prisma.questionSet.findFirst({
+      where: {
+        name: "1st Generated Exam Set",
+        subject: { slug: subjectSlug },
+        items: { some: {} },
+      },
+      select: { id: true },
+    });
+    return examSetForSubject?.id ?? null;
+  }
+
+  // Legacy / no-subject fallback (kept for callers that haven't been updated).
   const defaultRow = await prisma.questionSet.findFirst({
     where: { isDefault: true },
     select: { id: true },
@@ -82,31 +129,30 @@ export async function fetchQuestionSetGroupsPaginated(
   filters: TopicQuestionFilters,
   offset: number,
   limit: number,
-  userId?: string
+  userId?: string,
+  subjectSlug?: string,
 ): Promise<{ groups: QuestionGroupData[]; totalCount: number; hasMore: boolean }> {
-  const setId = await getGeneratedQuestionSetId();
+  const setId = await getGeneratedQuestionSetId(subjectSlug);
   if (!setId) return { groups: [], totalCount: 0, hasMore: false };
 
   const difficultyValues = filters.difficulty
     ? (filters.difficulty.split(",").filter(Boolean) as ("EASY" | "MEDIUM" | "HARD")[])
     : [];
 
-  // Repurpose the "exam" filter to select QuestionSetItem types:
-  //   Exam 1  → SHORT_ANSWER
-  //   Exam 2A → MCQ
-  //   Exam 2B → EXTENDED_ANSWER + EXTENDED_RESPONSE (multi-part Section B)
-  const EXAM_TO_TYPES: Record<string, QSIType[]> = {
-    EXAM_1: ["SHORT_ANSWER"],
-    EXAM_2_MC: ["MCQ"],
-    EXAM_2_B: ["EXTENDED_ANSWER", "EXTENDED_RESPONSE"],
-  };
+  // Repurpose the "exam" filter to select QuestionSetItem types via the
+  // per-subject mapping defined in lib/exam-filter-config.ts. Methods /
+  // Specialist split into Exam 1 / 2A / 2B; General into Exam 1 / 2;
+  // Foundation into Section A / B.
+  const examToTypes = new Map<string, QSIType[]>(
+    getExamFilterOptions(subjectSlug).map((o) => [o.value, o.types as QSIType[]]),
+  );
   const typeValues = filters.exam
     ? (Array.from(
         new Set(
           filters.exam
             .split(",")
             .filter(Boolean)
-            .flatMap((v) => EXAM_TO_TYPES[v] ?? [])
+            .flatMap((v) => examToTypes.get(v) ?? [])
         )
       ) as QSIType[])
     : [];
@@ -159,6 +205,8 @@ export async function fetchQuestionSetGroupsPaginated(
             type: true,
             marks: true,
             content: true,
+            preamble: true,
+            parts: true,
             difficulty: true,
             solutionContent: true,
             optionA: true,
@@ -189,6 +237,60 @@ export async function fetchQuestionSetGroupsPaginated(
       const it = byId.get(id);
       if (!it) return null;
 
+      const questionNumber = offset + idx + 1;
+      const isMultiPart = it.type === "EXTENDED_ANSWER" || it.type === "EXTENDED_RESPONSE";
+
+      // Multi-part EA/ER: explode parts JSON into the QuestionGroupData.parts
+      // array. Bake the shared preamble into the FIRST part's content using
+      // the ---PREAMBLE--- markers that QuestionGroup already recognises.
+      if (isMultiPart && Array.isArray(it.parts)) {
+        const rawParts = it.parts as Array<{
+          label: string;
+          marks: number;
+          content: string;
+          solution: string;
+          subParts?: Array<{ label: string; marks: number; content: string; solution: string }>;
+        }>;
+        const parts = rawParts.map((p, i) => {
+          // For parts with sub-parts, flatten sub-parts into the content + solution
+          let partContent = p.content;
+          let partSolution = p.solution;
+          if (Array.isArray(p.subParts) && p.subParts.length > 0) {
+            partContent = `${p.content}\n\n${p.subParts.map((sp) => `**${sp.label}.** (${sp.marks} mark${sp.marks === 1 ? "" : "s"}) ${sp.content}`).join("\n\n")}`;
+            partSolution = `${p.solution ? p.solution + "\n\n" : ""}${p.subParts.map((sp) => `**Part ${sp.label}:** ${sp.solution}`).join("\n\n")}`;
+          }
+          const contentWithPreamble =
+            i === 0 && it.preamble
+              ? `---PREAMBLE---\n${it.preamble}\n---QUESTION---\n${partContent}`
+              : partContent;
+          return {
+            id: i === 0 ? it.id : `${it.id}-${p.label}`,
+            questionNumber,
+            part: p.label,
+            marks: p.marks,
+            content: contentWithPreamble,
+            imageUrl: null,
+            difficulty: it.difficulty as "EASY" | "MEDIUM" | "HARD",
+            solution: partSolution
+              ? { content: partSolution, imageUrl: null, videoUrl: null }
+              : null,
+            initialStatus: i === 0 ? ((attemptMap.get(it.id)?.status as "ATTEMPTED" | "CORRECT" | "INCORRECT" | "NEEDS_REVIEW") ?? null) : null,
+            initialBookmarked: i === 0 ? (attemptMap.get(it.id)?.bookmarked ?? false) : false,
+          };
+        });
+        return {
+          key: `qset-${it.id}`,
+          year: 0,
+          examType: "EXAM_1" as "EXAM_1" | "EXAM_2",
+          sectionLabel: TYPE_LABEL[it.type as QSIType],
+          frequency: undefined,
+          topicName,
+          subtopics: it.subtopics.map((s) => s.name),
+          calculatorAllowed: true,
+          parts,
+        } satisfies QuestionGroupData;
+      }
+
       // Stitch MCQ options into the content so they render inside the card body
       const contentWithOptions =
         it.type === "MCQ" && it.optionA
@@ -214,7 +316,7 @@ export async function fetchQuestionSetGroupsPaginated(
         parts: [
           {
             id: it.id,
-            questionNumber: offset + idx + 1,
+            questionNumber,
             part: null,
             marks: it.marks,
             content: contentWithOptions,

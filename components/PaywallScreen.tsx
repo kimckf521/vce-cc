@@ -3,7 +3,7 @@ import { Lock, Sparkles, ArrowLeft, Check } from "lucide-react";
 
 type PaywallScreenProps = {
   /** What the user was trying to access — drives the headline copy. */
-  feature: "topic" | "practice" | "search" | "history";
+  feature: "topic" | "practice" | "search" | "history" | "bookmark";
   /** Optional specific name (e.g. "Calculus") shown in the headline. */
   name?: string;
   /** Where the back link should go. Defaults to /dashboard. */
@@ -17,31 +17,40 @@ const COPY: Record<
   { title: (name?: string) => string; description: string }
 > = {
   topic: {
-    title: (name) => (name ? `${name} is part of the paid plan` : "This topic is part of the paid plan"),
+    title: (name) =>
+      name
+        ? `${name} needs VCE Maths`
+        : "This topic needs VCE Maths",
     description:
-      "Upgrade to unlock all four Mathematical Methods topics, plus practice mode and history.",
+      "Unlock VCE Maths to get every topic across all 4 maths subjects — Methods, Specialist, Foundation and General.",
   },
   practice: {
-    title: () => "Practice mode is part of the paid plan",
+    title: () => "Practice mode needs VCE Maths",
     description:
-      "Build timed exam practice sessions with custom topic mixes and difficulty levels. Available on the paid plan.",
+      "Build timed exam practice sessions across all 4 maths subjects. Available on the VCE Maths plan.",
   },
   search: {
-    title: () => "Search is part of the paid plan",
+    title: () => "Search needs VCE Maths",
     description:
-      "Search across every past exam question instantly. Available on the paid plan.",
+      "Search across every past exam question in all 4 subjects instantly. Available on the VCE Maths plan.",
   },
   history: {
-    title: () => "History is part of the paid plan",
+    title: () => "History needs VCE Maths",
     description:
-      "Track your performance across practice exams over time. Available on the paid plan.",
+      "Track your performance over time across every subject you study. Available on the VCE Maths plan.",
+  },
+  bookmark: {
+    title: () => "Bookmarks need VCE Maths",
+    description:
+      "Save tricky questions for quick review across every topic and past paper. Available on the VCE Maths plan.",
   },
 };
 
 const PAID_PERKS = [
-  "All four Mathematical Methods topics",
-  "Unlimited practice questions and timed exams",
-  "Performance history and progress tracking",
+  "All 4 maths subjects — Methods, Specialist, Foundation and General",
+  "Every topic, every subject — worked solutions for the lot",
+  "Unlimited practice + timed Exam 2 simulations",
+  "Performance history across every subject",
   "Cancel at any time",
 ];
 
@@ -91,7 +100,7 @@ export default function PaywallScreen({
           className="flex items-center justify-center gap-2 w-full rounded-xl bg-brand-600 hover:bg-brand-700 text-white px-6 py-3.5 lg:py-4 text-base lg:text-lg font-semibold transition-colors"
         >
           <Sparkles className="h-5 w-5" />
-          See plans and upgrade
+          Unlock VCE Maths — $9.99/month
         </Link>
       </div>
     </div>

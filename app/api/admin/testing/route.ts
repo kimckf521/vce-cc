@@ -3,6 +3,7 @@ import { requireAuthenticatedUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { rateLimit } from "@/lib/rate-limit";
 import { isAdminRole } from "@/lib/utils";
+import { ensureMathMethodsSubject } from "@/lib/subscription";
 
 const TEST_EXAM_YEAR = 9999;
 
@@ -48,17 +49,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No topics found. Seed topics first." }, { status: 400 });
     }
 
+    // Test fixtures live under the Methods subject (only subject with full
+    // content in Phase 2). Compound key now includes subjectId post-Phase 1.
+    const subjectId = await ensureMathMethodsSubject();
+
     // Create test exam
     const exam1 = await prisma.exam.upsert({
-      where: { year_examType: { year: TEST_EXAM_YEAR, examType: "EXAM_1" } },
+      where: { subjectId_year_examType: { subjectId, year: TEST_EXAM_YEAR, examType: "EXAM_1" } },
       update: {},
-      create: { year: TEST_EXAM_YEAR, examType: "EXAM_1" },
+      create: { subjectId, year: TEST_EXAM_YEAR, examType: "EXAM_1" },
     });
 
     const exam2 = await prisma.exam.upsert({
-      where: { year_examType: { year: TEST_EXAM_YEAR, examType: "EXAM_2" } },
+      where: { subjectId_year_examType: { subjectId, year: TEST_EXAM_YEAR, examType: "EXAM_2" } },
       update: {},
-      create: { year: TEST_EXAM_YEAR, examType: "EXAM_2" },
+      create: { subjectId, year: TEST_EXAM_YEAR, examType: "EXAM_2" },
     });
 
     // Sample test questions

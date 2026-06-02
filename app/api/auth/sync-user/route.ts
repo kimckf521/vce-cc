@@ -2,7 +2,10 @@ import { NextResponse, type NextRequest } from "next/server";
 import { randomUUID } from "crypto";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
-import { ensureMathMethodsSubject, ensureFreeEnrolment } from "@/lib/subscription";
+import {
+  ensureMathMethodsSubject,
+  ensureFreeEnrolmentsForMathsSubjects,
+} from "@/lib/subscription";
 import { syncUserSchema } from "@/lib/validations";
 import { SESSION_COOKIE, sessionCookieOptions } from "@/lib/session";
 import { isAdminRole } from "@/lib/utils";
@@ -120,9 +123,11 @@ export async function POST(request: NextRequest) {
   }
 
   // Make sure the Methods subject exists, then give the user a FREE enrolment
-  // (idempotent — won't downgrade an existing PAID enrolment).
+  // for every VCE maths subject (idempotent — won't downgrade an existing
+  // PAID enrolment, and existing rows are left alone). This populates the
+  // dashboard "My subjects" grid so free users can discover all 4 subjects.
   await ensureMathMethodsSubject();
-  await ensureFreeEnrolment(user.id);
+  await ensureFreeEnrolmentsForMathsSubjects(user.id);
 
   // Notify the support inbox of new registrations. Fire-and-forget — we don't
   // want a Resend outage to break user signup. The check on `isNewRegistration`

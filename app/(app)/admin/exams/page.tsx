@@ -2,10 +2,11 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FileText, Plus, ExternalLink, Pencil, Trash2, X, Check, Loader2, ChevronDown, ChevronRight, Eye, Code2, ArrowLeft } from "lucide-react";
 import { cn, stripLatex } from "@/lib/utils";
 import MathContent from "@/components/MathContent";
+import SubjectFilterPills from "@/components/admin/SubjectFilterPills";
 
 interface ExamQuestion {
   id: string;
@@ -32,6 +33,8 @@ function formatExamType(type: string) {
 
 export default function AdminExamsPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const subjectParam = searchParams.get("subject");
   const [exams, setExams] = useState<Exam[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -65,11 +68,15 @@ export default function AdminExamsPage() {
   }, [expandedExamId, examQuestions]);
 
   useEffect(() => {
-    fetch("/api/admin/exams")
+    setLoading(true);
+    const url = subjectParam
+      ? `/api/admin/exams?subject=${encodeURIComponent(subjectParam)}`
+      : "/api/admin/exams";
+    fetch(url)
       .then((r) => r.json())
       .then((data) => setExams(data.exams || []))
       .finally(() => setLoading(false));
-  }, []);
+  }, [subjectParam]);
 
   function startEdit(exam: Exam) {
     setEditingId(exam.id);
@@ -147,14 +154,15 @@ export default function AdminExamsPage() {
       </Link>
 
       {/* Header */}
-      <div className="flex items-center justify-between mb-8 lg:mb-10">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-3 mb-1">
             <FileText className="h-6 w-6 lg:h-7 lg:w-7 text-brand-600 dark:text-brand-400" />
             <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">Exams</h1>
           </div>
           <p className="text-gray-500 dark:text-gray-400 lg:text-base ml-9">
-            {exams.length} {exams.length === 1 ? "exam" : "exams"} in the database
+            {exams.length} {exams.length === 1 ? "exam" : "exams"}
+            {subjectParam ? " (filtered)" : ""}
           </p>
         </div>
         <Link
@@ -165,6 +173,8 @@ export default function AdminExamsPage() {
           Add exam
         </Link>
       </div>
+
+      <SubjectFilterPills />
 
       {/* Exam list */}
       {exams.length === 0 ? (

@@ -1,33 +1,63 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { Minus, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   EXAM_CONFIG,
-  VCAA_TOPIC_DIST,
+  vcaaTopicDistFor,
   VCAA_DIFFICULTY_DIST,
   getExamQuestionCount,
   type ExamMode,
 } from "@/lib/exam-config";
+import { DEFAULT_SUBJECT_SLUG } from "@/lib/subject-context";
+import { DEFAULT_CURRICULUM_SLUG } from "@/lib/curriculum-context";
 import TopicDistributionControl from "./TopicDistributionControl";
 import DifficultyDistributionControl, { type DiffDist } from "./DifficultyDistributionControl";
 
+/**
+ * Even percentage split across n topics that always sums to exactly 100.
+ * e.g. 4 → [25,25,25,25], 5 → [20,20,20,20,20], 6 → [17,17,17,17,16,16].
+ */
+function evenTopicSplit(n: number): number[] {
+  if (n <= 0) return [];
+  const base = Math.floor(100 / n);
+  const arr = new Array<number>(n).fill(base);
+  let remainder = 100 - base * n;
+  for (let i = 0; i < remainder; i++) arr[i] += 1;
+  return arr;
+}
+
 interface PracticeSetupFormProps {
-  mode: "exam1" | "exam2a" | "exam2b";
+  // Accepts every mode in EXAM_CONFIG, including Foundation's single "exam"
+  // paper. exam2ab uses its own setup form (Exam2ABSetupForm).
+  mode: ExamMode;
   topics: { id: string; name: string; slug: string }[];
   title: string;
 }
 
 export default function PracticeSetupForm({ mode, topics, title }: PracticeSetupFormProps) {
   const router = useRouter();
+  // Read the active curriculum + subject from the URL so the setup form
+  // sends users into THEIR subject's session page rather than always
+  // bouncing them to Methods. Falls back to defaults when used outside
+  // the [curriculum]/[subject] tree.
+  const routeParams = useParams<{ curriculum?: string; subject?: string }>();
+  const curriculumSlug = routeParams?.curriculum ?? DEFAULT_CURRICULUM_SLUG;
+  const subjectSlug = routeParams?.subject ?? DEFAULT_SUBJECT_SLUG;
+  const practiceHome = `/${curriculumSlug}/${subjectSlug}/practice`;
   const cfg = EXAM_CONFIG[mode];
 
   const [version, setVersion] = useState<"exam" | "freedom">("exam");
   const [count, setCount] = useState<number>(cfg.freedomDefault);
-  const [distribution, setDistribution] = useState<number[]>([25, 25, 25, 25]);
+  // Even split across THIS subject's topics (4 for Methods/Foundation, 5 for
+  // General, 6 for Specialist) — not a hardcoded 4, which left General's 5th
+  // and Specialist's 6th topic with no weight.
+  const [distribution, setDistribution] = useState<number[]>(() =>
+    evenTopicSplit(topics.length)
+  );
   const [diffDist, setDiffDist] = useState<DiffDist>([50, 30, 20]);
   const [showSolutions, setShowSolutions] = useState(false);
   const [timerEnabled, setTimerEnabled] = useState(true);
@@ -41,9 +71,24 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
   // Exam Version simulates a real VCAA paper — topic/difficulty mix and
   // "focus on weak areas" are locked to the real exam's characteristics.
   // Freedom Version lets the student customise everything.
+  //
+  // `vcaaTopicDistFor(subjectSlug)` returns a weight array sized to the
+  // active subject's topic count (4 for Methods/Foundation, 5 for General,
+  // 6 for Specialist). The earlier 4-tuple constant left Specialist's 5th
+  // and 6th topics with weight 0 in Exam mode — they never appeared in a
+  // simulated paper. Subject-aware lookup fixes that without changing the
+  // Methods default.
   const effectiveDistribution = isFreedom
     ? distribution
-    : [...VCAA_TOPIC_DIST];
+    : vcaaTopicDistFor(routeParams?.subject === "specialist"
+        ? "vce-specialist"
+        : routeParams?.subject === "general"
+        ? "vce-general"
+        : routeParams?.subject === "foundation"
+        ? "vce-foundation"
+        : routeParams?.subject === "methods"
+        ? "mathematical-methods"
+        : undefined);
   const effectiveDiffDist: DiffDist = isFreedom
     ? diffDist
     : [...VCAA_DIFFICULTY_DIST];
@@ -59,7 +104,7 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
     const finalCount = version === "exam" ? getExamQuestionCount(mode) : count;
     const timerParam = version === "exam" && timerEnabled ? "&timer=1" : "";
     const weakParam = effectiveFocusWeakAreas ? "&weak=1" : "";
-    const url = `/practice/session?mode=${mode}&version=${version}&count=${finalCount}&dist=${effectiveDistribution.join(",")}&diff=${effectiveDiffDist.join(",")}&solutions=${effectiveShowSolutions ? "1" : "0"}${timerParam}${weakParam}`;
+    const url = `${practiceHome}/session?mode=${mode}&version=${version}&count=${finalCount}&dist=${effectiveDistribution.join(",")}&diff=${effectiveDiffDist.join(",")}&solutions=${effectiveShowSolutions ? "1" : "0"}${timerParam}${weakParam}`;
     router.push(url);
   }
 
@@ -71,7 +116,7 @@ export default function PracticeSetupForm({ mode, topics, title }: PracticeSetup
     <div className="space-y-8 lg:space-y-10">
       {/* Back link */}
       <Link
-        href="/practice"
+        href={practiceHome}
         className="inline-flex items-center gap-1.5 text-sm lg:text-base font-medium text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors"
       >
         ← Practice
