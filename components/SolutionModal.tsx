@@ -5,7 +5,11 @@ import { X, Loader2 } from "lucide-react";
 import MathContent from "@/components/MathContent";
 import FunctionGraph from "@/components/FunctionGraph";
 import CartesianGrid from "@/components/CartesianGrid";
-import SolutionEditor from "@/components/SolutionEditor";
+import dynamic from "next/dynamic";
+
+// Admin-only inline editor — lazy-loaded so it never ships in the solution
+// chunk that students download (it only renders behind the isAdmin gate below).
+const SolutionEditor = dynamic(() => import("@/components/SolutionEditor"), { ssr: false });
 
 interface SolutionPart {
   questionId: string;

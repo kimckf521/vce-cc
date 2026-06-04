@@ -12,6 +12,21 @@ vi.mock("next/dynamic", () => ({
   },
 }));
 
+// Mock next/navigation — ExamModeWrapper uses the App Router (useRouter)
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    replace: vi.fn(),
+    refresh: vi.fn(),
+    prefetch: vi.fn(),
+    back: vi.fn(),
+    forward: vi.fn(),
+  }),
+  usePathname: () => "/",
+  useSearchParams: () => new URLSearchParams(),
+  useParams: () => ({}),
+}));
+
 // Mock Supabase client (used by useSessionRefresh)
 vi.mock("@/lib/supabase/client", () => ({
   createClient: () => ({
@@ -107,7 +122,7 @@ describe("ExamModeWrapper — exam flow", () => {
     renderExam();
 
     // Check that the component renders the submit button with 0 answered
-    expect(screen.getByText(/Submit Exam \(0\/2 answered\)/)).toBeDefined();
+    expect(screen.getByText(/Submit exam \(0\/2 answered\)/)).toBeDefined();
 
     // Check that question content is present (the MCQ body text)
     expect(screen.getByText(/What is f'\(x\)\?/)).toBeDefined();
@@ -117,24 +132,24 @@ describe("ExamModeWrapper — exam flow", () => {
   it("shows submit button with answered count", () => {
     vi.useFakeTimers();
     renderExam();
-    expect(screen.getByText(/Submit Exam \(0\/2 answered\)/)).toBeDefined();
+    expect(screen.getByText(/Submit exam \(0\/2 answered\)/)).toBeDefined();
   });
 
   it("submitting shows the results banner", async () => {
     renderExam();
 
-    const submitBtn = screen.getByText(/Submit Exam/);
+    const submitBtn = screen.getByText(/Submit exam/);
     fireEvent.click(submitBtn);
 
     await waitFor(() => {
-      expect(screen.getByText("Exam Results")).toBeDefined();
+      expect(screen.getByText("Exam results")).toBeDefined();
     });
   });
 
   it("submitting saves exam session via API", async () => {
     renderExam();
 
-    fireEvent.click(screen.getByText(/Submit Exam/));
+    fireEvent.click(screen.getByText(/Submit exam/));
 
     await waitFor(() => {
       const sessionCall = mockFetch.mock.calls.find(
@@ -152,10 +167,10 @@ describe("ExamModeWrapper — exam flow", () => {
   it("hides submit button after submission", async () => {
     renderExam();
 
-    fireEvent.click(screen.getByText(/Submit Exam/));
+    fireEvent.click(screen.getByText(/Submit exam/));
 
     await waitFor(() => {
-      expect(screen.queryByText(/Submit Exam/)).toBeNull();
+      expect(screen.queryByText(/Submit exam/)).toBeNull();
     });
   });
 
@@ -170,7 +185,7 @@ describe("ExamModeWrapper — exam flow", () => {
 
     // Submit — the handler reads elapsedSeconds synchronously
     act(() => {
-      fireEvent.click(screen.getByText(/Submit Exam/));
+      fireEvent.click(screen.getByText(/Submit exam/));
     });
 
     // Check the API was called with elapsed time >= 4
@@ -185,7 +200,7 @@ describe("ExamModeWrapper — exam flow", () => {
   it("shows score breakdown after submit", async () => {
     renderExam();
 
-    fireEvent.click(screen.getByText(/Submit Exam/));
+    fireEvent.click(screen.getByText(/Submit exam/));
 
     await waitFor(() => {
       // Should show "0 correct" since no answers were selected

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 interface BrandMarkProps {
@@ -9,35 +10,38 @@ interface BrandMarkProps {
 
 /**
  * The ATAR Hero brand mark — a kangaroo superhero holding an open book.
- * Renders TWO PNGs and swaps via Tailwind's `dark:` modifier so the right
+ * Renders TWO logos and swaps via Tailwind's `dark:` modifier so the right
  * variant shows in each theme:
  *   - logo-light.png — dark silhouette for use on light backgrounds
  *   - logo-dark.png  — cream/white silhouette for use on dark backgrounds
  *
- * Uses plain <img> (not next/image) so consumers can size it freely with
- * Tailwind classes. Both files are small (~150KB) and the browser caches
- * them after first load.
+ * Uses next/image so the source PNGs are served as resized AVIF/WebP (a few KB)
+ * instead of the full ~120–150 KB originals on every page. Consumers still size
+ * it freely with Tailwind classes; `sizes` caps the generated width to the
+ * actual display size (the mark renders at ~40–56px tall).
  */
 export default function BrandMark({ className, alt = "ATAR Hero" }: BrandMarkProps) {
   return (
     <>
       {/* Light-theme logo (dark silhouette) — 444x512 */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src="/logo-light.png"
         alt={alt}
         width={444}
         height={512}
+        sizes="64px"
+        priority
         className={cn("flex-shrink-0 object-contain dark:hidden", className)}
       />
       {/* Dark-theme logo (cream silhouette) — 422x512 */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src="/logo-dark.png"
         alt=""
         aria-hidden="true"
         width={422}
         height={512}
+        sizes="64px"
+        priority
         className={cn("hidden flex-shrink-0 object-contain dark:block", className)}
       />
     </>

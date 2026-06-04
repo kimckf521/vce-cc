@@ -57,6 +57,13 @@ export default async function ExamPage({ params }: PageProps) {
 
   const user = supabaseResult.data.user;
 
+  // Kick off the completion check in parallel with the questions fetch (independent queries)
+  const completionPromise = user
+    ? prisma.examCompletion
+        .findUnique({ where: { userId_examId: { userId: user.id, examId: id } } })
+        .then(Boolean)
+    : Promise.resolve(false);
+
   // Fetch all questions for this exam ordered by question number then part
   const questions = await prisma.question.findMany({
     where: { examId: id },
@@ -77,12 +84,8 @@ export default async function ExamPage({ params }: PageProps) {
     orderBy: [{ questionNumber: "asc" }, { part: "asc" }],
   });
 
-  // Check if user has completed this exam
-  const isCompleted = user
-    ? !!(await prisma.examCompletion.findUnique({
-        where: { userId_examId: { userId: user.id, examId: id } },
-      }))
-    : false;
+  // Await the completion check kicked off above (ran in parallel with the questions fetch)
+  const isCompleted = await completionPromise;
 
   // Section A: standalone MCQs (part === null)
   const sectionA = questions.filter((q) => q.part === null);
