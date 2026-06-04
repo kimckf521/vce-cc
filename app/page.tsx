@@ -88,12 +88,50 @@ const journey = [
   },
 ];
 
+// VCAA pathway order: Foundation → General → Methods → Specialist
+// (matches the in-app SUBJECTS order in lib/subject-context.ts and the nav).
+//
+// `guideHref` points at the public, indexable subject landing page (e.g.
+// `/methods`) — the homepage should pass authority to those SEO pages, not
+// only to the gated in-app `topics` view. `examsHref` points at the public
+// Past Papers surface. `href` (topics) stays for the "Start practising" CTA.
 const subjects = [
+  {
+    name: "Foundation Mathematics",
+    description: "Real-world maths for everyday life — financial maths, measurement, statistics and algebra.",
+    status: "available",
+    href: "/vce/foundation/topics",
+    guideHref: "/foundation",
+    examsHref: "/vce/foundation/exams",
+    topics: [
+      { name: "Algebra", slug: "algebra-number-and-structure" },
+      { name: "Discrete Maths", slug: "discrete-mathematics" },
+      { name: "Space & Measurement", slug: "space-and-measurement" },
+      { name: "Data & Statistics", slug: "data-analysis-probability-and-statistics" },
+    ],
+  },
+  {
+    name: "General Mathematics",
+    description: "Applied maths across financial, statistical, geometric and algebraic contexts — full Exam 1 and Exam 2 coverage.",
+    status: "available",
+    href: "/vce/general/topics",
+    guideHref: "/general",
+    examsHref: "/vce/general/exams",
+    topics: [
+      { name: "Algebra", slug: "algebra-number-and-structure" },
+      { name: "Functions & Graphs", slug: "functions-relations-and-graphs" },
+      { name: "Discrete Maths", slug: "discrete-mathematics" },
+      { name: "Space & Measurement", slug: "space-and-measurement" },
+      { name: "Data & Statistics", slug: "data-analysis-probability-and-statistics" },
+    ],
+  },
   {
     name: "Mathematical Methods",
     description: "Functions, calculus, algebra, probability and statistics — complete Exam 1 and Exam 2 coverage.",
     status: "available",
     href: "/vce/methods/topics",
+    guideHref: "/methods",
+    examsHref: "/vce/methods/exams",
     topics: [
       { name: "Algebra", slug: "algebra-number-and-structure" },
       { name: "Functions & Graphs", slug: "functions-relations-and-graphs" },
@@ -106,35 +144,12 @@ const subjects = [
     description: "Complex numbers, vectors, differential equations, mechanics, discrete maths and more.",
     status: "available",
     href: "/vce/specialist/topics",
+    guideHref: "/specialist",
+    examsHref: "/vce/specialist/exams",
     topics: [
       { name: "Algebra", slug: "algebra-number-and-structure" },
       { name: "Functions & Graphs", slug: "functions-relations-and-graphs" },
       { name: "Calculus", slug: "calculus" },
-      { name: "Discrete Maths", slug: "discrete-mathematics" },
-      { name: "Space & Measurement", slug: "space-and-measurement" },
-      { name: "Data & Statistics", slug: "data-analysis-probability-and-statistics" },
-    ],
-  },
-  {
-    name: "General Mathematics",
-    description: "Applied maths across financial, statistical, geometric and algebraic contexts — full Exam 1 and Exam 2 coverage.",
-    status: "available",
-    href: "/vce/general/topics",
-    topics: [
-      { name: "Algebra", slug: "algebra-number-and-structure" },
-      { name: "Functions & Graphs", slug: "functions-relations-and-graphs" },
-      { name: "Discrete Maths", slug: "discrete-mathematics" },
-      { name: "Space & Measurement", slug: "space-and-measurement" },
-      { name: "Data & Statistics", slug: "data-analysis-probability-and-statistics" },
-    ],
-  },
-  {
-    name: "Foundation Mathematics",
-    description: "Real-world maths for everyday life — financial maths, measurement, statistics and algebra.",
-    status: "available",
-    href: "/vce/foundation/topics",
-    topics: [
-      { name: "Algebra", slug: "algebra-number-and-structure" },
       { name: "Discrete Maths", slug: "discrete-mathematics" },
       { name: "Space & Measurement", slug: "space-and-measurement" },
       { name: "Data & Statistics", slug: "data-analysis-probability-and-statistics" },
@@ -282,7 +297,16 @@ export default async function HomePage() {
                   <h3 className={`text-xl lg:text-2xl font-bold ${
                     subject.status === "available" ? "text-gray-900 dark:text-gray-100" : "text-gray-400 dark:text-gray-500"
                   }`}>
-                    {subject.name}
+                    {subject.status === "available" && subject.guideHref ? (
+                      <Link
+                        href={subject.guideHref}
+                        className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                      >
+                        VCE {subject.name}
+                      </Link>
+                    ) : (
+                      subject.name
+                    )}
                   </h3>
                   {subject.status === "available" ? (
                     <span className="inline-flex items-center rounded-full bg-green-50 dark:bg-green-950 px-3 py-1 text-xs font-semibold text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800">
@@ -317,13 +341,23 @@ export default async function HomePage() {
                         </Link>
                       ))}
                     </div>
-                    <Link
-                      href={subject.href}
-                      className="inline-flex items-center gap-1.5 text-sm lg:text-base font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors"
-                    >
-                      Start practising
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
+                    <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+                      <Link
+                        href={subject.href}
+                        className="inline-flex items-center gap-1.5 text-sm lg:text-base font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors"
+                      >
+                        Start practising
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
+                      {subject.examsHref && (
+                        <Link
+                          href={subject.examsHref}
+                          className="inline-flex items-center gap-1.5 text-sm lg:text-base font-medium text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                        >
+                          View past papers
+                        </Link>
+                      )}
+                    </div>
                   </>
                 )}
 

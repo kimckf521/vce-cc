@@ -29,6 +29,7 @@
     "seed-exam-set": "tsx --env-file=.env.local scripts/seed-exam-set.ts"
   },
   "dependencies": {
+    "@next/third-parties": "^14.2.35",
     "@prisma/client": "^5.14.0",
     "@supabase/ssr": "^0.5.1",
     "@supabase/supabase-js": "^2.45.4",

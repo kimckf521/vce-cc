@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, BookOpen, FileText, Timer, Target, CheckCircle, Compass } from "lucide-react";
 import MarketingNav from "@/components/MarketingNav";
 import MarketingFooter from "@/components/MarketingFooter";
+import { SITE_URL, ORGANIZATION_ID } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "VCE Foundation Mathematics — Past exams, worked solutions & practice",
@@ -37,10 +38,10 @@ const jsonLd = {
       name: "VCE Foundation Mathematics",
       description:
         "VCE Foundation Mathematics revision: real-world maths for everyday life — financial maths, measurement, statistics and algebra. Worked solutions and timed practice for Year 12 students.",
-      provider: { "@id": "https://www.atarhero.com.au/#organization" },
+      provider: { "@id": ORGANIZATION_ID },
       educationalLevel: "Senior Secondary School",
       inLanguage: "en-AU",
-      url: "https://www.atarhero.com.au/foundation",
+      url: `${SITE_URL}/foundation`,
       audience: { "@type": "EducationalAudience", educationalRole: "student" },
       hasCourseInstance: {
         "@type": "CourseInstance",
@@ -51,8 +52,8 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.atarhero.com.au/" },
-        { "@type": "ListItem", position: 2, name: "VCE Foundation Mathematics", item: "https://www.atarhero.com.au/foundation" },
+        { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+        { "@type": "ListItem", position: 2, name: "VCE Foundation Mathematics", item: `${SITE_URL}/foundation` },
       ],
     },
   ],
@@ -124,10 +125,10 @@ export default function FoundationLandingPage() {
               <ArrowRight className="inline-block h-4 w-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
             </Link>
             <Link
-              href="/vce/foundation/topics"
+              href="/vce/foundation/exams"
               className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-8 py-4 text-base lg:text-lg font-semibold text-gray-700 dark:text-gray-300 hover:border-brand-300 dark:hover:border-brand-600 transition-colors"
             >
-              Browse Foundation topics
+              Browse Foundation past papers
             </Link>
           </div>
         </div>
@@ -219,6 +220,48 @@ export default function FoundationLandingPage() {
                 <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 leading-relaxed">{f.text}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Past papers — links to the public, indexable exams surface */}
+      <section className="py-16 lg:py-20 px-5 sm:px-8 lg:px-12 bg-gray-50 dark:bg-gray-950/60">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3">
+            VCE Foundation Maths past papers — free to browse
+          </h2>
+          <p className="text-base lg:text-lg text-gray-500 dark:text-gray-400 leading-relaxed mb-8 max-w-2xl mx-auto">
+            Every available VCAA Foundation Mathematics exam since the 2023 study design, with
+            step-by-step worked solutions for every question. No account needed to read them — open
+            any paper and start practising.
+          </p>
+          <Link
+            href="/vce/foundation/exams"
+            className="inline-flex items-center gap-2 rounded-2xl bg-brand-600 px-8 py-4 text-base lg:text-lg font-semibold text-white shadow-lg shadow-brand-600/20 hover:bg-brand-700 transition-all"
+          >
+            <FileText className="h-4 w-4" />
+            View all VCE Foundation past papers
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </section>
+
+      {/* Explore all VCE maths subjects — internal-linking hub */}
+      <section className="py-12 lg:py-16 px-5 sm:px-8 lg:px-12">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-5">
+            Explore all VCE maths subjects
+          </h2>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link href="/general" className="rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:border-brand-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
+              VCE General Mathematics
+            </Link>
+            <Link href="/methods" className="rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:border-brand-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
+              VCE Mathematical Methods
+            </Link>
+            <Link href="/specialist" className="rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:border-brand-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
+              VCE Specialist Mathematics
+            </Link>
           </div>
         </div>
       </section>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import MarketingNav from "@/components/MarketingNav";
 import MarketingFooter from "@/components/MarketingFooter";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "FAQs",
@@ -99,8 +100,8 @@ export default function FAQsPage() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.atarhero.com.au/" },
-          { "@type": "ListItem", position: 2, name: "FAQs", item: "https://www.atarhero.com.au/faqs" },
+          { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+          { "@type": "ListItem", position: 2, name: "FAQs", item: `${SITE_URL}/faqs` },
         ],
       },
     ],

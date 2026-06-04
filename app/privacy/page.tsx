@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import MarketingNav from "@/components/MarketingNav";
 import MarketingFooter from "@/components/MarketingFooter";
+import { SITE_URL, ORGANIZATION_ID, WEBSITE_ID } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -22,19 +23,19 @@ const privacyJsonLd = {
       name: "Privacy Policy",
       description:
         "How ATAR Hero collects, uses and protects your personal information in accordance with the Australian Privacy Principles.",
-      url: "https://www.atarhero.com.au/privacy",
+      url: `${SITE_URL}/privacy`,
       inLanguage: "en-AU",
       datePublished: "2026-04-09",
       dateModified: "2026-04-09",
-      isPartOf: { "@id": "https://www.atarhero.com.au/#website" },
-      publisher: { "@id": "https://www.atarhero.com.au/#organization" },
+      isPartOf: { "@id": WEBSITE_ID },
+      publisher: { "@id": ORGANIZATION_ID },
       about: { "@type": "Thing", name: "Privacy and data protection" },
     },
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.atarhero.com.au/" },
-        { "@type": "ListItem", position: 2, name: "Privacy Policy", item: "https://www.atarhero.com.au/privacy" },
+        { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+        { "@type": "ListItem", position: 2, name: "Privacy Policy", item: `${SITE_URL}/privacy` },
       ],
     },
   ],

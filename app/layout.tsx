@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import dynamic from "next/dynamic";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import ThemeProvider from "@/components/ThemeProvider";
 import "./globals.css";
 
@@ -13,6 +14,9 @@ const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 const SITE_NAME = "ATAR Hero";
+// GA4 Measurement ID. Public by design (it renders into page HTML), so a default
+// is fine here; set NEXT_PUBLIC_GA_ID to override per environment if ever needed.
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "G-E2WQVXBF6S";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -295,6 +299,8 @@ export default function RootLayout({
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />
+        {/* Google Analytics 4 — production only, so localhost + preview deploys stay out of the data. */}
+        {process.env.VERCEL_ENV === "production" && <GoogleAnalytics gaId={GA_ID} />}
       </body>
     </html>
   );

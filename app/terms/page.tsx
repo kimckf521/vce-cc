@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import MarketingNav from "@/components/MarketingNav";
 import MarketingFooter from "@/components/MarketingFooter";
+import { SITE_URL, ORGANIZATION_ID, WEBSITE_ID } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Terms & Conditions",
@@ -22,19 +23,19 @@ const termsJsonLd = {
       name: "Terms & Conditions",
       description:
         "The terms that govern your use of ATAR Hero, including accounts, subscriptions, acceptable use and intellectual property.",
-      url: "https://www.atarhero.com.au/terms",
+      url: `${SITE_URL}/terms`,
       inLanguage: "en-AU",
       datePublished: "2026-04-09",
       dateModified: "2026-04-09",
-      isPartOf: { "@id": "https://www.atarhero.com.au/#website" },
-      publisher: { "@id": "https://www.atarhero.com.au/#organization" },
+      isPartOf: { "@id": WEBSITE_ID },
+      publisher: { "@id": ORGANIZATION_ID },
       about: { "@type": "Thing", name: "Terms of service and acceptable use" },
     },
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.atarhero.com.au/" },
-        { "@type": "ListItem", position: 2, name: "Terms & Conditions", item: "https://www.atarhero.com.au/terms" },
+        { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+        { "@type": "ListItem", position: 2, name: "Terms & Conditions", item: `${SITE_URL}/terms` },
       ],
     },
   ],

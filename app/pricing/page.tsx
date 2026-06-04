@@ -6,6 +6,7 @@ import MarketingFooter from "@/components/MarketingFooter";
 import CheckoutButton from "@/components/CheckoutButton";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Pricing — Free & VCE Maths Plans",
@@ -115,8 +116,8 @@ const faqJsonLd = {
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.atarhero.com.au/" },
-        { "@type": "ListItem", position: 2, name: "Pricing", item: "https://www.atarhero.com.au/pricing" },
+        { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+        { "@type": "ListItem", position: 2, name: "Pricing", item: `${SITE_URL}/pricing` },
       ],
     },
   ],

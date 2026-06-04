@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, BookOpen, FileText, Timer, Target, CheckCircle, TrendingUp } from "lucide-react";
 import MarketingNav from "@/components/MarketingNav";
 import MarketingFooter from "@/components/MarketingFooter";
+import { SITE_URL, ORGANIZATION_ID } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "VCE Mathematical Methods — Past exams, worked solutions & practice",
@@ -38,10 +39,10 @@ const jsonLd = {
       alternateName: "VCE Methods",
       description:
         "VCE Mathematical Methods revision: functions, calculus, algebra, probability and statistics. Real VCAA past exam questions, step-by-step worked solutions and timed practice exams for Year 12 students.",
-      provider: { "@id": "https://www.atarhero.com.au/#organization" },
+      provider: { "@id": ORGANIZATION_ID },
       educationalLevel: "Senior Secondary School",
       inLanguage: "en-AU",
-      url: "https://www.atarhero.com.au/methods",
+      url: `${SITE_URL}/methods`,
       audience: { "@type": "EducationalAudience", educationalRole: "student" },
       hasCourseInstance: {
         "@type": "CourseInstance",
@@ -52,8 +53,8 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.atarhero.com.au/" },
-        { "@type": "ListItem", position: 2, name: "VCE Mathematical Methods", item: "https://www.atarhero.com.au/methods" },
+        { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+        { "@type": "ListItem", position: 2, name: "VCE Mathematical Methods", item: `${SITE_URL}/methods` },
       ],
     },
   ],
@@ -123,10 +124,10 @@ export default function MethodsLandingPage() {
               <ArrowRight className="inline-block h-4 w-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
             </Link>
             <Link
-              href="/vce/methods/topics"
+              href="/vce/methods/exams"
               className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-8 py-4 text-base lg:text-lg font-semibold text-gray-700 dark:text-gray-300 hover:border-brand-300 dark:hover:border-brand-600 transition-colors"
             >
-              Browse Methods topics
+              Browse Methods past papers
             </Link>
           </div>
         </div>
@@ -213,6 +214,28 @@ export default function MethodsLandingPage() {
         </div>
       </section>
 
+      {/* Past papers — links to the public, indexable exams surface */}
+      <section className="py-16 lg:py-20 px-5 sm:px-8 lg:px-12 bg-gray-50 dark:bg-gray-950/60">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3">
+            VCE Methods past papers — free to browse
+          </h2>
+          <p className="text-base lg:text-lg text-gray-500 dark:text-gray-400 leading-relaxed mb-8 max-w-2xl mx-auto">
+            Every VCAA Mathematical Methods Exam 1 and Exam 2 from 2016 onwards, with full worked
+            solutions for every question. No account needed to read them — search by year and open
+            any paper.
+          </p>
+          <Link
+            href="/vce/methods/exams"
+            className="inline-flex items-center gap-2 rounded-2xl bg-brand-600 px-8 py-4 text-base lg:text-lg font-semibold text-white shadow-lg shadow-brand-600/20 hover:bg-brand-700 transition-all"
+          >
+            <FileText className="h-4 w-4" />
+            View all VCE Methods past papers
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </section>
+
       {/* Methods vs Specialist callout */}
       <section className="py-16 lg:py-20 px-5 sm:px-8 lg:px-12 bg-gradient-to-b from-white to-brand-50 dark:from-gray-900 dark:to-brand-950">
         <div className="max-w-3xl mx-auto">
@@ -236,6 +259,26 @@ export default function MethodsLandingPage() {
                 </Link>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Explore all VCE maths subjects — internal-linking hub */}
+      <section className="py-12 lg:py-16 px-5 sm:px-8 lg:px-12">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-5">
+            Explore all VCE maths subjects
+          </h2>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link href="/foundation" className="rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:border-brand-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
+              VCE Foundation Mathematics
+            </Link>
+            <Link href="/general" className="rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:border-brand-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
+              VCE General Mathematics
+            </Link>
+            <Link href="/specialist" className="rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:border-brand-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
+              VCE Specialist Mathematics
+            </Link>
           </div>
         </div>
       </section>

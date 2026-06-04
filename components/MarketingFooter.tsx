@@ -25,18 +25,43 @@ export default function MarketingFooter() {
             </p>
           </div>
 
-          {/* Product */}
+          {/* VCE Maths subjects — sitewide links to the indexable subject
+              landing pages (and their public past papers). */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wide">
-              Product
+              VCE Maths
             </h3>
             <ul className="mt-4 space-y-3 text-sm lg:text-base">
               <li>
                 <Link
-                  href="/vce/methods/topics"
+                  href="/methods"
                   className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
-                  Topics
+                  Mathematical Methods
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/specialist"
+                  className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                >
+                  Specialist Mathematics
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/general"
+                  className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                >
+                  General Mathematics
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/foundation"
+                  className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                >
+                  Foundation Mathematics
                 </Link>
               </li>
               <li>
@@ -44,23 +69,7 @@ export default function MarketingFooter() {
                   href="/vce/methods/exams"
                   className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
-                  Past papers
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/vce/methods/practice"
-                  className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
-                >
-                  Practice
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/pricing"
-                  className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
-                >
-                  Pricing
+                  VCAA past papers
                 </Link>
               </li>
             </ul>
@@ -74,10 +83,26 @@ export default function MarketingFooter() {
             <ul className="mt-4 space-y-3 text-sm lg:text-base">
               <li>
                 <Link
+                  href="/pricing"
+                  className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                >
+                  Pricing
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/faqs"
                   className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
                   FAQs
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/about"
+                  className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                >
+                  About
                 </Link>
               </li>
               <li>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Sparkles, Target, BookOpen, Heart, Trophy, ShieldCheck, MessageSquare, ArrowRight } from "lucide-react";
 import MarketingNav from "@/components/MarketingNav";
 import MarketingFooter from "@/components/MarketingFooter";
+import { SITE_URL, ORGANIZATION_ID, WEBSITE_ID } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About",
@@ -24,23 +25,23 @@ const aboutJsonLd = {
   "@graph": [
     {
       "@type": "AboutPage",
-      "@id": "https://www.atarhero.com.au/about#aboutpage",
+      "@id": `${SITE_URL}/about#aboutpage`,
       name: "About ATAR Hero",
       description:
         "Why ATAR Hero exists, what makes it different and who it's built for — the Year 12 VCE maths revision platform from VCE specialists in Victoria.",
-      url: "https://www.atarhero.com.au/about",
+      url: `${SITE_URL}/about`,
       inLanguage: "en-AU",
       datePublished: "2026-05-08",
       dateModified: "2026-05-08",
-      isPartOf: { "@id": "https://www.atarhero.com.au/#website" },
-      about: { "@id": "https://www.atarhero.com.au/#organization" },
-      mainEntity: { "@id": "https://www.atarhero.com.au/#organization" },
+      isPartOf: { "@id": WEBSITE_ID },
+      about: { "@id": ORGANIZATION_ID },
+      mainEntity: { "@id": ORGANIZATION_ID },
     },
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.atarhero.com.au/" },
-        { "@type": "ListItem", position: 2, name: "About", item: "https://www.atarhero.com.au/about" },
+        { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+        { "@type": "ListItem", position: 2, name: "About", item: `${SITE_URL}/about` },
       ],
     },
   ],
