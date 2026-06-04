@@ -1,23 +1,22 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 /**
- * One-click / passwordless auth options shared by /login and /signup, shown
- * above the email+password form.
+ * One-click / passwordless auth shared by /login and /signup.
  *
- *  - "Continue with Google" → Supabase OAuth (needs the Google provider enabled
- *    in Supabase + a Google Cloud OAuth client; until then it returns a clear
- *    "provider not enabled" error rather than crashing).
- *  - "Email me a magic link" → Supabase passwordless OTP (works with no extra
- *    config).
+ *  - "Continue with Google" → Supabase OAuth (PKCE) via /auth/callback.
+ *  - Email **code** (not a magic link): we send a 6-digit code and the user
+ *    types it. This is deliberately a code, not a clickable link — link-based
+ *    magic links are eaten by email scanners (Outlook/Hotmail "Safe Links"
+ *    prefetch and consume the single-use token) and the PKCE token only
+ *    verifies in the same browser. A typed code has nothing to prefetch and
+ *    works on any device.
  *
- * Both redirect to /auth/callback?next=…, which exchanges the code and hands
- * off to /auth/finish → /api/auth/sync-user so the new user gets the exact same
- * provisioning (FREE enrolments, vce_sid session cookie, referral attribution)
- * as a password signup. Referral codes ride along automatically via the
- * `ref_code` cookie set by /signup?ref=.
+ * After OTP verification we POST /api/auth/sync-user (same provisioning as
+ * password login: FREE enrolments, vce_sid cookie, referral attribution).
  */
 function GoogleIcon() {
   return (
@@ -30,25 +29,22 @@ function GoogleIcon() {
   );
 }
 
+const inputClass =
+  "w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-3 text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 transition focus:border-transparent focus:outline-none focus:ring-2 focus:ring-brand-500";
+const primaryBtn =
+  "w-full rounded-xl bg-brand-600 py-3 text-base font-semibold text-white transition-colors hover:bg-brand-700 disabled:opacity-60";
+
 export default function SocialAuth({ next = "/dashboard" }: { next?: string }) {
+  const router = useRouter();
   const [email, setEmail] = useState("");
-  const [magicMode, setMagicMode] = useState(false);
-  const [sent, setSent] = useState(false);
-  const [loading, setLoading] = useState<"google" | "magic" | null>(null);
+  const [code, setCode] = useState("");
+  const [mode, setMode] = useState<"buttons" | "code-email" | "code-enter">("buttons");
+  const [loading, setLoading] = useState<"google" | "send" | "verify" | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   function callbackUrl() {
     const origin = typeof window !== "undefined" ? window.location.origin : "";
     return `${origin}/auth/callback?next=${encodeURIComponent(next)}`;
-  }
-
-  // Magic links land on /auth/confirm (a click-gated page), NOT Supabase's
-  // /verify endpoint — otherwise email link-scanners (Outlook/Hotmail Safe
-  // Links) prefetch the link and consume the single-use token before the user
-  // clicks. The email template appends &token_hash=…&type=email to this.
-  function confirmUrl() {
-    const origin = typeof window !== "undefined" ? window.location.origin : "";
-    return `${origin}/auth/confirm?next=${encodeURIComponent(next)}`;
   }
 
   async function handleGoogle() {
@@ -67,34 +63,55 @@ export default function SocialAuth({ next = "/dashboard" }: { next?: string }) {
       );
       setLoading(null);
     }
-    // On success the browser redirects to Google — nothing more to do here.
   }
 
-  async function handleMagicLink(e: React.FormEvent) {
-    e.preventDefault();
+  async function handleSendCode(e?: React.FormEvent) {
+    e?.preventDefault();
     setError(null);
-    setLoading("magic");
+    setLoading("send");
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: confirmUrl(), shouldCreateUser: true },
+      options: { shouldCreateUser: true },
     });
     if (error) {
       setError(error.message);
       setLoading(null);
-    } else {
-      setSent(true);
-      setLoading(null);
+      return;
     }
+    setCode("");
+    setMode("code-enter");
+    setLoading(null);
   }
 
-  if (sent) {
-    return (
-      <div className="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
-        📬 Check your email — we sent a one-tap sign-in link to{" "}
-        <strong>{email}</strong>.
-      </div>
-    );
+  async function handleVerifyCode(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setLoading("verify");
+    const supabase = createClient();
+    const { error } = await supabase.auth.verifyOtp({
+      email,
+      token: code.trim(),
+      type: "email",
+    });
+    if (error) {
+      setError(
+        /expired|invalid|incorrect/i.test(error.message)
+          ? "That code is wrong or has expired — check the latest email or resend."
+          : error.message,
+      );
+      setLoading(null);
+      return;
+    }
+    // Provision the user (free enrolments, vce_sid cookie, referral), same as
+    // password login, then continue.
+    try {
+      await fetch("/api/auth/sync-user", { method: "POST" });
+    } catch {
+      // best-effort — the session exists; the destination layout guards anyway
+    }
+    router.push(next);
+    router.refresh();
   }
 
   return (
@@ -105,26 +122,30 @@ export default function SocialAuth({ next = "/dashboard" }: { next?: string }) {
         </div>
       )}
 
-      <button
-        type="button"
-        onClick={handleGoogle}
-        disabled={loading !== null}
-        className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-200 transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-60"
-      >
-        <GoogleIcon />
-        {loading === "google" ? "Redirecting…" : "Continue with Google"}
-      </button>
-
-      {!magicMode ? (
+      {mode !== "code-enter" && (
         <button
           type="button"
-          onClick={() => setMagicMode(true)}
+          onClick={handleGoogle}
+          disabled={loading !== null}
+          className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-200 transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-60"
+        >
+          <GoogleIcon />
+          {loading === "google" ? "Redirecting…" : "Continue with Google"}
+        </button>
+      )}
+
+      {mode === "buttons" && (
+        <button
+          type="button"
+          onClick={() => setMode("code-email")}
           className="w-full text-center text-sm text-gray-500 dark:text-gray-400 transition-colors hover:text-brand-600 dark:hover:text-brand-400"
         >
-          or email me a magic link — no password
+          or sign in with an email code — no password
         </button>
-      ) : (
-        <form onSubmit={handleMagicLink} className="space-y-2">
+      )}
+
+      {mode === "code-email" && (
+        <form onSubmit={handleSendCode} className="space-y-2">
           <input
             type="email"
             required
@@ -132,14 +153,40 @@ export default function SocialAuth({ next = "/dashboard" }: { next?: string }) {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
             autoFocus
-            className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-3 text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 transition focus:border-transparent focus:outline-none focus:ring-2 focus:ring-brand-500"
+            className={inputClass}
           />
+          <button type="submit" disabled={loading !== null} className={primaryBtn}>
+            {loading === "send" ? "Sending…" : "Email me a sign-in code"}
+          </button>
+        </form>
+      )}
+
+      {mode === "code-enter" && (
+        <form onSubmit={handleVerifyCode} className="space-y-2">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Enter the 6-digit code we sent to <strong>{email}</strong>.
+          </p>
+          <input
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            required
+            value={code}
+            onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 10))}
+            placeholder="Enter the code"
+            maxLength={10}
+            autoFocus
+            className={`${inputClass} text-center text-2xl font-bold tracking-[0.3em]`}
+          />
+          <button type="submit" disabled={loading !== null} className={primaryBtn}>
+            {loading === "verify" ? "Signing you in…" : "Verify & sign in"}
+          </button>
           <button
-            type="submit"
+            type="button"
+            onClick={() => handleSendCode()}
             disabled={loading !== null}
-            className="w-full rounded-xl bg-brand-600 py-3 text-base font-semibold text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
+            className="w-full text-center text-sm text-gray-500 dark:text-gray-400 transition-colors hover:text-brand-600 dark:hover:text-brand-400"
           >
-            {loading === "magic" ? "Sending…" : "Email me a sign-in link"}
+            Resend code
           </button>
         </form>
       )}
