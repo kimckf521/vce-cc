@@ -118,10 +118,10 @@ export default function FoundationLandingPage() {
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/signup"
+              href="/try/vce/foundation"
               className="group rounded-2xl bg-brand-600 px-8 py-4 text-base lg:text-lg font-semibold text-white shadow-lg shadow-brand-600/20 hover:bg-brand-700 hover:-translate-y-0.5 transition-all"
             >
-              Start free — no credit card
+              Try Foundation free — no signup
               <ArrowRight className="inline-block h-4 w-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
             </Link>
             <Link

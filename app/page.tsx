@@ -343,10 +343,14 @@ export default async function HomePage() {
                     </div>
                     <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
                       <Link
-                        href={subject.href}
+                        href={
+                          user
+                            ? subject.href
+                            : `/try${subject.href.replace("/topics", "")}`
+                        }
                         className="inline-flex items-center gap-1.5 text-sm lg:text-base font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors"
                       >
-                        Start practising
+                        {user ? "Start practising" : "Try it free — no signup"}
                         <ArrowRight className="h-4 w-4" />
                       </Link>
                       {subject.examsHref && (
