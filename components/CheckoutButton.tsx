@@ -34,10 +34,17 @@ export default function CheckoutButton({ className, children }: Props) {
         return;
       }
 
-      const data = await res.json();
+      // Parse defensively — a crashed/empty response must not throw
+      // "Unexpected end of JSON input"; show a real message instead.
+      const data = (await res.json().catch(() => null)) as
+        | { url?: string; error?: string }
+        | null;
 
-      if (!res.ok || !data.url) {
-        setError(data.error ?? "Could not start checkout. Please try again.");
+      if (!res.ok || !data?.url) {
+        setError(
+          data?.error ??
+            `Could not start checkout (status ${res.status}). Please try again.`,
+        );
         setLoading(false);
         return;
       }
