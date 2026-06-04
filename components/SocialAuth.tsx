@@ -42,6 +42,15 @@ export default function SocialAuth({ next = "/dashboard" }: { next?: string }) {
     return `${origin}/auth/callback?next=${encodeURIComponent(next)}`;
   }
 
+  // Magic links land on /auth/confirm (a click-gated page), NOT Supabase's
+  // /verify endpoint — otherwise email link-scanners (Outlook/Hotmail Safe
+  // Links) prefetch the link and consume the single-use token before the user
+  // clicks. The email template appends &token_hash=…&type=email to this.
+  function confirmUrl() {
+    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    return `${origin}/auth/confirm?next=${encodeURIComponent(next)}`;
+  }
+
   async function handleGoogle() {
     setError(null);
     setLoading("google");
@@ -68,7 +77,7 @@ export default function SocialAuth({ next = "/dashboard" }: { next?: string }) {
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: callbackUrl(), shouldCreateUser: true },
+      options: { emailRedirectTo: confirmUrl(), shouldCreateUser: true },
     });
     if (error) {
       setError(error.message);
