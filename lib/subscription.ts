@@ -123,6 +123,46 @@ export async function canAccessTopic(
 }
 
 /**
+ * Can the user SAVE work (mark progress / bookmark) on a given question?
+ *
+ * The rule is "save what you can access": a save is allowed iff the user can
+ * access the question's topic (`canAccessTopic`) — so free users save on the
+ * free Algebra preview topic, and paid users save everywhere. Resolves the
+ * question to its topic + subject, then defers to `canAccessTopic`. Returns
+ * false if the row is missing. NB: admin bypass is handled by the API-route
+ * callers (they already fetch the role), not here.
+ */
+export async function canAccessQuestionSetItem(
+  userId: string,
+  questionSetItemId: string
+): Promise<boolean> {
+  const item = await prisma.questionSetItem.findUnique({
+    where: { id: questionSetItemId },
+    select: { topic: { select: { slug: true, subject: { select: { slug: true } } } } },
+  });
+  if (!item?.topic?.subject) return false;
+  const access = await canAccessTopic(userId, item.topic.slug, item.topic.subject.slug);
+  return access.allowed;
+}
+
+/** Same rule for the legacy `Question` model (past-paper questions). */
+export async function canAccessQuestion(
+  userId: string,
+  questionId: string
+): Promise<boolean> {
+  const q = await prisma.question.findUnique({
+    where: { id: questionId },
+    select: {
+      topic: { select: { slug: true } },
+      subject: { select: { slug: true } },
+    },
+  });
+  if (!q?.topic || !q?.subject) return false;
+  const access = await canAccessTopic(userId, q.topic.slug, q.subject.slug);
+  return access.allowed;
+}
+
+/**
  * Check whether a user can access a gated feature (practice, search, history).
  * These features are paid-only — free users always hit the paywall.
  */

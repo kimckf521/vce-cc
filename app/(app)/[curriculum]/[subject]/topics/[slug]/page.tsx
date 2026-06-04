@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/utils";
 import type { SubtopicInfo, TopicQuestionFilters } from "@/lib/question-groups";
 import { fetchQuestionSetGroupsPaginated } from "@/lib/question-set-groups";
-import { canAccessTopic, hasActiveSubscription } from "@/lib/subscription";
+import { canAccessTopic } from "@/lib/subscription";
 import { getDbSubjectSlug } from "@/lib/subject-context";
 import InfiniteQuestionList from "@/components/InfiniteQuestionList";
 import TopicFilters from "@/components/TopicFilters";
@@ -63,8 +63,11 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
     : null;
   const isAdmin = isAdminRole(dbUser?.role);
 
+  // Topic access — computed once and reused below for canTrackProgress. Admins
+  // bypass; everyone else gets the free Algebra preview topic or a paid subject.
+  let access: { allowed: boolean } = { allowed: true };
   if (user && !isAdmin) {
-    const access = await canAccessTopic(user.id, slug, dbSubjectSlug);
+    access = await canAccessTopic(user.id, slug, dbSubjectSlug);
     if (!access.allowed) {
       return (
         <PaywallScreen
@@ -97,10 +100,10 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
     dbSubjectSlug,
   );
 
-  // Self-marking and bookmarking are paid-only. Admins and active subscribers
-  // pass; free users see locked Mark Correct / Mark Incorrect / Bookmark icons.
-  const canTrackProgress =
-    isAdmin || (!!user && (await hasActiveSubscription(user.id, dbSubjectSlug)));
+  // Mark/bookmark is unlocked wherever the user can access the topic ("save what
+  // you can access") — so free users get live buttons on the free Algebra topic,
+  // and locked icons on paid topics (which they can't open anyway).
+  const canTrackProgress = isAdmin || (!!user && access.allowed);
 
   return (
     <div>

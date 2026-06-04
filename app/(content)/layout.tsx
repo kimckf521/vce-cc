@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import SignupNudge from "@/components/SignupNudge";
 import { prisma } from "@/lib/prisma";
 import { isAdminRole } from "@/lib/utils";
 import { hasActiveSubscription } from "@/lib/subscription";
@@ -41,23 +41,9 @@ export default async function ContentLayout({
         <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:py-10">
           {children}
 
-          {/* Conversion CTA — the content is free; the tools convert. */}
-          <div className="mt-10 rounded-2xl border border-brand-200 dark:border-brand-800 bg-brand-50 dark:bg-brand-950/40 p-6 text-center">
-            <h2 className="text-lg lg:text-xl font-bold text-gray-900 dark:text-gray-100">
-              Practise like it&apos;s exam day
-            </h2>
-            <p className="mx-auto mt-1 max-w-xl text-sm lg:text-base text-gray-600 dark:text-gray-400">
-              These questions and worked solutions are free. Create a free
-              account to sit timed exams, track your progress, and drill your
-              weak topics.
-            </p>
-            <Link
-              href="/signup"
-              className="mt-4 inline-flex rounded-xl bg-brand-600 px-5 py-2.5 text-sm lg:text-base font-semibold text-white hover:bg-brand-700 transition-colors"
-            >
-              Get started — free
-            </Link>
-          </div>
+          {/* Conversion CTA — the content is free; a free account adds
+              interactive practice. Honest free-tier copy lives in SignupNudge. */}
+          <SignupNudge variant="block" className="mt-10" />
         </main>
       </div>
     );

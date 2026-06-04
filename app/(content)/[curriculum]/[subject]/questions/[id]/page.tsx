@@ -7,8 +7,9 @@ import { createClient } from "@/lib/supabase/server";
 import QuestionGroup from "@/components/QuestionGroup";
 import BackLink from "@/components/BackLink";
 import JsonLd from "@/components/JsonLd";
+import SignupNudge from "@/components/SignupNudge";
 import { isAdminRole } from "@/lib/utils";
-import { hasActiveSubscription } from "@/lib/subscription";
+import { canAccessTopic } from "@/lib/subscription";
 import { getDbSubjectSlug, getSubjectMetadata } from "@/lib/subject-context";
 import { questionBackLink } from "@/lib/question-back-link";
 
@@ -54,7 +55,7 @@ const questionSelect = (userId?: string) => ({
   difficulty: true,
   examId: true,
   exam: { select: { year: true, examType: true } },
-  topic: { select: { name: true } },
+  topic: { select: { name: true, slug: true } },
   subtopics: { select: { name: true } },
   solution: { select: { content: true, imageUrl: true, videoUrl: true } },
   attempts: userId
@@ -130,8 +131,12 @@ export default async function QuestionPage({ params, searchParams }: PageProps) 
   const dbUser = user
     ? await prisma.user.findUnique({ where: { id: user.id }, select: { role: true } })
     : null;
+  // Mark/bookmark unlocked where the user can access this question's topic
+  // ("save what you can access") — free users get live buttons on Algebra
+  // questions, locked on paid-topic questions.
   const canTrackProgress =
-    isAdminRole(dbUser?.role) || (!!user && (await hasActiveSubscription(user.id, dbSubjectSlug)));
+    isAdminRole(dbUser?.role) ||
+    (!!user && (await canAccessTopic(user.id, question.topic.slug, dbSubjectSlug)).allowed);
 
   const subjectName = getSubjectMetadata(subjectSlug)?.displayName ?? "VCE Mathematics";
   const canonicalUrl = `${SITE_URL}/${curriculum}/${subjectSlug}/questions/${id}`;
@@ -184,6 +189,10 @@ export default async function QuestionPage({ params, searchParams }: PageProps) 
         parts={toGroupParts(parts)}
         canTrackProgress={canTrackProgress}
       />
+
+      {/* Anonymous SEO traffic lands here — nudge a free signup at the value
+          moment (right after the worked solution). Logged-in users skip it. */}
+      {!user && <SignupNudge variant="compact" className="mt-8" />}
     </div>
   );
 }

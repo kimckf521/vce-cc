@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAuthenticatedUser } from "@/lib/auth";
 import { createAttemptSchema, deleteAttemptSchema } from "@/lib/validations";
 import { rateLimit } from "@/lib/rate-limit";
-import { hasActiveSubscription } from "@/lib/subscription";
+import { canAccessQuestion } from "@/lib/subscription";
 import { isAdminRole } from "@/lib/utils";
 
 export async function POST(req: NextRequest) {
@@ -22,18 +22,19 @@ export async function POST(req: NextRequest) {
 
   const { questionId, status, bookmarked } = parsed.data;
 
-  // Self-marking and bookmarking are paid-only. Admins and active subscribers
-  // pass. Free users get a 403 — the client suppresses the call already, this
-  // is the belt-and-braces enforcement.
+  // "Save what you can access": marking/bookmarking is allowed iff the user can
+  // access this question's topic — so free users save on the free Algebra topic,
+  // paid users everywhere, admins bypass. Server-side guard; the client already
+  // hides the buttons when locked.
   if (bookmarked !== undefined || status !== undefined) {
     const dbUser = await prisma.user.findUnique({
       where: { id: user.id },
       select: { role: true },
     });
     const isAdmin = isAdminRole(dbUser?.role);
-    if (!isAdmin && !(await hasActiveSubscription(user.id))) {
+    if (!isAdmin && !(await canAccessQuestion(user.id, questionId))) {
       return NextResponse.json(
-        { error: "Progress tracking is part of the paid plan", code: "PAYWALL" },
+        { error: "Saving progress on this topic is part of the paid plan", code: "PAYWALL" },
         { status: 403 },
       );
     }

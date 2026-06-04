@@ -10,8 +10,6 @@ import {
   getSubjectMetadata,
 } from "@/lib/subject-context";
 import MathContent from "@/components/MathContent";
-import PaywallScreen from "@/components/PaywallScreen";
-import { canAccessPaidPractice } from "@/lib/practice-gate";
 
 export const dynamic = "force-dynamic";
 
@@ -42,19 +40,9 @@ export default async function SubjectBookmarkPage({ params }: PageProps) {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  // Bookmarks are a paid feature — admins + VCE Maths subscribers only.
-  // Free users hit the dedicated PaywallScreen and never see the empty list.
-  const hasPaid = await canAccessPaidPractice();
-  if (!hasPaid) {
-    return (
-      <PaywallScreen
-        feature="bookmark"
-        backHref={`/${curriculum}/${subject}/topics`}
-        backLabel={`Back to ${getSubjectMetadata(subject)?.shortName ?? subject} topics`}
-      />
-    );
-  }
-
+  // Bookmarks are free for every signed-in user — you can bookmark anything you
+  // can access (the free Algebra topic + public past papers), and review your
+  // own bookmarks here. The list below is already scoped to the user's own rows.
   const subjectDbSlug = getDbSubjectSlug(subject);
   const meta = getSubjectMetadata(subject);
   const shortName = meta?.shortName ?? subject;

@@ -22,9 +22,8 @@ interface PageProps {
  * Sessions are scoped by walking the join:
  *   ExamSession → ExamSessionQuestion → QuestionSetItem → Topic → Subject
  *
- * Paid tool — gated to the VCE Maths plan (admins bypass). The access check
- * lives in history/layout.tsx so the list and the /[id] review share one gate;
- * free users never reach this component.
+ * Free for every signed-in user — the data here is the user's own practice
+ * record, so reviewing it is part of the free tier.
  */
 export default async function SubjectHistoryPage({ params }: PageProps) {
   const { curriculum, subject } = await params;

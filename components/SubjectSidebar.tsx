@@ -103,16 +103,16 @@ export default function SubjectSidebar({
       href: `/${curriculum}/${subject}/bookmark`,
       label: "Bookmark",
       icon: Bookmark,
-      // Bookmarks rely on cross-topic access; gated to the VCE Maths plan.
-      paidOnly: true,
+      // Free: bookmark anything you can access (the free Algebra topic + past
+      // papers) and review them here.
+      paidOnly: false,
     },
     {
       href: `/${curriculum}/${subject}/history`,
       label: "History",
       icon: History,
-      // Practice history is a paid tool — gated to the VCE Maths plan (enforced
-      // server-side in history/layout.tsx). Free users see the lock + paywall.
-      paidOnly: true,
+      // Free: your own practice history is part of the free tier.
+      paidOnly: false,
     },
   ];
 

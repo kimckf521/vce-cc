@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
+import SocialAuth from "@/components/SocialAuth";
 import { createClient } from "@/lib/supabase/client";
 
 function LoginForm() {
@@ -59,6 +60,13 @@ function LoginForm() {
             {error}
           </div>
         )}
+
+        <SocialAuth next="/dashboard" />
+        <div className="my-6 flex items-center gap-3">
+          <div className="h-px flex-1 bg-gray-200 dark:bg-gray-700" />
+          <span className="text-xs text-gray-400 dark:text-gray-500">or log in with email</span>
+          <div className="h-px flex-1 bg-gray-200 dark:bg-gray-700" />
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>

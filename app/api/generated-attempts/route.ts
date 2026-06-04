@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuthenticatedUser } from "@/lib/auth";
 import { rateLimit } from "@/lib/rate-limit";
-import { hasActiveSubscription } from "@/lib/subscription";
+import { canAccessQuestionSetItem } from "@/lib/subscription";
 import { isAdminRole } from "@/lib/utils";
 import { z } from "zod";
 
@@ -30,19 +30,19 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json();
 
-  // Self-marking and bookmarking are paid-only. Admins and active subscribers
-  // pass; everyone else gets a 403 — the client UI suppresses the call already
-  // for free users, this is the server-side belt-and-braces.
-  async function ensurePaid() {
+  // "Save what you can access": marking/bookmarking is allowed iff the user can
+  // access the item's topic (canAccessQuestionSetItem) — so free users save on
+  // the free Algebra topic, paid users save everywhere, admins bypass. The
+  // client already hides the buttons when locked; this is the server-side guard.
+  async function ensureCanSave(questionSetItemId: string) {
     const dbUser = await prisma.user.findUnique({
       where: { id: user.id },
       select: { role: true },
     });
-    const isAdmin = isAdminRole(dbUser?.role);
-    if (isAdmin) return null;
-    if (await hasActiveSubscription(user.id)) return null;
+    if (isAdminRole(dbUser?.role)) return null;
+    if (await canAccessQuestionSetItem(user.id, questionSetItemId)) return null;
     return NextResponse.json(
-      { error: "Progress tracking is part of the paid plan", code: "PAYWALL" },
+      { error: "Saving progress on this topic is part of the paid plan", code: "PAYWALL" },
       { status: 403 },
     );
   }
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
   // Bookmark toggle.
   const bm = bookmarkSchema.safeParse(body);
   if (bm.success) {
-    const denied = await ensurePaid();
+    const denied = await ensureCanSave(bm.data.questionSetItemId);
     if (denied) return denied;
     const { questionSetItemId, bookmarked } = bm.data;
     const attempt = await prisma.questionSetAttempt.upsert({
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid input", details: parsed.error.flatten().fieldErrors }, { status: 400 });
   }
 
-  const denied = await ensurePaid();
+  const denied = await ensureCanSave(parsed.data.questionSetItemId);
   if (denied) return denied;
 
   const { questionSetItemId, status } = parsed.data;
