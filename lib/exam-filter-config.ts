@@ -87,3 +87,26 @@ export function getExam1FocusValue(subjectSlug?: string): string {
   const first = opts.find((o) => o.value.includes("EXAM_1") || o.value.includes("SECTION_A"));
   return first?.value ?? "EXAM_1";
 }
+
+/**
+ * Whether a drill item is "calculator-free" for the question-card badge.
+ *
+ * Only Methods & Specialist have a technology-free exam (Exam 1 = SHORT_ANSWER);
+ * its items are calculator-free, while MCQ (Exam 2A) and extended (Exam 2B)
+ * belong to the calculator-active Exam 2. Foundation & General have no
+ * technology-free exam → always false (their badge is omitted anyway).
+ *
+ * Driving the badge off question TYPE (exam section) keeps it consistent with
+ * the Exam 1 / 2A / 2B filter, which is also type-based — so filtering "Exam 2"
+ * never surfaces a "Calculator-free" question.
+ */
+export function isCalculatorFreeType(
+  subjectSlug: string | undefined,
+  type: QSIType,
+): boolean {
+  if (subjectSlug !== "mathematical-methods" && subjectSlug !== "vce-specialist") {
+    return false;
+  }
+  const exam1 = getExamFilterOptions(subjectSlug).find((o) => o.value === "EXAM_1");
+  return exam1?.types.includes(type) ?? false;
+}

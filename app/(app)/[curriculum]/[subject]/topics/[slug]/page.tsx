@@ -13,6 +13,7 @@ import TopicGuidanceChips from "@/components/TopicGuidanceChips";
 import PaywallScreen from "@/components/PaywallScreen";
 import BackToTopButton from "@/components/BackToTopButton";
 import BackLink from "@/components/BackLink";
+import { Calculator } from "lucide-react";
 
 const INITIAL_BATCH = 10;
 
@@ -109,7 +110,15 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
     <div>
       <BackLink href={subjectTopicsHref} label="All topics" className="mb-3 lg:mb-6" />
 
-      <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4 lg:mb-8">{topic.name}</h1>
+      <div className="mb-4 lg:mb-8">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">{topic.name}</h1>
+        {(dbSubjectSlug === "vce-foundation" || dbSubjectSlug === "vce-general") && (
+          <p className="mt-1.5 flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400">
+            <Calculator className="h-4 w-4 shrink-0" aria-hidden="true" />
+            A calculator is permitted in every {dbSubjectSlug === "vce-foundation" ? "Foundation" : "General"} Mathematics exam.
+          </p>
+        )}
+      </div>
 
       {/* Suggested-start chip strip */}
       <TopicGuidanceChips

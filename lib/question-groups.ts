@@ -30,7 +30,7 @@ export interface QuestionGroupData {
   frequency: "rare" | "normal" | "often" | undefined;
   topicName: string;
   subtopics: string[];
-  calculatorAllowed: boolean;
+  calculatorAllowed?: boolean;
   parts: QuestionGroupPart[];
 }
 
@@ -174,6 +174,35 @@ async function fetchGroupKeys(
 }
 
 /**
+ * VCE calculator policy → the question-card "calculator" badge value.
+ *
+ * Foundation & General permit a calculator in EVERY exam, so a per-question
+ * badge would read "Calculator-assumed" on every card (no information). We
+ * return `undefined` for them so the badge is omitted; a single note on the
+ * topic page communicates the policy instead.
+ *
+ * Methods & Specialist have a technology-free Exam 1 (calculator-free) and a
+ * technology-active Exam 2 (calculator-assumed), so the badge is informative.
+ *
+ * @param subjectSlug DB subject slug ("vce-foundation", "vce-general",
+ *   "mathematical-methods", "vce-specialist").
+ * @param isTechFreeExam true for technology-free-exam (Exam 1) questions —
+ *   past papers: `examType === "EXAM_1"`; drill items: the Exam-1 question
+ *   type (SHORT_ANSWER for Methods/Specialist) — see `isCalculatorFreeType`.
+ * @returns true → "Calculator-assumed"; false → "Calculator-free";
+ *   undefined → no badge (Foundation/General).
+ */
+export function calculatorBadgeForSubject(
+  subjectSlug: string | null | undefined,
+  isTechFreeExam: boolean,
+): boolean | undefined {
+  // Foundation & General: calculator permitted in every exam → omit the badge.
+  if (subjectSlug === "vce-foundation" || subjectSlug === "vce-general") return undefined;
+  // Methods & Specialist: Exam 1 is calculator-free, Exam 2 calculator-assumed.
+  return !isTechFreeExam;
+}
+
+/**
  * Phase 2: Given a slice of group keys, fetch the full question data
  * (content, solutions, attempts) for only those groups.
  */
@@ -221,7 +250,7 @@ async function hydrateGroups(
           difficulty: true,
           examId: true,
           exam: { select: { year: true, examType: true } },
-          topic: { select: { name: true } },
+          topic: { select: { name: true, subject: { select: { slug: true } } } },
           subtopics: { select: { name: true } },
           solution: { select: { content: true, imageUrl: true, videoUrl: true } },
           attempts: userId
@@ -268,7 +297,10 @@ async function hydrateGroups(
       frequency: getGroupFrequency(allSubtopics, subtopicInfos),
       topicName: "topic" in representative ? (representative as any).topic.name : "",
       subtopics: allSubtopics,
-      calculatorAllowed: representative.exam.examType === "EXAM_2",
+      calculatorAllowed: calculatorBadgeForSubject(
+        (representative as any).topic?.subject?.slug,
+        representative.exam.examType === "EXAM_1",
+      ),
       parts: fullGroup.map((q) => ({
         id: q.id,
         questionNumber: q.questionNumber,

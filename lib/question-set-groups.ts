@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import type { QuestionGroupData, TopicQuestionFilters } from "@/lib/question-groups";
-import { getExamFilterOptions } from "@/lib/exam-filter-config";
+import { calculatorBadgeForSubject } from "@/lib/question-groups";
+import { getExamFilterOptions, isCalculatorFreeType } from "@/lib/exam-filter-config";
 
 /**
  * Canonical name of the question set used by the Topic page.
@@ -208,6 +209,7 @@ export async function fetchQuestionSetGroupsPaginated(
             preamble: true,
             parts: true,
             difficulty: true,
+            tech: true,
             solutionContent: true,
             optionA: true,
             optionB: true,
@@ -286,7 +288,7 @@ export async function fetchQuestionSetGroupsPaginated(
           frequency: undefined,
           topicName,
           subtopics: it.subtopics.map((s) => s.name),
-          calculatorAllowed: true,
+          calculatorAllowed: calculatorBadgeForSubject(subjectSlug, isCalculatorFreeType(subjectSlug, it.type as QSIType)),
           parts,
         } satisfies QuestionGroupData;
       }
@@ -312,7 +314,7 @@ export async function fetchQuestionSetGroupsPaginated(
         frequency: undefined,
         topicName,
         subtopics: it.subtopics.map((s) => s.name),
-        calculatorAllowed: true,
+        calculatorAllowed: calculatorBadgeForSubject(subjectSlug, isCalculatorFreeType(subjectSlug, it.type as QSIType)),
         parts: [
           {
             id: it.id,

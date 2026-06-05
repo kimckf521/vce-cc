@@ -609,7 +609,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
                     ? "bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-400"
                     : "bg-orange-50 dark:bg-orange-950 text-orange-700 dark:text-orange-400"
                 )}>
-                  {calculatorAllowed ? "Calculator" : "Non-calculator"}
+                  {calculatorAllowed ? "Calculator-assumed" : "Calculator-free"}
                 </span>
               )}
             </div>
