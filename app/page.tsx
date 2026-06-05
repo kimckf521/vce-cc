@@ -198,17 +198,17 @@ export default async function HomePage() {
           </p>
           <div className="mt-10 lg:mt-12 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href={user ? "/dashboard" : "/signup"}
+              href={user ? "/dashboard" : "/try/vce/methods"}
               className="group rounded-2xl bg-brand-600 px-8 lg:px-10 py-4 lg:py-5 text-base lg:text-lg font-semibold text-white shadow-lg shadow-brand-600/20 hover:bg-brand-700 hover:shadow-brand-600/30 hover:-translate-y-0.5 transition-all"
             >
               {user ? "Go to dashboard" : "Start practising — free"}
               <ArrowRight className="inline-block h-4 w-4 lg:h-5 lg:w-5 ml-2 group-hover:translate-x-0.5 transition-transform" />
             </Link>
             <Link
-              href="/vce/methods/topics"
+              href={user ? "/vce/methods/topics" : "/vce/methods/exams"}
               className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-8 lg:px-10 py-4 lg:py-5 text-base lg:text-lg font-semibold text-gray-700 dark:text-gray-300 shadow-sm hover:border-brand-300 dark:hover:border-brand-600 transition-colors"
             >
-              Browse topics
+              {user ? "Browse topics" : "Browse past papers"}
             </Link>
           </div>
           <p className="mt-6 text-sm text-gray-400 dark:text-gray-500">
@@ -438,10 +438,10 @@ export default async function HomePage() {
           {/* Inline secondary CTA */}
           <div className="mt-12 lg:mt-14 text-center">
             <Link
-              href={user ? "/dashboard" : "/signup"}
+              href={user ? "/dashboard" : "/try/vce/methods"}
               className="group inline-flex items-center gap-2 text-sm lg:text-base font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors"
             >
-              {user ? "Jump back to your dashboard" : "Browse every topic and try sample questions free"}
+              {user ? "Jump back to your dashboard" : "Try sample questions free — no signup"}
               <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
