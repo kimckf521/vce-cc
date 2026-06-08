@@ -119,9 +119,15 @@ export default function TermsPage() {
               already paid for and you will not be charged again.
             </li>
             <li>
-              <strong>Refunds:</strong> because the Service is a low-cost monthly subscription that
-              you can cancel at any time, we do not generally provide refunds for partial months.
-              Nothing in these Terms limits your rights under the Australian Consumer Law.
+              <strong>7-day money-back guarantee:</strong> if VCE Maths isn&apos;t right for you,
+              contact us within 7 days of your first payment and we will refund it in full. This
+              guarantee applies to your first subscription only (one per customer).
+            </li>
+            <li>
+              <strong>Refunds after the guarantee:</strong> because the Service is a low-cost monthly
+              subscription that you can cancel at any time, we do not generally provide refunds for
+              partial months. If you believe you were charged in error, contact us and we will review
+              your case. Nothing in these Terms limits your rights under the Australian Consumer Law.
             </li>
             <li>
               We may change pricing or plan features from time to time. If we change the price of

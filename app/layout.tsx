@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     template: "%s | ATAR Hero",
   },
   description:
-    "Go from zero to hero in VCE. Master all 4 VCE maths subjects — Methods, Specialist, Foundation and General — with VCAA past exam questions, step-by-step worked solutions and timed practice exams. Built for Year 12 students in Victoria.",
+    "Practise real VCAA Maths exam questions by topic — step-by-step worked solutions and timed Exam 1 & 2 — across Methods, Specialist, General and Foundation. From zero to hero in VCE.",
   applicationName: SITE_NAME,
   keywords: [
     "ATAR Hero",

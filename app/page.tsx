@@ -174,27 +174,19 @@ export default async function HomePage() {
         <div className="max-w-4xl mx-auto">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-100 dark:bg-brand-900 px-4 py-1.5 text-sm lg:text-base font-medium text-brand-700 dark:text-brand-300 mb-6 lg:mb-8">
             <Sparkles className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
-            Your VCE journey starts here
+            2,900+ real VCAA exam questions · all 4 VCE maths
           </span>
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100 leading-[1.05]">
-            From{" "}
-            <span className="text-gray-400 dark:text-gray-500 line-through decoration-4 decoration-red-400/70">
-              zero
-            </span>
-            <br className="sm:hidden" />{" "}
-            to{" "}
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100 leading-[1.08]">
+            VCE Maths past exams,{" "}
             <span className="bg-gradient-to-r from-brand-600 via-brand-500 to-brand-700 dark:from-brand-400 dark:via-brand-300 dark:to-brand-500 bg-clip-text text-transparent">
-              hero
+              organised by topic
             </span>
             .
           </h1>
-          <p className="mt-5 lg:mt-6 text-base lg:text-lg font-semibold text-brand-700 dark:text-brand-300 max-w-2xl mx-auto">
-            Created by VCE specialists to help students practise smarter with real VCAA exam questions.
-          </p>
-          <p className="mt-4 lg:mt-5 text-lg sm:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto">
-            Wherever you&apos;re starting from, ATAR Hero takes you all the way. Real VCAA past
-            exam questions, worked solutions and timed practice — built to turn study into a
-            top ATAR score.
+          <p className="mt-5 lg:mt-7 text-lg sm:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto">
+            Stop hunting through PDFs and YouTube. Practise real VCAA questions by
+            topic, reveal step-by-step worked solutions, and sit timed Exam 1 &amp; 2
+            — all in one place.
           </p>
           <div className="mt-10 lg:mt-12 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -212,7 +204,7 @@ export default async function HomePage() {
             </Link>
           </div>
           <p className="mt-6 text-sm text-gray-400 dark:text-gray-500">
-            No credit card. Free to start.
+            No credit card · no signup to try.
           </p>
         </div>
       </section>
@@ -444,6 +436,59 @@ export default async function HomePage() {
               {user ? "Jump back to your dashboard" : "Try sample questions free — no signup"}
               <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Why you can trust it — content-led credibility */}
+      <section className="py-16 lg:py-24 px-5 sm:px-8 lg:px-12 bg-white dark:bg-gray-900">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12 lg:mb-16">
+            <h2 className="text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-3 lg:mb-4">
+              Real exams. Real solutions. Checked.
+            </h2>
+            <p className="text-base lg:text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
+              No made-up questions, no skipped steps. Here&apos;s why you can trust what you practise.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6">
+            <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 p-6 lg:p-7">
+              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-brand-100 dark:bg-brand-900/60">
+                <Award className="h-5 w-5 text-brand-600 dark:text-brand-400" />
+              </div>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">
+                Real VCAA past exams
+              </h3>
+              <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 leading-relaxed">
+                Every VCAA Exam 1 and Exam 2 from 2016 onwards, across all 4 maths subjects — the real papers, not imitations.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 p-6 lg:p-7">
+              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-green-100 dark:bg-green-900/60">
+                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+              </div>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">
+                A worked solution for every question
+              </h3>
+              <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 leading-relaxed">
+                Full step-by-step solutions, so you learn the method — not just the final answer.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 p-6 lg:p-7">
+              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-amber-100 dark:bg-amber-900/60">
+                <HelpCircle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+              </div>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">
+                Spotted a mistake? We fix it
+              </h3>
+              <p className="text-sm lg:text-base text-gray-500 dark:text-gray-400 leading-relaxed">
+                Found an error in a solution?{" "}
+                <Link href="/#contact" className="text-brand-600 dark:text-brand-400 underline hover:text-brand-700 dark:hover:text-brand-300">
+                  Tell us
+                </Link>{" "}
+                — we review every report and correct it fast.
+              </p>
+            </div>
           </div>
         </div>
       </section>

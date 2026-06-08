@@ -68,6 +68,7 @@ const plans: Plan[] = [
       "Bookmark questions to revisit later",
       "Performance history across all your subjects",
       "Cancel anytime from your profile",
+      "7-day money-back guarantee",
     ],
   },
 ];
@@ -84,6 +85,10 @@ const faqs = [
   {
     q: "Can I cancel at any time?",
     a: "Yes — cancel any time from Profile → Billing. You'll keep access until the end of your current billing period.",
+  },
+  {
+    q: "Do you offer refunds?",
+    a: "New subscribers get a 7-day money-back guarantee: if VCE Maths isn't right for you, email us within 7 days of your first payment for a full refund (first subscription only). After that we don't generally refund partial months, since you can cancel anytime — but contact us if you were charged in error.",
   },
   {
     q: "What about VCE Sciences, English and other subjects?",
@@ -162,7 +167,7 @@ export default async function PricingPage() {
             Start free with a preview topic in each of the 4 VCE maths subjects and every VCAA past paper. Upgrade when you&apos;re ready to unlock the lot.
           </p>
           <p className="mt-3 text-sm text-gray-400 dark:text-gray-500">
-            All prices in AUD. Cancel at any time.
+            All prices in AUD · Cancel anytime · 7-day money-back guarantee.
           </p>
         </div>
       </section>

@@ -37,7 +37,7 @@ const faqs: { q: string; a: string }[] = [
   },
   {
     q: "Do you offer refunds?",
-    a: "Because VCE Maths is a low-cost monthly subscription that you can cancel at any time, we do not generally offer refunds for partial months. If you believe you were charged in error, please contact us and we'll review your case.",
+    a: "Yes — new subscribers get a 7-day money-back guarantee. If VCE Maths isn't right for you, email us within 7 days of your first payment and we'll refund it in full (first subscription only, one per customer). After that, because it's a low-cost monthly plan you can cancel anytime, we don't generally refund partial months — but if you were charged in error, contact us and we'll sort it out.",
   },
   {
     q: "Do you offer annual plans or student discounts?",

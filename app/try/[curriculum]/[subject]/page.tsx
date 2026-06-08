@@ -78,10 +78,10 @@ export default async function TryPage({ params }: PageProps) {
       <main className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:py-10">
         <div className="mb-6 lg:mb-8">
           <span className="text-xs font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">
-            Free taste — no signup
+            Free practice — no signup
           </span>
           <h1 className="mt-1 text-2xl font-bold text-gray-900 dark:text-gray-100 lg:text-3xl">
-            Try {subjectName} — {topic?.name ?? "Algebra"}
+            Practise {subjectName}: real VCAA Algebra questions
           </h1>
           <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 lg:text-base">
             A few real VCAA questions with worked solutions. Have a go — pick an

@@ -51,7 +51,7 @@ export default function TryFlow({ groups, subjectName }: Props) {
           <Sparkles className="h-5 w-5 text-brand-600 dark:text-brand-400" />
         </div>
         <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 lg:text-xl">
-          That&apos;s your free taste of {subjectName}
+          That&apos;s the free Algebra set for {subjectName}
         </h2>
         <p className="mx-auto mt-1 max-w-md text-sm text-gray-600 dark:text-gray-400 lg:text-base">
           Create a <strong>free account</strong> to keep practising and{" "}
