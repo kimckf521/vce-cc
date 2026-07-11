@@ -5,12 +5,13 @@ import type { LucideIcon } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { getDbSubjectSlug, getSubjectMetadata } from "@/lib/subject-context";
+import { SITE_URL } from "@/lib/site";
+import { examSlug } from "@/lib/exam-slug";
+import JsonLd from "@/components/JsonLd";
 
 interface PageProps {
   params: Promise<{ curriculum: string; subject: string }>;
 }
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { curriculum, subject } = await params;
@@ -200,6 +201,7 @@ export default async function ExamsPage({ params }: PageProps) {
     const hasTwoSections = mcqCount >= SECTION_A_MIN && extendedCount >= SECTION_B_MIN;
     return {
       id: e.id,
+      slug: examSlug(e),
       year: e.year,
       examType: e.examType as "EXAM_1" | "EXAM_2",
       completed: completedExamIds.has(e.id),
@@ -242,8 +244,39 @@ export default async function ExamsPage({ params }: PageProps) {
     return `${sorted[0].year} – ${sorted[sorted.length - 1].year}`;
   };
 
+  const hubUrl = `${SITE_URL}/${curriculum}/${subjectSlug}/exams`;
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+        { "@type": "ListItem", position: 2, name: `${subjectDisplayName} past papers`, item: hubUrl },
+      ],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: `${subjectDisplayName} Past Exam Papers & Worked Solutions`,
+      url: hubUrl,
+      inLanguage: "en-AU",
+      isAccessibleForFree: true,
+      mainEntity: {
+        "@type": "ItemList",
+        numberOfItems: examList.length,
+        itemListElement: examList.map((e, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: `${e.year} ${subjectDisplayName} ${e.examType === "EXAM_1" ? "Exam 1" : "Exam 2"}`,
+          url: `${hubUrl}/${e.slug}`,
+        })),
+      },
+    },
+  ];
+
   return (
     <div>
+      <JsonLd data={jsonLd} />
       <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Past papers</h1>
       <p className="text-gray-500 dark:text-gray-400 lg:text-base mb-6">
         Every VCAA {subjectDisplayName} exam, with questions and solutions.
@@ -361,6 +394,7 @@ function PaperGroup({
   sublabel: string;
   papers: Array<{
     id: string;
+    slug: string;
     year: number;
     completed: boolean;
     questionCount: number;
@@ -421,6 +455,7 @@ function PaperCard({
 }: {
   exam: {
     id: string;
+    slug: string;
     year: number;
     completed: boolean;
     questionCount: number;
@@ -435,7 +470,7 @@ function PaperCard({
 }) {
   return (
     <Link
-      href={`/${curriculum}/${subjectSlug}/exams/${exam.id}`}
+      href={`/${curriculum}/${subjectSlug}/exams/${exam.slug}`}
       className={`group relative flex flex-col items-center justify-center rounded-2xl border p-5 lg:p-7 text-center shadow-sm transition-all hover:shadow-md ${
         exam.completed
           ? "border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-950/30"

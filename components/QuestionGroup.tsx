@@ -3,8 +3,9 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import type React from "react";
 import dynamic from "next/dynamic";
+import NextLink from "next/link";
 import { useRouter } from "next/navigation";
-import { CheckCircle, XCircle, BookmarkIcon, BookOpen, CalendarDays } from "lucide-react";
+import { CheckCircle, XCircle, BookmarkIcon, BookOpen, CalendarDays, Link2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import MathContent from "@/components/MathContent";
 
@@ -81,6 +82,12 @@ interface QuestionGroupProps {
    * Used to gate progress tracking behind the paid plan. Defaults to true.
    */
   canTrackProgress?: boolean;
+  /**
+   * Href of this question's standalone public page. When set (public exam
+   * pages), the card header renders a small permalink anchor — the internal
+   * link that keeps the ~2,900 public question pages out of orphan status.
+   */
+  permalink?: string;
 }
 
 const difficultyStyles = {
@@ -294,7 +301,7 @@ const FREQ_LABEL: Record<"rare" | "normal" | "often", string> = {
   often: "Every year",
 };
 
-export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts, showSolutionButton = true, examMode, revealAnswers, onMcqSelect, isAdmin, disableServerRefresh, hideBadges, hideTopicBadge, canTrackProgress = true }: QuestionGroupProps) {
+export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts, showSolutionButton = true, examMode, revealAnswers, onMcqSelect, isAdmin, disableServerRefresh, hideBadges, hideTopicBadge, canTrackProgress = true, permalink }: QuestionGroupProps) {
   const router = useRouter();
   const [showSolution, setShowSolution] = useState(false);
   const [statuses, setStatuses] = useState<Record<string, AttemptStatus>>(
@@ -575,6 +582,16 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
                 <CalendarDays className="h-3 w-3 lg:h-3.5 lg:w-3.5 text-gray-400 dark:text-gray-500" />
                 {FREQ_LABEL[frequency]}
               </span>
+            )}
+            {permalink && !examMode && (
+              <NextLink
+                href={permalink}
+                aria-label={`Open question ${questionIndex ?? ""} on its own page`}
+                className="ml-auto inline-flex min-h-[40px] items-center gap-1 px-1 text-xs lg:text-sm font-medium text-gray-400 dark:text-gray-500 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+              >
+                <Link2 className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Permalink</span>
+              </NextLink>
             )}
           </div>
           {/* Row 2: Topic · subtopics · calculator. Hidden in Exam Version

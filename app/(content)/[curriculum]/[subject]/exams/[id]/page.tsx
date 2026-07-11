@@ -1,7 +1,8 @@
 export const dynamic = "force-dynamic";
 
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import Link from "next/link";
+import { notFound, permanentRedirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import QuestionGroup from "@/components/QuestionGroup";
@@ -10,26 +11,86 @@ import BackLink from "@/components/BackLink";
 import JsonLd from "@/components/JsonLd";
 import ExamCompleteButton from "@/components/ExamCompleteButton";
 import BackToTopButton from "@/components/BackToTopButton";
-import { getSubjectMetadata } from "@/lib/subject-context";
+import { getDbSubjectSlug, getSubjectMetadata, getUrlSubjectSlug } from "@/lib/subject-context";
+import { SITE_URL } from "@/lib/site";
+import { examSlug, parseExamSlug } from "@/lib/exam-slug";
 
 interface PageProps {
   params: Promise<{ curriculum: string; subject: string; id: string }>;
 }
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+/**
+ * The [id] segment accepts the canonical keyword slug (`2023-exam-1`) or a
+ * legacy cuid. Slugs resolve by (subject, year, examType); cuids resolve by
+ * primary key so the page can 308 them to the slug URL (see lib/exam-slug.ts).
+ *
+ * Year 9999 is the admin-testing fixture year: those exams must never be
+ * reachable via the guessable slug (they'd render indexable [TEST] content),
+ * but stay reachable via their unguessable cuid for admin preview — with
+ * noindex and no slug redirect (their slug URL intentionally 404s).
+ */
+async function resolveExam(subjectSlug: string, idOrSlug: string) {
+  const parsed = parseExamSlug(idOrSlug);
+  if (parsed) {
+    if (parsed.year === 9999) return null;
+    return prisma.exam.findFirst({
+      where: {
+        year: parsed.year,
+        examType: parsed.examType,
+        subject: { slug: getDbSubjectSlug(subjectSlug) },
+      },
+      include: { subject: { select: { slug: true } } },
+    });
+  }
+  return prisma.exam.findUnique({
+    where: { id: idOrSlug },
+    include: { subject: { select: { slug: true } } },
+  });
+}
+
+/**
+ * A legacy cuid identifies its exam regardless of the URL's subject segment,
+ * so the slug redirect must target the exam's OWN subject — otherwise
+ * /vce/methods/exams/<specialist-cuid> would silently become the Methods
+ * paper of the same year. Falls back to the requested slug for legacy rows
+ * with no subject. Returns null when no redirect should happen (already
+ * canonical, or a 9999 fixture kept on its cuid).
+ */
+function slugRedirectTarget(
+  exam: { year: number; examType: string; subject: { slug: string } | null },
+  requestedId: string,
+  curriculum: string,
+  requestedSubjectSlug: string
+): string | null {
+  const slug = examSlug(exam);
+  if (requestedId === slug || exam.year === 9999) return null;
+  const trueSubject =
+    (exam.subject ? getUrlSubjectSlug(exam.subject.slug) : null) ?? requestedSubjectSlug;
+  return `/${curriculum}/${trueSubject}/exams/${slug}`;
+}
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { curriculum, subject, id } = await params;
   const meta = getSubjectMetadata(subject);
   const name = meta?.displayName ?? "VCE Mathematics";
   const short = meta?.shortName ?? "Methods";
-  const exam = await prisma.exam.findUnique({
-    where: { id },
-    select: { year: true, examType: true },
-  });
-  if (!exam) return { robots: { index: false, follow: false } };
+  const exam = await resolveExam(subject, id);
+  // Throw (rather than return noindex) so the response is a real 404 —
+  // returning metadata lets the loading.tsx stream commit a 200 first.
+  if (!exam) notFound();
+  // Legacy cuid URLs redirect to the keyword-slug URL of the exam's OWN
+  // subject. The redirect must happen HERE, not in the page body: this route
+  // has a loading.tsx, so by the time the page component runs Next has
+  // already streamed a 200 shell and a redirect degrades to a client-side
+  // hop. generateMetadata runs before the stream starts.
+  const redirectTarget = slugRedirectTarget(exam, id, curriculum, subject);
+  if (redirectTarget) permanentRedirect(redirectTarget);
+  // Admin-testing fixtures (year 9999) stay reachable via cuid for preview
+  // but must never enter the index.
+  if (exam.year === 9999) return { robots: { index: false, follow: false } };
   const examLabel = exam.examType === "EXAM_1" ? "Exam 1" : "Exam 2";
-  const canonical = `${SITE_URL}/${curriculum}/${subject}/exams/${id}`;
+  // Canonical always uses the keyword slug, even when reached via cuid.
+  const canonical = `${SITE_URL}/${curriculum}/${subject}/exams/${examSlug(exam)}`;
   const title = `${exam.year} VCAA ${short} ${examLabel} — Questions & Worked Solutions`;
   const description = `Every question from the ${exam.year} VCAA ${name} ${examLabel}, with full worked solutions. Free.`;
   return {
@@ -50,23 +111,29 @@ export default async function ExamPage({ params }: PageProps) {
 
   // Parallel: fetch exam metadata + auth at the same time
   const [exam, supabaseResult] = await Promise.all([
-    prisma.exam.findUnique({ where: { id } }),
+    resolveExam(subjectSlug, id),
     createClient().then((s) => s.auth.getUser()),
   ]);
   if (!exam) notFound();
+
+  // Mirror of the generateMetadata redirect (defense in depth — metadata
+  // normally throws first).
+  const bodyRedirect = slugRedirectTarget(exam, id, curriculum, subjectSlug);
+  if (bodyRedirect) permanentRedirect(bodyRedirect);
+  const slug = examSlug(exam);
 
   const user = supabaseResult.data.user;
 
   // Kick off the completion check in parallel with the questions fetch (independent queries)
   const completionPromise = user
     ? prisma.examCompletion
-        .findUnique({ where: { userId_examId: { userId: user.id, examId: id } } })
+        .findUnique({ where: { userId_examId: { userId: user.id, examId: exam.id } } })
         .then(Boolean)
     : Promise.resolve(false);
 
   // Fetch all questions for this exam ordered by question number then part
   const questions = await prisma.question.findMany({
-    where: { examId: id },
+    where: { examId: exam.id },
     select: {
       id: true,
       questionNumber: true,
@@ -144,7 +211,30 @@ export default async function ExamPage({ params }: PageProps) {
     }));
   }
 
-  const canonicalUrl = `${SITE_URL}/${curriculum}/${subjectSlug}/exams/${id}`;
+  // Sibling papers for lateral internal links: previous/next year of the same
+  // paper, and the other paper from the same year. Cheap query, big
+  // crawl-depth win — exam pages previously never linked to each other.
+  const siblingExams = await prisma.exam.findMany({
+    where: { subject: { slug: getDbSubjectSlug(subjectSlug) }, year: { not: 9999 } },
+    select: { year: true, examType: true },
+  });
+  const sameType = siblingExams
+    .filter((e) => e.examType === exam.examType)
+    .sort((a, b) => a.year - b.year);
+  const prevYear = [...sameType].reverse().find((e) => e.year < exam.year) ?? null;
+  const nextYear = sameType.find((e) => e.year > exam.year) ?? null;
+  const sameYearOther =
+    siblingExams.find((e) => e.year === exam.year && e.examType !== exam.examType) ?? null;
+  const examTypeLabel = (t: string) => (t === "EXAM_1" ? "Exam 1" : "Exam 2");
+  const examHref = (e: { year: number; examType: string }) =>
+    `/${curriculum}/${subjectSlug}/exams/${examSlug(e)}`;
+
+  // Public standalone page for a question group (its first part) — passed to
+  // each card as a permalink so every question page is reachable from here.
+  const questionPermalink = (leaderId: string) =>
+    `/${curriculum}/${subjectSlug}/questions/${leaderId}?from=exam:${slug}`;
+
+  const canonicalUrl = `${SITE_URL}/${curriculum}/${subjectSlug}/exams/${slug}`;
   const jsonLd = [
     {
       "@context": "https://schema.org",
@@ -251,6 +341,7 @@ export default async function ExamPage({ params }: PageProps) {
                 subtopics={q.subtopics.map((s) => s.name)}
                 parts={toGroupParts([q])}
                 hideBadges
+                permalink={questionPermalink(q.id)}
               />
             ))}
           </div>
@@ -283,6 +374,7 @@ export default async function ExamPage({ params }: PageProps) {
                 subtopics={group[0].subtopics.map((s) => s.name)}
                 parts={toGroupParts(group)}
                 hideBadges
+                permalink={questionPermalink(group[0].id)}
               />
             ))}
           </div>
@@ -299,7 +391,52 @@ export default async function ExamPage({ params }: PageProps) {
       {/* Complete button — logged-in only (the completion API requires auth;
           logged-out visitors are viewing a free public copy). */}
       {user && (sectionA.length > 0 || sectionBGroups.length > 0) && (
-        <ExamCompleteButton examId={id} initialCompleted={isCompleted} />
+        <ExamCompleteButton examId={exam.id} initialCompleted={isCompleted} />
+      )}
+
+      {/* Lateral links to sibling papers — crawl paths between exam pages and
+          a natural "what next" for students who finished this paper. */}
+      {(prevYear || nextYear || sameYearOther) && (
+        <nav
+          aria-label={`More ${subjectShortName} past papers`}
+          className="mt-10 rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-5"
+        >
+          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3">
+            More {subjectShortName} past papers
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {prevYear && (
+              <Link
+                href={examHref(prevYear)}
+                className="inline-flex items-center rounded-xl border border-gray-200 dark:border-gray-700 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:border-brand-300 dark:hover:border-brand-700 hover:text-brand-700 dark:hover:text-brand-300 transition-colors"
+              >
+                ← {prevYear.year} {examTypeLabel(prevYear.examType)}
+              </Link>
+            )}
+            {sameYearOther && (
+              <Link
+                href={examHref(sameYearOther)}
+                className="inline-flex items-center rounded-xl border border-gray-200 dark:border-gray-700 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:border-brand-300 dark:hover:border-brand-700 hover:text-brand-700 dark:hover:text-brand-300 transition-colors"
+              >
+                {sameYearOther.year} {examTypeLabel(sameYearOther.examType)}
+              </Link>
+            )}
+            {nextYear && (
+              <Link
+                href={examHref(nextYear)}
+                className="inline-flex items-center rounded-xl border border-gray-200 dark:border-gray-700 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:border-brand-300 dark:hover:border-brand-700 hover:text-brand-700 dark:hover:text-brand-300 transition-colors"
+              >
+                {nextYear.year} {examTypeLabel(nextYear.examType)} →
+              </Link>
+            )}
+            <Link
+              href={examsHref}
+              className="inline-flex items-center rounded-xl border border-gray-200 dark:border-gray-700 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:border-brand-300 dark:hover:border-brand-700 hover:text-brand-700 dark:hover:text-brand-300 transition-colors"
+            >
+              All {subjectShortName} papers
+            </Link>
+          </div>
+        </nav>
       )}
 
       <BackToTopButton />

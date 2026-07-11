@@ -19,8 +19,18 @@
  * lockstep.
  */
 
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const envSiteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
+// Fail the production build/boot loudly rather than silently emitting
+// localhost canonicals, sitemap entries, OG URLs and JSON-LD @ids — a missing
+// env var here would de-index the whole public surface.
+if (!envSiteUrl && process.env.VERCEL_ENV === "production") {
+  throw new Error(
+    "NEXT_PUBLIC_SITE_URL is not set in production. Set it to the canonical origin (e.g. https://www.atarhero.com.au) — sitemap, robots, canonicals and JSON-LD all derive from it."
+  );
+}
+
+export const SITE_URL = envSiteUrl ?? "http://localhost:3000";
 
 export const SITE_NAME = "ATAR Hero";
 

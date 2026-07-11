@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
 import { SUBJECTS, getDbSubjectSlug } from "@/lib/subject-context";
 import { DEFAULT_CURRICULUM_SLUG } from "@/lib/curriculum-context";
+import { SITE_URL } from "@/lib/site";
+import { examSlug } from "@/lib/exam-slug";
 
 // Generated on-demand rather than at build time: new exams/questions appear
 // immediately, and the production build doesn't need a live DB connection.
@@ -12,38 +14,36 @@ export const dynamic = "force-dynamic";
  *
  * Lists the public marketing pages PLUS the public content surface in the
  * (content) route group: each subject's Past Papers landing page, every exam
- * page, and every individual past-paper question page (the long-tail SEO
- * targets — students search for specific questions, not whole papers).
+ * page (keyword slug URLs, e.g. /exams/2023-exam-1), and every individual
+ * past-paper question page (the long-tail SEO targets — students search for
+ * specific questions, not whole papers).
+ *
+ * Multi-part (Section B) questions share one page: every part's URL renders
+ * the whole group, so only the GROUP LEADER (first part by part-label order)
+ * is listed — the other parts canonicalise to it. Listing every part would
+ * hand Google 3-4 competing near-duplicates per question.
+ *
+ * `lastModified` is the real `updatedAt` of the underlying rows (max across
+ * a group / an exam's questions) so Google can trust the signal; emitting
+ * `new Date()` on every request teaches it to ignore lastmod entirely.
  *
  * Excluded by design: topic / practice / dashboard pages (still behind auth)
  * and the drill-bank `questions/set/:id` pages (page-level noindex).
- *
- * Set `NEXT_PUBLIC_SITE_URL` in your environment to your production domain
- * (e.g. `https://atarhero.com.au`). Falls back to localhost in development.
  */
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const lastModified = new Date();
-
   const staticPages: MetadataRoute.Sitemap = [
-    {
-      url: `${SITE_URL}/`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 1.0,
-    },
+    { url: `${SITE_URL}/`, changeFrequency: "weekly", priority: 1.0 },
     // Per-subject marketing landing pages — high-priority SEO targets.
-    { url: `${SITE_URL}/methods`, lastModified, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${SITE_URL}/specialist`, lastModified, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${SITE_URL}/general`, lastModified, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${SITE_URL}/foundation`, lastModified, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${SITE_URL}/pricing`, lastModified, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${SITE_URL}/faqs`, lastModified, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${SITE_URL}/about`, lastModified, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${SITE_URL}/privacy`, lastModified, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${SITE_URL}/terms`, lastModified, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${SITE_URL}/methods`, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${SITE_URL}/specialist`, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${SITE_URL}/general`, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${SITE_URL}/foundation`, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${SITE_URL}/pricing`, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${SITE_URL}/faqs`, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${SITE_URL}/about`, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${SITE_URL}/privacy`, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${SITE_URL}/terms`, changeFrequency: "yearly", priority: 0.3 },
   ];
 
   // Public content pages (past papers + individual questions). Pulled from the
@@ -56,37 +56,83 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       const dbSlug = getDbSubjectSlug(subject.urlSlug);
       const base = `${SITE_URL}/${curriculum}/${subject.urlSlug}`;
 
-      // Past Papers landing page for the subject.
+      const rows = await prisma.question.findMany({
+        where: { exam: { subject: { slug: dbSlug }, year: { not: 9999 } } },
+        select: {
+          id: true,
+          examId: true,
+          questionNumber: true,
+          part: true,
+          updatedAt: true,
+          // Worked solutions live on their own row and are edited through
+          // their own admin path — a solution fix must bump lastmod even
+          // when the question text is untouched.
+          solution: { select: { updatedAt: true } },
+          exam: { select: { year: true, examType: true } },
+        },
+        orderBy: [{ questionNumber: "asc" }, { part: "asc" }],
+      });
+      const questions = rows.map((q) => ({
+        ...q,
+        updatedAt:
+          q.solution && q.solution.updatedAt > q.updatedAt ? q.solution.updatedAt : q.updatedAt,
+      }));
+
+      // Past Papers landing page for the subject — freshest when any of its
+      // questions changed.
+      const subjectLastMod = questions.reduce(
+        (max, q) => (q.updatedAt > max ? q.updatedAt : max),
+        new Date(0)
+      );
       contentPages.push({
         url: `${base}/exams`,
-        lastModified,
+        ...(questions.length > 0 ? { lastModified: subjectLastMod } : {}),
         changeFrequency: "monthly",
         priority: 0.8,
       });
 
-      const [exams, questions] = await Promise.all([
-        prisma.exam.findMany({
-          where: { subject: { slug: dbSlug }, year: { not: 9999 } },
-          select: { id: true },
-        }),
-        prisma.question.findMany({
-          where: { exam: { subject: { slug: dbSlug }, year: { not: 9999 } } },
-          select: { id: true },
-        }),
-      ]);
+      // One URL per exam (keyword slug), lastModified = max updatedAt of its
+      // questions. One URL per question GROUP: MCQs (part=null) stand alone;
+      // Section B parts collapse to the first part's id.
+      const examMeta = new Map<string, { slug: string; lastMod: Date }>();
+      const groupLeaders = new Map<
+        string,
+        { id: string; lastMod: Date }
+      >();
 
-      for (const e of exams) {
+      for (const q of questions) {
+        const em = examMeta.get(q.examId);
+        if (!em) {
+          examMeta.set(q.examId, { slug: examSlug(q.exam), lastMod: q.updatedAt });
+        } else if (q.updatedAt > em.lastMod) {
+          em.lastMod = q.updatedAt;
+        }
+
+        // Group key: MCQs are their own group; Section B groups by
+        // (examId, questionNumber). Rows arrive ordered by part, so the first
+        // row seen for a key is the leader.
+        const key =
+          q.part === null ? `${q.examId}::mcq::${q.id}` : `${q.examId}::${q.questionNumber}`;
+        const g = groupLeaders.get(key);
+        if (!g) {
+          groupLeaders.set(key, { id: q.id, lastMod: q.updatedAt });
+        } else if (q.updatedAt > g.lastMod) {
+          g.lastMod = q.updatedAt;
+        }
+      }
+
+      for (const { slug, lastMod } of Array.from(examMeta.values())) {
         contentPages.push({
-          url: `${base}/exams/${e.id}`,
-          lastModified,
+          url: `${base}/exams/${slug}`,
+          lastModified: lastMod,
           changeFrequency: "yearly",
           priority: 0.7,
         });
       }
-      for (const q of questions) {
+      for (const { id, lastMod } of Array.from(groupLeaders.values())) {
         contentPages.push({
-          url: `${base}/questions/${q.id}`,
-          lastModified,
+          url: `${base}/questions/${id}`,
+          lastModified: lastMod,
           changeFrequency: "yearly",
           priority: 0.6,
         });

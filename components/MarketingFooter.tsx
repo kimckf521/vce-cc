@@ -6,7 +6,7 @@ export default function MarketingFooter() {
   return (
     <footer className="border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-12 lg:py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12">
           {/* Brand */}
           <div className="col-span-2">
             <Link
@@ -64,12 +64,46 @@ export default function MarketingFooter() {
                   Foundation Mathematics
                 </Link>
               </li>
+            </ul>
+          </div>
+
+          {/* Past papers — one hub per subject so crawlers (and students) can
+              reach every subject's public exam library from any page. */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wide">
+              Past papers
+            </h3>
+            <ul className="mt-4 space-y-3 text-sm lg:text-base">
               <li>
                 <Link
                   href="/vce/methods/exams"
                   className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
-                  VCAA past papers
+                  Methods past papers
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/vce/specialist/exams"
+                  className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                >
+                  Specialist past papers
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/vce/general/exams"
+                  className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                >
+                  General past papers
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/vce/foundation/exams"
+                  className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                >
+                  Foundation past papers
                 </Link>
               </li>
             </ul>

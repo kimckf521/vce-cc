@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import ThemeProvider from "@/components/ThemeProvider";
+import { SITE_URL, SITE_NAME } from "@/lib/site";
 import "./globals.css";
 
 const ErrorReporter = dynamic(() => import("@/components/ErrorReporter"), { ssr: false });
@@ -12,8 +13,7 @@ const PageViewTracker = dynamic(() => import("@/components/PageViewTracker"), { 
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-const SITE_NAME = "ATAR Hero";
+
 // GA4 Measurement ID. Public by design (it renders into page HTML), so a default
 // is fine here; set NEXT_PUBLIC_GA_ID to override per environment if ever needed.
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "G-E2WQVXBF6S";
@@ -184,7 +184,7 @@ const jsonLd = {
       educationalLevel: "Senior Secondary School",
       inLanguage: "en-AU",
       isPartOf: { "@id": `${SITE_URL}/#course` },
-      url: `${SITE_URL}/vce/methods/topics`,
+      url: `${SITE_URL}/methods`,
       audience: {
         "@type": "EducationalAudience",
         educationalRole: "student",
@@ -205,7 +205,7 @@ const jsonLd = {
       educationalLevel: "Senior Secondary School",
       inLanguage: "en-AU",
       isPartOf: { "@id": `${SITE_URL}/#course` },
-      url: `${SITE_URL}/vce/specialist/topics`,
+      url: `${SITE_URL}/specialist`,
       audience: {
         "@type": "EducationalAudience",
         educationalRole: "student",
@@ -226,7 +226,7 @@ const jsonLd = {
       educationalLevel: "Senior Secondary School",
       inLanguage: "en-AU",
       isPartOf: { "@id": `${SITE_URL}/#course` },
-      url: `${SITE_URL}/vce/general/topics`,
+      url: `${SITE_URL}/general`,
       audience: {
         "@type": "EducationalAudience",
         educationalRole: "student",
@@ -247,7 +247,7 @@ const jsonLd = {
       educationalLevel: "Senior Secondary School",
       inLanguage: "en-AU",
       isPartOf: { "@id": `${SITE_URL}/#course` },
-      url: `${SITE_URL}/vce/foundation/topics`,
+      url: `${SITE_URL}/foundation`,
       audience: {
         "@type": "EducationalAudience",
         educationalRole: "student",

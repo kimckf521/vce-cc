@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/site";
 
 /**
  * robots.txt exposed at /robots.txt
@@ -27,8 +28,6 @@ import type { MetadataRoute } from "next";
  * Set `NEXT_PUBLIC_SITE_URL` to your production domain so the sitemap URL
  * resolves correctly.
  */
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 // AI training crawlers that publicly commit to honouring robots.txt.
 // Each of these is either (a) used to scrape content for LLM training or
@@ -145,10 +144,18 @@ export default function robots(): MetadataRoute.Robots {
           // route group, so they are intentionally NOT disallowed here. The
           // drill-bank set pages (/questions/set/:id) stay private via their
           // own redirect + page-level noindex.
+          //
+          // Gated pages live under the curriculum-prefixed tree
+          // (/vce/methods/topics, ...). The bare "/topics" and "/practice"
+          // entries cover the legacy flat URLs that 308-redirect there.
           "/topics",
           "/topics/",
           "/practice",
           "/practice/",
+          "/vce/*/topics",
+          "/vce/*/practice",
+          "/vce/*/bookmark",
+          "/vce/*/history",
         ],
       },
 
