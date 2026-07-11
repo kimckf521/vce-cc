@@ -324,7 +324,14 @@ export default async function HomePage() {
                       {subject.topics.map((topic) => (
                         <Link
                           key={topic.slug}
-                          href={`${subject.href}/${topic.slug}`}
+                          // Logged in → the gated topic page. Anonymous →
+                          // the no-signup guest trial for this subject, not a
+                          // login wall (the topic page redirects to /login).
+                          href={
+                            user
+                              ? `${subject.href}/${topic.slug}`
+                              : `/try${subject.href.replace("/topics", "")}`
+                          }
                           className="group rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800 px-4 py-3 hover:border-brand-300 hover:bg-brand-50 dark:hover:bg-brand-950 transition-all"
                         >
                           <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">

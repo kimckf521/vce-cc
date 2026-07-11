@@ -286,6 +286,12 @@ export default async function QuestionPage({ params, searchParams }: PageProps) 
         subtopics={question.subtopics.map((s) => s.name)}
         parts={toGroupParts(parts)}
         canTrackProgress={canTrackProgress}
+        lockedCtaHref={
+          user
+            ? "/pricing"
+            : `/signup?next=${encodeURIComponent(`/${curriculum}/${subjectSlug}/questions/${leaderId}`)}`
+        }
+        lockedTitle={user ? "Upgrade to save your progress" : "Sign up free to save your progress"}
       />
 
       {/* Lateral navigation: neighbours in this paper + the full paper. */}

@@ -234,6 +234,19 @@ export default async function ExamPage({ params }: PageProps) {
   const questionPermalink = (leaderId: string) =>
     `/${curriculum}/${subjectSlug}/questions/${leaderId}?from=exam:${slug}`;
 
+  // Anonymous visitors get locked mark/bookmark buttons whose click becomes a
+  // signup CTA (carrying a return-to), instead of live buttons that 401 with a
+  // dead-end "please log in" message. Logged-in users keep live buttons.
+  const anonProgressProps = user
+    ? {}
+    : {
+        canTrackProgress: false,
+        lockedCtaHref: `/signup?next=${encodeURIComponent(
+          `/${curriculum}/${subjectSlug}/exams/${slug}`,
+        )}`,
+        lockedTitle: "Sign up free to save your progress",
+      };
+
   const canonicalUrl = `${SITE_URL}/${curriculum}/${subjectSlug}/exams/${slug}`;
   const jsonLd = [
     {
@@ -342,6 +355,7 @@ export default async function ExamPage({ params }: PageProps) {
                 parts={toGroupParts([q])}
                 hideBadges
                 permalink={questionPermalink(q.id)}
+                {...anonProgressProps}
               />
             ))}
           </div>
@@ -375,6 +389,7 @@ export default async function ExamPage({ params }: PageProps) {
                 parts={toGroupParts(group)}
                 hideBadges
                 permalink={questionPermalink(group[0].id)}
+                {...anonProgressProps}
               />
             ))}
           </div>

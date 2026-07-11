@@ -163,6 +163,10 @@ export default async function DashboardPage() {
   const showUpgradeCard = !!userId && !isAdmin && !isPaid;
 
   const firstName = dbUser?.name?.split(" ")[0] ?? "";
+  // Brand-new users (auto-enrolled in all 4 subjects, zero attempts) get a
+  // first-run screen: a real welcome (not "back"), the "pick a starting point"
+  // guide, and NO zero-filled stat strip / 0% rings that read as broken.
+  const isFirstRun = totalAttempted === 0;
 
   // Per-subject progress for the new "My subjects" grid + Continue revising card
   // — filtered to the student's registered subjects (empty registration = all).
@@ -184,7 +188,13 @@ export default async function DashboardPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">
-            {firstName ? `Welcome back, ${firstName}` : "Welcome back"}
+            {isFirstRun
+              ? firstName
+                ? `Welcome, ${firstName} 👋`
+                : "Welcome 👋"
+              : firstName
+                ? `Welcome back, ${firstName}`
+                : "Welcome back"}
           </h1>
           <p className="mt-1 text-sm lg:text-base text-gray-500 dark:text-gray-400">
             {totalAttempted === 0
@@ -224,10 +234,11 @@ export default async function DashboardPage() {
         </Link>
       )}
 
-      {/* Empty-state onboarding only fires when the user has NO subjects
-          enrolled yet — extremely rare since signup auto-enrols all 4 maths
-          subjects. SubjectsGrid below carries discovery for normal users. */}
-      {subjectProgress.length === 0 && totalAttempted === 0 && <DashboardEmptyState />}
+      {/* First-run guide — shown whenever the user has zero attempts (signup
+          auto-enrols all 4 subjects, so the old `subjectProgress.length === 0`
+          guard was never true and this never rendered). Gives new students one
+          obvious "answer your first question" path. */}
+      {isFirstRun && <DashboardEmptyState />}
 
       {/* ─── My subjects ─── */}
       <div>
@@ -237,7 +248,9 @@ export default async function DashboardPage() {
         <SubjectsGrid curriculum={curriculum} progress={subjectProgress} />
       </div>
 
-      {/* ─── Quick Stats Strip ─── */}
+      {/* ─── Quick Stats Strip — hidden on first run (all zeros reads as
+              broken; DashboardEmptyState above is the first-run surface) ─── */}
+      {!isFirstRun && (
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
         <div className="rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-4 lg:p-5 flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-50 dark:bg-green-950">
@@ -276,8 +289,12 @@ export default async function DashboardPage() {
           </div>
         </div>
       </div>
+      )}
 
-      {/* ─── Topic Progress (grouped by subject) ─── */}
+      {/* ─── Topic Progress (grouped by subject) — also hidden on first run:
+              a wall of 0% rings is noise before the student has attempted
+              anything. Reappears with the first attempt. ─── */}
+      {!isFirstRun && (
       <div className="space-y-6 lg:space-y-8">
         <div>
           <h2 className="text-lg lg:text-xl font-semibold text-gray-900 dark:text-gray-100">Topic progress</h2>
@@ -317,7 +334,7 @@ export default async function DashboardPage() {
                   </span>
                 </div>
                 <Link
-                  href={`/${section.urlSlug}/topics`}
+                  href={`/${curriculum}/${section.urlSlug}/topics`}
                   className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors flex items-center gap-0.5 shrink-0"
                 >
                   View all <ChevronRight className="h-4 w-4" />
@@ -340,7 +357,7 @@ export default async function DashboardPage() {
                     return (
                       <Link
                         key={topic.id}
-                        href={`/${section.urlSlug}/topics/${topic.slug}`}
+                        href={`/${curriculum}/${section.urlSlug}/topics/${topic.slug}`}
                         className="group flex items-center gap-4 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-4 lg:p-5 hover:border-gray-200 dark:hover:border-gray-700 hover:shadow-sm transition-all"
                       >
                         {/* Ring chart — uses subject colour */}
@@ -370,11 +387,12 @@ export default async function DashboardPage() {
           );
         })}
       </div>
+      )}
 
       {/* ─── Weak-area nudge ─── */}
       {weakestTopic && (
         <Link
-          href={`/${weakestTopic.subjectUrlSlug}/topics/${weakestTopic.slug}`}
+          href={`/${curriculum}/${weakestTopic.subjectUrlSlug}/topics/${weakestTopic.slug}`}
           className="block rounded-xl border border-red-100 dark:border-red-900 bg-red-50 dark:bg-red-950/50 p-4 lg:p-5 hover:border-red-200 dark:hover:border-red-800 transition-all"
         >
           <p className="text-xs font-semibold uppercase tracking-wide text-red-600 dark:text-red-400 mb-1">Needs work</p>

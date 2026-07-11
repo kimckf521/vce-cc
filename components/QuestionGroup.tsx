@@ -88,6 +88,15 @@ interface QuestionGroupProps {
    * link that keeps the ~2,900 public question pages out of orphan status.
    */
   permalink?: string;
+  /**
+   * Where a click on a LOCKED mark/bookmark button should go (only used when
+   * canTrackProgress is false). On public pages this converts the dead-end
+   * "please log in" 401 into a signup CTA — e.g. `/signup?next=<this page>`
+   * for anonymous visitors, or `/pricing` for a free user on a paid topic.
+   */
+  lockedCtaHref?: string;
+  /** Tooltip for the locked buttons (defaults to "Standard plan required"). */
+  lockedTitle?: string;
 }
 
 const difficultyStyles = {
@@ -301,7 +310,7 @@ const FREQ_LABEL: Record<"rare" | "normal" | "often", string> = {
   often: "Every year",
 };
 
-export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts, showSolutionButton = true, examMode, revealAnswers, onMcqSelect, isAdmin, disableServerRefresh, hideBadges, hideTopicBadge, canTrackProgress = true, permalink }: QuestionGroupProps) {
+export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts, showSolutionButton = true, examMode, revealAnswers, onMcqSelect, isAdmin, disableServerRefresh, hideBadges, hideTopicBadge, canTrackProgress = true, permalink, lockedCtaHref, lockedTitle }: QuestionGroupProps) {
   const router = useRouter();
   const [showSolution, setShowSolution] = useState(false);
   const [statuses, setStatuses] = useState<Record<string, AttemptStatus>>(
@@ -372,7 +381,12 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
     .map((p) => ({ questionId: p.id, part: p.part, content: p.solution!.content, imageUrl: p.solution!.imageUrl, videoUrl: p.solution!.videoUrl }));
 
   async function toggleStatus(id: string, s: AttemptStatus) {
-    if (!canTrackProgress) return;
+    if (!canTrackProgress) {
+      // Locked: on public pages, convert the click into a signup/upgrade CTA
+      // instead of silently doing nothing (or a 401 dead-end).
+      if (lockedCtaHref) router.push(lockedCtaHref);
+      return;
+    }
     const prev = statuses[id];
     // When clicking same status to un-toggle, clear to null visually
     // but send ATTEMPTED to API (preserves bookmark in DB)
@@ -433,7 +447,10 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
   }
 
   async function toggleBookmark(id: string) {
-    if (!canTrackProgress) return;
+    if (!canTrackProgress) {
+      if (lockedCtaHref) router.push(lockedCtaHref);
+      return;
+    }
     const prev = bookmarks[id];
     const next = !prev;
     const siblings = siblingPartIds(id);
@@ -508,15 +525,20 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
       const firstPartId = parts[0]?.id;
       if (!firstPartId) return;
 
+      // Mark/bookmark shortcuts are no-ops when tracking is locked — a keypress
+      // must never silently navigate the user away (the visible locked buttons
+      // are the explicit signup/upgrade CTA; a stray `c` shouldn't teleport).
+      const canMark = canTrackProgress;
+
       switch (e.key) {
         case "c":
-          toggleStatus(firstPartId, "CORRECT");
+          if (canMark) toggleStatus(firstPartId, "CORRECT");
           break;
         case "x":
-          toggleStatus(firstPartId, "INCORRECT");
+          if (canMark) toggleStatus(firstPartId, "INCORRECT");
           break;
         case "r":
-          toggleBookmark(firstPartId);
+          if (canMark) toggleBookmark(firstPartId);
           break;
         case "s":
           if (hasSolution) setShowSolution(true);
@@ -540,7 +562,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [examMode, parts, hasSolution]
+    [examMode, parts, hasSolution, canTrackProgress]
   );
 
   return (
@@ -647,7 +669,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
           {/* For MCQs: status buttons live here in the header (hidden in exam mode) */}
           {!hasParts && !examMode && (
             <>
-              <button onClick={() => toggleStatus(parts[0].id, "CORRECT")} title={canTrackProgress ? "Mark correct" : "Standard plan required"}
+              <button onClick={() => toggleStatus(parts[0].id, "CORRECT")} title={canTrackProgress ? "Mark correct" : (lockedTitle ?? "Standard plan required")}
                 className={cn(
                   "rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center",
                   !canTrackProgress && "text-gray-300 dark:text-gray-600",
@@ -656,7 +678,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
                 )}>
                 <CheckCircle className="h-4 w-4 lg:h-5 lg:w-5" />
               </button>
-              <button onClick={() => toggleStatus(parts[0].id, "INCORRECT")} title={canTrackProgress ? "Mark incorrect" : "Standard plan required"}
+              <button onClick={() => toggleStatus(parts[0].id, "INCORRECT")} title={canTrackProgress ? "Mark incorrect" : (lockedTitle ?? "Standard plan required")}
                 className={cn(
                   "rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center",
                   !canTrackProgress && "text-gray-300 dark:text-gray-600",
@@ -665,7 +687,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
                 )}>
                 <XCircle className="h-4 w-4 lg:h-5 lg:w-5" />
               </button>
-              <button onClick={() => toggleBookmark(parts[0].id)} title={canTrackProgress ? "Bookmark for review" : "Standard plan required"}
+              <button onClick={() => toggleBookmark(parts[0].id)} title={canTrackProgress ? "Bookmark for review" : (lockedTitle ?? "Standard plan required")}
                 className={cn(
                   "rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center",
                   !canTrackProgress && "text-gray-300 dark:text-gray-600",
@@ -707,7 +729,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
                 </div>
                 {!examMode && (
                 <div className="flex items-center gap-0.5">
-                  <button onClick={() => toggleStatus(p.id, "CORRECT")} title={canTrackProgress ? "Mark correct" : "Standard plan required"}
+                  <button onClick={() => toggleStatus(p.id, "CORRECT")} title={canTrackProgress ? "Mark correct" : (lockedTitle ?? "Standard plan required")}
                     className={cn(
                       "rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center",
                       !canTrackProgress && "text-gray-300 dark:text-gray-600",
@@ -716,7 +738,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
                     )}>
                     <CheckCircle className="h-4 w-4 lg:h-5 lg:w-5" />
                   </button>
-                  <button onClick={() => toggleStatus(p.id, "INCORRECT")} title={canTrackProgress ? "Mark incorrect" : "Standard plan required"}
+                  <button onClick={() => toggleStatus(p.id, "INCORRECT")} title={canTrackProgress ? "Mark incorrect" : (lockedTitle ?? "Standard plan required")}
                     className={cn(
                       "rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center",
                       !canTrackProgress && "text-gray-300 dark:text-gray-600",
@@ -725,7 +747,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
                     )}>
                     <XCircle className="h-4 w-4 lg:h-5 lg:w-5" />
                   </button>
-                  <button onClick={() => toggleBookmark(p.id)} title={canTrackProgress ? "Bookmark for review" : "Standard plan required"}
+                  <button onClick={() => toggleBookmark(p.id)} title={canTrackProgress ? "Bookmark for review" : (lockedTitle ?? "Standard plan required")}
                     className={cn(
                       "rounded-lg p-2.5 lg:p-1.5 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center",
                       !canTrackProgress && "text-gray-300 dark:text-gray-600",
