@@ -29,8 +29,11 @@ export default function CheckoutButton({ className, children }: Props) {
       });
 
       if (res.status === 401) {
-        // Not signed in — redirect to signup, they'll come back to /pricing
-        router.push("/signup?plan=standard");
+        // Not signed in — send to signup carrying a return-to so they land
+        // back where they were (usually /pricing) and can complete checkout.
+        const backTo =
+          typeof window !== "undefined" ? window.location.pathname : "/pricing";
+        router.push(`/signup?next=${encodeURIComponent(backTo)}`);
         return;
       }
 

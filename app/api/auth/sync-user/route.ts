@@ -158,7 +158,9 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  const response = NextResponse.json({ ok: true });
+  // Return isNewRegistration so the client can route first-time users through
+  // /welcome onboarding instead of dropping them on a zero-filled dashboard.
+  const response = NextResponse.json({ ok: true, isNewRegistration });
   if (newSessionId) {
     // Only set the single-session cookie for non-admin users; admins are
     // exempt from single-active-session enforcement.

@@ -7,6 +7,7 @@ import { Eye, EyeOff } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
 import SocialAuth from "@/components/SocialAuth";
 import { createClient } from "@/lib/supabase/client";
+import { sanitizeNext, postAuthDestination } from "@/lib/next-param";
 
 // Cookie name for persisting referral code across email-confirmation flow.
 // Read on the server in /api/auth/sync-user as a fallback when the body
@@ -25,6 +26,7 @@ function SignupForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const referralCode = searchParams.get("ref")?.trim() || null;
+  const next = sanitizeNext(searchParams.get("next"));
 
   // Persist the referral code in a cookie so it survives the email-confirmation
   // flow (signup → email link → login). The cookie is read by /api/auth/sync-user
@@ -81,23 +83,33 @@ function SignupForm() {
     }
 
     const supabase = createClient();
+    // When email confirmation is on, the confirmation link must carry `next`
+    // so the destination survives the email round-trip (/auth/callback reads
+    // it → /auth/finish → postAuthDestination). Without this, the checkout /
+    // deep-link intent that sent the user to signup is lost after they confirm.
+    const emailRedirectTo = `${window.location.origin}/auth/callback${
+      next ? `?next=${encodeURIComponent(next)}` : ""
+    }`;
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { name } },
+      options: { data: { name }, emailRedirectTo },
     });
 
     if (error) {
       setError(error.message);
       setLoading(false);
     } else if (data.session) {
-      // Email confirmation disabled — user is logged in immediately
-      await fetch("/api/auth/sync-user", {
+      // Email confirmation disabled — user is logged in immediately. Fresh
+      // signups are new registrations, so route through /welcome onboarding
+      // (carrying next as the post-onboarding destination).
+      const res = await fetch("/api/auth/sync-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(referralCode ? { referralCode } : {}),
       });
-      router.push("/dashboard");
+      const { isNewRegistration = true } = await res.json().catch(() => ({}));
+      router.push(postAuthDestination(isNewRegistration, next));
       router.refresh();
     } else {
       // Email confirmation required
@@ -115,7 +127,7 @@ function SignupForm() {
             We sent a confirmation link to <strong>{email}</strong>. Click it to activate your account.
           </p>
           <Link
-            href="/login"
+            href={next ? `/login?next=${encodeURIComponent(next)}` : "/login"}
             className="mt-6 inline-block text-base text-brand-600 dark:text-brand-400 font-medium hover:underline"
           >
             Back to login
@@ -148,7 +160,7 @@ function SignupForm() {
           </div>
         )}
 
-        <SocialAuth next="/dashboard" />
+        <SocialAuth next={next ?? "/dashboard"} />
         <div className="my-6 flex items-center gap-3">
           <div className="h-px flex-1 bg-gray-200 dark:bg-gray-700" />
           <span className="text-xs text-gray-400 dark:text-gray-500">or sign up with email</span>
@@ -250,7 +262,7 @@ function SignupForm() {
 
         <p className="mt-6 text-center text-base text-gray-500 dark:text-gray-400">
           Already have an account?{" "}
-          <Link href="/login" className="text-brand-600 dark:text-brand-400 font-medium hover:underline">
+          <Link href={next ? `/login?next=${encodeURIComponent(next)}` : "/login"} className="text-brand-600 dark:text-brand-400 font-medium hover:underline">
             Log in
           </Link>
         </p>

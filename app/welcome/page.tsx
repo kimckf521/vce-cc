@@ -9,6 +9,7 @@ import {
   DEFAULT_SUBJECT_SLUG,
   type SubjectSlug,
 } from "@/lib/subject-context";
+import { sanitizeNext } from "@/lib/next-param";
 import OnboardingForm from "./OnboardingForm";
 import Celebration from "./Celebration";
 
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
 };
 
 interface PageProps {
-  searchParams: Promise<{ session_id?: string }>;
+  searchParams: Promise<{ session_id?: string; next?: string }>;
 }
 
 /**
@@ -52,11 +53,14 @@ export default async function WelcomePage({ searchParams }: PageProps) {
     select: { name: true, referredByCode: true },
   });
 
-  const { session_id } = await searchParams;
+  const { session_id, next } = await searchParams;
 
   if (session_id) {
     return <Celebration displayName={dbUser?.name ?? null} />;
   }
+
+  // Only forward to a validated same-origin path after onboarding.
+  const postOnboardingNext = sanitizeNext(next) ?? "/dashboard";
 
   // Pre-fill subject selection so returning users don't get reset to Methods.
   // Priority: (1) vce_studying cookie set by previous onboarding submission,
@@ -69,6 +73,7 @@ export default async function WelcomePage({ searchParams }: PageProps) {
       displayName={dbUser?.name ?? null}
       isReferred={Boolean(dbUser?.referredByCode)}
       initialSelectedSubjects={initialSelectedSubjects}
+      continueHref={postOnboardingNext}
     />
   );
 }

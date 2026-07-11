@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import BrandMark from "@/components/BrandMark";
+import { sanitizeNext, postAuthDestination } from "@/lib/next-param";
 
 /**
  * Post-auth finisher for OAuth / magic-link sign-ins. The `/auth/callback`
@@ -21,20 +22,18 @@ function Finisher() {
     if (ran.current) return;
     ran.current = true;
 
-    const nextParam = searchParams.get("next");
-    const next =
-      nextParam && nextParam.startsWith("/") && !nextParam.startsWith("//")
-        ? nextParam
-        : "/dashboard";
+    const next = sanitizeNext(searchParams.get("next"));
 
     (async () => {
+      let isNewRegistration = false;
       try {
-        await fetch("/api/auth/sync-user", { method: "POST" });
+        const res = await fetch("/api/auth/sync-user", { method: "POST" });
+        ({ isNewRegistration = false } = await res.json().catch(() => ({})));
       } catch {
         // Best-effort: the session already exists, so proceed regardless —
         // the destination's own layout will provision/guard as needed.
       }
-      router.replace(next);
+      router.replace(postAuthDestination(isNewRegistration, next));
       router.refresh();
     })();
   }, [router, searchParams]);

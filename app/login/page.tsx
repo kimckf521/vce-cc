@@ -7,11 +7,13 @@ import { Eye, EyeOff } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
 import SocialAuth from "@/components/SocialAuth";
 import { createClient } from "@/lib/supabase/client";
+import { sanitizeNext, postAuthDestination } from "@/lib/next-param";
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const reason = searchParams.get("reason");
+  const next = sanitizeNext(searchParams.get("next"));
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -30,9 +32,10 @@ function LoginForm() {
       setError(error.message === "Invalid login credentials" ? "Incorrect email or password" : error.message);
       setLoading(false);
     } else {
-      // Ensure User row exists in our DB
-      await fetch("/api/auth/sync-user", { method: "POST" });
-      router.push("/dashboard");
+      // Ensure User row exists in our DB; first-time rows route via /welcome.
+      const res = await fetch("/api/auth/sync-user", { method: "POST" });
+      const { isNewRegistration = false } = await res.json().catch(() => ({}));
+      router.push(postAuthDestination(isNewRegistration, next));
       router.refresh();
     }
   }
@@ -61,7 +64,7 @@ function LoginForm() {
           </div>
         )}
 
-        <SocialAuth next="/dashboard" />
+        <SocialAuth next={next ?? "/dashboard"} />
         <div className="my-6 flex items-center gap-3">
           <div className="h-px flex-1 bg-gray-200 dark:bg-gray-700" />
           <span className="text-xs text-gray-400 dark:text-gray-500">or log in with email</span>
@@ -132,7 +135,7 @@ function LoginForm() {
 
         <p className="mt-6 text-center text-base text-gray-500 dark:text-gray-400">
           Don&apos;t have an account?{" "}
-          <Link href="/signup" className="text-brand-600 dark:text-brand-400 font-medium hover:underline">
+          <Link href={next ? `/signup?next=${encodeURIComponent(next)}` : "/signup"} className="text-brand-600 dark:text-brand-400 font-medium hover:underline">
             Sign up
           </Link>
         </p>

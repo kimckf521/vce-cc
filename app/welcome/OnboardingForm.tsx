@@ -20,6 +20,11 @@ type Props = {
    * new users. Pre-fill makes the form forgiving for returning users.
    */
   initialSelectedSubjects?: string[];
+  /**
+   * Where "continue free" lands — the user's original `?next=` destination
+   * (validated server-side), or /dashboard by default.
+   */
+  continueHref?: string;
 };
 
 /**
@@ -34,6 +39,7 @@ export default function OnboardingForm({
   displayName,
   isReferred,
   initialSelectedSubjects,
+  continueHref = "/dashboard",
 }: Props) {
   const greetingName = displayName?.trim();
   const greeting = greetingName ? `Welcome, ${greetingName} 👋` : "Welcome 👋";
@@ -81,9 +87,9 @@ export default function OnboardingForm({
     setSubmitting(true);
     try {
       await saveStudyingSubjects(selectedSubjects);
-      window.location.href = "/dashboard";
+      window.location.href = continueHref;
     } catch {
-      window.location.href = "/dashboard";
+      window.location.href = continueHref;
     }
   }
 

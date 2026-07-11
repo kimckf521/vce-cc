@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { postAuthDestination } from "@/lib/next-param";
 
 /**
  * One-click / passwordless auth shared by /login and /signup.
@@ -104,13 +105,15 @@ export default function SocialAuth({ next = "/dashboard" }: { next?: string }) {
       return;
     }
     // Provision the user (free enrolments, vce_sid cookie, referral), same as
-    // password login, then continue.
+    // password login, then continue. First-time rows route via /welcome.
+    let isNewRegistration = false;
     try {
-      await fetch("/api/auth/sync-user", { method: "POST" });
+      const res = await fetch("/api/auth/sync-user", { method: "POST" });
+      ({ isNewRegistration = false } = await res.json().catch(() => ({})));
     } catch {
       // best-effort — the session exists; the destination layout guards anyway
     }
-    router.push(next);
+    router.push(postAuthDestination(isNewRegistration, next));
     router.refresh();
   }
 
