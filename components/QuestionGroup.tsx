@@ -321,6 +321,28 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
   );
   const [mcqSelections, setMcqSelections] = useState<Record<string, string | null>>({});
   const [saveError, setSaveError] = useState<string | null>(null);
+  // When a save fails with 403 PAYWALL (a free user marking a paid-topic
+  // question on a public page), the error carries an upgrade link instead of a
+  // generic "failed" — the paid-tier equivalent of the anon signup CTA.
+  const [saveCtaHref, setSaveCtaHref] = useState<string | null>(null);
+
+  function reportSaveFailure(status: number) {
+    if (status === 403) {
+      setSaveError("Saving progress on this topic is part of VCE Maths.");
+      setSaveCtaHref("/pricing");
+    } else if (status === 401) {
+      setSaveError("Please log in to save your progress.");
+      setSaveCtaHref(null);
+    } else {
+      setSaveError("Failed to save. Please try again.");
+      setSaveCtaHref(null);
+    }
+  }
+
+  function clearSaveError() {
+    setSaveError(null);
+    setSaveCtaHref(null);
+  }
   const cardRef = useRef<HTMLDivElement>(null);
 
   // Generated items (year === 0) have no matching Question row,
@@ -402,7 +424,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
       });
       return updated;
     });
-    setSaveError(null);
+    clearSaveError();
 
     const endpoint = isGenerated ? "/api/generated-attempts" : "/api/attempts";
     const idField = isGenerated ? "questionSetItemId" : "questionId";
@@ -425,11 +447,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
           });
           return updated;
         });
-        if (res.status === 401) {
-          setSaveError("Please log in to save your progress.");
-        } else {
-          setSaveError("Failed to save. Please try again.");
-        }
+        reportSaveFailure(res.status);
       } else if (!disableServerRefresh) {
         router.refresh();
       }
@@ -461,7 +479,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
       });
       return updated;
     });
-    setSaveError(null);
+    clearSaveError();
 
     // For generated items, persist via the generated-attempts endpoint
     if (isGenerated) {
@@ -480,7 +498,7 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
             });
             return updated;
           });
-          setSaveError(res.status === 401 ? "Please log in to save your progress." : "Failed to save. Please try again.");
+          reportSaveFailure(res.status);
         } else if (!disableServerRefresh) {
           router.refresh();
         }
@@ -801,11 +819,18 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
         ))}
       </div>
 
-      {/* Save error message */}
+      {/* Save error message — a 403 (paid-topic save) carries an upgrade link. */}
       {saveError && (
         <div className="mx-5 lg:mx-7 mb-3 rounded-lg bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 px-4 py-2.5 text-sm text-red-700 dark:text-red-400 flex items-center justify-between gap-3">
-          <span>{saveError}</span>
-          <button onClick={() => setSaveError(null)} className="text-red-400 hover:text-red-600 dark:hover:text-red-300 text-lg leading-none">×</button>
+          <span>
+            {saveError}
+            {saveCtaHref && (
+              <NextLink href={saveCtaHref} className="ml-1 font-semibold underline underline-offset-2 hover:text-red-900 dark:hover:text-red-200">
+                Upgrade →
+              </NextLink>
+            )}
+          </span>
+          <button onClick={clearSaveError} className="text-red-400 hover:text-red-600 dark:hover:text-red-300 text-lg leading-none shrink-0">×</button>
         </div>
       )}
 
