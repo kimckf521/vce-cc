@@ -15,13 +15,13 @@ const createUserSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6, "Password must be at least 6 characters"),
   name: z.string().min(1, "Name is required"),
-  role: z.enum(["STUDENT", "TUTOR", "INFLUENCER", "ADMIN", "SUPER_ADMIN"]).default("STUDENT"),
+  role: z.enum(["STUDENT", "TEACHER", "TUTOR", "INFLUENCER", "ADMIN", "SUPER_ADMIN"]).default("STUDENT"),
   enrolments: z.array(enrolmentSchema).optional().default([]),
 });
 
 const changeRoleSchema = z.object({
   userId: z.string().min(1),
-  role: z.enum(["STUDENT", "TUTOR", "INFLUENCER", "ADMIN", "SUPER_ADMIN"]),
+  role: z.enum(["STUDENT", "TEACHER", "TUTOR", "INFLUENCER", "ADMIN", "SUPER_ADMIN"]),
 });
 
 export async function POST(req: NextRequest) {

@@ -191,6 +191,94 @@ export const attributeReferralSchema = z
     message: "Either userId or email is required",
   });
 
+// =====================================================
+// Teacher assessment builder (/api/teacher/**)
+// =====================================================
+
+// Enums matching Prisma schema (teacher routes)
+export const AssessmentStatus = z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]);
+export const QuestionSetItemType = z.enum([
+  "MCQ",
+  "SHORT_ANSWER",
+  "EXTENDED_ANSWER",
+  "EXTENDED_RESPONSE",
+]);
+export const Tech = z.enum(["TECH_FREE", "CAS_ALLOWED", "CAS_REQUIRED"]);
+
+/**
+ * Canonical role list for role-change / user-creation validation. Inline
+ * z.enum role lists (e.g. app/api/admin/users/route.ts) must stay in sync —
+ * prefer importing this one.
+ */
+export const Role = z.enum([
+  "STUDENT",
+  "TEACHER",
+  "TUTOR",
+  "INFLUENCER",
+  "ADMIN",
+  "SUPER_ADMIN",
+]);
+
+// Builder settings snapshot — stored verbatim on Assessment.settings.
+// difficulty values are percents that must sum to exactly 100.
+export const assessmentSettingsSchema = z.object({
+  topicIds: z.array(z.string().min(1)).max(50).optional(),
+  difficulty: z
+    .object({
+      easy: z.number().int().min(0).max(100),
+      medium: z.number().int().min(0).max(100),
+      hard: z.number().int().min(0).max(100),
+    })
+    .refine((d) => d.easy + d.medium + d.hard === 100, {
+      message: "Difficulty percentages must sum to 100",
+    })
+    .optional(),
+  tech: z.enum(["TECH_FREE", "ANY"]).optional(),
+  targetMarks: z.number().int().min(1).max(300).optional(),
+  questionCount: z.number().int().min(1).max(100).optional(),
+});
+
+// POST /api/teacher/assessments
+export const createAssessmentSchema = z.object({
+  subjectSlug: z.string().trim().min(1),
+  title: z.string().trim().min(1, "Title is required").max(200, "Title is too long"),
+  autoAssemble: z.boolean().optional().default(false),
+  settings: assessmentSettingsSchema.optional(),
+});
+
+// PATCH /api/teacher/assessments/[id]
+export const updateAssessmentSchema = z.object({
+  title: z.string().trim().min(1, "Title cannot be empty").max(200).optional(),
+  description: z.string().trim().max(2000).nullable().optional(),
+  status: AssessmentStatus.optional(),
+});
+
+// POST /api/teacher/assessments/[id]/items
+export const addAssessmentItemSchema = z.object({
+  questionSetItemId: z.string().min(1),
+  position: z.number().int().min(0).optional(),
+});
+
+// POST /api/teacher/assessments/[id]/reorder — must be a complete
+// permutation of the paper's current item ids (checked server-side).
+export const reorderAssessmentSchema = z.object({
+  itemIds: z.array(z.string().min(1)).min(1).max(200),
+});
+
+// GET /api/teacher/question-pool (query params). `tech=ANY` means "no tech
+// filter" (mirrors the builder settings); a concrete Tech value filters to
+// exactly that tag.
+export const teacherPoolQuerySchema = z.object({
+  subjectSlug: z.string().trim().min(1),
+  topicId: z.string().trim().min(1).optional(),
+  difficulty: Difficulty.optional(),
+  type: QuestionSetItemType.optional(),
+  tech: z.enum(["TECH_FREE", "CAS_ALLOWED", "CAS_REQUIRED", "ANY"]).optional(),
+  q: z.string().trim().max(200).optional(),
+  cursor: z.string().trim().min(1).optional(),
+  limit: z.coerce.number().int().min(1).max(50).default(20),
+});
+
 // POST /api/admin/users/[id]/credit — super-admin adjusts platform credit.
 // Amount is in dollars (form-friendly); converted to cents server-side.
 // Positive = add credit; negative = deduct credit (clawback). Range chosen

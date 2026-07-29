@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Zap, ArrowRight } from "lucide-react";
+import { Menu, Zap, ArrowRight, GraduationCap } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
 import CurriculumPill from "@/components/CurriculumPill";
 import SubjectsMegaMenu from "@/components/SubjectsMegaMenu";
@@ -19,6 +19,7 @@ const PAGE_TITLES: Record<string, string> = {
   "/history": "History",
   "/referrals": "Referrals",
   "/admin": "Admin",
+  "/teacher": "Teacher",
 };
 
 const SECTION_LABELS: Record<string, string> = {
@@ -65,6 +66,8 @@ function parsePath(pathname: string): ParsedPath {
 
 type Props = {
   isAdmin?: boolean;
+  /** TEACHER role (or admin) — shows the Teacher assessment-builder entry. */
+  isTeacher?: boolean;
   /** Drives the mega-menu footer upsell — free users see it, paid don't. */
   isPaid?: boolean;
   displayName?: string | null;
@@ -87,6 +90,7 @@ type Props = {
  */
 export default function TopBar({
   isAdmin = false,
+  isTeacher = false,
   isPaid = false,
   displayName,
   email,
@@ -146,6 +150,19 @@ export default function TopBar({
             />
           </div>
 
+          {/* Desktop: teacher tools entry — the desktop Admin link lives in
+              the avatar menu, but the assessment builder is a primary
+              destination for teachers, so it gets a visible header link. */}
+          {isTeacher && (
+            <Link
+              href="/teacher"
+              className="hidden lg:flex items-center gap-1.5 ml-1 rounded-lg px-3 py-1.5 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            >
+              <GraduationCap className="h-4 w-4" />
+              Teacher
+            </Link>
+          )}
+
           {/* Mobile: breadcrumb (centre, flex-1) */}
           <button
             type="button"
@@ -171,6 +188,7 @@ export default function TopBar({
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         isAdmin={isAdmin}
+        isTeacher={isTeacher}
         curriculum={curriculum}
         activeSubject={
           parsed.mode === "subject" ? parsed.subject : undefined

@@ -12,7 +12,7 @@ export default function CreateAccountForm({ isSuperAdmin = false }: { isSuperAdm
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState<
-    "STUDENT" | "TUTOR" | "INFLUENCER" | "ADMIN" | "SUPER_ADMIN"
+    "STUDENT" | "TEACHER" | "TUTOR" | "INFLUENCER" | "ADMIN" | "SUPER_ADMIN"
   >("STUDENT");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -170,6 +170,7 @@ export default function CreateAccountForm({ isSuperAdmin = false }: { isSuperAdm
                 className="w-full appearance-none px-3 py-2 pr-9 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100 cursor-pointer focus:outline-none focus:border-brand-500"
               >
                 <option value="STUDENT">Student</option>
+                <option value="TEACHER">Teacher</option>
                 <option value="TUTOR">Tutor</option>
                 <option value="INFLUENCER">Influencer</option>
                 <option value="ADMIN">Admin</option>

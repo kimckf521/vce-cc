@@ -9,6 +9,7 @@ import {
   UserCircle,
   Gift,
   ShieldCheck,
+  GraduationCap,
   History,
   LogOut,
   Lock,
@@ -25,6 +26,8 @@ type Props = {
   open: boolean;
   onClose: () => void;
   isAdmin?: boolean;
+  /** TEACHER role (or admin) — shows the Teacher assessment-builder entry. */
+  isTeacher?: boolean;
   curriculum: string;
   activeSubject?: string;
   /** Whether the user has paid VCE Maths access (drives the status block). */
@@ -51,6 +54,7 @@ export default function MobileDrawer({
   open,
   onClose,
   isAdmin = false,
+  isTeacher = false,
   curriculum,
   activeSubject,
   isPaid = false,
@@ -195,6 +199,13 @@ export default function MobileDrawer({
               <DrawerLink href="/history" icon={History} label="History" />
               <DrawerLink href="/profile" icon={UserCircle} label="Profile" />
               <DrawerLink href="/referrals" icon={Gift} label="Refer a friend" />
+              {isTeacher && (
+                <DrawerLink
+                  href="/teacher"
+                  icon={GraduationCap}
+                  label="Teacher"
+                />
+              )}
               {isAdmin && (
                 <DrawerLink
                   href="/admin"

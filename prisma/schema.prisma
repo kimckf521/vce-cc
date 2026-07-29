@@ -81,6 +81,7 @@ model Question {
   subject        Subject?   @relation(fields: [subjectId], references: [id])
   solution       Solution?
   subtopics      Subtopic[] @relation("QuestionToSubtopic")
+  assessmentItems AssessmentItem[]
 
   @@index([topicId, difficulty])
   @@index([examId, questionNumber])
@@ -125,6 +126,7 @@ model User {
   /// Inverse side of AdminActionLog.actor. Lets us list a user's admin
   /// actions for accountability; SetNull on user delete preserves history.
   adminActions         AdminActionLog[]     @relation("AdminAuditActor")
+  assessments          Assessment[]         @relation("TeacherAssessments")
 
   @@index([referredByCode])
 }
@@ -161,6 +163,7 @@ model Subject {
   exams        Exam[]
   questions    Question[]
   questionSets QuestionSet[]
+  assessments  Assessment[]
 
   @@unique([curriculumId, name])
   @@unique([curriculumId, slug])
@@ -316,6 +319,9 @@ enum Difficulty {
 
 enum Role {
   STUDENT
+  // Classroom teachers — unlocks the /teacher assessment-builder area.
+  // Distinct from TUTOR, which is an affiliate-track marker only.
+  TEACHER
   TUTOR
   INFLUENCER
   ADMIN
@@ -387,6 +393,7 @@ model QuestionSetItem {
   subtopics     Subtopic[]          @relation("QuestionSetItemToSubtopic")
   attempts      QuestionSetAttempt[]
   examSessionQuestions ExamSessionQuestion[]
+  assessmentItems AssessmentItem[]
 
   @@index([questionSetId])
   @@index([topicId])
@@ -605,6 +612,67 @@ model AdminActionLog {
   @@index([createdAt])
   @@index([actorId, createdAt])
   @@index([targetType, targetId])
+}
+
+// =====================================================
+// Teacher assessment builder (T1)
+// =====================================================
+
+enum AssessmentStatus {
+  DRAFT
+  PUBLISHED // Finalized by the teacher; print/export (T2) reads this
+  ARCHIVED
+}
+
+/// A teacher-authored paper (topic test, SAC-style assessment, homework
+/// sheet) assembled from the question bank. T1 scope: items come from the
+/// original generated bank (QuestionSetItem, APPROVED) only — past-paper
+/// Question linkage exists on AssessmentItem for a future, post-VCAA-
+/// permission expansion.
+model Assessment {
+  id          String           @id @default(cuid())
+  teacherId   String
+  teacher     User             @relation("TeacherAssessments", fields: [teacherId], references: [id], onDelete: Cascade)
+  subjectId   String
+  subject     Subject          @relation(fields: [subjectId], references: [id])
+  title       String
+  description String?
+  status      AssessmentStatus @default(DRAFT)
+  /// Builder settings snapshot: { topicIds, difficulty: {easy,medium,hard},
+  /// tech, targetMarks, questionCount, stylePreset }. Kept as Json so the
+  /// builder can evolve without migrations; never read for access control.
+  settings    Json?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  items       AssessmentItem[]
+
+  @@index([teacherId, updatedAt])
+  @@index([subjectId])
+}
+
+/// One question slot in an Assessment. Polymorphic source: exactly one of
+/// questionSetItemId (original generated bank — the only source T1 writes)
+/// or questionId (VCAA past-paper — reserved, see Assessment doc) is set.
+model AssessmentItem {
+  id                String           @id @default(cuid())
+  assessmentId      String
+  assessment        Assessment       @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  /// Display order within the paper (0-based, dense).
+  order             Int
+  questionSetItemId String?
+  questionSetItem   QuestionSetItem? @relation(fields: [questionSetItemId], references: [id], onDelete: Cascade)
+  questionId        String?
+  question          Question?        @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  createdAt         DateTime         @default(now())
+
+  /// DB-level backstop against the same question appearing twice in one
+  /// paper — concurrent add-item requests can both pass the route's
+  /// read-then-check duplicate guard. (Nullable column: Postgres permits
+  /// multiple NULLs, so the reserved questionId path is unaffected.)
+  @@unique([assessmentId, questionSetItemId])
+  @@index([assessmentId, order])
+  @@index([questionSetItemId])
+  @@index([questionId])
 }
 
 model InfluencerContract {

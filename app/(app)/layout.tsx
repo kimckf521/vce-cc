@@ -35,6 +35,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     select: { role: true, activeSessionId: true, name: true, studyingSubjects: true },
   });
   const isAdmin = isAdminRole(dbUser?.role);
+  // Teachers get the /teacher assessment-builder entry; admins keep it too so
+  // they can reach the tools without a role swap.
+  const isTeacher = dbUser?.role === "TEACHER" || isAdmin;
   // If a session ID has been issued for this user in the DB AND either the
   // browser has no cookie or it doesn't match, this browser has been
   // superseded by a newer login. Sign out of Supabase and redirect to login
@@ -60,6 +63,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       <TopBar
         isAdmin={isAdmin}
+        isTeacher={isTeacher}
         isPaid={isPaid}
         displayName={dbUser?.name}
         email={user.email}

@@ -28,6 +28,11 @@ export const config = {
     "/history/:path*",
     "/profile/:path*",
     "/admin/:path*",
+    "/teacher/:path*",
+    // Teacher print views live outside (app) and self-guard via getUser();
+    // without session refresh here, an expired-but-refreshable session would
+    // bounce through /login instead of reaching the paper directly.
+    "/print/:path*",
     "/referrals/:path*",
     "/login",
     "/signup",
