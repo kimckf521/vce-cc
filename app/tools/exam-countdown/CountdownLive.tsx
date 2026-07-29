@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   daysBetweenISO,
+  isExamOver,
   melbourneDateISOAt,
   practicePapersEstimate,
   weekendsPhrase,
@@ -221,17 +222,13 @@ export default function CountdownLive({ exams, initialNowMs }: Props) {
 
   const todayISO = melbourneDateISOAt(now);
   // Props arrive soonest-first from the server; keep that order and just
-  // attach live day counts + drop exams that are over: past Melbourne dates,
-  // plus same-day exams whose published sitting has ended — so within minutes
-  // of pens-down the next exam's ticker takes the hero instead of "underway"
-  // lingering until midnight. Exams with no parsed end (endEpochMs ===
-  // startEpochMs, e.g. date-only entries) keep the date-based behaviour.
+  // attach live day counts + drop exams that are over (shared isExamOver
+  // rule — see countdown-lib) so within minutes of pens-down the next
+  // exam's ticker takes the hero instead of "underway" lingering until
+  // midnight.
   const upcoming: LiveExam[] = exams
     .map((e) => ({ ...e, days: daysBetweenISO(todayISO, e.dateISO) }))
-    .filter(
-      (e) =>
-        e.days >= 0 && !(e.endEpochMs > e.startEpochMs && now > e.endEpochMs),
-    );
+    .filter((e) => !isExamOver(e, now));
 
   if (upcoming.length === 0) return <AllDone />;
 

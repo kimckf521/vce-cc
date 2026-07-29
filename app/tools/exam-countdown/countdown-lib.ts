@@ -235,6 +235,30 @@ export interface CountdownExam {
 }
 
 /**
+ * Whether an exam sitting is over, given the live day count (from
+ * `daysBetweenISO(todayISO, exam.dateISO)`) and the current epoch ms.
+ *
+ * An exam is over when its Melbourne date has passed (`days < 0`), or —
+ * for same-day exams with a published sitting end — once the clock passes
+ * pens-down, so "underway" doesn't linger until midnight. Exams with no
+ * parsed end (endEpochMs === startEpochMs, e.g. date-only entries) keep
+ * pure date-based behaviour.
+ *
+ * This is THE end-of-sitting rule shared by CountdownLive.tsx and
+ * components/HomeCountdownStrip.tsx; change it here so the homepage strip
+ * and the tools page always agree on which exam is next.
+ */
+export function isExamOver(
+  exam: Pick<CountdownExam, "startEpochMs" | "endEpochMs"> & { days: number },
+  nowMs: number,
+): boolean {
+  return (
+    exam.days < 0 ||
+    (exam.endEpochMs > exam.startEpochMs && nowMs > exam.endEpochMs)
+  );
+}
+
+/**
  * Every published subject exam from VCE_EXAM_DATES, soonest first. Null
  * (unpublished) dates and unknown slugs drop out; past exams are NOT
  * filtered here — the client filters against live "now" so cards hide

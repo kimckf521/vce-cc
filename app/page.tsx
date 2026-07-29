@@ -1,10 +1,18 @@
 import Link from "next/link";
 import { FileText, CheckCircle, Clock, ArrowRight, Sparkles, Target, TrendingUp, Trophy, HelpCircle, Award, Smartphone, Timer, LineChart } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
+import HomeCountdownStrip from "@/components/HomeCountdownStrip";
 import MarketingNav from "@/components/MarketingNav";
 import MarketingFooter from "@/components/MarketingFooter";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
+
+// Freshness cap for the exam-countdown strip's server-rendered day count.
+// Supabase cookie auth makes this page dynamic per-request today, but if it
+// is ever cached/statically rendered, the HTML can never go more than an
+// hour stale (the strip also self-corrects client-side after hydration).
+// Matches app/tools/exam-countdown/page.tsx.
+export const revalidate = 3600;
 
 const stats = [
   { value: "2,900+", label: "Past exam questions" },
@@ -206,6 +214,10 @@ export default async function HomePage() {
           <p className="mt-6 text-sm text-gray-400 dark:text-gray-500">
             No credit card · no signup to try.
           </p>
+
+          {/* Exam countdown teaser — soonest upcoming VCAA maths exam.
+              Hides itself when no upcoming dates are published. */}
+          <HomeCountdownStrip initialNowMs={Date.now()} />
         </div>
       </section>
 
