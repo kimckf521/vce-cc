@@ -59,6 +59,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.8,
     },
+    // Teacher/tutor landing page — targets "vce maths test generator" /
+    // "vce sac builder" educator queries. The apply + verify sub-pages are
+    // account-scoped and carry page-level noindex, so only the landing is listed.
+    { url: `${SITE_URL}/teachers`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/faqs`, changeFrequency: "monthly", priority: 0.6 },
     { url: `${SITE_URL}/about`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/privacy`, changeFrequency: "yearly", priority: 0.3 },

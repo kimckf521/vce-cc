@@ -127,6 +127,7 @@ model User {
   /// actions for accountability; SetNull on user delete preserves history.
   adminActions         AdminActionLog[]     @relation("AdminAuditActor")
   assessments          Assessment[]         @relation("TeacherAssessments")
+  teacherApplication   TeacherApplication?
 
   @@index([referredByCode])
 }
@@ -586,6 +587,8 @@ enum AdminActionType {
   EXAM_DELETE
   EXAM_UPDATE
   QUESTION_SET_DEFAULT_SET
+  TEACHER_APPLICATION_APPROVE
+  TEACHER_APPLICATION_REJECT
   OTHER
 }
 
@@ -673,6 +676,59 @@ model AssessmentItem {
   @@index([assessmentId, order])
   @@index([questionSetItemId])
   @@index([questionId])
+}
+
+// ---------------------------------------------------------------------------
+// Teacher / educator applications
+//
+// Self-serve pipeline for the TEACHER role (which unlocks /teacher). Flow:
+//   submit form → PENDING_EMAIL → applicant clicks link sent to schoolEmail
+//   → PENDING_REVIEW → admin cross-checks the VIT register (manual, ~10s;
+//   no public API exists) → APPROVED (role → TEACHER) or REJECTED.
+//
+// Verification signals captured at submit time (domainTier / nameMatch /
+// gradYearFlag) are computed in lib/teacher-application.ts and shown in the
+// admin queue — they are advisory scoring, never auto-approval, and the VIT
+// register remains the authority on "is a registered teacher".
+// ---------------------------------------------------------------------------
+
+/// SCHOOL_TEACHER = classroom teacher at a school; PRIVATE_TUTOR = VIT-registered
+/// private tutor (no school). Both receive the same TEACHER role on approval —
+/// the distinction is for verification path + analytics only.
+enum TeacherApplicantType {
+  SCHOOL_TEACHER
+  PRIVATE_TUTOR
+}
+
+enum TeacherApplicationStatus {
+  PENDING_EMAIL  // Submitted; waiting for the applicant to click the verification link
+  PENDING_REVIEW // Email verified; waiting for admin VIT check
+  APPROVED
+  REJECTED
+}
+
+model TeacherApplication {
+  id              String                   @id @default(cuid())
+  userId          String                   @unique // one live application per account
+  user            User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  applicantType   TeacherApplicantType
+  fullName        String
+  schoolName      String? // null for private tutors
+  schoolEmail     String // where the verification link is sent (any email for tutors)
+  vitNumber       String
+  abn             String? // optional; relevant to tutors (pre-fills affiliate registration later)
+  status          TeacherApplicationStatus @default(PENDING_EMAIL)
+  emailToken      String                   @unique
+  emailVerifiedAt DateTime?
+  // Advisory scoring snapshot (lib/teacher-application.ts) — admin-queue display only
+  domainTier      String // GOV_STAFF | SCHOOL | STUDENT_DOMAIN | PERSONAL | OTHER
+  nameMatch       Boolean
+  gradYearFlag    Boolean
+  reviewNote      String? // admin note / rejection reason (included in the rejection email)
+  createdAt       DateTime                 @default(now())
+  updatedAt       DateTime                 @updatedAt
+
+  @@index([status, createdAt])
 }
 
 model InfluencerContract {

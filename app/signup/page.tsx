@@ -266,6 +266,12 @@ function SignupForm() {
             Log in
           </Link>
         </p>
+        <p className="mt-2 text-center text-sm text-gray-400 dark:text-gray-500">
+          Teaching or tutoring VCE maths?{" "}
+          <Link href="/teachers" className="text-brand-600 dark:text-brand-400 hover:underline">
+            Get a free teacher account
+          </Link>
+        </p>
       </div>
     </div>
   );

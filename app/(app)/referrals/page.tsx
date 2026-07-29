@@ -111,7 +111,11 @@ export default async function ReferralsPage({ searchParams }: PageProps) {
           ? ["TUTOR_AFFILIATE"]
           : dbUser.role === "INFLUENCER"
             ? ["INFLUENCER_AFFILIATE"]
-            : ["STUDENT_REFERRAL"];
+            : dbUser.role === "TEACHER"
+              // Educators are prime referrers — offer both the simple $5-credit
+              // student track and the $10-cash tutor track (ABN required).
+              ? ["STUDENT_REFERRAL", "TUTOR_AFFILIATE"]
+              : ["STUDENT_REFERRAL"];
 
     return (
       <div className="max-w-6xl mx-auto">

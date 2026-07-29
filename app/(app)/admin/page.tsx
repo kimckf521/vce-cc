@@ -12,6 +12,7 @@ import {
   HelpCircle,
   ImageIcon,
   ScrollText,
+  GraduationCap,
   Settings2,
   Sparkles,
   Star,
@@ -132,6 +133,13 @@ const QUICK_ACTION_GROUPS: QuickActionGroup[] = [
         description: "View and manage uploaded extraction images.",
         accent: "violet",
       },
+      {
+        href: "/admin/teacher-applications",
+        icon: GraduationCap,
+        title: "Teacher applications",
+        description: "Review educator applications against the VIT register.",
+        accent: "violet",
+      },
     ],
   },
   {
@@ -206,6 +214,7 @@ export default async function AdminPage() {
     setItemCount,
     userCount,
     affiliateCount,
+    pendingTeacherApps,
     questionSetCount,
     examBySubject,
     questionBySubject,
@@ -217,6 +226,7 @@ export default async function AdminPage() {
     prisma.questionSetItem.count(),
     prisma.user.count(),
     prisma.affiliate.count(),
+    prisma.teacherApplication.count({ where: { status: "PENDING_REVIEW" } }),
     prisma.questionSet.count(),
     prisma.exam.groupBy({ by: ["subjectId"], _count: true }),
     prisma.question.groupBy({ by: ["subjectId"], _count: true }),
@@ -273,6 +283,13 @@ export default async function AdminPage() {
     { label: "Question sets", value: questionSetCount, icon: Star, href: "/admin/question-sets" },
     { label: "Users", value: userCount, icon: Users, href: "/admin/users" },
     { label: "Affiliates", value: affiliateCount, icon: Gift, href: "/admin/affiliates" },
+    {
+      label: "Teacher applications",
+      value: pendingTeacherApps,
+      subLabel: "awaiting VIT review",
+      icon: GraduationCap,
+      href: "/admin/teacher-applications",
+    },
   ];
 
   return (

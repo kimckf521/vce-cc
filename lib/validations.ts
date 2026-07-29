@@ -292,3 +292,35 @@ export const giveCreditSchema = z
     message: "Amount must be at least $0.50 (positive or negative)",
     path: ["amountDollars"],
   });
+
+// POST /api/teachers/apply — self-serve teacher/tutor account application.
+// VIT registration numbers are numeric; exact length isn't published, so the
+// range is kept deliberately loose (the admin cross-checks the register
+// anyway). ABN is the standard 11 digits, optional and tutor-only in the UI.
+export const teacherApplySchema = z
+  .object({
+    applicantType: z.enum(["SCHOOL_TEACHER", "PRIVATE_TUTOR"]),
+    fullName: z.string().trim().min(2).max(100),
+    schoolName: z.string().trim().min(2).max(150).optional(),
+    schoolEmail: z.string().trim().toLowerCase().email().max(200),
+    vitNumber: z
+      .string()
+      .trim()
+      .regex(/^\d{3,10}$/, "VIT registration number should be numeric"),
+    abn: z
+      .string()
+      .trim()
+      .regex(/^\d{11}$/, "ABN must be 11 digits")
+      .optional()
+      .or(z.literal("").transform(() => undefined)),
+  })
+  .refine((d) => d.applicantType !== "SCHOOL_TEACHER" || !!d.schoolName, {
+    message: "School name is required for school teachers",
+    path: ["schoolName"],
+  });
+
+// PATCH /api/admin/teacher-applications/[id] — admin review decision.
+export const teacherReviewSchema = z.object({
+  action: z.enum(["APPROVE", "REJECT"]),
+  note: z.string().trim().max(300).optional(),
+});
