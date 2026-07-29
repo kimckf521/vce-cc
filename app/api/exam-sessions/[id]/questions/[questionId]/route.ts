@@ -97,7 +97,14 @@ export async function PATCH(
     include: { questionSetItem: { select: { marks: true } } },
   });
 
-  const allMarked = allQuestions.every((q) => q.marksEarned !== null);
+  // A row only counts as fully marked when every sub-part is marked —
+  // derived marksEarned goes non-null as soon as ANY sub-part is marked,
+  // so checking it alone would stamp graded:true on half-marked questions.
+  const allMarked = allQuestions.every((q) => {
+    if (q.marksEarned === null) return false;
+    const sub = q.subPartMarks as Record<string, number | null> | null;
+    return sub == null || Object.values(sub).every((v) => v !== null);
+  });
   const totalMarks = allQuestions.reduce(
     (sum, q) => sum + q.questionSetItem.marks,
     0

@@ -13,9 +13,13 @@ import {
 } from "lucide-react";
 import { hasActiveSubscription } from "@/lib/subscription";
 import { isAdminRole } from "@/lib/utils";
+import { getStudyStreak } from "@/lib/streak";
+import { EXAM_CONFIG } from "@/lib/exam-config";
 import DashboardEmptyState from "@/components/DashboardEmptyState";
 import UpsellBanner from "@/components/UpsellBanner";
 import SubjectsGrid from "@/components/SubjectsGrid";
+import StreakBanner from "@/components/StreakBanner";
+import ExamCountdown from "@/components/ExamCountdown";
 import {
   DEFAULT_SUBJECT_SLUG,
   getUrlSubjectSlug,
@@ -52,7 +56,7 @@ export default async function DashboardPage() {
   const { data: { user } } = await supabase.auth.getUser();
   const userId = user?.id;
 
-  const [dbUser, attempts, enrolments, topicAttemptCounts] =
+  const [dbUser, attempts, enrolments, topicAttemptCounts, streak] =
     await Promise.all([
       userId
         ? prisma.user.findUnique({ where: { id: userId }, select: { name: true, role: true, studyingSubjects: true } })
@@ -93,6 +97,7 @@ export default async function DashboardPage() {
             GROUP BY q."topicId"
           `
         : [],
+      userId ? getStudyStreak(userId) : 0,
     ]);
 
   /* ── derived values ── */
@@ -176,6 +181,49 @@ export default async function DashboardPage() {
   const continueRevising = pickContinueRevising(subjectProgress);
   const curriculum = DEFAULT_CURRICULUM_SLUG;
 
+  // Countdown subjects. With no explicit registration, registeredSlugs falls
+  // back to ALL subjects (nav-switcher semantics) — which would headline the
+  // soonest exam of a subject the student never touches (e.g. "General Exam 1
+  // · 3 days" for a legacy Methods-only account). Narrow to subjects with
+  // actual attempt activity when there is any; all-subjects only as the
+  // final fallback for accounts with no signal at all.
+  const hasRegistration = (dbUser?.studyingSubjects ?? []).length > 0;
+  const activeSlugs = subjectProgress
+    .filter((p) => p.totalAttempts > 0)
+    .map((p) => p.urlSlug);
+  const countdownSubjects =
+    !hasRegistration && activeSlugs.length > 0
+      ? activeSlugs
+      : Array.from(registeredSlugs);
+
+  // Deep link for the "Practice these now" CTA — a weak-areas Freedom session
+  // in the weakest topic's subject. mode=exam1 keeps it on the free practice
+  // path (never paywalled mid-flow); version=freedom because weak-area focus
+  // is a Freedom-version feature (see PracticeSetupForm's
+  // effectiveFocusWeakAreas); weak=1 flips the session picker into its 3×
+  // boost of previously incorrect / needs-review items. `dist` must carry one
+  // weight per topic in the subject — the session page falls back to a 4-way
+  // split when it's missing, which would zero out Specialist's 5th and 6th
+  // topics. The card promises focus on the NAMED topic, so weight its index
+  // heavily (70 vs 10 each for the rest — distributeToCounts normalises by
+  // sum, so exact percentages aren't required). Topics here and in the
+  // session page are both ordered by `order: asc`, so indices align.
+  let weakPracticeUrl: string | null = null;
+  if (weakestTopic) {
+    const wt = weakestTopic;
+    const sectionTopics =
+      subjectSections.find((s) => s.urlSlug === wt.subjectUrlSlug)?.topics ??
+      [];
+    const topicCount = sectionTopics.length || 4;
+    const weakIdx = sectionTopics.findIndex((t) => t.slug === wt.slug);
+    // weakIdx can't be -1 (weakestTopic was picked from these topics), but
+    // an all-equal fallback keeps the URL sane if that ever changes.
+    const dist = Array.from({ length: topicCount }, (_, i) =>
+      i === weakIdx ? 70 : 10,
+    );
+    weakPracticeUrl = `/${curriculum}/${wt.subjectUrlSlug}/practice/session?mode=exam1&version=freedom&count=${EXAM_CONFIG.exam1.freedomDefault}&dist=${dist.join(",")}&solutions=1&weak=1`;
+  }
+
 
   /* ────────────────────────────── JSX ────────────────────────────── */
 
@@ -210,6 +258,14 @@ export default async function DashboardPage() {
           {totalAttempted === 0 ? "Start studying" : "Practice now"}
         </Link>
       </div>
+
+      {/* ─── Study streak — hides itself at streak 0 ─── */}
+      <StreakBanner streak={streak} />
+
+      {/* ─── Exam countdown strip — registered subjects, or (for accounts
+              with no registration) the subjects they actually practise.
+              Hides itself when no dates are published or all have passed. ─── */}
+      <ExamCountdown subjects={countdownSubjects} />
 
       {/* ─── Continue revising — deep link to last topic touched ─── */}
       {continueRevising?.lastTopicSlug && continueRevising.lastTopicName && (
@@ -389,18 +445,33 @@ export default async function DashboardPage() {
       </div>
       )}
 
-      {/* ─── Weak-area nudge ─── */}
+      {/* ─── Weak-area nudge — primary CTA drops straight into a weak-areas
+              practice session; the topic link stays as the secondary path ─── */}
       {weakestTopic && (
-        <Link
-          href={`/${curriculum}/${weakestTopic.subjectUrlSlug}/topics/${weakestTopic.slug}`}
-          className="block rounded-xl border border-red-100 dark:border-red-900 bg-red-50 dark:bg-red-950/50 p-4 lg:p-5 hover:border-red-200 dark:hover:border-red-800 transition-all"
-        >
+        <div className="rounded-xl border border-red-100 dark:border-red-900 bg-red-50 dark:bg-red-950/50 p-4 lg:p-5">
           <p className="text-xs font-semibold uppercase tracking-wide text-red-600 dark:text-red-400 mb-1">Needs work</p>
           <p className="text-sm lg:text-base font-semibold text-gray-900 dark:text-gray-100">{weakestTopic.name}</p>
           <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
             {weakestTopic.rate}% correct — keep practising to improve
           </p>
-        </Link>
+          <div className="mt-3 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+            {weakPracticeUrl && (
+              <Link
+                href={weakPracticeUrl}
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 hover:bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white transition-colors"
+              >
+                <Zap className="h-4 w-4" />
+                Practice these now
+              </Link>
+            )}
+            <Link
+              href={`/${curriculum}/${weakestTopic.subjectUrlSlug}/topics/${weakestTopic.slug}`}
+              className="inline-flex items-center justify-center gap-0.5 rounded-xl px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+            >
+              Browse the topic <ChevronRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
       )}
     </div>
   );

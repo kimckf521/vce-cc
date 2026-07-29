@@ -232,6 +232,54 @@ export const EXAM_CONFIG: Record<ExamMode, ExamModeConfig> = {
   },
 };
 
+/* ── VCAA written-exam dates (countdown) ─────────────────────────────── */
+
+export interface SubjectExamDate {
+  /** Short label shown in countdown copy, e.g. "Exam 1". */
+  label: string;
+  /**
+   * Exam date as YYYY-MM-DD in Australia/Melbourne local time, or null when
+   * VCAA hasn't published that exam's date yet (null hides its countdown).
+   */
+  date: string | null;
+  /**
+   * Sitting time as printed on the VCAA timetable (Melbourne local), e.g.
+   * "9:00–10:15 am". Null when the timetable lists no time yet — the
+   * countdown then shows the date without a time.
+   */
+  time: string | null;
+}
+
+/**
+ * Official VCAA 2026 VCE written examination dates, keyed by URL subject
+ * slug (see KNOWN_SUBJECT_SLUGS in lib/subject-context.ts). Consumed by
+ * components/ExamCountdown.tsx.
+ *
+ * NOTE — MANUAL ANNUAL UPDATE REQUIRED. These are fixed calendar dates for
+ * the 2026 exam period only; refresh them each year once VCAA publishes the
+ * new timetable at
+ * https://www.vcaa.vic.edu.au/administration/key-dates/vce-examination-timetable
+ * (2026 dates verified against that page on 2026-07-29).
+ */
+export const VCE_EXAM_DATES: Record<string, SubjectExamDate[]> = {
+  methods: [
+    { label: "Exam 1", date: "2026-11-05", time: "9:00–10:15 am" },
+    { label: "Exam 2", date: "2026-11-06", time: "11:45 am–2:00 pm" },
+  ],
+  specialist: [
+    { label: "Exam 1", date: "2026-11-09", time: "9:00–10:15 am" },
+    { label: "Exam 2", date: "2026-11-11", time: "11:45 am–2:00 pm" },
+  ],
+  general: [
+    { label: "Exam 1", date: "2026-10-30", time: "2:00–3:45 pm" },
+    { label: "Exam 2", date: "2026-11-02", time: "2:00–3:45 pm" },
+  ],
+  foundation: [
+    // Foundation sits a single end-of-year paper (no Exam 1/2 split).
+    { label: "Exam", date: "2026-11-17", time: "3:00–5:15 pm" },
+  ],
+};
+
 /**
  * Returns a random exam count from the range (if defined), or the fixed count.
  */

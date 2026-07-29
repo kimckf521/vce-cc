@@ -236,6 +236,10 @@ export default async function ExamsPage({ params }: PageProps) {
     })
     .filter((s): s is NonNullable<typeof s> => s !== null);
 
+  // Subject-wide completion tally for the logged-in progress bar. Counts the
+  // same `completed` flag the paper cards render, across every exam type.
+  const completedCount = examList.filter((e) => e.completed).length;
+
   // Helper to compute a year-range label like "2016 – 2022" for a group.
   const groupRange = (group: typeof examList) => {
     if (group.length === 0) return "";
@@ -298,6 +302,36 @@ export default async function ExamsPage({ params }: PageProps) {
         </a>
         .
       </div>
+
+      {/* Completion progress — logged-in users only. The page is public, so
+          logged-out visitors see no change here. Covers the subject total
+          across both exam types, matching the per-card `completed` flag. */}
+      {user && examList.length > 0 && (
+        <div className="mb-8 rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm p-4 lg:p-5">
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <span className="text-sm lg:text-base font-semibold text-gray-900 dark:text-gray-100">
+              Your progress
+            </span>
+            <span className="text-xs lg:text-sm text-gray-500 dark:text-gray-400">
+              {completedCount} of {examList.length}{" "}
+              {examList.length === 1 ? "paper" : "papers"} completed
+            </span>
+          </div>
+          <div
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={examList.length}
+            aria-valuenow={completedCount}
+            aria-label={`${completedCount} of ${examList.length} papers completed`}
+            className="h-2 lg:h-2.5 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800"
+          >
+            <div
+              className="h-full rounded-full bg-brand-600 dark:bg-brand-500 transition-all"
+              style={{ width: `${(completedCount / examList.length) * 100}%` }}
+            />
+          </div>
+        </div>
+      )}
 
       {sections.length === 0 ? (
         <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-8 text-center text-gray-500 dark:text-gray-400">

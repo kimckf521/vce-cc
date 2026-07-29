@@ -176,13 +176,14 @@ export default function BillingSection({
                   Free plan
                 </p>
                 <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-                  Upgrade to Standard for full access to Mathematical Methods.
+                  Upgrade to VCE Maths for full access to all 4 maths subjects —
+                  Methods, Specialist, Foundation and General.
                 </p>
               </div>
             </div>
             <div className="mt-5">
               <CheckoutButton className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 transition-colors">
-                Upgrade to Standard
+                Unlock VCE Maths
               </CheckoutButton>
             </div>
           </div>

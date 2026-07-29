@@ -156,6 +156,47 @@ export async function POST(request: NextRequest) {
       // eslint-disable-next-line no-console
       console.error("[sync-user] new-registration email failed:", err);
     });
+
+    // Also welcome the new student with a pointer to everything that's free
+    // right away. Same fire-and-forget rule as the admin email above — a
+    // Resend outage must never break signup.
+    if (user.email) {
+      // user_metadata is untyped — only derive a first name from an actual
+      // string so a malformed value can never throw and break signup.
+      const rawName = user.user_metadata?.name;
+      const firstName =
+        (typeof rawName === "string" && rawName.trim().split(/\s+/)[0]) ||
+        "there";
+      const welcomeLines = [
+        `Hi ${firstName},`,
+        ``,
+        `Welcome to ATAR Hero. Here's what you can use right now, completely free:`,
+        ``,
+        `  • Algebra, Number, and Structure — our free preview topic, with a worked solution for every question:`,
+        `    https://atarhero.com.au/vce/methods/topics/algebra-number-and-structure`,
+        ``,
+        `  • Exam 1 timed practice — a full short-answer paper under real conditions (15 min reading + 1 hour writing, no calculator):`,
+        `    https://atarhero.com.au/vce/methods/practice/exam1`,
+        ``,
+        `  • Past papers — every past exam on the site is free, and always will be:`,
+        `    https://atarhero.com.au/vce/methods/exams`,
+        ``,
+        `If anything looks broken or confusing, just reply to this email — we read every one.`,
+        ``,
+        `— The ATAR Hero team`,
+        ``,
+        `P.S. Know someone else doing VCE Maths? Share your referral link (Profile → Referrals) — they get 50% off their first month and you get a $5 platform credit.`,
+      ];
+      void sendEmail({
+        to: user.email,
+        subject: firstName === "there" ? "Welcome to ATAR Hero" : `Welcome to ATAR Hero, ${firstName}`,
+        text: welcomeLines.join("\n"),
+        replyTo: ADMIN_NOTIFY_EMAIL,
+      }).catch((err) => {
+        // eslint-disable-next-line no-console
+        console.error("[sync-user] welcome email failed:", err);
+      });
+    }
   }
 
   // Return isNewRegistration so the client can route first-time users through

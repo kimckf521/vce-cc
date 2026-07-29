@@ -567,6 +567,12 @@ export default function Exam2ABModeWrapper({
                       score: pct,
                       correctCount: correctCountLocal,
                       incorrectCount: incorrectCountLocal,
+                      // Explicit finalise: Section B rows in the manifest are
+                      // aggregate placeholders (no per-row marksEarned), so the
+                      // route's derived completeness check can never pass for
+                      // 2A&2B sessions. This button is gated on
+                      // allSectionBMarked, so completeness is verified here.
+                      graded: true,
                     }),
                   });
                 } catch {

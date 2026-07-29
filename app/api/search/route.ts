@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 import { rateLimit } from "@/lib/rate-limit";
 import { requireAuthenticatedUser } from "@/lib/auth";
 import { isAdminRole } from "@/lib/utils";
+import { canAccessFeature } from "@/lib/subscription";
 import { z } from "zod";
 
 const searchSchema = z.object({
@@ -16,11 +17,17 @@ export async function GET(req: NextRequest) {
   const limited = rateLimit(`search:${ip}`, { maxRequests: 30, windowMs: 60_000 });
   if (limited) return limited;
 
-  // Search is admin-only while under development.
+  // Search is a paid tool. Login is always required (VCAA content — no
+  // anonymous search); admins bypass, everyone else needs an active plan.
   const auth = await requireAuthenticatedUser();
   if (auth.response) return auth.response;
   if (!isAdminRole(auth.dbUser.role)) {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
+    const access = await canAccessFeature(auth.dbUser.id, "search");
+    if (!access.allowed) {
+      // Distinguishable body so the client can show the paywall rather
+      // than a generic error state.
+      return NextResponse.json({ error: "paywall" }, { status: 403 });
+    }
   }
 
   const { searchParams } = req.nextUrl;

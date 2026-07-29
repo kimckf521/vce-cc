@@ -1,11 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
-import { Trophy, Flame } from "lucide-react";
+import { Trophy } from "lucide-react";
 import Link from "next/link";
 import ScoreTrendChart from "@/components/ScoreTrendChart";
 import ExamTypeCard from "@/components/ExamTypeCard";
 import { getStudyStreak } from "@/lib/streak";
 import BookmarkedSection from "@/components/BookmarkedSection";
+import StreakBanner from "@/components/StreakBanner";
 
 const EXAM_TYPES = [
   { mode: "Exam 1", label: "Exam 1 Practice", iconName: "FileText", color: "brand" },
@@ -114,28 +115,10 @@ export default async function HistoryPage() {
         <p className="text-sm text-gray-500 dark:text-gray-400">Track your performance across practice exams.</p>
       </div>
 
-      {/* Streak banner */}
-      {totalSessions > 0 && streak > 0 && (
-        <div className="rounded-2xl border border-orange-200 dark:border-orange-900 bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/40 dark:to-amber-950/40 shadow-sm px-5 py-4 flex items-center gap-4">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-100 dark:bg-orange-900">
-            <Flame className="h-5 w-5 text-orange-500" />
-          </div>
-          <div>
-            <p className="text-lg font-bold text-gray-900 dark:text-gray-100">
-              {streak} day streak
-            </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              {streak === 1
-                ? "Great start! Keep it going tomorrow."
-                : streak < 5
-                  ? "Keep it up!"
-                  : streak < 10
-                    ? "You're on fire!"
-                    : "Unstoppable!"}
-            </p>
-          </div>
-        </div>
-      )}
+      {/* Streak banner — hides itself at streak 0. No `totalSessions` guard:
+          since streaks now also count drill days, a student can hold a streak
+          with zero completed exam sessions. */}
+      <StreakBanner streak={streak} />
 
       {totalSessions === 0 ? (
         <div className="rounded-2xl border border-dashed border-gray-200 dark:border-gray-700 p-12 text-center">

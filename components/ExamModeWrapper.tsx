@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle, XCircle, Clock, Trophy, ArrowRight } from "lucide-react";
 import SelfMarkStepper from "@/components/SelfMarkStepper";
@@ -49,7 +49,9 @@ interface ExamModeWrapperProps {
   /**
    * When true, render a per-question marks stepper after submit so the user
    * can self-mark (short-answer/extended-response modes — Exam 1, Exam 2B).
-   * Each stepper change PATCHes the session score.
+   * Each stepper change is saved to localStorage immediately and PATCHed to
+   * the per-question endpoint (debounced), which recomputes the session
+   * score and flips `graded` once every question is marked.
    */
   enableSelfMarking?: boolean;
   /**
@@ -68,6 +70,15 @@ function formatElapsed(seconds: number): string {
   if (h > 0) return `${h}h ${m}m ${s}s`;
   if (m > 0) return `${m}m ${s}s`;
   return `${s}s`;
+}
+
+/**
+ * Strip the sub-part suffix (`::a`, `::a.i`) from a rendered part id to get
+ * the parent QuestionSetItem id. Single-part items carry the bare item id.
+ */
+function stripPartSuffix(id: string): string {
+  const sep = id.indexOf("::");
+  return sep === -1 ? id : id.slice(0, sep);
 }
 
 export default function ExamModeWrapper({
@@ -97,20 +108,39 @@ export default function ExamModeWrapper({
     const saved = autoSave.restore();
     return saved?.selections ?? {};
   });
-  const [submitted, setSubmitted] = useState(false);
+  // `submitted` survives refreshes during the self-marking phase — the
+  // autosave payload records it, so a mid-marking reload restores the
+  // marking view instead of a blank exam.
+  const [submitted, setSubmitted] = useState(() => {
+    const saved = autoSave.restore();
+    return saved?.submitted ?? false;
+  });
   const [elapsedSeconds, setElapsedSeconds] = useState(() => {
     const saved = autoSave.restore();
     return saved?.elapsedSeconds ?? 0;
   });
-  const [finalTime, setFinalTime] = useState(0);
+  const [finalTime, setFinalTime] = useState(() => {
+    // Restored post-submit sessions show the time the clock stopped at.
+    const saved = autoSave.restore();
+    return saved?.submitted ? saved.elapsedSeconds : 0;
+  });
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const router = useRouter();
 
   // Self-marking (Exam 1 / Exam 2B — modes without auto-grading).
   // Keyed by part id; value is the marks the user awarded themselves.
-  const [selfMarks, setSelfMarks] = useState<Record<string, number>>({});
-  const [sessionId, setSessionId] = useState<string | null>(null);
+  // Restored from the autosave payload so a refresh mid-marking keeps the
+  // stepper state — the server holds the durable copy via per-question
+  // PATCHes; localStorage covers the gap between click and debounced PATCH.
+  const [selfMarks, setSelfMarks] = useState<Record<string, number>>(() => {
+    const saved = autoSave.restore();
+    return saved?.selfMarks ?? {};
+  });
+  const [sessionId, setSessionId] = useState<string | null>(() => {
+    const saved = autoSave.restore();
+    return saved?.sessionId ?? null;
+  });
   const [finalising, setFinalising] = useState(false);
 
   // Total max marks across all parts, used as the denominator for self-mark %.
@@ -139,8 +169,10 @@ export default function ExamModeWrapper({
   ).length;
   const allMarked = partsMarked === totalParts && totalParts > 0;
 
-  // Start elapsed timer on mount
+  // Start elapsed timer on mount — but not when restoring an
+  // already-submitted session, whose clock stopped at submit time.
   useEffect(() => {
+    if (submitted) return;
     timerRef.current = setInterval(() => {
       setElapsedSeconds((prev) => {
         autoSave.updateElapsed(prev + 1);
@@ -150,7 +182,7 @@ export default function ExamModeWrapper({
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [autoSave]);
+  }, [autoSave, submitted]);
 
   // Build answer key once: questionId → correct letter (only for MCQ mode)
   const answerKey = useMemo(() => {
@@ -177,7 +209,9 @@ export default function ExamModeWrapper({
     setFinalTime(elapsedSeconds);
     if (timerRef.current) clearInterval(timerRef.current);
     setSubmitted(true);
-    autoSave.markSubmitted();
+    // Self-marking modes keep autosaving through the marking phase so a
+    // refresh restores the stepper state; auto-graded modes are done here.
+    autoSave.markSubmitted(enableSelfMarking);
     window.scrollTo({ top: 0, behavior: "smooth" });
 
     // Save exam session to database (fire and forget)
@@ -206,10 +240,6 @@ export default function ExamModeWrapper({
     //     (one per item), not one — previously the second was dropped.
     //   - An Exam 1 source item with multiple sub-parts (a.i, a.ii, …)
     //     posts ONE row representing the whole item.
-    const stripSuffix = (id: string) => {
-      const sep = id.indexOf("::");
-      return sep === -1 ? id : id.slice(0, sep);
-    };
     const seenParents = new Set<string>();
     const sessionQuestions: {
       questionSetItemId: string;
@@ -222,7 +252,7 @@ export default function ExamModeWrapper({
     for (let gIdx = 0; gIdx < groups.length; gIdx++) {
       const group = groups[gIdx];
       for (const part of group.parts) {
-        const parentId = stripSuffix(part.id);
+        const parentId = stripPartSuffix(part.id);
         if (seenParents.has(parentId)) continue;
         seenParents.add(parentId);
         const selected = selections[part.id] ?? null;
@@ -256,7 +286,12 @@ export default function ExamModeWrapper({
     })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
-        if (data?.session?.id) setSessionId(data.session.id);
+        if (data?.session?.id) {
+          setSessionId(data.session.id);
+          // Persist the id so a refresh mid-marking can keep PATCHing
+          // marks to the same session row.
+          autoSave.updateSessionId(data.session.id);
+        }
       })
       .catch(() => {});
 
@@ -269,18 +304,225 @@ export default function ExamModeWrapper({
     });
   }
 
+  // ---- Live self-mark persistence ---------------------------------------
+  // Every self-mark change PATCHes the per-question endpoint
+  // (/api/exam-sessions/[id]/questions/[rowId]) — the single source of truth
+  // for the session's score/graded recompute. Sends are debounced 400ms
+  // trailing-edge per question row with at most one PATCH in flight per row;
+  // values changed mid-flight coalesce into a single follow-up send.
+
+  // Latest values for the debounced senders (avoids stale closures).
+  const selfMarksRef = useRef(selfMarks);
+  useEffect(() => {
+    selfMarksRef.current = selfMarks;
+  }, [selfMarks]);
+  const sessionIdRef = useRef(sessionId);
+  useEffect(() => {
+    sessionIdRef.current = sessionId;
+  }, [sessionId]);
+
+  // Parent QuestionSetItem id → ExamSessionQuestion row id, fetched once per
+  // session (the per-question route is keyed by row id, which the create
+  // POST doesn't return).
+  const rowIdMapRef = useRef<Record<string, string> | null>(null);
+  // When the manifest can't be loaded the per-question path can't run, so
+  // the aggregate-PATCH fallback below takes over.
+  const [rowMapFailed, setRowMapFailed] = useState(false);
+  // Per-row debounce / in-flight bookkeeping.
+  const rowPatchStateRef = useRef(
+    new Map<
+      string,
+      {
+        timer: ReturnType<typeof setTimeout> | null;
+        inflight: boolean;
+        dirty: boolean;
+      }
+    >()
+  );
+
+  // Visible parts grouped by parent item — one per-question PATCH covers all
+  // of an item's rendered sub-parts.
+  const partsByParent = useMemo(() => {
+    const map = new Map<string, string[]>();
+    if (!enableSelfMarking) return map;
+    for (const g of groups) {
+      for (const p of g.parts) {
+        const parentId = stripPartSuffix(p.id);
+        const list = map.get(parentId) ?? [];
+        list.push(p.id);
+        map.set(parentId, list);
+      }
+    }
+    return map;
+  }, [groups, enableSelfMarking]);
+
+  // Build the per-question payload from current self-marks. Single-row items
+  // (part id === parent id) send the top-level mark; multi-part items send
+  // the full sub-part map keyed by part label ("a", "a.i", …) with null for
+  // unmarked parts — the same shape the history review's EditablePartMark
+  // sends, so live marking and retro-editing stay interchangeable.
+  const buildRowPayload = useCallback(
+    (
+      parentId: string
+    ):
+      | { marksEarned: number }
+      | { subPartMarks: Record<string, number | null> }
+      | null => {
+      const partIds = partsByParent.get(parentId);
+      if (!partIds || partIds.length === 0) return null;
+      const marks = selfMarksRef.current;
+      if (partIds.length === 1 && partIds[0] === parentId) {
+        const v = marks[parentId];
+        return v === undefined ? null : { marksEarned: v };
+      }
+      const subPartMarks: Record<string, number | null> = {};
+      let anyMarked = false;
+      for (const pid of partIds) {
+        const key = pid.slice(parentId.length + 2); // after "itemId::"
+        const v = marks[pid];
+        subPartMarks[key] = v === undefined ? null : v;
+        if (v !== undefined) anyMarked = true;
+      }
+      return anyMarked ? { subPartMarks } : null;
+    },
+    [partsByParent]
+  );
+
+  const sendRowPatch = useCallback(
+    async (sid: string, rowId: string, payload: object) => {
+      await fetch(`/api/exam-sessions/${sid}/questions/${rowId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    },
+    []
+  );
+
+  const flushRowPatch = useCallback(
+    async function flushRow(parentId: string) {
+      const states = rowPatchStateRef.current;
+      let st = states.get(parentId);
+      if (!st) {
+        st = { timer: null, inflight: false, dirty: false };
+        states.set(parentId, st);
+      }
+      if (st.inflight) {
+        // A newer value arrived mid-flight — resend once it completes.
+        st.dirty = true;
+        return;
+      }
+      const sid = sessionIdRef.current;
+      const rowId = rowIdMapRef.current?.[parentId];
+      if (!sid || !rowId) return;
+      const payload = buildRowPayload(parentId);
+      if (!payload) return;
+      st.inflight = true;
+      st.dirty = false;
+      try {
+        await sendRowPatch(sid, rowId, payload);
+      } catch {
+        // Dropped send — localStorage still has the value, and the Finish
+        // flush re-sends every marked question.
+      }
+      st.inflight = false;
+      if (st.dirty) {
+        st.dirty = false;
+        void flushRow(parentId);
+      }
+    },
+    [buildRowPayload, sendRowPatch]
+  );
+
+  const scheduleRowPatch = useCallback(
+    (parentId: string) => {
+      if (!enableSelfMarking) return;
+      const states = rowPatchStateRef.current;
+      let st = states.get(parentId);
+      if (!st) {
+        st = { timer: null, inflight: false, dirty: false };
+        states.set(parentId, st);
+      }
+      if (st.timer) clearTimeout(st.timer);
+      const scheduled = st;
+      scheduled.timer = setTimeout(() => {
+        scheduled.timer = null;
+        void flushRowPatch(parentId);
+      }, 400);
+    },
+    [enableSelfMarking, flushRowPatch]
+  );
+
+  // Clear any pending debounce timers on unmount.
+  useEffect(() => {
+    const states = rowPatchStateRef.current;
+    return () => {
+      for (const st of Array.from(states.values())) {
+        if (st.timer) clearTimeout(st.timer);
+      }
+    };
+  }, []);
+
+  // Fetch the session's question manifest once the session exists, then sync
+  // any marks awarded before it arrived — including marks restored from
+  // localStorage after a refresh, where the server may be missing the tail
+  // of them (the gap between a stepper click and its debounced PATCH).
+  useEffect(() => {
+    if (!sessionId || !enableSelfMarking) return;
+    let cancelled = false;
+    fetch(`/api/exam-sessions/${sessionId}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (cancelled) return;
+        const rows = data?.session?.questions as
+          | { id: string; questionSetItemId: string }[]
+          | undefined;
+        if (!Array.isArray(rows) || rows.length === 0) {
+          setRowMapFailed(true);
+          return;
+        }
+        const map: Record<string, string> = {};
+        for (const row of rows) map[row.questionSetItemId] = row.id;
+        rowIdMapRef.current = map;
+        for (const parentId of Array.from(partsByParent.keys())) {
+          if (buildRowPayload(parentId) !== null) scheduleRowPatch(parentId);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setRowMapFailed(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    sessionId,
+    enableSelfMarking,
+    partsByParent,
+    buildRowPayload,
+    scheduleRowPatch,
+  ]);
+
   // Update one part's self-mark. The functional setter keeps back-to-back
-  // clicks composable across React's batching; the server-side PATCH is
-  // debounced via a useEffect below so each click fires at most once and
-  // the updater stays pure.
+  // clicks composable across React's batching; the value is mirrored into
+  // the autosave payload so a refresh restores it, and the owning question
+  // row is scheduled for a debounced per-question PATCH.
   function handleSelfMark(partId: string, earned: number) {
-    setSelfMarks((prev) => ({ ...prev, [partId]: earned }));
+    setSelfMarks((prev) => {
+      const next = { ...prev, [partId]: earned };
+      autoSave.updateSelfMarks(next);
+      return next;
+    });
+    scheduleRowPatch(stripPartSuffix(partId));
   }
 
-  // Debounced PATCH: 400ms after the last stepper click, send the aggregate
-  // score to the server. Avoids hammering the API when the student clicks
-  // through their marks quickly.
+  // Fallback: when the question manifest is unavailable the per-question
+  // path can't run, so keep the previous debounced aggregate score PATCH.
+  // The aggregate route now derives `graded` rather than forcing it, so a
+  // half-marked session stays un-finalised either way. The two PATCH paths
+  // are mutually exclusive — per-question when the manifest loads, aggregate
+  // only when it doesn't — so they never fight over the session row.
   useEffect(() => {
+    if (!rowMapFailed) return;
     if (!sessionId) return;
     if (Object.keys(selfMarks).length === 0) return;
 
@@ -320,7 +562,7 @@ export default function ExamModeWrapper({
     }, 400);
 
     return () => clearTimeout(timeout);
-  }, [selfMarks, sessionId, totalMaxMarks, groups]);
+  }, [rowMapFailed, selfMarks, sessionId, totalMaxMarks, groups]);
 
   // Calculate score
   const correctCount = submitted
@@ -535,10 +777,46 @@ export default function ExamModeWrapper({
             disabled={!allMarked || finalising}
             onClick={async () => {
               setFinalising(true);
-              // Cancel the pending debounced PATCH and send the final state
-              // synchronously so the user lands on /history with the latest
-              // score already persisted.
-              if (sessionId) {
+              if (sessionId && rowIdMapRef.current) {
+                // Flush every marked question through the per-question route
+                // (the source of truth for score/graded) so the user lands
+                // on /history with the final state persisted — this also
+                // retries any send that was dropped mid-marking.
+                for (const st of Array.from(rowPatchStateRef.current.values())) {
+                  // Cancel pending debounced sends; the flush below sends
+                  // the final authoritative value for every question.
+                  if (st.timer) {
+                    clearTimeout(st.timer);
+                    st.timer = null;
+                  }
+                }
+                const map = rowIdMapRef.current;
+                const parentIds = Array.from(partsByParent.keys()).filter(
+                  (pid) =>
+                    map[pid] !== undefined && buildRowPayload(pid) !== null
+                );
+                const send = (pid: string) => {
+                  const payload = buildRowPayload(pid);
+                  return payload
+                    ? sendRowPatch(sessionId, map[pid], payload).catch(
+                        () => {}
+                      )
+                    : Promise.resolve();
+                };
+                await Promise.all(parentIds.map(send));
+                // One settling re-send after everything is committed: two
+                // concurrent per-question PATCHes can each read the other's
+                // uncommitted marks, so re-trigger the server-side recompute
+                // (score + graded) against the complete set.
+                const last = parentIds[parentIds.length - 1];
+                if (last !== undefined && parentIds.length > 1) {
+                  await send(last);
+                }
+              } else if (sessionId) {
+                // The question manifest never loaded, so finalise via the
+                // aggregate route. `graded: true` is explicit — the route no
+                // longer assumes a PATCH means marking finished — and safe
+                // here because this button is gated on `allMarked`.
                 const earnedTotal = Object.values(selfMarks).reduce(
                   (a, b) => a + b,
                   0
@@ -568,6 +846,7 @@ export default function ExamModeWrapper({
                       score: pct,
                       correctCount: correctCountLocal,
                       incorrectCount: incorrectCountLocal,
+                      graded: true,
                     }),
                   });
                 } catch {
@@ -576,6 +855,8 @@ export default function ExamModeWrapper({
                   // to history rather than block the user.
                 }
               }
+              // Marking is finished — drop the autosaved session state.
+              autoSave.clear();
               router.push(sessionId ? `${historyHref}/${sessionId}` : historyHref);
             }}
             className={cn(

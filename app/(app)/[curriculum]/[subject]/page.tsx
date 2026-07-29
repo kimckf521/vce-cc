@@ -19,6 +19,7 @@ import {
   type SubjectProgress,
 } from "@/lib/subject-progress";
 import UpsellBanner from "@/components/UpsellBanner";
+import ExamCountdown from "@/components/ExamCountdown";
 
 interface PageProps {
   params: Promise<{ curriculum: string; subject: string }>;
@@ -93,6 +94,10 @@ export default async function SubjectHomePage({ params }: PageProps) {
           {hasActivity ? "Keep practising" : "Start studying"}
         </Link>
       </div>
+
+      {/* Exam countdown — this subject's next VCAA written exam. Hides
+          itself when no date is published or the date has passed. */}
+      <ExamCountdown subjects={[subject]} />
 
       {/* Continue revising card — only when there's a recent topic */}
       {subjectProgress?.lastTopicSlug && subjectProgress.lastTopicName && (

@@ -1,4 +1,4 @@
-import { sendEmail } from "@/lib/email";
+import { sendEmail, type SendEmailResult } from "@/lib/email";
 
 const SITE_NAME = "ATAR Hero";
 const BILLING_URL = "https://atarhero.com.au/profile";
@@ -114,4 +114,65 @@ export async function sendRefundEmail(args: {
       : `Partial refund processed for your ${SITE_NAME} subscription`,
     text: lines.join("\n"),
   });
+}
+
+/**
+ * Renders the one-off "you now have all 4 VCE Maths subjects" announcement
+ * for existing PAID subscribers. Copy was drafted and reviewed in
+ * docs/email-vce-maths-upgrade.md — keep the two in sync if either changes.
+ *
+ * Split out from the send function so the dispatch script can print the
+ * exact rendered email in dry-run mode without duplicating the copy.
+ */
+export function renderVceMathsUpgradeEmail(args: {
+  /** First word of User.name; pass "there" when the user has no name set. */
+  firstName: string;
+}): { subject: string; text: string } {
+  const lines = [
+    `Hi ${args.firstName},`,
+    ``,
+    `Good news — your ${SITE_NAME} subscription now unlocks all 4 VCE Maths subjects, not just Methods.`,
+    ``,
+    `That means Specialist, Foundation and General are all sitting in your account, ready when you want them. Worked solutions, past papers, practice mode — same as Methods.`,
+    ``,
+    `What's changed:`,
+    `  • Same $9.99/month price`,
+    `  • Nothing to click, nothing to update — everything's already unlocked`,
+    `  • Cancel any time from Profile → Billing (unchanged)`,
+    ``,
+    `We've been working on broadening ${SITE_NAME} from Methods to every Australian curriculum. Bundling the 4 VCE Maths subjects into the same subscription is the first step.`,
+    ``,
+    `If you're only studying Methods, no need to think about the rest. If you're juggling more than one maths subject, the others are right there in your sidebar.`,
+    ``,
+    `Thanks for being one of the first to back us — it means a lot.`,
+    ``,
+    `— The ${SITE_NAME} team`,
+    `https://atarhero.com.au`,
+    ``,
+    `P.S. Got a friend studying VCE Maths? Your referral link is in Profile → Referrals. They get 50% off their first month; you get a $5 credit when they stick around.`,
+  ];
+
+  return {
+    subject: `You just got 3 more subjects (no extra charge)`,
+    text: lines.join("\n"),
+  };
+}
+
+/**
+ * Sends the VCE Maths upgrade announcement to one subscriber. Only ever
+ * dispatched manually via scripts/send-vce-maths-upgrade-email.ts — never
+ * called from webhook or app code.
+ *
+ * Unlike the webhook-driven emails above (which return void because their
+ * callers can't act on a failure), this returns the SendEmailResult so the
+ * dispatch script can log success/failure per recipient.
+ */
+export async function sendVceMathsUpgradeEmail(args: {
+  to: string;
+  firstName: string;
+}): Promise<SendEmailResult> {
+  const { subject, text } = renderVceMathsUpgradeEmail({
+    firstName: args.firstName,
+  });
+  return sendEmail({ to: args.to, subject, text });
 }
