@@ -1,0 +1,555 @@
+/*
+ * Print-route stylesheet — imported ONLY by app/print/assessments/[id]/page.tsx.
+ *
+ * Every rule is namespaced under .print-route (except @page, which cannot be
+ * scoped) so nothing leaks into the rest of the app if this chunk survives a
+ * client-side navigation. On screen the route renders as a paper preview
+ * (white A4-ish sheet on a grey backdrop, floating toolbar); in print the
+ * shell collapses and @page margins take over.
+ *
+ * The route forces the light theme (PrintToolbar strips the root `dark`
+ * class), so plain light-palette colors are safe throughout.
+ */
+
+@page {
+  size: A4;
+  margin: 18mm;
+  /* Slightly deeper bottom margin so the page-number footer sits clear of
+     the answer lines. The @bottom-center margin box (page counters) is
+     supported by Chromium 131+ (Chrome/Edge — what teachers print from);
+     other engines ignore it gracefully and just print without numbers. */
+  margin-bottom: 24mm;
+
+  @bottom-center {
+    content: "Page " counter(page) " of " counter(pages);
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-size: 9pt;
+    color: #6b7280;
+  }
+}
+
+/* ---------- screen preview shell ---------- */
+
+.print-route {
+  min-height: 100vh;
+  background: #e5e7eb;
+  padding: 84px 16px 48px;
+  color: #111827;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.print-sheet {
+  margin: 0 auto;
+  max-width: 800px;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 12px 32px rgba(0, 0, 0, 0.12);
+  padding: 18mm;
+}
+
+/* KaTeX: MathContent pins inline math to 1.5rem and display math to 1.875rem
+   for the on-screen app. On paper, math must track the surrounding text size,
+   so re-pin in em — !important beats those arbitrary-variant utilities
+   regardless of CSS bundle order. Those text-2xl/text-3xl utilities also emit
+   fixed rem line-heights (2rem/2.25rem), so re-pin line-height too or math
+   lines keep 32px boxes amid ~23px text. 1.2 is KaTeX's own native value. */
+.print-route .katex {
+  font-size: 1.12em !important;
+  line-height: 1.2 !important;
+}
+.print-route .katex-display {
+  font-size: 1em !important;
+  line-height: 1.2 !important;
+}
+.print-route .katex-display .katex {
+  font-size: 1.2em !important;
+}
+
+/* ---------- floating toolbar (screen only) ---------- */
+
+.print-toolbar {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  padding: 8px;
+}
+
+.print-toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.print-toolbar-btn:hover {
+  background: #f9fafb;
+}
+
+/* Brand-600/700, matching the app's primary buttons. */
+.print-toolbar-primary {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+.print-toolbar-primary:hover {
+  background: #1d4ed8;
+}
+
+.print-toolbar-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* ---------- paper header ---------- */
+
+.print-header {
+  border-bottom: 2px solid #111827;
+  padding-bottom: 14px;
+}
+
+.print-title {
+  margin: 0 0 4px;
+  font-size: 1.65em;
+  line-height: 1.25;
+  font-weight: 800;
+}
+
+.print-subject {
+  margin: 0 0 10px;
+  font-size: 1.05em;
+  font-weight: 600;
+  color: #374151;
+}
+
+.print-meta {
+  margin: 0 0 2px;
+}
+
+.print-tech {
+  margin: 0;
+  font-style: italic;
+}
+
+/* Ruled Name / Class / Date fields (student paper only). */
+.student-fields {
+  display: flex;
+  gap: 24px;
+  margin-top: 16px;
+}
+.student-field {
+  display: flex;
+  flex: 1 1 0;
+  align-items: flex-end;
+  gap: 8px;
+  font-weight: 600;
+}
+.student-field .field-line {
+  flex: 1;
+  height: 1.4em;
+  border-bottom: 1px solid #111827;
+}
+
+/* ---------- marking-guide chrome ---------- */
+
+.guide-banner {
+  margin: 18px 0 0;
+  border: 2px solid #111827;
+  padding: 10px 12px;
+  text-align: center;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+/* Compact question recap in the guide — solutions are the star. */
+.guide-question {
+  font-size: 0.94em;
+  color: #1f2937;
+}
+
+.guide-solution {
+  margin-top: 10px;
+  border-left: 3px solid #111827;
+  padding-left: 12px;
+}
+.guide-solution-heading {
+  margin: 10px 0 2px;
+  font-weight: 700;
+}
+.guide-answer {
+  margin: 0 0 4px;
+  font-weight: 800;
+}
+.guide-empty {
+  margin: 0;
+  font-style: italic;
+  color: #4b5563;
+}
+
+/* ---------- questions ---------- */
+
+.question-block {
+  margin-top: 26px;
+}
+
+.question-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+  font-size: 1.05em;
+  font-weight: 700;
+}
+.question-marks {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Shared scenario preamble — border instead of a background fill, because
+   backgrounds don't print by default but borders always do. */
+.question-preamble {
+  margin-bottom: 8px;
+  border-left: 3px solid #d1d5db;
+  padding: 2px 0 2px 12px;
+}
+
+.question-part {
+  margin-top: 12px;
+}
+.part-label {
+  margin: 0 0 4px;
+  font-weight: 700;
+}
+.part-label .part-marks {
+  font-weight: 400;
+}
+.subparts {
+  margin-top: 8px;
+  margin-left: 18px;
+}
+
+/* MCQ options: hollow selection bubbles, never a marked answer. */
+.mcq-options {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+.mcq-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.mcq-bubble {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  margin-top: 4px;
+  border: 1.5px solid #374151;
+  border-radius: 50%;
+}
+.mcq-letter {
+  min-width: 1.3em;
+  font-weight: 700;
+}
+.mcq-option-body {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Ruled answer space — bordered rows (not a background) so it prints. */
+.answer-lines {
+  margin-top: 10px;
+}
+.answer-line {
+  height: 10mm; /* keep in step with ANSWER_LINE_SPACING_MM in PaperSheet.tsx */
+  border-bottom: 1px solid #9ca3af;
+}
+
+/* COPYRIGHT GATE notice for reserved VCAA past-paper slots. */
+.vcaa-box {
+  border: 1.5px solid #111827;
+  border-radius: 2px;
+  padding: 12px 16px;
+}
+.vcaa-box p {
+  margin: 0;
+}
+
+/* Empty-paper preview state. */
+.empty-paper {
+  margin-top: 26px;
+  border: 1px dashed #9ca3af;
+  border-radius: 8px;
+  padding: 40px 16px;
+  text-align: center;
+  color: #4b5563;
+}
+.empty-paper p {
+  margin: 0 0 6px;
+}
+
+/* ---------- page-by-page preview (screen only; see PaginatedSheet.tsx) ----------
+ *
+ * DOM shape:  .paginate-root[data-mode=measuring|paged|fallback]
+ *               > .page-count-chip        (React, paged mode only)
+ *               > .paginate-flow          (the real PaperSheet — print source)
+ *               > .paper-pages            (imperative page-card clones)
+ *                   > .paper-pages-scale  (transform: scale(s), set by JS)
+ *                       > .paper-page ×N
+ *               > .paginate-measure       (hidden A4-width measurer)
+ *
+ * Millimetre values here mirror page-geometry.ts (which mirrors @page above).
+ */
+
+/* Paged mode: clip the continuous sheet instead of display:none — it keeps
+   its layout (so the ResizeObserver still tracks late KaTeX shifts), stays in
+   the accessibility tree, and remains the print flow. height:0 + overflow
+   also clips its box-shadow, so nothing paints. */
+.paginate-root[data-mode="paged"] .paginate-flow {
+  height: 0;
+  overflow: hidden;
+}
+
+/* Pages exist only in paged mode (empty container otherwise, but be firm). */
+.paginate-root:not([data-mode="paged"]) .paper-pages {
+  display: none;
+}
+
+/* Scaled pages must never cause horizontal scroll: JS reserves the scaled
+   height, overflow clips the unscaled layout box. Overflow clips at the
+   PADDING edge, so the padding is breathing room that keeps the cards' soft
+   drop shadows (0 12px 32px → ~20px above, ~44px below, ~32px sideways)
+   from being sheared off flush at the host edges. Sides get less — width is
+   precious on phones, where the scaled cards fill the content box exactly.
+   syncScale reads this padding: it fits pages to the content box and adds
+   the vertical padding back when reserving the scaled height. */
+.paper-pages {
+  overflow: hidden;
+  padding: 20px 12px 44px;
+}
+
+.paper-pages-scale {
+  width: 210mm; /* PAGE_WIDTH_MM */
+  margin: 0 auto; /* centers at scale 1; no-op when scaled to fit */
+  transform-origin: top left;
+}
+
+/* One A4 page card, styled like the continuous sheet. Padding mirrors the
+   @page margins, so the content box is 174mm × 255mm; min-height (not
+   height) lets an over-tall atomic chunk grow its page — honesty over
+   clipping. font-size mirrors the print typography (the @media print block
+   below sets 11pt, not the 15px screen-preview size) so the cards render the
+   same line wraps and heights the measurer packed and the printer lays out. */
+.paper-page {
+  position: relative;
+  box-sizing: border-box;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 18mm 18mm 24mm;
+  font-size: 11pt;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+.paper-page + .paper-page {
+  margin-top: 24px;
+}
+
+/* Screen twin of the @bottom-center print counter: centered inside the 24mm
+   bottom-margin zone. */
+.paper-page-footer {
+  position: absolute;
+  left: 18mm;
+  right: 18mm;
+  bottom: 0;
+  height: 24mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9pt;
+  color: #6b7280;
+}
+
+/* Quiet caption on pages whose single chunk exceeds one A4 page. */
+.paper-page-overflow-note {
+  margin: 12px 0 0;
+  font-size: 12px;
+  font-style: italic;
+  color: #6b7280;
+}
+
+/* "N pages" pill — fixed to the bottom-right corner so it can never collide
+   with the centered floating toolbar (which wraps to 2-3 rows at narrow
+   widths) and stays visible while scrolling. Hidden in print with the rest
+   of the preview chrome. */
+.page-count-chip {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 50;
+  width: fit-content;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #374151;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  cursor: help;
+}
+
+/* Off-screen measurer: laid out (position:fixed, NOT display:none) so chunk
+   geometry is real, but never painted. */
+.paginate-measure {
+  position: fixed;
+  top: 0;
+  left: -9999px;
+  width: 210mm;
+  visibility: hidden;
+  pointer-events: none;
+}
+/* Pin the measurer's sheet to exact print metrics at EVERY viewport size —
+   two-class specificity deliberately beats the narrow-screen .print-sheet
+   padding override below, so mobile pagination measures the same 174mm
+   content box the printer uses. font-size pins the print TYPOGRAPHY too:
+   @media print renders at 11pt (≈14.667px), not the route's 15px screen
+   size, and everything on the sheet is em-based (headings, KaTeX), so
+   measuring at 15px would over-measure every text height by ~2.3% and wrap
+   lines earlier than print — a break-position drift that grows page by page. */
+.paginate-measure .print-sheet {
+  width: 210mm;
+  max-width: none;
+  margin: 0;
+  padding: 18mm;
+  font-size: 11pt;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* globals.css makes .katex-display a horizontal scroll container on screen;
+   print overrides it to overflow: visible (see @media print below). On
+   classic-scrollbar platforms an overflowing equation would grow by a
+   scrollbar's height in the measurer but not on paper — so neutralise the
+   scroll container in both the measurer and the page cards. hidden yields
+   the same height as print's visible while clipping any spill at the 174mm
+   content box, exactly where the physical page would cut it off. */
+.paginate-measure .katex-display,
+.paper-page .katex-display {
+  overflow: hidden;
+}
+
+/* ---------- narrow screens (preview only) ---------- */
+
+@media (max-width: 640px) {
+  .print-route {
+    /* The toolbar can wrap to two rows on phones — leave it headroom. */
+    padding: 132px 8px 32px;
+  }
+  .print-toolbar {
+    left: 8px;
+    right: 8px;
+    transform: none;
+  }
+  .print-sheet {
+    padding: 10mm 8mm;
+  }
+  .student-fields {
+    gap: 14px;
+  }
+}
+
+/* ---------- print ---------- */
+
+@media print {
+  .print-toolbar {
+    display: none !important;
+  }
+
+  .print-route {
+    background: #fff;
+    padding: 0;
+    color: #000;
+    font-size: 11pt;
+  }
+
+  /* The @page margins are the sheet now — no preview chrome. */
+  .print-sheet {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  /* Question blocks (and each part of a multi-part question) stay on one
+     page; the paper may still break BETWEEN parts of a long question. */
+  .avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Guide part solutions can exceed a full page, so they are NOT atomic
+     (see GuideSolution in PaperSheet.tsx) — instead keep each solution
+     heading on the same page as the content it introduces. */
+  .guide-solution-heading {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* globals.css lets long display math scroll on screen; there is no scroll
+     container on paper, so lay it out at natural width. KaTeX display math
+     cannot wrap, so an extremely long equation may still clip at the page
+     edge — inline math wraps between its top-level chunks where KaTeX
+     permits. */
+  .print-route .katex-display {
+    overflow: visible;
+  }
+
+  /* PAGE-PREVIEW DISSOLVE — the highest-risk cascade on this route. The
+     print engine must see exactly one thing: the continuous PaperSheet
+     inside .paginate-flow, flowing and fragmenting exactly as before the
+     preview existed. Everything the preview added is screen furniture:
+
+     - The page-card clones, the count chip, and the fixed-position measurer
+       are removed outright (display:none also neutralises the JS-set
+       transform: scale() on .paper-pages-scale — belt-and-braces below —
+       and keeps the fixed measurer off page 1).
+     - The flow's paged-mode clipping (height:0/overflow:hidden, set by the
+       screen rule above) is force-reverted with !important; those are the
+       ONLY two properties the screen cascade puts on .paginate-flow, and JS
+       never styles it inline, so this restores a plain unstyled block.
+     - No rule anywhere applies a transform to .paginate-flow or its
+       ancestors, so the printed sheet cannot inherit a scale. */
+  .paper-pages,
+  .page-count-chip,
+  .paginate-measure {
+    display: none !important;
+  }
+  .paper-pages-scale {
+    transform: none !important;
+  }
+  .paginate-flow {
+    height: auto !important;
+    overflow: visible !important;
+  }
+}
