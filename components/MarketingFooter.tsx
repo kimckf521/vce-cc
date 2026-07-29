@@ -6,7 +6,7 @@ export default function MarketingFooter() {
   return (
     <footer className="border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-12 lg:py-16">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-8 lg:gap-12">
           {/* Brand */}
           <div className="col-span-2">
             <Link
@@ -109,18 +109,19 @@ export default function MarketingFooter() {
             </ul>
           </div>
 
-          {/* Help */}
+          {/* Free tools — the public /tools hub plus its tools, so every page
+              links the indexable collection page. */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wide">
-              Help
+              Free tools
             </h3>
             <ul className="mt-4 space-y-3 text-sm lg:text-base">
               <li>
                 <Link
-                  href="/pricing"
+                  href="/tools"
                   className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
-                  Pricing
+                  All free tools
                 </Link>
               </li>
               <li>
@@ -137,6 +138,23 @@ export default function MarketingFooter() {
                   className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
                   Exam countdown
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Help */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wide">
+              Help
+            </h3>
+            <ul className="mt-4 space-y-3 text-sm lg:text-base">
+              <li>
+                <Link
+                  href="/pricing"
+                  className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                >
+                  Pricing
                 </Link>
               </li>
               <li>

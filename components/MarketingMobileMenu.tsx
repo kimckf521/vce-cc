@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
 
-type NavKey = "subjects" | "pricing" | "about" | null;
+type NavKey = "subjects" | "tools" | "pricing" | "about" | null;
 
 /** Mirrors the desktop SubjectsDropdown list so the two stay in sync.
  *  VCAA pathway order: Foundation → General → Methods → Specialist. */
@@ -110,6 +110,9 @@ export default function MarketingMobileMenu({
 
               <div className="my-2 border-t border-gray-100 dark:border-gray-800" />
 
+              <Link href="/tools" className={itemClass}>
+                Free tools
+              </Link>
               <Link href="/pricing" className={itemClass}>
                 Pricing
               </Link>

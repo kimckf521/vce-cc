@@ -40,6 +40,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/general`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE_URL}/foundation`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE_URL}/pricing`, changeFrequency: "monthly", priority: 0.8 },
+    // Free-tools hub — the indexable collection page linking the individual
+    // tools below. Content only changes when a tool is added or reframed.
+    { url: `${SITE_URL}/tools`, changeFrequency: "monthly", priority: 0.7 },
     // Public study-score calculator — free-tool SEO target ("vce study score
     // calculator" queries). Data refreshes annually when VCAA publishes new
     // grade distributions.

@@ -6,7 +6,7 @@ import PastPapersDropdown from "@/components/PastPapersDropdown";
 import MarketingMobileMenu from "@/components/MarketingMobileMenu";
 import { createClient } from "@/lib/supabase/server";
 
-type NavKey = "subjects" | "pricing" | "about" | null;
+type NavKey = "subjects" | "tools" | "pricing" | "about" | null;
 
 export default async function MarketingNav({ active = null }: { active?: NavKey }) {
   const supabase = await createClient();
@@ -24,15 +24,23 @@ export default async function MarketingNav({ active = null }: { active?: NavKey 
       <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex h-16 lg:h-20 items-center justify-between gap-2">
         <Link
           href="/"
-          className="flex items-center gap-2 font-bold text-lg sm:text-xl lg:text-2xl text-brand-700 dark:text-brand-400 min-w-0"
+          className="flex items-center gap-2 font-bold text-lg sm:text-xl lg:text-2xl text-brand-700 dark:text-brand-400 min-w-0 md:shrink-0"
         >
           <BrandMark className="h-9 w-auto sm:h-10 lg:h-12" />
           {/* Wordmark hidden on very narrow screens to prevent two-line wrap */}
           <span className="hidden xs:inline whitespace-nowrap">ATAR Hero</span>
         </Link>
-        <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm lg:text-base text-gray-600 dark:text-gray-400">
+        <nav className="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-8 text-sm lg:text-base text-gray-600 dark:text-gray-400">
           <SubjectsDropdown active={active === "subjects"} />
           <PastPapersDropdown />
+          <Link
+            href="/tools"
+            className={`whitespace-nowrap ${linkClass("tools")}`}
+          >
+            {/* Shorter label below xl so the header fits at md/early-lg widths */}
+            <span className="xl:hidden">Tools</span>
+            <span className="hidden xl:inline">Free tools</span>
+          </Link>
           <Link href="/pricing" className={linkClass("pricing")}>
             Pricing
           </Link>
@@ -41,8 +49,10 @@ export default async function MarketingNav({ active = null }: { active?: NavKey 
           </Link>
         </nav>
         <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 flex-shrink-0">
-          {/* Theme toggle hidden on phone — moves to profile/settings; recovers ~75px of header space */}
-          <div className="hidden sm:block">
+          {/* Theme toggle hidden on phone — moves to profile/settings; recovers ~75px of header space.
+              Also hidden in the md band (768-1023px) where the full desktop nav +
+              logged-out CTAs leave no room for its ~100px segmented control */}
+          <div className="hidden sm:block md:hidden lg:block">
             <ThemeToggle compact />
           </div>
           {user ? (
