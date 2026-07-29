@@ -49,27 +49,48 @@ const nextConfig = {
     { source: "/vce-general/:path*", destination: "/vce/general/:path*", permanent: true },
   ],
   // Power HTTP headers for caching static assets on Vercel CDN + security
-  headers: async () => [
-    {
-      // Apply to every route
-      source: "/:path*",
-      headers: [
-        // Performance
-        { key: "X-DNS-Prefetch-Control", value: "on" },
-        // Security: prevent MIME type sniffing
-        { key: "X-Content-Type-Options", value: "nosniff" },
-        // Security: clickjacking protection (allow same-origin iframes only)
-        { key: "X-Frame-Options", value: "SAMEORIGIN" },
-        // Privacy: control how much referrer information is sent
-        { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-        // Security: deny browser APIs we never use
-        {
-          key: "Permissions-Policy",
-          value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
-        },
-      ],
-    },
-  ],
+  headers: async () => {
+    // Shared security/perf headers for every route. Frame policy is added
+    // per-rule below because the embeddable countdown widget must opt out.
+    const baseSecurityHeaders = [
+      // Performance
+      { key: "X-DNS-Prefetch-Control", value: "on" },
+      // Security: prevent MIME type sniffing
+      { key: "X-Content-Type-Options", value: "nosniff" },
+      // Privacy: control how much referrer information is sent
+      { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+      // Security: deny browser APIs we never use
+      {
+        key: "Permissions-Policy",
+        value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+      },
+    ];
+    return [
+      {
+        // Every route EXCEPT the embeddable exam countdown (negative
+        // lookahead). Next.js emits headers from ALL matching rules and a
+        // header can only be overridden, never removed, by a later rule —
+        // so the only way to drop X-Frame-Options on the embed path is to
+        // keep the sources mutually exclusive.
+        source: "/((?!tools/exam-countdown/embed/?$).*)",
+        headers: [
+          ...baseSecurityHeaders,
+          // Security: clickjacking protection (allow same-origin iframes only)
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+        ],
+      },
+      {
+        // The embed widget exists to be iframed by external school/blog
+        // sites, so it omits X-Frame-Options and explicitly allows any
+        // embedding ancestor instead. Everything else stays locked down.
+        source: "/tools/exam-countdown/embed",
+        headers: [
+          ...baseSecurityHeaders,
+          { key: "Content-Security-Policy", value: "frame-ancestors *" },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

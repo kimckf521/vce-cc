@@ -40,6 +40,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/general`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE_URL}/foundation`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE_URL}/pricing`, changeFrequency: "monthly", priority: 0.8 },
+    // Public study-score calculator — free-tool SEO target ("vce study score
+    // calculator" queries). Data refreshes annually when VCAA publishes new
+    // grade distributions.
+    {
+      url: `${SITE_URL}/tools/study-score-calculator`,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    // Public exam countdown — free-tool SEO target ("vce exam dates 2026" /
+    // "methods exam countdown" queries). The /embed variant is deliberately
+    // absent (noindex, chrome-less duplicate).
+    {
+      url: `${SITE_URL}/tools/exam-countdown`,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
     { url: `${SITE_URL}/faqs`, changeFrequency: "monthly", priority: 0.6 },
     { url: `${SITE_URL}/about`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/privacy`, changeFrequency: "yearly", priority: 0.3 },

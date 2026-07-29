@@ -125,6 +125,22 @@ export default function MarketingFooter() {
               </li>
               <li>
                 <Link
+                  href="/tools/study-score-calculator"
+                  className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                >
+                  Study score calculator
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/tools/exam-countdown"
+                  className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                >
+                  Exam countdown
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/faqs"
                   className="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
