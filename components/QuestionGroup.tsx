@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import MathContent from "@/components/MathContent";
 
 const SolutionModal = dynamic(() => import("@/components/SolutionModal"), { ssr: false });
+import SolutionContent from "@/components/SolutionContent";
 const CartesianGrid = dynamic(() => import("@/components/CartesianGrid"), { ssr: false });
 const FunctionGraph = dynamic(() => import("@/components/FunctionGraph"), { ssr: false });
 
@@ -57,6 +58,15 @@ interface QuestionGroupProps {
   parts: QuestionPart[];
   /** Whether to show the "Show Solution" button. Defaults to true. */
   showSolutionButton?: boolean;
+  /**
+   * "modal" (default): the existing click-to-reveal overlay (SolutionModal).
+   * "inline": renders the solution as an always-in-DOM block toggled by a
+   * CSS `hidden` class instead of conditional mounting — used on the public
+   * SEO-indexed exam/question pages so Googlebot sees real solution text
+   * (see components/SolutionContent.tsx for why). Visitor-facing behaviour
+   * (hidden until "Show solution" is clicked) is identical either way.
+   */
+  solutionDisplay?: "modal" | "inline";
   /** Exam mode: hide instant MCQ feedback, hide status buttons */
   examMode?: boolean;
   /** Reveal correct/incorrect answers (after exam submit) */
@@ -310,7 +320,7 @@ const FREQ_LABEL: Record<"rare" | "normal" | "often", string> = {
   often: "Every year",
 };
 
-export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts, showSolutionButton = true, examMode, revealAnswers, onMcqSelect, isAdmin, disableServerRefresh, hideBadges, hideTopicBadge, canTrackProgress = true, permalink, lockedCtaHref, lockedTitle }: QuestionGroupProps) {
+export default function QuestionGroup({ year, examType, sectionLabel, questionIndex, frequency, topic, subtopics, calculatorAllowed, parts, showSolutionButton = true, examMode, revealAnswers, onMcqSelect, isAdmin, disableServerRefresh, hideBadges, hideTopicBadge, canTrackProgress = true, permalink, lockedCtaHref, lockedTitle, solutionDisplay = "modal" }: QuestionGroupProps) {
   const router = useRouter();
   const [showSolution, setShowSolution] = useState(false);
   const [statuses, setStatuses] = useState<Record<string, AttemptStatus>>(
@@ -834,26 +844,45 @@ export default function QuestionGroup({ year, examType, sectionLabel, questionIn
         </div>
       )}
 
-      {/* Single solution button at the bottom */}
+      {/* Single solution button at the bottom. In "inline" mode this toggles
+          the always-mounted block below rather than opening the modal, so
+          the label flips to "Hide solution" once revealed. */}
       {hasSolution && showSolutionButton && (
         <div className="px-5 lg:px-7 pb-5 lg:pb-6 pt-1 border-t border-gray-50 dark:border-gray-800">
           <button
-            onClick={() => setShowSolution(true)}
+            onClick={() =>
+              solutionDisplay === "inline" ? setShowSolution((v) => !v) : setShowSolution(true)
+            }
             className="rounded-xl px-6 lg:px-8 py-2.5 lg:py-3 text-base lg:text-lg font-semibold bg-brand-600 text-white hover:bg-brand-700 transition-colors"
           >
-            Show solution
+            {solutionDisplay === "inline" && showSolution ? "Hide solution" : "Show solution"}
           </button>
         </div>
       )}
 
-      {/* Combined solution modal */}
-      {showSolution && (
-        <SolutionModal
-          questionLabel={questionLabel}
-          solutions={combinedSolutions}
-          onClose={() => setShowSolution(false)}
-          isAdmin={isAdmin}
-        />
+      {solutionDisplay === "inline" ? (
+        /* Always in the DOM — server-rendered on first paint — and toggled
+           with a CSS `hidden` class rather than conditional mounting, so
+           search crawlers see real worked-solution text (see
+           components/SolutionContent.tsx for why this matters). Visually
+           identical to a modal reveal for real visitors: hidden until they
+           click "Show solution" above. */
+        hasSolution && (
+          <div className={cn("px-5 lg:px-7 pb-5 lg:pb-6", !showSolution && "hidden")}>
+            <SolutionContent solutions={combinedSolutions} />
+          </div>
+        )
+      ) : (
+        /* Combined solution modal (default — unchanged everywhere except the
+           public exam/question pages that opt into solutionDisplay="inline"). */
+        showSolution && (
+          <SolutionModal
+            questionLabel={questionLabel}
+            solutions={combinedSolutions}
+            onClose={() => setShowSolution(false)}
+            isAdmin={isAdmin}
+          />
+        )
       )}
     </div>
   );

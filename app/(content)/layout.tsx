@@ -38,13 +38,26 @@ export default async function ContentLayout({
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
         <MarketingNav />
-        <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:py-10">
+        {/* Bottom padding on <lg reserves room for the sticky bar below so it
+            never overlaps the page's last few lines. */}
+        <main className="mx-auto max-w-5xl px-4 pt-8 pb-24 sm:px-6 sm:pb-10 lg:pt-10 lg:pb-10">
           {children}
 
           {/* Conversion CTA — the content is free; a free account adds
               interactive practice. Honest free-tier copy lives in SignupNudge. */}
           <SignupNudge variant="block" className="mt-10" />
         </main>
+
+        {/* Sticky mobile CTA — the block nudge above sits many thousands of
+            pixels deep on a long exam page (a visitor may never scroll that
+            far), so on <lg viewports this keeps a signup path visible at
+            every scroll position instead of only at the very bottom. */}
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-brand-100 dark:border-brand-900 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm px-3 py-2.5 lg:hidden">
+          <SignupNudge
+            variant="compact"
+            className="rounded-none border-0 bg-transparent p-0 dark:bg-transparent"
+          />
+        </div>
       </div>
     );
   }

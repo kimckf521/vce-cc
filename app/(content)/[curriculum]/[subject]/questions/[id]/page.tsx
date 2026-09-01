@@ -286,6 +286,7 @@ export default async function QuestionPage({ params, searchParams }: PageProps) 
         subtopics={question.subtopics.map((s) => s.name)}
         parts={toGroupParts(parts)}
         canTrackProgress={canTrackProgress}
+        solutionDisplay="inline"
         lockedCtaHref={
           user
             ? "/pricing"

@@ -355,6 +355,7 @@ export default async function ExamPage({ params }: PageProps) {
                 parts={toGroupParts([q])}
                 hideBadges
                 permalink={questionPermalink(q.id)}
+                solutionDisplay="inline"
                 {...anonProgressProps}
               />
             ))}
@@ -389,6 +390,7 @@ export default async function ExamPage({ params }: PageProps) {
                 parts={toGroupParts(group)}
                 hideBadges
                 permalink={questionPermalink(group[0].id)}
+                solutionDisplay="inline"
                 {...anonProgressProps}
               />
             ))}

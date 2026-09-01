@@ -1,7 +1,21 @@
 import Link from "next/link";
 import { ClipboardList, BookOpen, FileText, ArrowRight } from "lucide-react";
 
-export default function DashboardEmptyState() {
+type Props = {
+  /** Curriculum slug for the CTA links (e.g. "vce"). */
+  curriculum: string;
+  /**
+   * The student's own primary subject (their first registered subject, or
+   * the site default). Previously hardcoded to "methods" — a Specialist- or
+   * General-only student landed on Methods practice/topics/papers instead
+   * of their own subject.
+   */
+  subjectUrlSlug: string;
+};
+
+export default function DashboardEmptyState({ curriculum, subjectUrlSlug }: Props) {
+  const base = `/${curriculum}/${subjectUrlSlug}`;
+
   return (
     <section className="rounded-2xl border border-brand-100 dark:border-brand-900 bg-gradient-to-br from-brand-50/70 via-white to-white dark:from-brand-950/40 dark:via-gray-900 dark:to-gray-900 p-5 lg:p-7 shadow-sm">
       <h2 className="text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100">
@@ -14,7 +28,7 @@ export default function DashboardEmptyState() {
 
       <div className="mt-5 grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-4">
         <Link
-          href="/vce/methods/practice/exam1"
+          href={`${base}/practice/exam1`}
           className="group rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-4 lg:p-5 hover:border-brand-200 dark:hover:border-brand-800 hover:shadow-sm transition-all"
         >
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 dark:bg-brand-950 mb-3">
@@ -33,7 +47,7 @@ export default function DashboardEmptyState() {
         </Link>
 
         <Link
-          href="/vce/methods/topics"
+          href={`${base}/topics`}
           className="group rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-4 lg:p-5 hover:border-brand-200 dark:hover:border-brand-800 hover:shadow-sm transition-all"
         >
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-950 mb-3">
@@ -43,7 +57,7 @@ export default function DashboardEmptyState() {
             Browse by topic
           </h3>
           <p className="mt-1 text-xs lg:text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-            Pick where to start — Functions, Algebra, Calculus, or Probability.
+            Your free Algebra topic is unlocked now — upgrade later for the rest.
           </p>
           <span className="mt-3 inline-flex items-center gap-1 text-xs lg:text-sm font-semibold text-brand-600 dark:text-brand-400">
             Open topics
@@ -52,7 +66,7 @@ export default function DashboardEmptyState() {
         </Link>
 
         <Link
-          href="/vce/methods/exams"
+          href={`${base}/exams`}
           className="group rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-4 lg:p-5 hover:border-brand-200 dark:hover:border-brand-800 hover:shadow-sm transition-all"
         >
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50 dark:bg-amber-950 mb-3">

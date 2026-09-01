@@ -9,7 +9,7 @@ import {
 } from "@/lib/subject-context";
 import { isKnownCurriculum } from "@/lib/curriculum-context";
 import { FREE_PREVIEW_TOPIC_BY_SUBJECT } from "@/lib/subscription";
-import { fetchQuestionSetGroupsPaginated } from "@/lib/question-set-groups";
+import { fetchQuestionGroupsPaginated, type SubtopicInfo } from "@/lib/question-groups";
 import MarketingNav from "@/components/MarketingNav";
 import TryFlow from "@/components/TryFlow";
 
@@ -27,9 +27,25 @@ interface PageProps {
 
 /**
  * Anonymous "try before you register" — lets a logged-out visitor practise a
- * few questions from the free Algebra preview topic of a subject (answer +
- * worked solutions, no saving), then a register wall. Logged-in users are sent
- * straight to the real Algebra topic page (where they can save progress).
+ * few REAL VCAA past-paper questions (not the generated drill bank) from the
+ * free Algebra preview topic of a subject, with worked solutions and no
+ * saving, then a register wall. Sourced from `fetchQuestionGroupsPaginated`
+ * (real `Question` rows) rather than `fetchQuestionSetGroupsPaginated` (the
+ * AI-generated bank the signed-in Topics page uses) so the page's own claim
+ * of "real VCAA questions" is literally true — the default ordering (see
+ * lib/question-groups.ts `fetchGroupKeys`) surfaces standalone Exam 2 MCQ
+ * items first, easiest difficulty first, most recent year first, so a
+ * first-time visitor gets a short, digestible, genuinely exam-authentic
+ * question rather than an arbitrary or over/under-difficult one.
+ *
+ * This doesn't create a bait-and-switch: the same (and more) real past-paper
+ * content is already public with zero signup at /{curriculum}/{subject}/exams,
+ * and a free account additionally unlocks the generated drill bank via
+ * Topics — so the signed-up free experience is a superset of this trial, not
+ * a downgrade from it.
+ *
+ * Logged-in users are sent straight to the real Algebra topic page (where
+ * they can save progress).
  */
 export default async function TryPage({ params }: PageProps) {
   const { curriculum, subject } = await params;
@@ -56,20 +72,26 @@ export default async function TryPage({ params }: PageProps) {
   const topic = freeTopicSlug
     ? await prisma.topic.findFirst({
         where: { slug: freeTopicSlug, subject: { slug: dbSubjectSlug } },
-        select: { id: true, name: true },
+        select: {
+          id: true,
+          name: true,
+          subtopics: { select: { id: true, name: true, slug: true } },
+        },
       })
     : null;
 
+  // Frequency badges aren't meaningful without attempt history for an
+  // anonymous visitor — same "normal" default the real topic page uses.
+  const subtopicInfos: SubtopicInfo[] =
+    topic?.subtopics.map((sub) => ({
+      id: sub.id,
+      name: sub.name,
+      slug: sub.slug,
+      frequency: "normal" as const,
+    })) ?? [];
+
   const { groups } = topic
-    ? await fetchQuestionSetGroupsPaginated(
-        topic.id,
-        topic.name,
-        {},
-        0,
-        TRY_LIMIT,
-        undefined,
-        dbSubjectSlug,
-      )
+    ? await fetchQuestionGroupsPaginated(topic.id, subtopicInfos, {}, undefined, 0, TRY_LIMIT)
     : { groups: [] };
 
   return (
@@ -84,8 +106,8 @@ export default async function TryPage({ params }: PageProps) {
             Practise {subjectName}: real VCAA Algebra questions
           </h1>
           <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 lg:text-base">
-            A few real VCAA questions with worked solutions. Have a go — pick an
-            answer, then reveal the solution.
+            Real questions from real VCAA past papers, with worked solutions.
+            Have a go — pick an answer, then reveal the solution.
           </p>
         </div>
 

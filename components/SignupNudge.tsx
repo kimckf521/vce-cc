@@ -57,12 +57,13 @@ export default function SignupNudge({ variant = "block", className }: Props) {
         <Sparkles className="h-5 w-5 text-brand-600 dark:text-brand-400" />
       </div>
       <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 lg:text-xl">
-        Studying VCE Maths? Start free.
+        Track your progress. Free.
       </h2>
       <p className="mx-auto mt-1 max-w-xl text-sm text-gray-600 dark:text-gray-400 lg:text-base">
-        Every past paper and worked solution is free. Create a free account to
-        practise, save your progress, and bookmark tricky questions — across all
-        4 VCE maths subjects, no credit card needed.
+        Create a free account to mark questions correct or incorrect, build a
+        study streak, and bookmark the ones to revisit — no credit card
+        needed. Unlock every topic and timed Exam 2 practice across all 4 VCE
+        maths subjects when you're ready.
       </p>
       <Link
         href="/signup"

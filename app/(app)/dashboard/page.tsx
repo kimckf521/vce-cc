@@ -56,7 +56,7 @@ export default async function DashboardPage() {
   const { data: { user } } = await supabase.auth.getUser();
   const userId = user?.id;
 
-  const [dbUser, attempts, enrolments, topicAttemptCounts, streak] =
+  const [dbUser, attempts, enrolments, topicAttemptCounts, streak, questionSetAttemptCount, examSessionAgg] =
     await Promise.all([
       userId
         ? prisma.user.findUnique({ where: { id: userId }, select: { name: true, role: true, studyingSubjects: true } })
@@ -98,6 +98,15 @@ export default async function DashboardPage() {
           `
         : [],
       userId ? getStudyStreak(userId) : 0,
+      // Every practice surface writes QuestionSetAttempt (topic drills) or
+      // ExamSession (timed practice papers) — NOT the legacy Attempt table
+      // above (real past-paper self-marking only). Without these, a student
+      // who sits a full Exam 1 and self-marks it still sees `isFirstRun`
+      // stuck true and the dashboard telling them to "start revising".
+      userId ? prisma.questionSetAttempt.count({ where: { userId } }) : 0,
+      userId
+        ? prisma.examSession.aggregate({ where: { userId }, _sum: { totalQuestions: true }, _count: true })
+        : null,
     ]);
 
   /* ── derived values ── */
@@ -115,6 +124,18 @@ export default async function DashboardPage() {
   const attempted = countMap["ATTEMPTED"] ?? 0;
   const totalAttempted = correct + incorrect + needsReview + attempted;
   const correctRate = totalAttempted > 0 ? Math.round((correct / totalAttempted) * 100) : 0;
+
+  // Broad "has this account done ANY practice" signal — spans all three
+  // practice surfaces (real-past-paper Attempt, generated-drill
+  // QuestionSetAttempt, timed-session ExamSession), not just the first.
+  // Deliberately scoped: only drives first-run gating + the welcome copy
+  // below. The Accuracy/Correct/Incorrect stat strip and topic-progress
+  // rings further down stay Attempt-only — they measure self-marked
+  // real-past-paper accuracy specifically, a different, narrower metric
+  // that blending in ungraded/drill data would silently redefine.
+  const examSessionQuestionTotal = examSessionAgg?._sum.totalQuestions ?? 0;
+  const totalActivityCount = totalAttempted + questionSetAttemptCount + examSessionQuestionTotal;
+  const hasAnyActivity = totalActivityCount > 0;
 
   /* ── per-subject sections ── */
   // Resolve each enrolment to (subject metadata + url slug + topics). Drop
@@ -171,7 +192,7 @@ export default async function DashboardPage() {
   // Brand-new users (auto-enrolled in all 4 subjects, zero attempts) get a
   // first-run screen: a real welcome (not "back"), the "pick a starting point"
   // guide, and NO zero-filled stat strip / 0% rings that read as broken.
-  const isFirstRun = totalAttempted === 0;
+  const isFirstRun = !hasAnyActivity;
 
   // Per-subject progress for the new "My subjects" grid + Continue revising card
   // — filtered to the student's registered subjects (empty registration = all).
@@ -245,9 +266,9 @@ export default async function DashboardPage() {
                 : "Welcome back"}
           </h1>
           <p className="mt-1 text-sm lg:text-base text-gray-500 dark:text-gray-400">
-            {totalAttempted === 0
+            {!hasAnyActivity
               ? "Ready to start revising?"
-              : `${totalAttempted} questions attempted`}
+              : `${totalActivityCount} questions attempted`}
           </p>
         </div>
         <Link
@@ -255,7 +276,7 @@ export default async function DashboardPage() {
           className="inline-flex items-center gap-2 rounded-xl bg-brand-600 hover:bg-brand-700 px-5 py-2.5 lg:px-6 lg:py-3 text-sm lg:text-base font-semibold text-white transition-colors shrink-0"
         >
           <Play className="h-4 w-4" />
-          {totalAttempted === 0 ? "Start studying" : "Practice now"}
+          {!hasAnyActivity ? "Start studying" : "Practice now"}
         </Link>
       </div>
 
@@ -294,7 +315,9 @@ export default async function DashboardPage() {
           auto-enrols all 4 subjects, so the old `subjectProgress.length === 0`
           guard was never true and this never rendered). Gives new students one
           obvious "answer your first question" path. */}
-      {isFirstRun && <DashboardEmptyState />}
+      {isFirstRun && (
+        <DashboardEmptyState curriculum={curriculum} subjectUrlSlug={primarySubjectUrlSlug} />
+      )}
 
       {/* ─── My subjects ─── */}
       <div>

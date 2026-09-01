@@ -3,7 +3,7 @@ import {
   BookOpen,
   FileText,
   PenTool,
-  BarChart2,
+  Search,
   ArrowRight,
   Target,
   Play,
@@ -67,7 +67,12 @@ export default async function SubjectHomePage({ params }: PageProps) {
     { href: `/${curriculum}/${subject}/topics`, label: "Topics", icon: BookOpen },
     { href: `/${curriculum}/${subject}/exams`, label: "Past papers", icon: FileText },
     { href: `/${curriculum}/${subject}/practice`, label: "Practice", icon: PenTool },
-    { href: `/${curriculum}/${subject}/questions`, label: "Questions", icon: BarChart2 },
+    // `/${curriculum}/${subject}/questions` has no index page (only
+    // .../questions/[id] and .../questions/set/[id] exist) — that URL 404s.
+    // /search is the real "browse/find a question" tool: full-text search
+    // across the whole question corpus. Free users see PaywallScreen (an
+    // honest upgrade prompt) instead of the previous dead link.
+    { href: "/search", label: "Questions", icon: Search },
   ];
 
   return (
