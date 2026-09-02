@@ -10,6 +10,23 @@ import { examSlug } from "@/lib/exam-slug";
 export const dynamic = "force-dynamic";
 
 /**
+ * The date the RENDERED OUTPUT of the content pages last changed materially —
+ * not the date any row changed. On 2026-09-02 worked solutions moved out of a
+ * click-to-open modal into server-rendered inline markup, so what Google can
+ * read on these pages changed completely while every `updatedAt` stayed put.
+ * Without a floor, the sitemap told Google nothing had changed since July and
+ * gave it no reason to re-crawl and re-open stale duplicate clusters.
+ *
+ * Bump this ONLY when the rendered output genuinely changes. Never mass-touch
+ * `updatedAt` in the database to fake freshness — that destroys the only real
+ * per-row signal and teaches Google to distrust lastmod entirely.
+ */
+const CONTENT_TEMPLATE_VERSION = new Date("2026-09-02T00:00:00Z");
+
+/** Later of a row's real mtime and the template version. */
+const freshest = (d: Date) => (d > CONTENT_TEMPLATE_VERSION ? d : CONTENT_TEMPLATE_VERSION);
+
+/**
  * XML sitemap exposed at /sitemap.xml
  *
  * Lists the public marketing pages PLUS the public content surface in the
@@ -109,7 +126,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       );
       contentPages.push({
         url: `${base}/exams`,
-        ...(questions.length > 0 ? { lastModified: subjectLastMod } : {}),
+        ...(questions.length > 0 ? { lastModified: freshest(subjectLastMod) } : {}),
         changeFrequency: "monthly",
         priority: 0.8,
       });
@@ -147,7 +164,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       for (const { slug, lastMod } of Array.from(examMeta.values())) {
         contentPages.push({
           url: `${base}/exams/${slug}`,
-          lastModified: lastMod,
+          lastModified: freshest(lastMod),
           changeFrequency: "yearly",
           priority: 0.7,
         });
@@ -155,7 +172,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       for (const { id, lastMod } of Array.from(groupLeaders.values())) {
         contentPages.push({
           url: `${base}/questions/${id}`,
-          lastModified: lastMod,
+          lastModified: freshest(lastMod),
           changeFrequency: "yearly",
           priority: 0.6,
         });

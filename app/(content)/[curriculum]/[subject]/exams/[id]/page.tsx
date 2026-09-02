@@ -2,7 +2,9 @@ export const dynamic = "force-dynamic";
 
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { notFound, permanentRedirect } from "next/navigation";
+import ExamPageSkeleton from "@/components/ExamPageSkeleton";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import QuestionGroup from "@/components/QuestionGroup";
@@ -75,14 +77,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const name = meta?.displayName ?? "VCE Mathematics";
   const short = meta?.shortName ?? "Methods";
   const exam = await resolveExam(subject, id);
-  // Throw (rather than return noindex) so the response is a real 404 —
-  // returning metadata lets the loading.tsx stream commit a 200 first.
+  // Throw (rather than return noindex) so the response is a real 404. This
+  // only works because the route has NO loading.tsx: a route-level Suspense
+  // boundary streams a 200 shell before the status can be set, and both
+  // notFound() and permanentRedirect() silently degrade — the 404 to a 200
+  // carrying 404 UI, the redirect to a <meta http-equiv="refresh">. Measured,
+  // not assumed: with a loading.tsx here, /exams/2099-exam-1 answered 200 and
+  // an unbounded {year}-exam-{n} space was indexable. Do not add one back.
   if (!exam) notFound();
   // Legacy cuid URLs redirect to the keyword-slug URL of the exam's OWN
-  // subject. The redirect must happen HERE, not in the page body: this route
-  // has a loading.tsx, so by the time the page component runs Next has
-  // already streamed a 200 shell and a redirect degrades to a client-side
-  // hop. generateMetadata runs before the stream starts.
+  // subject. generateMetadata resolves before the page body, so this is the
+  // copy that actually serves the 308; the body keeps a mirror as defense in
+  // depth. See the notFound() note above for why neither may be re-wrapped in
+  // a loading.tsx.
   const redirectTarget = slugRedirectTarget(exam, id, curriculum, subject);
   if (redirectTarget) permanentRedirect(redirectTarget);
   // Admin-testing fixtures (year 9999) stay reachable via cuid for preview
@@ -102,7 +109,31 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+/**
+ * Thin shell whose ONLY job is to settle the HTTP status before anything
+ * streams: one cheap `resolveExam` lookup, then notFound() / permanentRedirect()
+ * if warranted. Only once the status is committed does the heavy body — 25
+ * questions with inline worked solutions, ~1.7MB — go behind a Suspense
+ * boundary so it still streams and the shell paints immediately.
+ *
+ * Do NOT collapse this back into a route-level loading.tsx. That boundary sits
+ * ABOVE the page, so Next flushes a 200 before the guards run and both the 404
+ * and the redirect silently degrade. See components/ExamPageSkeleton.tsx.
+ */
 export default async function ExamPage({ params }: PageProps) {
+  const { curriculum, subject: subjectSlug, id } = await params;
+  const exam = await resolveExam(subjectSlug, id);
+  if (!exam) notFound();
+  const redirectTarget = slugRedirectTarget(exam, id, curriculum, subjectSlug);
+  if (redirectTarget) permanentRedirect(redirectTarget);
+  return (
+    <Suspense fallback={<ExamPageSkeleton />}>
+      <ExamBody params={params} />
+    </Suspense>
+  );
+}
+
+async function ExamBody({ params }: PageProps) {
   const { curriculum, subject: subjectSlug, id } = await params;
   const subjectMeta = getSubjectMetadata(subjectSlug);
   const subjectDisplayName = subjectMeta?.displayName ?? "VCE Mathematical Methods";
@@ -231,8 +262,13 @@ export default async function ExamPage({ params }: PageProps) {
 
   // Public standalone page for a question group (its first part) — passed to
   // each card as a permalink so every question page is reachable from here.
+  // Deliberately BARE: a `?from=exam:` param made every one of these a variant
+  // URL, so not one internal link on the public site pointed at a canonical
+  // question URL and Search Console reported "Referring page: None detected"
+  // on pages that are plainly linked from here. The question page falls back
+  // to its own paper for the back link, so the affordance survives the loss.
   const questionPermalink = (leaderId: string) =>
-    `/${curriculum}/${subjectSlug}/questions/${leaderId}?from=exam:${slug}`;
+    `/${curriculum}/${subjectSlug}/questions/${leaderId}`;
 
   // Anonymous visitors get locked mark/bookmark buttons whose click becomes a
   // signup CTA (carrying a return-to), instead of live buttons that 401 with a

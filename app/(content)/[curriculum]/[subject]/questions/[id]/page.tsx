@@ -14,6 +14,7 @@ import { canAccessTopic } from "@/lib/subscription";
 import { getDbSubjectSlug, getSubjectMetadata, getUrlSubjectSlug } from "@/lib/subject-context";
 import { questionBackLink } from "@/lib/question-back-link";
 import { SITE_URL } from "@/lib/site";
+import { sectionSuffix } from "@/lib/exam-structure";
 import { examSlug } from "@/lib/exam-slug";
 
 interface PageProps {
@@ -44,8 +45,10 @@ async function groupLeaderId(q: {
   return leader?.id ?? q.id;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const { curriculum, subject, id } = await params;
+  const { from } = await searchParams;
+  const qs = from ? `?from=${encodeURIComponent(from)}` : "";
   const q = await prisma.question.findUnique({
     where: { id },
     select: {
@@ -63,18 +66,41 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (q.exam.year === 9999) return { robots: { index: false, follow: false } };
   // A question id identifies its subject. Reached under any other valid
   // subject slug, redirect to the true subject's URL — otherwise every
-  // question exists as four competing indexable URL spaces. Redirect here
-  // (not just the page body) so it fires before the loading.tsx stream.
+  // question exists as four competing indexable URL spaces. Redirect from
+  // generateMetadata, which resolves before the page body's own mirror of this
+  // check — so this is the redirect that actually determines the response.
   const trueSubject = (q.subject ? getUrlSubjectSlug(q.subject.slug) : null) ?? subject;
   if (trueSubject !== subject) {
-    permanentRedirect(`/${curriculum}/${trueSubject}/questions/${id}`);
+    permanentRedirect(`/${curriculum}/${trueSubject}/questions/${id}${qs}`);
+  }
+  const canonicalId = await groupLeaderId(q);
+  // A follower part serves a BYTE-IDENTICAL document to its group leader (the
+  // page renders the whole group whichever part is asked for), so every part is
+  // another indexable URL for one question. rel=canonical alone did not hold:
+  // Google overrode it and parked 913 pages in "Duplicate, Google chose
+  // different canonical than user", repeatedly electing a follower that is in
+  // no sitemap and has no inbound links. Redirect for real instead of asking.
+  if (canonicalId !== id) {
+    permanentRedirect(`/${curriculum}/${subject}/questions/${canonicalId}${qs}`);
   }
   const short = getSubjectMetadata(subject)?.shortName ?? "Methods";
   const examLabel = q.exam.examType === "EXAM_1" ? "Exam 1" : "Exam 2";
-  const canonicalId = await groupLeaderId(q);
+  // Section A (MCQ) and Section B restart question numbering, so "2023 Exam 2
+  // Q1" names two different questions. Without the section both pages shipped
+  // byte-identical titles AND descriptions while both self-canonicalising — a
+  // second duplicate axis the group-leader logic does not touch.
+  // Derived from the paper's SHAPE, not its examType: Foundation Exam 1 is a
+  // real two-section paper, and keying off examType left 72 Foundation URLs
+  // still sharing a title. One slim indexed query; this page already runs
+  // several, and correctness here is the whole point of the change.
+  const paperRows = await prisma.question.findMany({
+    where: { examId: q.examId },
+    select: { part: true, questionNumber: true },
+  });
+  const paperLabel = `${examLabel}${sectionSuffix(paperRows, q.part)}`;
   const canonical = `${SITE_URL}/${curriculum}/${subject}/questions/${canonicalId}`;
-  const title = `${q.exam.year} VCAA ${short} ${examLabel} Q${q.questionNumber} — Worked Solution`;
-  const description = `Step-by-step worked solution to ${q.exam.year} VCAA ${short} ${examLabel} Question ${q.questionNumber} (${q.topic.name}). Free.`;
+  const title = `${q.exam.year} VCAA ${short} ${paperLabel} Q${q.questionNumber} — Worked Solution`;
+  const description = `Step-by-step worked solution to ${q.exam.year} VCAA ${short} ${paperLabel} Question ${q.questionNumber} (${q.topic.name}). Free.`;
   return {
     title,
     description,
@@ -107,7 +133,6 @@ export default async function QuestionPage({ params, searchParams }: PageProps) 
   const { curriculum, subject: subjectSlug, id } = await params;
   const dbSubjectSlug = getDbSubjectSlug(subjectSlug);
   const { from } = await searchParams;
-  const { href: backHref, label: backLabel } = questionBackLink(from, curriculum, subjectSlug);
 
   // Parallel: fetch question metadata (lightweight) + auth
   const [questionMeta, supabaseResult] = await Promise.all([
@@ -157,6 +182,19 @@ export default async function QuestionPage({ params, searchParams }: PageProps) 
     parts = [question];
   }
 
+  // `parts` uses the identical filter+order as groupLeaderId, so parts[0] IS
+  // the group leader — no extra query. This mirrors the generateMetadata
+  // redirect, which resolves first and is what actually serves the 308; this
+  // copy is defense in depth for any path that skips metadata generation.
+  // Placed before the auth/subscription work so a follower request pays for
+  // nothing it is about to throw away.
+  const leaderId = question.part === null ? question.id : parts[0].id;
+  if (leaderId !== id) {
+    permanentRedirect(
+      `/${curriculum}/${subjectSlug}/questions/${leaderId}${from ? `?from=${encodeURIComponent(from)}` : ""}`
+    );
+  }
+
   const examLabel = question.exam.examType === "EXAM_1" ? "Exam 1" : "Exam 2";
   const sectionLabel: "Exam 1" | "Exam 2A" | "Exam 2B" =
     question.exam.examType === "EXAM_1"
@@ -165,7 +203,7 @@ export default async function QuestionPage({ params, searchParams }: PageProps) 
         ? "Exam 2A"
         : "Exam 2B";
 
-  const title = `${question.exam.year} ${examLabel} — Question ${question.questionNumber}`;
+  const subjectShort = getSubjectMetadata(subjectSlug)?.shortName ?? "Methods";
 
   function toGroupParts(qs: typeof parts) {
     return qs.map((q) => ({
@@ -207,6 +245,12 @@ export default async function QuestionPage({ params, searchParams }: PageProps) 
     select: { id: true, questionNumber: true, part: true },
     orderBy: [{ questionNumber: "asc" }, { part: "asc" }],
   });
+  // Without the subject and section the h1 read "2023 Exam 2 — Question 1" on
+  // all four subjects and on both sections of the same paper. It is also the
+  // name used by the BreadcrumbList and LearningResource JSON-LD below, so it
+  // is computed here — once `examQuestions` makes the paper's shape known.
+  const title = `${question.exam.year} ${subjectShort} ${examLabel}${sectionSuffix(examQuestions, question.part)} — Question ${question.questionNumber}`;
+
   const mcqCount = examQuestions.filter((q) => q.part === null).length;
   const sectionBCount = new Set(
     examQuestions.filter((q) => q.part !== null).map((q) => q.questionNumber)
@@ -223,9 +267,6 @@ export default async function QuestionPage({ params, searchParams }: PageProps) 
     seenGroups.add(key);
     navLeaders.push({ id: q.id, questionNumber: q.questionNumber });
   }
-  // parts[] uses the identical filter+order as groupLeaderId, so parts[0] IS
-  // the group leader — no extra query needed on this hot public page.
-  const leaderId = question.part === null ? question.id : parts[0].id;
   const currentIdx = navLeaders.findIndex((l) => l.id === leaderId);
   const prevQ = currentIdx > 0 ? navLeaders[currentIdx - 1] : null;
   const nextQ =
@@ -233,6 +274,16 @@ export default async function QuestionPage({ params, searchParams }: PageProps) 
 
   const paperSlug = examSlug(question.exam);
   const paperHref = `/${curriculum}/${subjectSlug}/exams/${paperSlug}`;
+  // Resolved here rather than at the top of the function because the fallback
+  // is this question's own paper — which needs the loaded question. The old
+  // default pointed at /history, a robots.txt-Disallowed route, making it the
+  // first in-content link a crawler met on every public question page.
+  const { href: backHref, label: backLabel } = questionBackLink(
+    from,
+    curriculum,
+    subjectSlug,
+    { href: paperHref, label: "Back to paper" }
+  );
   const siblingHref = (qid: string) =>
     `/${curriculum}/${subjectSlug}/questions/${qid}${from ? `?from=${encodeURIComponent(from)}` : ""}`;
 

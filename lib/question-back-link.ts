@@ -13,6 +13,13 @@ export function questionBackLink(
   from: string | undefined,
   curriculum: string,
   subject: string,
+  /**
+   * Where to go when `from` is absent or unrecognised. Public question pages
+   * pass their own paper: the historic default (`/history`) is auth-only AND
+   * robots.txt-Disallowed, so it was a dead end for anonymous visitors and the
+   * first crawlable link on the page pointed somewhere Google may not follow.
+   */
+  fallback?: { href: string; label: string },
 ): { href: string; label: string } {
   // Public exam pages link questions with `?from=exam:<slug>` (e.g.
   // `exam:2023-exam-1`) so the back affordance returns to that paper. The
@@ -31,7 +38,10 @@ export function questionBackLink(
     case "topics":
       return { href: `/${curriculum}/${subject}/topics`, label: "Back to topics" };
     case "history":
-    default:
       return { href: `/${curriculum}/${subject}/history`, label: "Back to history" };
+    default:
+      return (
+        fallback ?? { href: `/${curriculum}/${subject}/history`, label: "Back to history" }
+      );
   }
 }
