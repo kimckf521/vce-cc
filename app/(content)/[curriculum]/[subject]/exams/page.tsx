@@ -7,10 +7,30 @@ import { createClient } from "@/lib/supabase/server";
 import { getDbSubjectSlug, getSubjectMetadata } from "@/lib/subject-context";
 import { SITE_URL } from "@/lib/site";
 import { examSlug } from "@/lib/exam-slug";
+import { daysBetweenISO, examDatePhrase, melbourneTodayISO, scheduledExamDate } from "@/lib/exam-schedule";
 import JsonLd from "@/components/JsonLd";
 
 interface PageProps {
   params: Promise<{ curriculum: string; subject: string }>;
+}
+
+/**
+ * "Sat Fri 30 Oct" / "Sat 5 days ago" for a paper with no questions yet —
+ * shown on the tile in place of a bare "0 questions". Null when VCAA has
+ * published no date for that sitting, in which case the tile falls back to
+ * neutral copy rather than inventing one.
+ */
+function upcomingNoteFor(
+  subjectUrlSlug: string,
+  examType: "EXAM_1" | "EXAM_2"
+): string | null {
+  const sitting = scheduledExamDate(subjectUrlSlug, examType);
+  if (!sitting?.date) return null;
+  const days = daysBetweenISO(melbourneTodayISO(), sitting.date);
+  if (days > 1) return `Sits ${examDatePhrase(sitting.date)}`;
+  if (days === 1) return "Sits tomorrow";
+  if (days === 0) return "Sits today";
+  return `Sat ${examDatePhrase(sitting.date)}`;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -210,6 +230,11 @@ export default async function ExamsPage({ params }: PageProps) {
       hasTwoSections,
       // Total questions: standalone + unique grouped Section B question numbers.
       questionCount: mcqCount + extendedCount,
+      // Papers seeded ahead of their sitting have no questions yet. "0
+      // questions" reads as a broken card, so the tile shows the sitting date
+      // instead — which is the thing a student actually wants from it in
+      // September anyway.
+      upcomingNote: upcomingNoteFor(subjectSlug, e.examType as "EXAM_1" | "EXAM_2"),
     };
   });
 
@@ -496,6 +521,7 @@ function PaperCard({
     mcqCount: number;
     extendedCount: number;
     hasTwoSections: boolean;
+    upcomingNote?: string | null;
   };
   style: PaperSectionStyle;
   curriculum: string;
@@ -525,7 +551,11 @@ function PaperCard({
       >
         {exam.year}
       </span>
-      {exam.hasTwoSections ? (
+      {exam.questionCount === 0 ? (
+        <span className="text-xs lg:text-sm text-gray-400 dark:text-gray-500">
+          {exam.upcomingNote ?? "Not published yet"}
+        </span>
+      ) : exam.hasTwoSections ? (
         <span className="text-xs lg:text-sm text-gray-400 dark:text-gray-500 leading-tight">
           <span className="block">Section A · {exam.mcqCount} MCQ</span>
           <span className="block">Section B · {exam.extendedCount} extended</span>

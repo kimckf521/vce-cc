@@ -5,6 +5,13 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { notFound, permanentRedirect } from "next/navigation";
 import ExamPageSkeleton from "@/components/ExamPageSkeleton";
+import UpcomingExamPanel, { type TopicShare } from "@/components/UpcomingExamPanel";
+import {
+  daysBetweenISO,
+  examDateLongPhrase,
+  melbourneTodayISO,
+  scheduledExamDate,
+} from "@/lib/exam-schedule";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import QuestionGroup from "@/components/QuestionGroup";
@@ -98,8 +105,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const examLabel = exam.examType === "EXAM_1" ? "Exam 1" : "Exam 2";
   // Canonical always uses the keyword slug, even when reached via cuid.
   const canonical = `${SITE_URL}/${curriculum}/${subject}/exams/${examSlug(exam)}`;
-  const title = `${exam.year} VCAA ${short} ${examLabel} — Questions & Worked Solutions`;
-  const description = `Every question from the ${exam.year} VCAA ${name} ${examLabel}, with full worked solutions. Free.`;
+  // A paper seeded ahead of its sitting has no questions yet, and the page must
+  // not claim otherwise — "Every question ... with full worked solutions" would
+  // be false, and a title that oversells is what makes a pre-published page
+  // read as a doorway. Describe what the page actually holds TODAY; the copy
+  // flips on its own once the questions land, on the same URL.
+  const questionCount = await prisma.question.count({ where: { examId: exam.id } });
+  const title =
+    questionCount === 0
+      ? `${exam.year} VCAA ${short} ${examLabel} — Date, Structure & Worked Solutions`
+      : `${exam.year} VCAA ${short} ${examLabel} — Questions & Worked Solutions`;
+  const description =
+    questionCount === 0
+      ? `When the ${exam.year} VCAA ${name} ${examLabel} is sat, what it covers, and the topic breakdown from past papers. Worked solutions land here once VCAA publishes the paper. Free.`
+      : `Every question from the ${exam.year} VCAA ${name} ${examLabel}, with full worked solutions. Free.`;
   return {
     title,
     description,
@@ -311,6 +330,82 @@ async function ExamBody({ params }: PageProps) {
       provider: { "@type": "Organization", name: "ATAR Hero", url: SITE_URL },
     },
   ];
+
+  // A paper with no questions is either seeded ahead of its sitting or waiting
+  // on VCAA to publish it. Either way there is nothing to render below, and the
+  // copyright notice ("questions on this page are reproduced from...") would be
+  // plainly false. Take an early branch instead of threading emptiness through
+  // the section layout.
+  //
+  // The page still has to earn its index slot on its own merits, so it carries
+  // an original analysis of what this paper actually tests, computed from the
+  // past papers already on the site — useful in September whether or not the
+  // solutions ever arrive.
+  if (questions.length === 0) {
+    const pastRows = await prisma.question.findMany({
+      where: {
+        examId: { not: exam.id },
+        exam: {
+          examType: exam.examType,
+          year: { not: 9999 },
+          subject: { slug: getDbSubjectSlug(subjectSlug) },
+        },
+      },
+      select: { examId: true, topic: { select: { name: true } }, exam: { select: { year: true } } },
+    });
+
+    const counts = new Map<string, number>();
+    const paperIds = new Set<string>();
+    let minYear = Infinity;
+    let maxYear = -Infinity;
+    for (const row of pastRows) {
+      counts.set(row.topic.name, (counts.get(row.topic.name) ?? 0) + 1);
+      paperIds.add(row.examId);
+      if (row.exam.year < minYear) minYear = row.exam.year;
+      if (row.exam.year > maxYear) maxYear = row.exam.year;
+    }
+    const topics: TopicShare[] = Array.from(counts.entries())
+      .map(([name, questionCount]) => ({
+        name,
+        questionCount,
+        share: pastRows.length > 0 ? questionCount / pastRows.length : 0,
+      }))
+      .sort((a, b) => b.questionCount - a.questionCount);
+
+    const sitting = scheduledExamDate(subjectSlug, exam.examType);
+    const dateISO = sitting?.date ?? null;
+    // Foundation sits ONE paper, labelled just "Exam" on the VCAA timetable, so
+    // prefer the timetable's own label over an "Exam 1" this subject never uses.
+    const examLabel = sitting?.label ?? (exam.examType === "EXAM_1" ? "Exam 1" : "Exam 2");
+
+    return (
+      <div>
+        <JsonLd data={jsonLd} />
+        <BackLink href={examsHref} label="Past papers" className="mb-6" />
+        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">
+          {title}
+        </h1>
+        <p className="text-gray-500 dark:text-gray-400 lg:text-base mb-8">
+          {subjectDisplayName}
+        </p>
+        <UpcomingExamPanel
+          subjectDisplayName={subjectDisplayName}
+          examLabel={examLabel}
+          year={exam.year}
+          dateISO={dateISO}
+          datePhrase={dateISO ? examDateLongPhrase(dateISO) : null}
+          timePhrase={sitting?.time ?? null}
+          daysAway={dateISO ? daysBetweenISO(melbourneTodayISO(), dateISO) : null}
+          topics={topics}
+          papersAnalysed={paperIds.size}
+          yearsAnalysed={
+            Number.isFinite(minYear) && minYear !== maxYear ? `${minYear}\u2013${maxYear}` : null
+          }
+          examsHref={examsHref}
+        />
+      </div>
+    );
+  }
 
   return (
     <div>

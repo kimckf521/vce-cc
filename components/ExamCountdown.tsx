@@ -1,6 +1,9 @@
 import { CalendarDays } from "lucide-react";
 import { VCE_EXAM_DATES } from "@/lib/exam-config";
 import { getSubjectMetadata } from "@/lib/subject-context";
+// Shared with the upcoming-exam page state so the two never disagree about
+// what "today" is or how many days remain — see lib/exam-schedule.ts.
+import { daysBetweenISO, examDatePhrase, melbourneTodayISO } from "@/lib/exam-schedule";
 
 /**
  * Exam countdown strip — a single calm line showing the nearest upcoming
@@ -16,37 +19,6 @@ import { getSubjectMetadata } from "@/lib/subject-context";
  * exams are actually sat — so the count flips at Melbourne midnight
  * regardless of server timezone.
  */
-
-/** Today's date as YYYY-MM-DD in Australia/Melbourne. */
-function melbourneTodayISO(): string {
-  // en-CA locale formats as YYYY-MM-DD, which sorts/parses cleanly.
-  return new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Australia/Melbourne",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(new Date());
-}
-
-/** Whole calendar days from one YYYY-MM-DD to another (both Melbourne-local). */
-function daysBetweenISO(fromISO: string, toISO: string): number {
-  return Math.round(
-    (Date.parse(`${toISO}T00:00:00Z`) - Date.parse(`${fromISO}T00:00:00Z`)) /
-      86_400_000,
-  );
-}
-
-/** "Thu 5 Nov" — the exam's calendar date, formatted for Melbourne. */
-function examDatePhrase(dateISO: string): string {
-  // The ISO date is already Melbourne-local; format at UTC noon so no
-  // timezone shift can move it across midnight.
-  return new Intl.DateTimeFormat("en-AU", {
-    timeZone: "UTC",
-    weekday: "short",
-    day: "numeric",
-    month: "short",
-  }).format(new Date(`${dateISO}T12:00:00Z`));
-}
 
 /** "94 days — about 13 weekends", "5 days", "tomorrow", "today". */
 function countdownPhrase(days: number): string {

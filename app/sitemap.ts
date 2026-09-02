@@ -134,7 +134,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // One URL per exam (keyword slug), lastModified = max updatedAt of its
       // questions. One URL per question GROUP: MCQs (part=null) stand alone;
       // Section B parts collapse to the first part's id.
+      // Seeded from the EXAM rows, not from questions: a paper published ahead
+      // of its sitting has zero questions, and deriving the exam list from
+      // questions would silently omit exactly the URLs that most need to be
+      // crawled early. Questions then refine lastMod below where they exist.
       const examMeta = new Map<string, { slug: string; lastMod: Date }>();
+      const examRows = await prisma.exam.findMany({
+        where: { subject: { slug: dbSlug }, year: { not: 9999 } },
+        select: { id: true, year: true, examType: true, createdAt: true },
+      });
+      for (const e of examRows) {
+        examMeta.set(e.id, { slug: examSlug(e), lastMod: e.createdAt });
+      }
       const groupLeaders = new Map<
         string,
         { id: string; lastMod: Date }
